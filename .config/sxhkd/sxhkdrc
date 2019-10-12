@@ -1,0 +1,56 @@
+# Basic binds
+super + Return
+	$TERMINAL
+super + d
+  i3-dmenu-desktop	
+super + p
+	passmenu
+super + f
+	$TERMINAL -e $FILE
+super + shift + f
+  pcmanfm
+super + e
+	$TERMINAL -e neomutt
+super + shift + e
+  thunderbird
+super + m
+	$TERMINAL -e ncmpcpp
+super + i
+	$TERMINAL -e htop
+super + a
+  $TERMINAL -e pulsemixer
+super + c
+	camtoggle
+super + b
+	$BROWSER
+super + n
+  $TERMINAL -e nmtui
+
+# Et cetera...
+super + grave
+	dmenuunicode
+XF86AudioMute
+  pactl set-sink-mute 0 toggle
+XF86AudioLowerVolume
+  pactl set-sink-volume 0 -5%
+control+XF86AudioLowerVolume
+  pactl set-sink-volume 0 -1%
+XF86AudioRaiseVolume
+  pactl set-sink-volume 0 +5%
+control+XF86AudioRaiseVolume
+  pactl set-sink-volume 0 +1%
+XF86MonBrightnessDown
+  light -U 10
+XF86MonBrightnessUp
+  light -A 10
+super + bracketright
+  ~/.screenlayout/docked.sh
+super + bracketleft
+  ~/.screenlayout/default.sh
+
+# for X230, etc.
+XF86TouchpadToggle
+  toggletouchpad
+# for X1
+XF86Display
+  toggletouchpad
