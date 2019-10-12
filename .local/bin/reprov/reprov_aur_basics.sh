@@ -31,4 +31,4 @@ echo "yay installed!"
 yay -S ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git
 
 #warn about configs
-echo "REMEMBER TO AUTHENTICATE GOOBOOK, AND CONFIGURE PAM-GNUPG-GIT"
+echo "REMEMBER TO IMPORT GPG KEY, CONFIGURE PAM-GNUPG-GIT, AUTHENTICATE GOOBOOK, AND SET UP CRON JOBS BEFORE RUNNING NEOMUTT"
