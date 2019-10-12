@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=mc
+Comment=Visual file manager
+Exec=mc
+Icon=folder
+MimeType=inode/directory
+Terminal=true
+Categories=Utility

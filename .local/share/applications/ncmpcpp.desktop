@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ncmpcpp
+Type=Application
+Categories=Audio;AudioVideo;AudioVideoEditing;
+Exec=ncmpcpp
+Terminal=true
+StartupNotify=true
+

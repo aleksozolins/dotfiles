@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Torrent
+Comment=Visual file manager
+Exec=transadd %U 

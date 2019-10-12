@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Transmission
+Exec=transmission-remote-cli
+Terminal=true
+Categories=Utility
