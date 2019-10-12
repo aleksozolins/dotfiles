@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
+[ -f ~/.Xmachine ] && ~/.Xmachine
+[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
+
+# run the default screen layout
+[ -f "$HOME/.screenlayout/default.sh" ] && . ~/.screenlayout/default.sh
+
+feh --bg-scale ~/wal.jpg &
+sxhkd &
+xss-lock -- i3lock -n --color=282828 &
+unclutter &
+compton &
+dunst &
+dropbox &

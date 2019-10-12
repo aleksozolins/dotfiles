@@ -1,0 +1,24 @@
+!     _    ___
+!    / \  / _ \   Aleks Ozolins
+!   / _ \| | | |  aleks@aleksozolins
+!  / ___ \ |_| |  http://www.aleksozolins.com
+! /_/   \_\___/
+!
+! .Xresources
+
+! set high DPI for certain hosts
+#ifdef SRVR_NZXT
+  Xft.dpi: 192
+#endif
+
+#ifdef SRVR_TPX1
+  Xft.dpi: 192
+#endif
+
+! cursor
+Xcursor.theme: Breeze_Default
+
+! Fonts
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintfull
