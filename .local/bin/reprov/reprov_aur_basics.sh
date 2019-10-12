@@ -9,6 +9,8 @@ read -p "Press Enter to begin..."
 if [ ! -f ~/repos ]
   then
   mkdir ~/repos
+  else
+  echo "~/repos already exists!"
 fi
 
 # change to ~/repos
