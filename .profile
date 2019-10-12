@@ -10,6 +10,7 @@ export TERMINAL="st"
 export BROWSER="firefox"
 export READER="mupdf"
 export FILE="ranger"
+
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.scripts/nohup-open
 
