@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo mount -L 4TBext4 /mnt/4TBext4

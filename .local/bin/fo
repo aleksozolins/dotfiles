@@ -1,0 +1,2 @@
+#!/bin/sh
+fzf | xargs -r -0 -i sh -c 'xdg-open "{}" &'

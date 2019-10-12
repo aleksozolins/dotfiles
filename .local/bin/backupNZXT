@@ -1,0 +1,6 @@
+#!/bin/bash
+clear
+echo This will backup aleksozoins/home on NZXT to 4TBext4
+echo 4TBext4 must be mounted! Are you sure you want to proceed?
+read -p "Press Enter to begin backup..."
+rsync -r -t -p -o -g -v --progress --delete -s --exclude .cache --exclude Downloads /home/aleksozolins /mnt/4TBext4/Backup/NZXT

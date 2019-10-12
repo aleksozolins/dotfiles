@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo mount -L GDrive /mnt/GDrive

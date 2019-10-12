@@ -1,0 +1,9 @@
+#1/bin/bash
+STR=$(synclient | grep Touchpad | awk '{ print $3 }')
+
+if [ $STR = '1' ]
+then
+  synclient TouchpadOff=0 
+else
+  synclient TouchpadOff=1 
+fi
