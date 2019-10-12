@@ -31,6 +31,7 @@ gparted
 fwupd
 tmux
 ranger
+w3m
 mpv
 youtube-dl
 youtube-viewer
