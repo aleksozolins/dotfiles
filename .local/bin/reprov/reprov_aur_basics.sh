@@ -6,7 +6,7 @@ echo "NOTE: DO NOT USE THIS SCRIPT IF YAY IS ALREADY INSTALLED"
 read -p "Press Enter to begin..."
 
 # does ~/repos exist?
-if [ ! -f ~/repos ]
+if [ ! -d ~/repos ]
   then
   mkdir ~/repos
   else
