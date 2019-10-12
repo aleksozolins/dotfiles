@@ -1,8 +1,10 @@
 #!/bin/sh
 clear
+
 echo "This will install yay and basic AUR programs to reprovision your system"
-# echo "Already installed programs will not be reinstalled"
+
 echo "NOTE: DO NOT USE THIS SCRIPT IF YAY IS ALREADY INSTALLED"
+
 read -p "Press Enter to begin..."
 
 # does ~/repos exist?
