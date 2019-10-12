@@ -49,6 +49,7 @@ openssh
 compton
 neomutt
 cronie
+libnotify
 unclutter
 dunst
 xclip
