@@ -10,7 +10,8 @@ alias m3uflac='ls -1v |grep .flac > '
 set -o vi
 
 # alias for working with config files in git bare repo
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias cfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias cfgp='/usr/bin/git --git-dir=$HOME/.cfgp/ --work-tree=$HOME'
 
 # Set history to infinite
 HISTSIZE=
