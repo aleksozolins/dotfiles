@@ -26,7 +26,7 @@ if [ ! -d ~/repos ]
 fi
 
 # install a terminal emulator
-echo "Would you like to install Luke Smith's build of ST? NOTE: You may have to adjust the config.h file afterwords and reinstall. yes or no?"
+echo "Would you like to install Luke Smith's build of st? NOTE: You may have to adjust the config.h file afterwords and reinstall. yes or no?"
 read te
 if [[ $te == y* ]]
   then
@@ -45,4 +45,4 @@ if [[ $cronie == y* ]]
   echo "Whatever that's fine..."
 fi
 
-echo "Think about running reprov_aur_basics.sh now if you want more shit to work..."
+echo "Think about running reprov_aur_basics.sh now if you want to install more..."

@@ -57,3 +57,7 @@ xclip
 fzf
 arc-icon-theme
 arc-solid-gtk-theme
+gvfs-smb
+powertop
+unrar
+p7zip
