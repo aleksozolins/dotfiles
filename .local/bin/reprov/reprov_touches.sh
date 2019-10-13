@@ -13,6 +13,9 @@ read -p "Press Enter to begin..."
 gpg --import ~/Dropbox/GPG/aleks_ozolins_public_gpg_key.txt
 gpg --import ~/Dropbox/GPG/aleks_ozolins_private_gpg_key.asc
 
+# initialize the password store
+pass init aleksozolins
+
 # make changes to /etc/pam.d/system-local-login as root
 echo "auth      optional  pam_gnupg.so" | sudo tee -a /etc/pam.d/system-local-login
 echo "session   optional  pam_gnupg.so" | sudo tee -a /etc/pam.d/system-local-login

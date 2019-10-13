@@ -61,3 +61,4 @@ gvfs-smb
 powertop
 unrar
 p7zip
+pass
