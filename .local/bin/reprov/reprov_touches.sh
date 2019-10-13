@@ -15,10 +15,8 @@ gpg --import aleks_ozolins_public_gpg_key.txt
 gpg --import aleks_ozolins_private_gpg_key.asc
 
 # make changes to /etc/pam.d/system-local-login as root
-sudo -i
-echo "auth      optional  pam_gnupg.so" >> /etc/pam.d/system-local-login
-echo "session   optional  pam_gnupg.so" >> /etc/pam.d/system-local-login
-exit
+echo "auth      optional  pam_gnupg.so" | sudo tee -a /etc/pam.d/system-local-login
+echo "session   optional  pam_gnupg.so" | sudo tee -a /etc/pam.d/system-local-login
 
 # enable cron job for mutt wizard
 mw cron
