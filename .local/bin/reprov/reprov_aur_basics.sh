@@ -45,10 +45,8 @@ echo "Are you on a laptop? If so, I'm going to add you to the light group so you
 read lightg
 if [[ $lightg == y* ]]
   then
-  sudo -i
-  groupadd light
-  usermod -a -G light aleksozolins
-  exit
+  sudo groupadd light
+  sudo usermod -a -G light aleksozolins
   else
   echo "Alright, you must be running a desktop..."
 fi
