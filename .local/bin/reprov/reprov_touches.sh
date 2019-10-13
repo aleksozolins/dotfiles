@@ -4,7 +4,7 @@ echo "1: Import your public and private GPG key"
 echo "2: Configure pam-gnupg-git"
 echo "3: Enable a cron job to check your mail periodically"
 echo "4: Authenticate goobook"
-echo "NOTE: Please make sure you have run both reprov_basics.sh and reprov_aur_basics.sh"
+echo "NOTE: Please make sure you have run both reprov_basics.sh and reprov_aur_basics.sh and are presently running in X"
 echo "NOTE: Please make sure you have signed into Dropbox and sync'd your GPG directory"
 
 read -p "Press Enter to begin..."

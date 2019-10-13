@@ -8,7 +8,7 @@ read -p "Press Enter to begin..."
 sudo pacman -S --needed - < basics.txt
 
 # enable network manager
-echo "Would you like to enable NetworkManager? yes or no?"
+echo "Would you like to enable NetworkManager? If you've already enabled it, type no. yes or no?"
 read nm
 if [[ $nm == y* ]]
   then
@@ -46,3 +46,5 @@ if [[ $cronie == y* ]]
 fi
 
 echo "Think about running reprov_aur_basics.sh now if you want to install more..."
+
+cd
