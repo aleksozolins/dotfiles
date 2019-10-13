@@ -10,9 +10,8 @@ echo "NOTE: Please make sure you have signed into Dropbox and sync'd your GPG di
 read -p "Press Enter to begin..."
 
 # import your GPG keys
-cd ~/Dropbox/GPG
-gpg --import aleks_ozolins_public_gpg_key.txt
-gpg --import aleks_ozolins_private_gpg_key.asc
+gpg --import ~/Dropbox/GPG/aleks_ozolins_public_gpg_key.txt
+gpg --import ~/Dropbox/GPG/aleks_ozolins_private_gpg_key.asc
 
 # make changes to /etc/pam.d/system-local-login as root
 echo "auth      optional  pam_gnupg.so" | sudo tee -a /etc/pam.d/system-local-login
