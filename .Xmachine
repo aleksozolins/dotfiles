@@ -32,8 +32,8 @@ if [ $(uname -n) == "TPX230" ]
   synclient HorizTwoFingerScroll=on
 fi
 
-# TXP200
-if [ $(uname -n) == "TPX200" ]
+# TXP201
+if [ $(uname -n) == "TPX201" ]
   then
   echo hi
 fi
