@@ -24,14 +24,14 @@ new_window 1pixel
 # gaps
 # gaps inner 15
 # gaps outer 15
-bindsym $mod+Shift+o  gaps inner all set 0; gaps outer all set 0
-bindsym $mod+Shift+g  gaps inner all set 10; gaps outer all set 10
+bindsym $mod+Shift+g  gaps inner all set 0; gaps outer all set 0
+bindsym $mod+g  gaps inner all set 10; gaps outer all set 10
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
 
 # change focus
 bindsym $mod+h focus left
@@ -140,8 +140,7 @@ mode "resize" {
 }
 
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
   position top
   status_command i3status
