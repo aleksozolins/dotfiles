@@ -42,10 +42,10 @@ goobook authenticate
 
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
-echo "Some things you might want to do now:" >> ~/.reprov_todo.txt
-echo "-Configure intel-ucode for microcode" >> ~/.reprov_todo.txt 
-echo "-Configure powertop.service" >> ~/.reprov_todo.txt
-echo "-Configure Thunderbird email" >> ~/.reprov_todo.txt
-echo "-Configure your GTK themes with LXappearance" >> ~/.reprov_todo.txt
-echo "-Login to Firefox" >> ~/.reprov_todo.txt
-echo "-Set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too." >> ~/.reprov_todo.txt
+echo "Some things you might want to do now:" >> ~/reprov_todo.txt
+echo "-Configure intel-ucode for microcode" >> ~/reprov_todo.txt 
+echo "-Configure powertop.service" >> ~/reprov_todo.txt
+echo "-Configure Thunderbird email" >> ~/reprov_todo.txt
+echo "-Configure your GTK themes with LXappearance" >> ~/reprov_todo.txt
+echo "-Login to Firefox" >> ~/reprov_todo.txt
+echo "-Set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too." >> ~/reprov_todo.txt
