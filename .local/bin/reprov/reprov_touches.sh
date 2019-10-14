@@ -9,6 +9,10 @@ echo "NOTE: Please make sure you have signed into Dropbox and sync'd your GPG di
 
 read -p "Press Enter to begin..."
 
+# ask about syncing mail accounts.
+echo "Would you like to synchronize all your mail accounts? yes or no ?"
+read mailsync
+
 # import your GPG keys
 gpg --import ~/Dropbox/GPG/aleks_ozolins_public_gpg_key.txt
 gpg --import ~/Dropbox/GPG/aleks_ozolins_private_gpg_key.asc
@@ -23,15 +27,25 @@ echo "session   optional  pam_gnupg.so" | sudo tee -a /etc/pam.d/system-local-lo
 # enable cron job for mutt wizard
 mw cron
 
+# mbsync all accounts if yes
+if [[ $mailsync == y* ]]
+  then
+  mbsync aleksozolins
+  mbsync icloud
+  mbsync thingsforsale
+  else
+  echo "moving on..."
+fi
+
 # authenticate goobook
 goobook authenticate
 
 echo "If you didn't see any errors, you should be all set!!!"
-echo "Some things you might want to do now:"
-echo "1. Configure intel-ucode for microcode"
-echo "2. Configure powertop.service"
-echo "3. Configure Thunderbird email"
-echo "4. Configure your GTK themes with LXappearance"
-echo "5. Login to Firefox"
-echo "6. mbsync all your mail accounts before running neomutt. IE mbsync aleksozolins."
-echo "7. set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too."
+echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
+echo "Some things you might want to do now:" >> ~/.reprov_todo.txt
+echo "-Configure intel-ucode for microcode" >> ~/.reprov_todo.txt 
+echo "-Configure powertop.service" >> ~/.reprov_todo.txt
+echo "-Configure Thunderbird email" >> ~/.reprov_todo.txt
+echo "-Configure your GTK themes with LXappearance" >> ~/.reprov_todo.txt
+echo "-Login to Firefox" >> ~/.reprov_todo.txt
+echo "-Set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too." >> ~/.reprov_todo.txt
