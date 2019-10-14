@@ -62,3 +62,4 @@ powertop
 unrar
 p7zip
 pass
+xf86-video-intel
