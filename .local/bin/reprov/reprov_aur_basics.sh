@@ -5,6 +5,10 @@ echo "NOTE: DO NOT USE THIS SCRIPT IF YAY IS ALREADY INSTALLED"
 
 read -p "Press Enter to begin..."
 
+# as about creating the maildirs
+echo "Would you like to create the top level mail directories in ~/.local/share/mail/? yes or no ?"
+read maildirs
+
 # does ~/repos exist?
 if [ ! -d ~/repos ]
   then
@@ -30,9 +34,7 @@ echo "yay installed!"
 # install programs
 yay -S ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench
 
-# recreate the top level mail directories
-echo "Would you like to create the top level mail directories in ~/.local/share/mail/? yes or no ?"
-read maildirs
+# recreate the top level mail directories if yes
 if [[ $maildirs == y* ]]
   then
   mkdir ~/.local/share/mail && mkdir ~/.local/share/mail/aleksozolins && mkdir ~/.local/share/mail/icloud && mkdir ~/.local/share/mail/thingsforsale
