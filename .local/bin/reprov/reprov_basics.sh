@@ -17,6 +17,22 @@ read te
 echo "Would you like to enable the cronie service for cron jobs? yes or no?"
 read cronie
 
+# ask about touchpad/trackpoint
+echo "Is this a Thinkpad with a trackpoint? Do you need xf86-input-synaptics? yes or no?"
+read synaptics
+
+# ask about throttling fix for x1
+echo "Is this your Thinkpad Carbon X1? Do you need to install and enable the throttling fix?? yes or no?"
+read throttled
+
+# ask about broadcom-wl
+echo "Do you need broadcom wireless, maybe for the X61? yes or no?"
+read broadcom
+
+# ask about Nvidia
+echo "Do you need that evil Nvidia driver? yes or no?"
+read nvidia
+
 sudo pacman -S --needed - < basics.txt
 
 # enable network manager if yes
@@ -49,6 +65,39 @@ if [[ $cronie == y* ]]
   sudo systemctl enable cronie 
   else
   echo "Whatever that's fine..."
+fi
+
+# install synaptics if yes
+if [[ $synaptics == y* ]]
+  then
+  sudo pacman -S xf86-input-synaptics
+  else
+  echo "moving on..."
+fi
+
+# install throttling fix if yes
+if [[ $throttled == y* ]]
+  then
+  sudo pacman -S throttled
+  sudo systemctl enable --now lenovo_fix.service
+  else
+  echo "moving on..."
+fi
+
+# install broadcom-wl if yes
+if [[ $broadcom == y* ]]
+  then
+  sudo pacman -S broadcom-wl
+  else
+  echo "moving on..."
+fi
+
+# install nvidia if yes
+if [[ $nvidia == y* ]]
+  then
+  sudo pacman -S nvidia
+  else
+  echo "moving on..."
 fi
 
 echo "Think about running reprov_aur_basics.sh now if you want to install more..."
