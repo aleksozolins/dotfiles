@@ -27,12 +27,12 @@ git clone https://aur.archlinux.org/yay.git
 cd ~/repos/yay
 
 # install yay
-makepkg -si
+makepkg -si --noconfirm
 
 echo "yay installed!"
 
 # install programs
-yay -S ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench
+yay -S --noconfirm ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench
 
 # recreate the top level mail directories if yes
 if [[ $maildirs == y* ]]
