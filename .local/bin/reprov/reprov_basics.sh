@@ -5,10 +5,6 @@ echo "Already installed programs will not be reinstalled"
 
 read -p "Press Enter to begin..."
 
-# ask about enabling network manager
-echo "Would you like to enable NetworkManager? If you've already enabled it, type no. yes or no?"
-read nm
-
 # ask about st
 echo "Would you like to install Luke Smith's build of st? NOTE: You may have to adjust the config.h file afterwords and reinstall. yes or no?"
 read te
@@ -34,14 +30,6 @@ echo "Do you need that evil Nvidia driver? yes or no?"
 read nvidia
 
 sudo pacman -S --needed - < basics.txt
-
-# enable network manager if yes
-if [[ $nm == y* ]]
-  then
-  sudo systemctl enable --now NetworkManager
-  else
-  echo "That's fine, live your life without internet. What do I care?"
-fi
 
 # does ~/repos exist?
 if [ ! -d ~/repos ]
