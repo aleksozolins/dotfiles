@@ -28,7 +28,7 @@ makepkg -si
 echo "yay installed!"
 
 # install programs
-yay -S ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme light geekbench
+yay -S ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench
 
 # recreate the top level mail directories
 echo "Would you like to create the top level mail directories in ~/.local/share/mail/? yes or no ?"
@@ -38,17 +38,6 @@ if [[ $maildirs == y* ]]
   mkdir ~/.local/share/mail && mkdir ~/.local/share/mail/aleksozolins && mkdir ~/.local/share/mail/icloud && mkdir ~/.local/share/mail/thingsforsale
   else
   echo "That's fine we'll just move on then..."
-fi
-
-# add user to light group if running on laptop
-echo "Are you on a laptop? If so, I'm going to add you to the light group so you have backlight control. yes or no ?"
-read lightg
-if [[ $lightg == y* ]]
-  then
-  sudo groupadd light
-  sudo usermod -a -G light aleksozolins
-  else
-  echo "Alright, you must be running a desktop..."
 fi
 
 # next steps?
