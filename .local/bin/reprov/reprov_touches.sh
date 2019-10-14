@@ -26,7 +26,7 @@ mw cron
 # authenticate goobook
 goobook authenticate
 
-echo "If you didn't see any errors, you should be all set!"
+echo "If you didn't see any errors, you should be all set!!!"
 echo "Some things you might want to do now:"
 echo "1. Configure intel-ucode for microcode"
 echo "2. Configure powertop.service"
