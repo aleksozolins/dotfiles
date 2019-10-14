@@ -29,7 +29,7 @@ read broadcom
 echo "Do you need that evil Nvidia driver? yes or no?"
 read nvidia
 
-sudo pacman -S --needed - < basics.txt
+sudo pacman -S --noconfirm --needed - < basics.txt
 
 # does ~/repos exist?
 if [ ! -d ~/repos ]
@@ -58,7 +58,7 @@ fi
 # install synaptics if yes
 if [[ $synaptics == y* ]]
   then
-  sudo pacman -S xf86-input-synaptics
+  sudo pacman -S --noconfirm xf86-input-synaptics
   else
   echo "moving on..."
 fi
@@ -66,7 +66,7 @@ fi
 # install throttling fix if yes
 if [[ $throttled == y* ]]
   then
-  sudo pacman -S throttled
+  sudo pacman -S --noconfirm throttled
   sudo systemctl enable --now lenovo_fix.service
   else
   echo "moving on..."
@@ -75,7 +75,7 @@ fi
 # install broadcom-wl if yes
 if [[ $broadcom == y* ]]
   then
-  sudo pacman -S broadcom-wl
+  sudo pacman -S --noconfirm broadcom-wl
   else
   echo "moving on..."
 fi
@@ -83,7 +83,7 @@ fi
 # install nvidia if yes
 if [[ $nvidia == y* ]]
   then
-  sudo pacman -S nvidia
+  sudo pacman -S --noconfirm nvidia
   else
   echo "moving on..."
 fi
