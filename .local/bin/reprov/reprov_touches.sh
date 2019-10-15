@@ -14,6 +14,18 @@ read -p "Press Enter to begin..."
 echo "Would you like to synchronize all your mail accounts? yes or no ?"
 read mailsync
 
+# ask about trim support?
+echo "Would you like to enable trim support for SSDs? yes or no ?"
+read trim
+
+# emable trim support if yes
+if [[ $trim == y* ]]
+  then
+  sudo systemctl enable fstrim.timer
+  else
+  echo "moving on..."
+fi
+
 # import your GPG keys
 gpg --import ~/Dropbox/GPG/aleks_ozolins_public_gpg_key.txt
 gpg --import ~/Dropbox/GPG/aleks_ozolins_private_gpg_key.asc
