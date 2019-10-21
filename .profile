@@ -23,12 +23,7 @@ read pull
 # pull personal repos if yes
 if [[ $pull == y* ]]
   then
-  echo "pulling cfg..."
-  cfg pull
-  echo "pulling cfgp..."
-  cfgp pull
-  echo "pulling .password-store..."
-  pass git pull
+  pullall
   else
   echo "moving along..."
 fi
