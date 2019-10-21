@@ -10,6 +10,9 @@
 # set screen blanking to 20 minutes
 xset s 1200 &
 
+# set screen off to 30 minutes
+xset dpms 1800 1800 1800
+
 sxhkd &
 xss-lock -- i3lock -n --color=282828 &
 unclutter &
