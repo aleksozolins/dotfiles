@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "pulling cfg..."
+cfg pull
+echo "pulling cfgp..."
+cfgp pull
+echo "pulling .password-store..."
+pass git pull
