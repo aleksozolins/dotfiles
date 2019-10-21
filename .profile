@@ -16,9 +16,6 @@ export MC_XDG_OPEN=~/.scripts/nohup-open
 
 echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc"
 
-# set screen blanking to 20 minutes
-xset s 1200 &
-
 # ask about pulling personal repos
 echo "Would you like to pull cfg, cfgp, and pass? yes or no ?"
 read pull

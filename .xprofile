@@ -7,6 +7,9 @@
 # run the default screen layout
 [ -f "$HOME/.screenlayout/default.sh" ] && . ~/.screenlayout/default.sh
 
+# set screen blanking to 20 minutes
+xset s 1200 &
+
 sxhkd &
 xss-lock -- i3lock -n --color=282828 &
 unclutter &
