@@ -24,6 +24,7 @@ read pull
 if [[ $pull == y* ]]
   then
   pullall
+  read -p "Press Enter to continue..."
   else
   echo "moving along..."
 fi
