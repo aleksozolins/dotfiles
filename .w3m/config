@@ -44,7 +44,7 @@ mark_color cyan
 bg_color terminal
 active_style 0
 active_color cyan
-visited_anchor 0
+visited_anchor 1
 visited_color magenta
 pagerline 10000
 use_history 1
@@ -68,8 +68,8 @@ decode_cte 0
 auto_uncompress 0
 preserve_timestamp 1
 keymap_file keymap
-document_root 
-personal_document_root 
+document_root /
+personal_document_root /home/aleksozolins/
 cgi_bin 
 index_file 
 mime_types ~/.mime.types, /usr/etc/mime.types
