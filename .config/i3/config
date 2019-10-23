@@ -123,22 +123,11 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+x exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-bindsym $mod+r mode "resize"
-
 # resize window (you can also use the mouse for that)
-mode "resize" {
-  # These bindings trigger as soon as you enter the resize mode
-  bindsym h resize shrink width 10 px or 10 ppt
-  bindsym j resize grow height 10 px or 10 ppt
-  bindsym k resize shrink height 10 px or 10 ppt
-  bindsym l resize grow width 10 px or 10 ppt
-
-  # back to normal: Enter or Escape or $mod+r
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
-  bindsym $mod+r mode "default"
-}
-
+bindsym $mod+control+h resize shrink width 10 px or 10 ppt
+bindsym $mod+control+j resize grow height 10 px or 10 ppt
+bindsym $mod+control+k resize shrink height 10 px or 10 ppt
+bindsym $mod+control+l resize grow width 10 px or 10 ppt
 
 # Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
@@ -151,7 +140,7 @@ bar {
 }
 
 # bar toggle, hide or show
-bindsym $mod+Shift+b bar mode toggle
+bindsym $mod+control+b bar mode toggle
 
 # Make the webcam float and stick
 for_window [title="video0 - mpv"] floating enable

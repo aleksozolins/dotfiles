@@ -3,6 +3,8 @@ super + Return
 	$TERMINAL
 super + d
   i3-dmenu-desktop	
+super + shift + d
+  dmenu_run
 super + p
 	passmenu
 super + f
@@ -22,11 +24,19 @@ super + a
 super + c
 	camtoggle
 super + b
-	$BROWSER
+  $TERMINAL -e w3m duckduckgo.com
+super + shift + b
+  $BROWSER
 super + n
   $TERMINAL -e nmtui
 super + shift + n
   sudo systemctl restart NetworkManager
+super + r
+  $TERMINAL -e newsboat
+# super + shift + r
+#   $TERMINAL -e podboat
+super + o
+  libreoffice
 
 # Et cetera...
 super + grave
