@@ -27,8 +27,8 @@ if [[ $trim == y* ]]
 fi
 
 # import your GPG keys
-gpg --import ~/Dropbox/GPG/aleks_ozolins_public_gpg_key.txt
-gpg --import ~/Dropbox/GPG/aleks_ozolins_private_gpg_key.asc
+gpg --import ~/Dropbox/gpg/aleks_ozolins_public_gpg_key.txt
+gpg --import ~/Dropbox/gpg/aleks_ozolins_private_gpg_key.asc
 
 # initialize the password store
 pass init aleksozolins
