@@ -1,5 +1,5 @@
 # Turn on color for ls
-alias ls='ls --color=always'
+alias ls='ls --color=always --group-directories-first'
 
 # Generate m3u Playlists
 alias m3ump3='ls -1v |grep .mp3 > '
