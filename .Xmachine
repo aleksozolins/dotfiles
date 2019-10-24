@@ -16,7 +16,7 @@ if [ $(uname -n) == "TPX1" ]
   synclient TapButton1=0
   synclient TapButton2=0
   synclient TapButton3=0
-  synclient HorizTwoFingerScroll=on
+  synclient HorizTwoFingerScroll=1
 fi
 
 # TXP230
@@ -29,7 +29,7 @@ if [ $(uname -n) == "TPX230" ]
   synclient TapButton1=0
   synclient TapButton2=0
   synclient TapButton3=0
-  synclient HorizTwoFingerScroll=on
+  synclient HorizTwoFingerScroll=1
 fi
 
 # TXP201
