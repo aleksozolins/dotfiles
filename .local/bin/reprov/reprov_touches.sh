@@ -1,10 +1,11 @@
 #!/bin/bash
 echo "This will put finishing touches on your installation in the following ways:"
-echo "1: Import your public and private GPG key"
+echo "1: Import your public and private GPG key and initialize your password store"
 echo "2: Configure pam-gnupg-git"
 echo "3: Enable a cron job to check your mail periodically"
 echo "4: Sync your mail accounts for the first fime"
-echo "5: Authenticate goobook"
+echo "5: Enable the MPD daemon and trim support"
+echo "6: Authenticate goobook"
 echo "NOTE: Please make sure you have run both reprov_basics.sh and reprov_aur_basics.sh and are presently running in X"
 echo "NOTE: Please make sure you have signed into Dropbox and sync'd your GPG directory"
 
@@ -50,11 +51,11 @@ if [[ $mailsync == y* ]]
   echo "moving on..."
 fi
 
-# authenticate goobook
-goobook authenticate
-
 # enable music player daemon as user
 systemctl enable --user mpd.service
+
+# authenticate goobook
+goobook authenticate
 
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
