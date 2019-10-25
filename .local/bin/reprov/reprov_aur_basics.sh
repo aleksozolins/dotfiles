@@ -5,7 +5,7 @@ echo "NOTE: DO NOT USE THIS SCRIPT IF YAY IS ALREADY INSTALLED"
 
 read -p "Press Enter to begin..."
 
-# as about creating the maildirs
+# ask about creating the maildirs
 echo "Would you like to create the top level mail directories in ~/.local/share/mail/? yes or no ?"
 read maildirs
 
