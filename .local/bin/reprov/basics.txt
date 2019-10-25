@@ -64,3 +64,14 @@ p7zip
 pass
 xf86-video-intel
 newsboat
+dosbox
+mpd
+ncmpcpp
+mpc
+gimp
+imagemagick
+audacity
+libreoffice-fresh
+hunspell-en_US
+rtv
+unzip

@@ -53,6 +53,9 @@ fi
 # authenticate goobook
 goobook authenticate
 
+# enable music player daemon as user
+systemctl enable --user mpd.service
+
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
 echo "Some things you might want to do now:" >> ~/reprov_todo.txt
