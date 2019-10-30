@@ -4,7 +4,7 @@ super + Return
 super + d
   i3-dmenu-desktop	
 super + shift + d
-  dmenu_run
+  (cd ~/Desktop && ls --color=never | dmenu -l 20 -fn Monospace-16 | xargs xdg-open)  
 super + p
 	passmenu
 super + f
