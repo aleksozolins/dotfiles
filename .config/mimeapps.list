@@ -15,6 +15,7 @@ video/x-matroska=mpv.desktop
 video/mp4=mpv.desktop
 application/epub+zip=mupdf.desktop
 audio/mp4=mpv.desktop
+video/quicktime=mpv.desktop
 
 [Added Associations]
 text/markdown=firefox.desktop;

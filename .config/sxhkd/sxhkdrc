@@ -11,6 +11,8 @@ super + f
 	$TERMINAL -e $FILE
 super + shift + f
   pcmanfm
+super + control + f
+  $TERMINAL -e mc
 super + e
 	$TERMINAL -e neomutt
 super + shift + e
