@@ -12,7 +12,7 @@ export READER="mupdf"
 export FILE="ranger"
 
 # tell Midnight Commander to use the nohup script to detach when executing files
-export MC_XDG_OPEN=~/.scripts/nohup-open
+export MC_XDG_OPEN=~/.local/bin/nohup-open
 
 echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc"
 
