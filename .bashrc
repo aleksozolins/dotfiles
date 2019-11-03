@@ -9,6 +9,13 @@ alias m3uflac='ls -1v |grep .flac > '
 # Set vim mode
 set -o vi
 
+# directory shortcuts
+alias g4='cd /mnt/4TBext4'
+alias gn='cd ~/Documents/notes'
+alias gd='cd ~/Documents'
+alias gD='cd ~/Dropbox'
+alias gm='cd ~/Music'
+
 # alias for working with config files in git bare repo
 alias cfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias cfgp='/usr/bin/git --git-dir=$HOME/.cfgp/ --work-tree=$HOME'
