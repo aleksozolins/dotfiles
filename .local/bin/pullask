@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# ask about pulling personal repos
+echo "Would you like to pull cfg, cfgp, and pass? yes or no ?"
+read pull
+
+# pull personal repos if yes
+if [[ $pull == y* ]]
+  then
+  pullall
+  read -p "Press Enter to continue..."
+  else
+  echo "moving along..."
+fi
