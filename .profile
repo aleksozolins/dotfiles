@@ -16,18 +16,8 @@ export MC_XDG_OPEN=~/.local/bin/nohup-open
 
 echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc"
 
-# ask about pulling personal repos
-echo "Would you like to pull cfg, cfgp, and pass? yes or no ?"
-read pull
-
-# pull personal repos if yes
-if [[ $pull == y* ]]
-  then
-  pullall
-  read -p "Press Enter to continue..."
-  else
-  echo "moving along..."
-fi
-
 # Start graphical server on TTY1 if i3 not already running.
-[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && exec startx
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && pullask && exec startx
+
+# Start tmux and associated programs on TTY2 if it is not already running.
+[ "$(tty)" = "/dev/tty2" ] && ! pgrep -x tmux >/dev/null && pullask && exec tmux
