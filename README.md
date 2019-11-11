@@ -6,4 +6,4 @@ This repository is managed using the "git bare" method. Find out more [here](htt
 
 Aleks Ozolins  
 aleks@aleksozolins.com  
-http://www.aleksozolins.com
+https://www.aleksozolins.com
