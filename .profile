@@ -31,5 +31,5 @@ if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux > /dev/null; then
   sleep 5
   clear
   pullask
-  tmux
+  exec tmux
 fi
