@@ -16,6 +16,9 @@ export MC_XDG_OPEN=~/.local/bin/nohup-open
 
 echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc"
 
+# Switch escape and caps if tty:
+sudo -n loadkeys ~/.config/ttymaps.kmap 2>/dev/null
+
 # Start graphical server on TTY1 if i3 not already running.
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && pullask && exec startx
 
