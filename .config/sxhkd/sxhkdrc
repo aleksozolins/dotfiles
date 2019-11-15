@@ -37,6 +37,8 @@ super + r
   $TERMINAL -e newsboat
 # super + shift + r
 #   $TERMINAL -e podboat
+super + t
+  $TERMINAL -e transmission-remote-cli
 super + o
   libreoffice
 
