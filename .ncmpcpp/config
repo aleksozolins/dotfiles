@@ -30,7 +30,7 @@ mpd_port = 6600
 #
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = ~/Music
+mpd_music_dir = ~/Music/music_library
 #
 #mpd_crossfade_time = 5
 #
@@ -49,7 +49,7 @@ mpd_music_dir = ~/Music
 ## }
 ##
 #
-# visualizer_fifo_path = /tmp/mpd.fifo
+visualizer_fifo_path = /tmp/mpd.fifo
 #
 ##
 ## Note: Below parameter is needed for ncmpcpp to determine which output
@@ -57,12 +57,12 @@ mpd_music_dir = ~/Music
 ## sound as currently there are some problems with it.
 ##
 #
-# visualizer_output_name = Visualizer feed
+visualizer_output_name = Visualizer feed
 #
 ##
 ## If you set format to 44100:16:2, make it 'yes'.
 ##
-# visualizer_in_stereo = yes
+visualizer_in_stereo = yes
 #
 ##
 ## Note: Below parameter defines how often ncmpcpp has to "synchronize"
@@ -419,7 +419,7 @@ media_library_primary_tag = album_artist
 #
 #display_volume_level = yes
 #
-#display_bitrate = no
+display_bitrate = yes
 #
 #display_remaining_time = no
 #
@@ -442,7 +442,7 @@ media_library_primary_tag = album_artist
 #
 #block_search_constraints_change_if_items_found = yes
 #
-#mouse_support = yes
+mouse_support = no
 #
 #mouse_list_scroll_whole_page = yes
 #
