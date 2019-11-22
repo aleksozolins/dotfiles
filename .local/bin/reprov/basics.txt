@@ -47,7 +47,7 @@ thunderbird
 arandr
 intel-ucode
 openssh
-compton
+picom
 neomutt
 cronie
 libnotify
