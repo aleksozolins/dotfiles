@@ -13,7 +13,7 @@
 set $mod Mod4
 
 # set the font
-font pango:monospace 10
+font pango:monospace 12
 
 # hide edge borders for single client windows
 hide_edge_borders smart
