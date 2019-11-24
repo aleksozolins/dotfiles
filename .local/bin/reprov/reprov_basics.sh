@@ -83,7 +83,7 @@ fi
 # install nvidia if yes
 if [[ $nvidia == y* ]]
   then
-  sudo pacman -S --noconfirm nvidia
+  sudo pacman -S --noconfirm nvidia nvidia-settings
   else
   echo "moving on..."
 fi
