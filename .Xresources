@@ -6,6 +6,15 @@
 !
 ! .Xresources
 
+! set high DPI for certain hosts
+#ifdef SRVR_NZXT
+!  Xft.dpi: 192
+#endif
+
+#ifdef SRVR_TPX1
+  Xft.dpi: 192
+#endif
+
 ! cursor
 Xcursor.theme: Breeze_Default
 
