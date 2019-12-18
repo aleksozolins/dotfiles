@@ -18,9 +18,12 @@ audio/mp4=mpv.desktop
 video/quicktime=mpv.desktop
 application/xhtml+xml=firefox.desktop
 text/html=firefox.desktop
+video/x-ms-wmv=mpv.desktop
 
 [Added Associations]
 text/markdown=firefox.desktop;
 application/epub+zip=mupdf.desktop;
 audio/mp4=mpv.desktop;
 application/xhtml+xml=firefox.desktop;
+video/x-ms-wmv=mpv.desktop;
+application/x-partial-download=vlc.desktop;

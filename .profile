@@ -11,6 +11,9 @@ export BROWSER="firefox"
 export READER="mupdf"
 export FILE="ranger"
 
+# Start the Calibre server (only installed on NZXT!)
+calibre-server --enable-auth --port=8888 &
+
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
 
