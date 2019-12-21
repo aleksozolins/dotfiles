@@ -4,6 +4,7 @@ util-linux
 networkmanager
 xorg
 xorg-xinit
+usbutils
 mc
 sxhkd
 i3-gaps
