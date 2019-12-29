@@ -140,7 +140,7 @@ bar {
 }
 
 # bar toggle, hide or show
-bindsym $mod+control+b bar mode toggle
+bindsym Shift+control+b bar mode toggle
 
 # Make the webcam float and stick
 for_window [title="video0 - mpv"] floating enable
