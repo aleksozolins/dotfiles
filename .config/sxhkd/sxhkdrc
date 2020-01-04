@@ -19,11 +19,13 @@ super + shift + e
   thunderbird
 super + m
 	$TERMINAL -e ncmpcpp
-super + i
-	$TERMINAL -e htop
+# super + i
+# 	$TERMINAL -e htop
 super + a
   $TERMINAL -e pulsemixer
 super + c
+	calibre
+super + shift + c
 	camtoggle
 super + b
   $BROWSER
@@ -37,8 +39,8 @@ super + shift + n
   sudo systemctl restart NetworkManager
 super + r
   $TERMINAL -e newsboat
-# super + shift + r
-#   $TERMINAL -e podboat
+ super + shift + r
+   $TERMINAL -e podboat
 super + t
   $TERMINAL -e transmission-remote-cli
 super + o
@@ -72,3 +74,4 @@ XF86TouchpadToggle
 # for X1
 XF86Display
   toggletouchpad
+
