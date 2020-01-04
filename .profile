@@ -26,13 +26,13 @@ sudo -n loadkeys ~/.config/ttymaps.kmap 2>/dev/null
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && pullask && exec startx
 
 # Start tmux and associated programs on TTY2 if it is not already running.
-# [ "$(tty)" = "/dev/tty2" ] && ! pgrep -x tmux >/dev/null && pullask && exec tmux
-# instead, an if statement is used to get the proper sequence. It's messy but it works.
+[ "$(tty)" = "/dev/tty2" ] && ! pgrep -x tmux >/dev/null && pullask && exec tmux
 
-if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux > /dev/null; then
-  dropbox &
-  sleep 5
-  clear
-  pullask
-  exec tmux
-fi
+# instead, an if statement is used to get the proper sequence. It's messy but it works.
+# if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux > /dev/null; then
+#   dropbox &
+#   sleep 5
+#   clear
+#   pullask
+#   exec tmux
+# fi
