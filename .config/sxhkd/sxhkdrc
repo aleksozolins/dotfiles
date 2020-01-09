@@ -46,7 +46,7 @@ super + t
 super + o
   libreoffice
 super + s
-  signal
+  signal-desktop
 
 # Et cetera...
 super + grave
