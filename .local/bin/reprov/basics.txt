@@ -76,3 +76,4 @@ libreoffice-fresh
 hunspell-en_US
 rtv
 unzip
+signal-desktop

@@ -45,6 +45,8 @@ super + t
   $TERMINAL -e transmission-remote-cli
 super + o
   libreoffice
+super + s
+  signal
 
 # Et cetera...
 super + grave
