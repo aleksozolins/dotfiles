@@ -17,13 +17,14 @@ application/epub+zip=mupdf.desktop
 audio/mp4=mpv.desktop
 video/quicktime=mpv.desktop
 application/xhtml+xml=firefox.desktop
-text/html=firefox.desktop
+text/html=qutebrowser.desktop
 video/x-ms-wmv=mpv.desktop
+application/lrf=calibre-lrfviewer.desktop
 
 [Added Associations]
 text/markdown=firefox.desktop;
 application/epub+zip=mupdf.desktop;
 audio/mp4=mpv.desktop;
-application/xhtml+xml=firefox.desktop;
+application/xhtml+xml=qutebrowser.desktop;
 video/x-ms-wmv=mpv.desktop;
 application/x-partial-download=vlc.desktop;
