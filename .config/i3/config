@@ -136,7 +136,7 @@ bar {
   strip_workspace_numbers yes
   # make sure ~/.screenlayout/default.sh exists to set the primary monitor
   tray_output primary
-  mode hide
+#  mode hide
 }
 
 # bar toggle, hide or show
