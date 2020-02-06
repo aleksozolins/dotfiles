@@ -65,3 +65,4 @@ echo "-Configure powertop.service" >> ~/reprov_todo.txt
 echo "-Configure Thunderbird email" >> ~/reprov_todo.txt
 echo "-Login to Firefox" >> ~/reprov_todo.txt
 echo "-Set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too." >> ~/reprov_todo.txt
+echo "-Configure your GTK Theme/fonts/cursor using lxappearance" >> ~/reprov_todo.txt

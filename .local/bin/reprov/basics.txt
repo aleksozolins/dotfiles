@@ -57,7 +57,7 @@ dunst
 xclip
 fzf
 arc-icon-theme
-arc-solid-gtk-theme
+gtk-theme-arc-gruvbox-git
 gvfs-smb
 powertop
 unrar
