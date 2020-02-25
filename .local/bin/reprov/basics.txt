@@ -77,3 +77,4 @@ hunspell-en_US
 rtv
 unzip
 signal-desktop
+calibre
