@@ -15,6 +15,7 @@ dmenu
 xorg-xrdb
 ttf-inconsolata
 ttf-linux-libertine
+terminus-font
 git
 alsa-utils
 pulseaudio
