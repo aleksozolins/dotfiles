@@ -23,6 +23,7 @@ alias cfgp='/usr/bin/git --git-dir=$HOME/.cfgp/ --work-tree=$HOME'
 
 # misc aliases
 alias w3md='w3m duckduckgo.com'
+alias td='vim ~/Documents/notes/org.md'
 
 # Set history to infinite
 HISTSIZE=

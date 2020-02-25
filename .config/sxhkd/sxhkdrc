@@ -19,8 +19,6 @@ super + shift + e
   thunderbird
 super + m
 	$TERMINAL -e ncmpcpp
-# super + i
-# 	$TERMINAL -e htop
 super + a
   $TERMINAL -e pulsemixer
 super + c
@@ -30,7 +28,7 @@ super + shift + c
 super + b
   $BROWSER
 super + shift + b
-  firefox  
+  qutebrowser  
 super + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + n
