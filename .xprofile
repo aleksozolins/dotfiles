@@ -16,7 +16,7 @@ xset dpms 1800 1800 1800
 sxhkd &
 xss-lock -- i3lock -n --color=282828 &
 unclutter &
-compton &
+picom &
 dunst &
 feh --bg-scale ~/.local/share/wal.jpg &
 dropbox &
