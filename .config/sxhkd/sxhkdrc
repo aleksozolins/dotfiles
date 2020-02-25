@@ -47,8 +47,10 @@ super + o
   libreoffice
 super + s
   signal-desktop
-
-# Et cetera...
+super + Print
+  scrot ~/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png
+super + shift + Print
+  sleep 0.2; scrot -s ~/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png
 super + grave
 	dmenuunicode
 XF86AudioMute
