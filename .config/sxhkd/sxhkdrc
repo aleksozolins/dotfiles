@@ -39,9 +39,11 @@ super + shift + n
   sudo systemctl restart NetworkManager
 super + r
   $TERMINAL -e newsboat
- super + shift + r
+super + shift + r
    $TERMINAL -e podboat
 super + t
+  $TERMINAL -e vim ~/Documents/notes/org.md
+super + shift + t
   $TERMINAL -e transmission-remote-cli
 super + o
   libreoffice
