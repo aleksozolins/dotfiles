@@ -21,6 +21,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'morhetz/gruvbox'
 
+" remove the trailing whitespace warning from airline
+let g:airline#extensions#whitespace#enabled = 0
+
 " all plugins must be added before the following line
 call vundle#end()
 filetype plugin indent on  " again required by Vundle
