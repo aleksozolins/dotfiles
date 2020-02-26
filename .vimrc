@@ -20,6 +20,7 @@ Plugin 'VundleVim/Vundle.vim'
 " install plugins here
 Plugin 'vim-airline/vim-airline'
 Plugin 'morhetz/gruvbox'
+Plugin 'potatoesmaster/i3-vim-syntax'
 
 " remove the trailing whitespace warning from airline
 let g:airline#extensions#whitespace#enabled = 0
