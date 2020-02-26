@@ -32,7 +32,7 @@ makepkg -si --noconfirm
 echo "yay installed!"
 
 # install programs
-yay -S --noconfirm ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench nestopia
+yay -S --noconfirm ttf-joypixels ttf-symbola dropbox mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench nestopia gtk-theme-arc-gruvbox-git
 
 # recreate the top level mail directories if yes
 if [[ $maildirs == y* ]]
