@@ -9,6 +9,27 @@
 " use vim mode instead of pure vi; it must be the first instruction
 set nocompatible
 
+" required by Vundle
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" install plugins here
+Plugin 'vim-airline/vim-airline'
+Plugin 'morhetz/gruvbox'
+
+" all plugins must be added before the following line
+call vundle#end()
+filetype plugin indent on  " again required by Vundle
+
+" filetype settings
+" filetype on " Vundle needs this to be off apparently
+filetype plugin on
+filetype indent on
+
 " display settings
 set encoding=utf-8
 set showmatch
@@ -18,11 +39,6 @@ set number relativenumber
 set hlsearch
 set ignorecase
 set smartcase
-
-" filetype settings
-filetype on
-filetype plugin on
-filetype indent on
 
 " set vim-specific sequences for RGB colors; for some reason, colors aren't
 " quite right without these two lines. They must be set before the colorscheme
