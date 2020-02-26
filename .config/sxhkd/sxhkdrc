@@ -36,9 +36,11 @@ super + n
 super + shift + n
   sudo systemctl restart NetworkManager
 super + r
-  $TERMINAL -e newsboat
+  $TERMINAL -e rtv
 super + shift + r
-   $TERMINAL -e podboat
+  $TERMINAL -e newsboat
+super + control + r
+  $TERMINAL -e podboat
 super + t
   $TERMINAL -e vim ~/Documents/notes/org.md
 super + shift + t
