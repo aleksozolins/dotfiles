@@ -1,5 +1,7 @@
 base
 base-devel
+linux
+linux-firmware
 util-linux
 networkmanager
 xorg
