@@ -80,3 +80,5 @@ unzip
 signal-desktop
 calibre
 scrot
+qutebrowser
+
