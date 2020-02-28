@@ -25,6 +25,7 @@ alias cfgp='/usr/bin/git --git-dir=$HOME/.cfgp/ --work-tree=$HOME'
 alias w3md='w3m duckduckgo.com'
 alias td='vim ~/Documents/notes/org.md'
 alias tmacs='emacs -nw'
+alias tvim='vim -u .vimrctty'
 
 # Set history to infinite
 HISTSIZE=
