@@ -82,4 +82,4 @@ signal-desktop
 calibre
 scrot
 qutebrowser
-
+ntfs-3g
