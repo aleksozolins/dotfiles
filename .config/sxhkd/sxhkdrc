@@ -1,8 +1,10 @@
 # Basic binds
 super + Return
 	$TERMINAL
+# super + d
+#   i3-dmenu-desktop --dmenu='dmenu -i -fn Monospace-10'
 super + d
-  i3-dmenu-desktop --dmenu='dmenu -i -fn Monospace-10'
+  dmenu_run
 super + shift + d
   (cd ~/Desktop && ls -1 --color=never | dmenu -l 20 -fn Monospace-16 | xargs -d '\n' xdg-open)  
 super + p
