@@ -84,3 +84,4 @@ scrot
 qutebrowser
 ntfs-3g
 dialog
+figlet
