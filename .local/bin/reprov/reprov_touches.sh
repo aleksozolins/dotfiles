@@ -57,6 +57,9 @@ systemctl enable --user mpd.service
 # authenticate goobook
 goobook authenticate
 
+# append ips to /etc/hosts
+cat ~/.local/bin/reprov/ips | sudo tee -a /etc/hosts
+
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
 echo "Some things you might want to do now:" >> ~/reprov_todo.txt
