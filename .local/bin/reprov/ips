@@ -957,10 +957,10 @@
 0.0.0.0 cm.need2find.com
 0.0.0.0 cmicapui.ce.gov.br
 0.0.0.0 cnbnews.com
-0.0.0.0 cnn.com
-0.0.0.0 www.cnn.com
-0.0.0.0 newyorktimes.com
-0.0.0.0 www.newyorktimes.com
+# 0.0.0.0 cnn.com
+# 0.0.0.0 www.cnn.com
+# 0.0.0.0 newyorktimes.com
+# 0.0.0.0 www.newyorktimes.com
 0.0.0.0 forbes.com
 0.0.0.0 www.forbes.com
 0.0.0.0 washingtonpost.com
