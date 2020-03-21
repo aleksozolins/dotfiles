@@ -16,6 +16,7 @@ alias gf='cd ~/Documents/notes/finances'
 alias gd='cd ~/Documents'
 alias gD='cd ~/Dropbox'
 alias gm='cd ~/Music'
+alias gr='cd ~/Dropbox/repos'
 
 # alias for working with config files in git bare repo
 alias cfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
