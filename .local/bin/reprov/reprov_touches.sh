@@ -60,6 +60,17 @@ goobook authenticate
 # append ips to /etc/hosts
 cat ~/.local/bin/reprov/ips | sudo tee -a /etc/hosts
 
+# install vundle
+if [ ! -d ~/.vim ]
+  then
+  mkdir ~/.vim
+  mkdir ~/.vim/bundle
+  echo ".vim created! Installing Vundle."
+  else
+  echo ".vim already exists. Installing Vundle."
+fi
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
 echo "Some things you might want to do now:" >> ~/reprov_todo.txt
@@ -70,4 +81,4 @@ echo "-Login to Firefox" >> ~/reprov_todo.txt
 echo "-Set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too." >> ~/reprov_todo.txt
 echo "-Configure your GTK Theme/fonts/cursor using lxappearance" >> ~/reprov_todo.txt
 echo "-If your console font is too small, remember to add (for example) FONT=ter-128n to /etc/vconsole.conf" >> ~/reprov_todo.txt
-echo "-Install Vundle with git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim to ensure your vim plugins work. Remember to run :PluginInstall." >> ~/reprov_todo.txt
+echo "-Remember to run :PluginInstall from within vim" >> ~/reprov_todo.txt
