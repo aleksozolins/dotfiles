@@ -32,7 +32,12 @@ makepkg -si --noconfirm
 echo "yay installed!"
 
 # install programs
-yay -S --noconfirm ttf-joypixels ttf-symbola dropbox dropbox-cli mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench nestopia gtk-theme-arc-gruvbox-git
+yay -S --noconfirm ttf-joypixels ttf-symbola dropbox dropbox-cli mutt-wizard-git pam-gnupg-git goobook-git breeze-default-cursor-theme geekbench nestopia gtk-theme-arc-gruvbox-git console-tdm
+
+# configure tdm
+tdmctl init
+[ -f /usr/bin/i3 ] && tdmctl add i3 /usr/bin/i3 X
+[ -f /usr/local/bin/dwm ] && add dwm /usr/local/bin/dwm X
 
 # recreate the top level mail directories if yes
 if [[ $maildirs == y* ]]
