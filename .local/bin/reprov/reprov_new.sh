@@ -35,7 +35,7 @@ read broadcom
 echo "Do you need that evil Nvidia driver? yes or no?"
 read nvidia
 
-sudo pacman -S --noconfirm --needed - < basics.txt
+sudo pacman -S --noconfirm --needed - < ~/.local/bin/reprov/basics.txt
 
 # does ~/repos exist?
 if [ ! -d ~/repos ]
