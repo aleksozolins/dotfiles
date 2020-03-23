@@ -5,7 +5,7 @@ echo "2: Configure pam-gnupg-git"
 echo "3: Enable a cron job to check your mail periodically"
 echo "4: Sync your mail accounts for the first time"
 echo "5: Enable the MPD daemon and trim support"
-echo "6: Authenticate goobook"
+# echo "6: Authenticate goobook"
 echo "NOTE: Please make sure you have run both reprov_basics.sh and reprov_aur_basics.sh and are presently running in X"
 echo "NOTE: Please make sure you have signed into Dropbox and sync'd your GPG directory"
 
@@ -55,7 +55,7 @@ fi
 systemctl enable --user mpd.service
 
 # authenticate goobook
-goobook authenticate
+# goobook authenticate
 
 # append ips to /etc/hosts
 cat ~/.local/bin/reprov/ips | sudo tee -a /etc/hosts
@@ -73,4 +73,5 @@ echo "-Login to Firefox" >> ~/reprov_todo.txt
 echo "-Set your screenlayouts using arandr. default.sh and docked.sh. Remember to set wallpapers there too." >> ~/reprov_todo.txt
 echo "-Configure your GTK Theme/fonts/cursor using lxappearance" >> ~/reprov_todo.txt
 echo "-If your console font is too small, remember to add (for example) FONT=ter-128n to /etc/vconsole.conf" >> ~/reprov_todo.txt
-echo "-Remember to run :PluginInstall from within vim" >> ~/reprov_todo.txt
+echo "-Authenticate goobook" >> ~/reprov_todo.txt
+echo "-Run :PluginInstall from within vim" >> ~/reprov_todo.txt
