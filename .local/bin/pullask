@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ask about pulling personal repos
-echo "Would you like to pull cfg, cfgp, and pass? yes or no ?"
+# ask about pulling repos
+echo "Would you like to pull all your repos now? yes or no ?"
 read pull
 
 # pull personal repos if yes
