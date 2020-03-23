@@ -64,7 +64,7 @@ fi
 # enable cronie for cron jobs if yes
 if [[ $cronie == y* ]]
   then
-  sudo systemctl enable cronie 
+  sudo systemctl enable --now cronie 
   else
   echo "Whatever that's fine..."
 fi
