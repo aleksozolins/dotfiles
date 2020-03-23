@@ -6,8 +6,7 @@ echo "3: Enable a cron job to check your mail periodically"
 echo "4: Sync your mail accounts for the first time"
 echo "5: Enable the MPD daemon and trim support"
 # echo "6: Authenticate goobook"
-echo "NOTE: Please make sure you have run both reprov_basics.sh and reprov_aur_basics.sh and are presently running in X"
-echo "NOTE: Please make sure you have signed into Dropbox and sync'd your GPG directory"
+echo "NOTE: Please make sure you have run both reprov_basics.sh and reprov_aur_basics.sh"
 
 read -p "Press Enter to begin..."
 
@@ -28,8 +27,8 @@ if [[ $trim == y* ]]
 fi
 
 # import your GPG keys
-gpg --import ~/Dropbox/gpg/aleks_ozolins_public_gpg_key.txt
-gpg --import ~/Dropbox/gpg/aleks_ozolins_private_gpg_key.asc
+gpg --import ~/.gpg/aleks_ozolins_public_gpg_key.txt
+gpg --import ~/.gpg/aleks_ozolins_private_gpg_key.asc
 
 # initialize the password store
 pass init aleksozolins
@@ -66,6 +65,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
 echo "Some things you might want to do now:" >> ~/reprov_todo.txt
+echo "-Login to your Dropbox" >> ~/reprov_todo.txt 
 echo "-Configure intel-ucode for microcode" >> ~/reprov_todo.txt 
 echo "-Configure powertop.service" >> ~/reprov_todo.txt
 echo "-Configure Thunderbird email" >> ~/reprov_todo.txt

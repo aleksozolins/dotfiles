@@ -48,4 +48,4 @@ if [[ $maildirs == y* ]]
 fi
 
 # next steps?
-echo "Why don't you reboot, sync your Dropbox GPG folder, and run reprov_touches.sh ok?"
+echo "Why don't you run reprov_touches.sh ok?"
