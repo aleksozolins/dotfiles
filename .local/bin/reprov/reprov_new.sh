@@ -163,9 +163,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # mbsync all accounts if yes
 if [[ $mailsync == y* ]]
   then
-  mbsync aleksozolins
-  mbsync icloud
-  mbsync thingsforsale
+  mbsync -a
   else
   echo "moving on..."
 fi
