@@ -77,16 +77,6 @@ if [[ $maildirs == y* ]]
   echo "That's fine we'll just move on then..."
 fi
 
-# mbsync all accounts if yes
-if [[ $mailsync == y* ]]
-  then
-  mbsync aleksozolins
-  mbsync icloud
-  mbsync thingsforsale
-  else
-  echo "moving on..."
-fi
-
 # install synaptics if yes
 if [[ $synaptics == y* ]]
   then
@@ -150,9 +140,6 @@ tdmctl init
 [ -f /usr/bin/i3 ] && tdmctl add i3 /usr/bin/i3 X
 [ -f /usr/local/bin/dwm ] && add dwm /usr/local/bin/dwm X
 
-# enable cron job for mutt wizard
-mw cron
-
 # import your GPG keys
 gpg --import ~/.gpg/aleks_ozolins_public_gpg_key.txt
 gpg --import ~/.gpg/aleks_ozolins_private_gpg_key.asc
@@ -172,6 +159,19 @@ cat ~/.local/bin/reprov/ips | sudo tee -a /etc/hosts
 
 # install vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+# mbsync all accounts if yes
+if [[ $mailsync == y* ]]
+  then
+  mbsync aleksozolins
+  mbsync icloud
+  mbsync thingsforsale
+  else
+  echo "moving on..."
+fi
+
+# enable cron job for mutt wizard
+mw cron
 
 echo "If you didn't see any errors, you should be all set!!!"
 echo "Be sure to check ~/reprov_todo.txt for final configuration tasks."
