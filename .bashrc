@@ -1,4 +1,4 @@
-# Turn on color for ls
+# Turn on color for ls and group directories first
 alias ls='ls --color=always --group-directories-first'
 
 # Generate m3u Playlists
@@ -27,6 +27,7 @@ alias w3md='w3m duckduckgo.com'
 alias td='vim ~/Documents/notes/org.md'
 alias tmacs='emacs -nw'
 alias tvim='vim -c "colorscheme default"'
+alias trans="transmission-remote-cli"
 
 # Set history to infinite
 HISTSIZE=
