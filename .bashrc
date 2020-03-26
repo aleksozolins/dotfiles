@@ -28,6 +28,7 @@ alias td='vim ~/Documents/notes/org.md'
 alias tmacs='emacs -nw'
 alias tvim='vim -c "colorscheme default"'
 alias trans="transmission-remote-cli"
+alias hdc="ls -a ~ | wc -l"
 
 # Set history to infinite
 HISTSIZE=
