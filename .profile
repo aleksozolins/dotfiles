@@ -13,6 +13,8 @@ export FILE="ranger"
 
 # XDG base directories
 export XDG_CONFIG_HOME="$HOME/.config/"
+export XDG_CACHE_HOME="$HOME/.cache/"
+export XDG_DATA_HOME="$HOME/.local/share/"
 
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
