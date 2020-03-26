@@ -11,9 +11,6 @@ export BROWSER="firefox"
 export READER="mupdf"
 export FILE="ranger"
 
-# Start the Calibre server (only installed on NZXT!)
-# [ -f /usr/bin/calibre ] && calibre-server --enable-auth --port=8888 &
-
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
 
@@ -23,7 +20,7 @@ echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc
 sudo -n loadkeys ~/.config/ttymaps.kmap 2>/dev/null
 
 # Start TDM on TTY1 to select an X session
-[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && ! pgrep -x dwm >/dev/null && pullask && exec tdm
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && pullask && exec tdm
 
 # An if statement is used to get the proper sequence. It's messy but it works.
 if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux > /dev/null; then
