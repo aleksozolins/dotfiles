@@ -18,6 +18,7 @@ export XDG_DATA_HOME="$HOME/.local/share/"
 
 # homedir cleanup
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+export LESSHISTFILE="-"
 
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
