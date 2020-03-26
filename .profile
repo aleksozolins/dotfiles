@@ -16,15 +16,18 @@ export XDG_CONFIG_HOME="$HOME/.config/"
 export XDG_CACHE_HOME="$HOME/.cache/"
 export XDG_DATA_HOME="$HOME/.local/share/"
 
+# homedir cleanup
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
 
 echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc"
 
-# Switch escape and caps if tty:
+# switch escape and caps if tty:
 sudo -n loadkeys ~/.config/ttymaps.kmap 2>/dev/null
 
-# Start TDM on TTY1 to select an X session
+# start TDM on TTY1 to select an X session
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && pullask && exec tdm
 
 # An if statement is used to get the proper sequence. It's messy but it works.
