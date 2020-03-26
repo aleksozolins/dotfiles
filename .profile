@@ -11,6 +11,9 @@ export BROWSER="firefox"
 export READER="mupdf"
 export FILE="ranger"
 
+# XDG base directories
+export XDG_CONFIG_HOME="$HOME/.config/"
+
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
 
