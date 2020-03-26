@@ -23,7 +23,7 @@ sudo -n loadkeys ~/.config/ttymaps.kmap 2>/dev/null
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && pullask && exec tdm
 
 # An if statement is used to get the proper sequence. It's messy but it works.
-if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux > /dev/null; then
+if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux >/dev/null; then
   dropbox &
   sleep 5
   clear
