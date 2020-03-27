@@ -19,10 +19,6 @@ super + e
 	$TERMINAL -e neomutt
 super + shift + e
   thunderbird
-super + control + e
-  emacs
-super + control + v
-  $TERMINAL -e vim
 super + m
 	$TERMINAL -e ncmpcpp
 super + a
