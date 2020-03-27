@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
-[ -f ~/.Xmachine ] && ~/.Xmachine
-[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
+[ -f $XDG_CONFIG_HOME/X11/Xmodmap ] && xmodmap $XDG_CONFIG_HOME/X11/Xmodmap
+[ -f $XDG_CONFIG_HOME/X11/Xmachine ] && $XDG_CONFIG_HOME/X11/Xmachine
+[ -f $XDG_CONFIG_HOME/X11/Xresources ] && xrdb -merge $XDG_CONFIG_HOME/X11/Xresources
 
 # run the default screen layout
 [ -f "$XDG_CONFIG_HOME/screenlayout/default.sh" ] && . $XDG_CONFIG_HOME/screenlayout/default.sh
