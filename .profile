@@ -22,6 +22,7 @@ export LESSHISTFILE="-"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 [ -f $HOME/.Xauthority ] && rm $HOME/.Xauthority
+export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch-config"
 
 # bash config cleanup
 [ -f $HOME/.bash_logout ] && rm $HOME/.bash_logout
