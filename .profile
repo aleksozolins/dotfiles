@@ -29,12 +29,12 @@ export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export HISTFILE="$XDG_DATA_HOME/history"
 
 # tell Midnight Commander to use the nohup script to detach when executing files
-export MC_XDG_OPEN=~/.local/bin/nohup-open
+export MC_XDG_OPEN=$HOME/.local/bin/nohup-open
 
-echo "$0" | grep "bash$" >/dev/null && [ -f ~/.bashrc ] && source "$HOME/.bashrc"
+echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.bashrc ] && source "$HOME/.bashrc"
 
 # switch escape and caps if tty:
-sudo -n loadkeys ~/.config/ttymaps.kmap 2>/dev/null
+sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
 
 # start TDM on TTY1 to select an X session
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && pullask && exec tdm
@@ -47,6 +47,3 @@ if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux >/dev/null; then
   pullask
   exec tmux
 fi
-
-# Start console TDM (this is the recommended way)
-# source /usr/bin/tdm
