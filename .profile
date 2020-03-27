@@ -19,8 +19,7 @@ export XDG_DATA_HOME="$HOME/.local/share/"
 # homedir cleanup
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export LESSHISTFILE="-"
-export GTK2_RC_FILES="$XDG_DATA_HOME/gtk-2.0/gtkrc-2.0"
-export NOTMUCH_CONFIG="$XDG_DATA_HOME/notmuch-config"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 
 # tell Midnight Commander to use the nohup script to detach when executing files
 export MC_XDG_OPEN=~/.local/bin/nohup-open
