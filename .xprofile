@@ -5,7 +5,7 @@
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
 
 # run the default screen layout
-[ -f "$HOME/.screenlayout/default.sh" ] && . ~/.screenlayout/default.sh
+[ -f "$XDG_CONFIG_HOME/screenlayout/default.sh" ] && . $XDG_CONFIG_HOME/screenlayout/default.sh
 
 # set screen blanking to 20 minutes
 xset s 1200 &
