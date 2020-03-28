@@ -29,8 +29,11 @@ export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch-config"
 [ -f $HOME/.bash_history ] && rm $HOME/.bash_history
 export HISTFILE="$XDG_DATA_HOME/history"
 
-# tell Midnight Commander to use the nohup script to detach when executing files
+# midnight commander
 export MC_XDG_OPEN=$HOME/.local/bin/nohup-open
+
+# tmux
+export TMUX_TMPDIR=$XDG_RUNTIME_DIR
 
 echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.bashrc ] && source "$HOME/.bashrc"
 
@@ -46,5 +49,5 @@ if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux >/dev/null; then
   sleep 5
   clear
   pullask
-  exec tmux
+  exec tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf
 fi

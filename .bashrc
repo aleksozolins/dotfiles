@@ -24,6 +24,7 @@ alias cfgp='/usr/bin/git --git-dir=$HOME/.cfgp/ --work-tree=$HOME'
 
 # homedir cleanup
 alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
+alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 
 # misc aliases
 alias w3md='w3m duckduckgo.com'
