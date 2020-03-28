@@ -72,9 +72,9 @@ XF86MonBrightnessDown
 XF86MonBrightnessUp
   xbacklight -inc 10
 super + bracketright
-  ~/.screenlayout/docked.sh
+  ~/.config/screenlayout/docked.sh
 super + bracketleft
-  ~/.screenlayout/default.sh
+  ~/.config/screenlayout/default.sh
 
 # for X230, etc.
 XF86TouchpadToggle
