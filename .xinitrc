@@ -1,5 +1,5 @@
 #!/bin/sh
 
-[ -f "$HOME/.xprofile" ] && . ~/.xprofile
+[ -f "$XDG_CONFIG_HOME/X11/xprofile" ] && . $XDG_CONFIG_HOME/X11/xprofile
 
 exec tdm --xstart
