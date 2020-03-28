@@ -12,7 +12,7 @@ super + p
 super + f
 	$TERMINAL -e $FILE
 super + shift + f
-  pcmanfm
+  thunar 
 super + control + f
   $TERMINAL -e mc
 super + e
