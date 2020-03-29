@@ -16,6 +16,9 @@ export XDG_CONFIG_HOME="$HOME/.config/"
 export XDG_CACHE_HOME="$HOME/.cache/"
 export XDG_DATA_HOME="$HOME/.local/share/"
 
+# export XDG user directories using the xdg-user-dir config file
+eval "$(sed 's/^[^#].*/export &/g;t;d' ${DIR:-$XDG_CONFIG_HOME}/user-dirs.dirs)"
+
 # homedir cleanup
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export LESSHISTFILE="-"
