@@ -11,12 +11,14 @@ set -o vi
 
 # directory shortcuts
 alias g4='cd /mnt/4TBext4'
-alias gn='cd ~/Documents/notes'
-alias gf='cd ~/Documents/notes/finances'
-alias gd='cd ~/Documents'
+alias gn='cd ~/docs/notes'
+alias gf='cd ~/docs/notes/finances'
+alias gd='cd ~/docs'
 alias gD='cd ~/Dropbox'
-alias gm='cd ~/Music'
-alias gr='cd ~/Dropbox/repos'
+alias gm='cd ~/mus'
+alias gp='cd ~/pics'
+alias gv='cd ~/vids'
+alias gr='cd ~/repos'
 
 # alias for working with config files in git bare repo
 alias cfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
