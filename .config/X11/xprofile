@@ -18,5 +18,5 @@ xss-lock -- i3lock -n --color=282828 &
 unclutter &
 picom &
 dunst &
-feh --bg-scale ~/.local/share/wal.jpg &
+feh --no-fehbg --bg-scale ~/.local/share/wal.jpg &
 dropbox &

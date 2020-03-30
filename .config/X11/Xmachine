@@ -1,6 +1,6 @@
 #!/bin/sh
 # Machine Specific Script for Various Hosts
-# To be called from .Xprofile
+# To be called from xprofile
 
 # NZXT
 if [ $(uname -n) == "NZXT" ]
