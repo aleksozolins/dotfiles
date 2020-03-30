@@ -34,7 +34,7 @@ alias td='vim ~/Documents/notes/org.md'
 alias tvim='vim -c "colorscheme default"'
 alias trans="transmission-remote-cli"
 alias hdc="ls -a ~ | wc -l"
-alias logout='sudo pkill -u'
+alias logout='pkill -u'
 
 # Set history to infinite
 HISTSIZE=
