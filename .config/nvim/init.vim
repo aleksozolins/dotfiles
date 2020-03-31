@@ -40,6 +40,7 @@ filetype plugin indent on  " again required by Vundle
 " Nerd tree
 map <leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeShowHidden=1
 
 " filetype settings
 " filetype on " Vundle needs this to be off apparently
