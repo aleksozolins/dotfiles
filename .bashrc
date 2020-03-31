@@ -35,6 +35,7 @@ alias tvim='vim -c "colorscheme default"'
 alias trans="transmission-remote-cli"
 alias hdc="ls -a ~ | wc -l"
 alias logout='pkill -u'
+alias vim='nvim'
 
 # Set history to infinite
 HISTSIZE=
