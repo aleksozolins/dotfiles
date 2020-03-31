@@ -5,6 +5,8 @@
 " /_/   \_\___/
 "
 " .vimrc
+"
+let mapleader =","
 
 " use vim mode instead of pure vi; it must be the first instruction
 set nocompatible
@@ -22,6 +24,11 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'morhetz/gruvbox'
 Plugin 'potatoesmaster/i3-vim-syntax'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'junegunn/goyo.vim'
+Plugin 'tpope/vim-commentary'
+" Plugin 'jreybert/vimagit' " Check this out later
+Plugin 'scrooloose/nerdtree'
+Plugin 'kovetskiy/sxhkd-vim'
 
 " remove the trailing whitespace warning from airline
 let g:airline#extensions#whitespace#enabled = 0
@@ -29,6 +36,10 @@ let g:airline#extensions#whitespace#enabled = 0
 " all plugins must be added before the following line
 call vundle#end()
 filetype plugin indent on  " again required by Vundle
+
+" Nerd tree
+map <leader>n :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " filetype settings
 " filetype on " Vundle needs this to be off apparently
