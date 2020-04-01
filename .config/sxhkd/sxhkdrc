@@ -52,9 +52,9 @@ super + o
 super + s
   signal-desktop
 super + Print
-  scrot ~/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png
+  scrot ~/pics/screenshots/%Y-%m-%d-%T-screenshot.png
 super + shift + Print
-  sleep 0.2; scrot -s ~/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png
+  sleep 0.2; scrot -s ~/pics/screenshots/%Y-%m-%d-%T-screenshot.png
 super + grave
 	dmenuunicode
 XF86AudioMute
