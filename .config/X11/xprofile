@@ -17,6 +17,7 @@ sxhkd &
 xss-lock -- i3lock -n --color=282828 &
 unclutter &
 picom &
+dwmblocks &
 dunst &
 feh --no-fehbg --bg-scale ~/.local/share/wal.jpg &
 dropbox &

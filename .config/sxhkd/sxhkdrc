@@ -60,13 +60,13 @@ super + grave
 XF86AudioMute
   pactl set-sink-mute 0 toggle
 XF86AudioLowerVolume
-  pactl set-sink-volume 0 -5%
+  pactl set-sink-volume 0 -5% ; pkill -RTMIN+4 dwmblocks
 control+XF86AudioLowerVolume
-  pactl set-sink-volume 0 -1%
+  pactl set-sink-volume 0 -1% ; pkill -RTMIN+4 dwmblocks
 XF86AudioRaiseVolume
-  pactl set-sink-volume 0 +5%
+  pactl set-sink-volume 0 +5% ; pkill -RTMIN+4 dwmblocks
 control+XF86AudioRaiseVolume
-  pactl set-sink-volume 0 +1%
+  pactl set-sink-volume 0 +1% : pkill -RTMIN+4 dwmblocks
 XF86MonBrightnessDown
   xbacklight -dec 10
 XF86MonBrightnessUp
