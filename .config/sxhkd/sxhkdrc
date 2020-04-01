@@ -22,7 +22,7 @@ super + shift + e
 super + m
 	$TERMINAL -e ncmpcpp
 super + a
-  $TERMINAL -e abook
+  $TERMINAL -e abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$HOME"/Dropbox/apps/abook/addressbook
 super + shift + a
   $TERMINAL -e pulsemixer
 super + c
