@@ -1,1 +1,19 @@
 # abook config file
+
+set autosave=true
+set www_command=firefox
+set mutt_command=neomutt
+set address_style=us
+set use_mouse=false
+set use_colors=true
+
+# colorscheme
+set color_header_fg=red
+set color_header_bg=black
+set color_footer_fg=red
+set color_footer_bg=black
+set color_list_even_fg=cyan
+set color_list_header_fg=black
+set color_list_header_bg=magenta
+set color_list_highlight_fg=black
+set color_list_highlight_bg=cyan
