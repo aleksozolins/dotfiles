@@ -66,7 +66,7 @@ control+XF86AudioLowerVolume
 XF86AudioRaiseVolume
   pactl set-sink-volume 0 +5% ; pkill -RTMIN+4 dwmblocks
 control+XF86AudioRaiseVolume
-  pactl set-sink-volume 0 +1% : pkill -RTMIN+4 dwmblocks
+  pactl set-sink-volume 0 +1% ; pkill -RTMIN+4 dwmblocks
 XF86MonBrightnessDown
   xbacklight -dec 10
 XF86MonBrightnessUp
