@@ -22,6 +22,8 @@ super + shift + e
 super + m
 	$TERMINAL -e ncmpcpp
 super + a
+  $TERMINAL -e abook
+super + shift + a
   $TERMINAL -e pulsemixer
 super + c
 	calibre
