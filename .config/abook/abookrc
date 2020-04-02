@@ -1,6 +1,6 @@
 # abook config file
 
-set autosave=true
+set autosave=false
 set www_command=firefox
 set mutt_command=neomutt
 set address_style=us
