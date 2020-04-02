@@ -46,7 +46,7 @@ super + shift + r
 super + control + r
   $TERMINAL -e podboat
 super + t
-  $TERMINAL -e vim ~/docs/notes/org.md
+  $TERMINAL -e nvim ~/docs/notes/org.md
 super + shift + t
   $TERMINAL -e transmission-remote-cli
 super + o
