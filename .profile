@@ -21,6 +21,7 @@ export XDG_DATA_HOME="$HOME/.local/share/"
 eval "$(sed 's/^[^#].*/export &/g;t;d' ${DIR:-$XDG_CONFIG_HOME}/user-dirs.dirs)"
 
 # homedir cleanup
+export XINITRC="$XDG_CONFIG_DIR/X11/xinitrc"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export LESSHISTFILE="-"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
@@ -45,8 +46,8 @@ echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.bashrc ] && source "$HOME/.ba
 # switch escape and caps if tty:
 sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
 
-# start TDM on TTY1 to select an X session
-[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && pullask && exec tdm
+# start DWM if TTY1
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm >/dev/null && pullask && exec startx "$XDG_CONFIG_HOME/X11/xinitrc"
 
 # An if statement is used to get the proper sequence. It's messy but it works.
 if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux >/dev/null; then
