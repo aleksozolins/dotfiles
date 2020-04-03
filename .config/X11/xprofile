@@ -15,7 +15,7 @@ xset dpms 1800 1800 1800
 
 sxhkd &
 trayer &
-xss-lock -- i3lock -n --color=282828 &
+xss-lock -- slock &
 unclutter &
 dwmblocks &
 picom &
