@@ -11,8 +11,7 @@ set -o vi
 
 # directory shortcuts
 alias g4='cd /mnt/4TBext4'
-alias gn='cd ~/docs/notes'
-alias gf='cd ~/docs/notes/finances'
+alias gf='cd ~/docs/finances'
 alias gd='cd ~/docs'
 alias gD='cd ~/Dropbox'
 alias gm='cd ~/mus'
