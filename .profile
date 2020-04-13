@@ -40,8 +40,9 @@ export MC_XDG_OPEN=$HOME/.local/bin/nohup-open
 
 # tmux
 export TMUX_TMPDIR=$XDG_RUNTIME_DIR
-
-echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.bashrc ] && source "$HOME/.bashrc"
+ 
+# source bashrc
+echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.config/bashrc ] && source "$HOME/.config/bashrc"
 
 # switch escape and caps if tty:
 sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
