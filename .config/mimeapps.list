@@ -24,6 +24,7 @@ application/lrf=calibre-lrfviewer.desktop
 /https=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
+x-scheme-handler/mailto=mail.desktop;
 
 [Added Associations]
 text/markdown=firefox.desktop;
