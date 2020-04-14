@@ -34,7 +34,7 @@ super + b
 super + shift + b
   qutebrowser  
 super + control + b
-  $TERMINAL -e w3m duckduckgo.com
+  $TERMINAL -e lynx
 super + n
   $TERMINAL -e nmtui
 super + shift + n
