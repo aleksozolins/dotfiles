@@ -21,3 +21,4 @@ dwmblocks &
 picom &
 dunst &
 feh --no-fehbg --bg-scale ~/.local/share/wal.jpg &
+dropbox &
