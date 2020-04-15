@@ -29,6 +29,8 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch-config"
 [ -f $HOME/.lesshst ] && rm $HOME/.lesshst
 # [ -f $HOME/.Xauthority ] && rm $HOME/.Xauthority
+export TASKRC="$XDG_CONFIG_HOME"/taskrc
+export TASKDATA="$HOME"/Dropbox/apps/task
 
 # bash config cleanup
 export HISTFILE="$XDG_DATA_HOME/history"
