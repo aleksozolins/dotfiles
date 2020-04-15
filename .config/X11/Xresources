@@ -7,11 +7,11 @@
 ! .Xresources
 
 ! set high DPI for certain hosts
-#ifdef SRVR_NZXT
+#ifdef SRVR_nzxt
   Xft.dpi: 96
 #endif
 
-#ifdef SRVR_TPX1
+#ifdef SRVR_tpx1
   Xft.dpi: 192
 #endif
 
