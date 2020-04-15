@@ -45,8 +45,8 @@ super + shift + r
   $TERMINAL -e newsboat
 super + control + r
   $TERMINAL -e podboat
-super + t
-  $TERMINAL -e nvim ~/docs/todo.md
+#super + t
+#  $TERMINAL -e task
 super + shift + t
   $TERMINAL -e transmission-remote-cli
 super + o
