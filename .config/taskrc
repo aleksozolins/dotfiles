@@ -29,3 +29,15 @@ data.location=~/Dropbox/apps/task
 #include /usr/share/doc/task/rc/solarized-light-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
+# removes the warning about config locations... Might have additional unintended effects
+verbose=blank,footnote,label,new-id,affected,edit,special,project,sync,unwait
+
+# show 0 additional recurring events... The default is 1
+recurrence.limit=0
+
+# command aliases
+alias.rm=delete
+
+# start the week on Monday instead of Sunday
+weekstart=Monday
+
