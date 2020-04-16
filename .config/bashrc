@@ -1,7 +1,8 @@
-# Turn on color for ls and group directories first
+# add color and functionality to core-utils
 alias ls='ls -hN --color=always --group-directories-first'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
+alias sudo='sudo '
 
 # Generate m3u Playlists
 alias m3ump3='ls -1v |grep .mp3 > '
