@@ -33,7 +33,7 @@ data.location=~/Dropbox/apps/task
 verbose=blank,footnote,label,new-id,affected,edit,special,project,sync,unwait
 
 # show 0 additional recurring events... The default is 1
-recurrence.limit=0
+recurrence.limit=1
 
 # command aliases
 alias.rm=delete
