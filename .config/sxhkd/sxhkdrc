@@ -40,11 +40,11 @@ super + n
 super + shift + n
   sudo systemctl restart NetworkManager
 super + r
-  $TERMINAL -e rtv
-super + shift + r
   $TERMINAL -e newsboat
-super + control + r
+super + shift + r
   $TERMINAL -e podboat
+super + control + r
+  $TERMINAL -e rtv
 super + t
 	$TERMINAL -e bash -c 'task;$SHELL'
 super + shift + t
