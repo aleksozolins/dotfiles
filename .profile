@@ -13,24 +13,25 @@ export READER="mupdf"
 export FILE="ranger"
 
 # XDG base directories
-export XDG_CONFIG_HOME="$HOME/.config/"
-export XDG_CACHE_HOME="$HOME/.cache/"
-export XDG_DATA_HOME="$HOME/.local/share/"
+export XDG_CONFIG_HOME="$HOME"/.config/
+export XDG_CACHE_HOME="$HOME"/.cache/
+export XDG_DATA_HOME="$HOME"/.local/share/
 
 # export XDG user directories using the xdg-user-dir config file
 eval "$(sed 's/^[^#].*/export &/g;t;d' ${DIR:-$XDG_CONFIG_HOME}/user-dirs.dirs)"
 
 # homedir cleanup
-export XINITRC="$XDG_CONFIG_DIR/X11/xinitrc"
-export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+export XINITRC="$XDG_CONFIG_DIR"/X11/xinitrc
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/password-store
 export LESSHISTFILE="-"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc-2.0
 # export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
-export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch-config"
+export NOTMUCH_CONFIG="$XDG_CONFIG_HOME"/notmuch-config
 [ -f $HOME/.lesshst ] && rm $HOME/.lesshst
 # [ -f $HOME/.Xauthority ] && rm $HOME/.Xauthority
 export TASKRC="$XDG_CONFIG_HOME"/taskrc
 export TASKDATA="$HOME"/Dropbox/apps/task
+export LYNX_CFG="$XDG_CONFIG_HOME"/lynx/lynx.cfg
 
 # bash config cleanup
 export HISTFILE="$XDG_DATA_HOME/history"
@@ -38,10 +39,10 @@ export HISTFILE="$XDG_DATA_HOME/history"
 [ -f $HOME/.bash_history ] && rm $HOME/.bash_history
 
 # midnight commander
-export MC_XDG_OPEN=$HOME/.local/bin/nohup-open
+export MC_XDG_OPEN="$HOME"/.local/bin/nohup-open
 
 # tmux
-export TMUX_TMPDIR=$XDG_RUNTIME_DIR
+export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
  
 # source bashrc
 echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.config/bashrc ] && source "$HOME/.config/bashrc"
