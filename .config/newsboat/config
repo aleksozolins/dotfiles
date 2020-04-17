@@ -1,4 +1,6 @@
 #show-read-feeds no
+# keep-articles-days 30
+# feed-sort-order firstag
 auto-reload yes
 browser firefox
 download-path "/home/aleksozolins/dls"
@@ -9,7 +11,7 @@ reload-time 20
 # hide articles matching: ---------------------------------------------
 ignore-article "*" "title =~ \"Sponsor\""
 ignore-article "*" "title =~ \"Advertisement\""
-ignore-mode "display"
+# ignore-mode "display"
 
 # keybindings
 bind-key j down
