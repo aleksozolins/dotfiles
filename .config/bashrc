@@ -40,6 +40,7 @@ alias hdc="ls -a ~ | wc -l"
 alias logout='pkill -u'
 alias vim='nvim'
 alias w3md='w3m duckduckgo.com'
+alias cls='clear'
 
 # Set history to infinite
 HISTSIZE=

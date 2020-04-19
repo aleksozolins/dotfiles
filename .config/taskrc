@@ -37,6 +37,7 @@ recurrence.limit=1
 
 # command aliases
 alias.rm=delete
+alias.complete=done
 
 # start the week on Monday instead of Sunday
 weekstart=Monday
