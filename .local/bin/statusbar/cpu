@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "CPU $(sensors | awk '/Core 0/ {print $3}')"
+echo "🌡 $(sensors | awk '/Core 0/ {print $3}')"
