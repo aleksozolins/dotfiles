@@ -1,3 +1,19 @@
 #!/bin/sh
-echo Vol $(pactl list sinks | grep '^[[:space:]]Volume:' | \
-  head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')%
+volstat="$(pactl list sinks)"
+# volstat="$(amixer get Master)" # ALSA only equivalent.
+
+echo "$volstat" | grep -q "Mute: yes" && printf "🔇\\n" && exit
+# echo "$volstat" | grep "\[off\]" >/dev/null && printf "🔇\\n" && exit # ALSA
+
+vol="$(echo "$volstat" | grep '[0-9]\+%' | sed "s,.* \([0-9]\+\)%.*,\1,;1q")"
+# vol=$(echo "$volstat" | grep -o "\[[0-9]\+%\]" | sed "s/[^0-9]*//g;1q") # ALSA
+
+if [ "$vol" -gt "70" ]; then
+	icon="🔊"
+elif [ "$vol" -lt "30" ]; then
+	icon="🔈"
+else
+	icon="🔉"
+fi
+
+printf "%s %s%%\\n" "$icon" "$vol"
