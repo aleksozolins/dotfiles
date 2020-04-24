@@ -1,7 +1,7 @@
 #!/bin/sh
 
 capacity=$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)
-status=$(sed "s/Discharging/BAT/;s/Not charging/NOTCHARGING/;s/Charging/BAT/;s/Unknown/UNK/;s/Full/FULL/" /sys/class/power_supply/BAT0/status 2>/dev/null)
+status=$(sed "s/Discharging/🔋/;s/Not charging/🛑/;s/Charging/🔌/;s/Unknown/♻/;s/Full/⚡/" /sys/class/power_supply/BAT0/status 2>/dev/null)
 
 if [[ $status == "" ]]
   then
