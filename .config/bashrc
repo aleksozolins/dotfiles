@@ -41,6 +41,9 @@ alias logout='pkill -u'
 alias vim='nvim'
 alias w3md='w3m duckduckgo.com'
 alias cls='clear'
+alias taskp='task +personal'
+alias taskt='task +tech'
+alias tasks='task +software'
 
 # Set history to infinite
 HISTSIZE=
