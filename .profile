@@ -31,6 +31,7 @@ export NOTMUCH_CONFIG="$XDG_CONFIG_HOME"/notmuch-config
 # [ -f $HOME/.Xauthority ] && rm $HOME/.Xauthority
 export TASKRC="$XDG_CONFIG_HOME"/taskrc
 export TASKDATA="$HOME"/Dropbox/apps/task
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 # bash config cleanup
 export HISTFILE="$XDG_DATA_HOME/history"
