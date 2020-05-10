@@ -8,7 +8,7 @@
 
 ! set high DPI for certain hosts
 #ifdef SRVR_nzxt
-  Xft.dpi: 192
+  Xft.dpi: 96
 #endif
 
 #ifdef SRVR_tpx1
