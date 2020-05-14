@@ -1,61 +1,61 @@
 # Basic binds
-super + Return
+alt + Return
 	$TERMINAL
-super + d
+alt + d
    j4-dmenu-desktop
-super + shift + d
+alt + shift + d
   dmenu_run
-super + control + d
+alt + control + d
   (cd ~/desk && ls -1 --color=never | dmenu -l 20 -fn Monospace-16 | xargs -d '\n' xdg-open)  
-super + p
+alt + p
 	passmenu -fn Monospace-10
-super + f
+alt + f
 	$TERMINAL -e $FILE
-super + shift + f
+alt + shift + f
   $TERMINAL -e mc
-super + e
+alt + e
 	$TERMINAL -e neomutt
-super + shift + e
+alt + shift + e
   thunderbird
-super + m
+alt + m
 	$TERMINAL -e ncmpcpp
-super + a
+alt + a
   $TERMINAL -e abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$HOME"/Dropbox/apps/abook/addressbook
-super + shift + a
+alt + shift + a
   $TERMINAL -e pulsemixer
-super + c
+alt + c
 	calibre
-super + shift + c
+alt + shift + c
 	camtoggle
-super + b
+alt + b
   $BROWSER
-super + shift + b
+alt + shift + b
   qutebrowser  
-super + control + b
+alt + control + b
   $TERMINAL -e w3m duckduckgo.com
-super + n
+alt + n
   $TERMINAL -e nmtui
-super + shift + n
+alt + shift + n
   sudo systemctl restart NetworkManager
-super + r
+alt + r
   $TERMINAL -e newsboat
-super + shift + r
+alt + shift + r
   $TERMINAL -e podboat
-super + control + r
+alt + control + r
   $TERMINAL -e rtv
-super + t
+alt + t
 	$TERMINAL -e bash -c 'task;$SHELL'
-super + shift + t
+alt + shift + t
   $TERMINAL -e transmission-remote-cli
-super + o
+alt + o
   libreoffice
-super + s
+alt + s
   signal-desktop
-super + Print
+alt + Print
   scrot ~/pics/screenshots/%Y-%m-%d-%T-screenshot.png
-super + shift + Print
+alt + shift + Print
   sleep 0.2; scrot -s ~/pics/screenshots/%Y-%m-%d-%T-screenshot.png
-super + grave
+alt + grave
 	dmenuunicode
 XF86AudioMute
   pactl set-sink-mute 0 toggle
@@ -71,9 +71,9 @@ XF86MonBrightnessDown
   xbacklight -dec 10
 XF86MonBrightnessUp
   xbacklight -inc 10
-super + bracketright
+alt + bracketright
   ~/.config/screenlayout/docked.sh
-super + bracketleft
+alt + bracketleft
   ~/.config/screenlayout/default.sh
 
 # for X230, etc.
