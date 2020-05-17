@@ -33,8 +33,7 @@ alias abook='abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$HOME"/
 alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
 
 # misc aliases
-alias td='vim ~/Documents/notes/org.md'
-alias tvim='vim -c "colorscheme default"'
+alias tvim='nvim -c "colorscheme default"'
 alias trans="transmission-remote-cli"
 alias hdc="ls -a ~ | wc -l"
 alias logout='pkill -u'
