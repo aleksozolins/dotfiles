@@ -34,7 +34,7 @@ alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
 
 # misc aliases
 alias tvim='nvim -c "colorscheme default"'
-alias trans="transmission-remote-cli"
+alias trans="tremc"
 alias hdc="ls -a ~ | wc -l"
 alias logout='pkill -u'
 alias vim='nvim'
