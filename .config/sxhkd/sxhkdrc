@@ -46,7 +46,7 @@ super + control + r
 super + t
 	$TERMINAL -e bash -c 'task;$SHELL'
 super + shift + t
-  $TERMINAL -e transmission-remote-cli
+  $TERMINAL -e tremc
 super + o
   libreoffice
 super + s
