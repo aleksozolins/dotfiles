@@ -10,7 +10,7 @@ export VISUAL="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"
 export READER="mupdf"
-export FILE="ranger"
+export FILE="vifm"
 
 # XDG base directories
 export XDG_CONFIG_HOME="$HOME"/.config/
