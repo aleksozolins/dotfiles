@@ -38,8 +38,8 @@ if [ $(uname -n) == "tpx201" ]
   echo hi
 fi
 
-# tpx61
-if [ $(uname -n) == "tpx61" ]
+# tpx60
+if [ $(uname -n) == "tpx60" ]
   then
   echo hi
 fi
