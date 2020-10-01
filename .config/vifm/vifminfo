@@ -42,60 +42,6 @@ l2
 r2
 
 # Left window history (oldest to newest):
-d/mnt/4TBext4/Backup/Amelia MBP
-	Music
-5
-d/mnt/4TBext4/Backup/Amelia MBP/Music
-	..
-0
-d/mnt/4TBext4/Backup/Amelia MBP
-	Pictures
-6
-d/mnt/4TBext4/Backup/Amelia MBP/Pictures
-	..
-0
-d/mnt/4TBext4/Backup/Amelia MBP
-	..
-0
-d/mnt/4TBext4/Backup
-	Amelia MBP
-1
-d/mnt/4TBext4/Backup/Amelia MBP
-	Pictures
-6
-d/mnt/4TBext4/Backup/Amelia MBP/Pictures
-	..
-0
-d/mnt/4TBext4/Backup/Amelia MBP
-	..
-0
-d/mnt/4TBext4/Backup
-	dad_imac
-5
-d/mnt/4TBext4/Backup/dad_imac
-	Desktop
-2
-d/mnt/4TBext4/Backup/dad_imac/Desktop
-	..
-0
-d/mnt/4TBext4/Backup/dad_imac
-	Documents
-3
-d/mnt/4TBext4/Backup/dad_imac/Documents
-	..
-0
-d/mnt/4TBext4/Backup/dad_imac
-	Downloads
-4
-d/mnt/4TBext4/Backup/dad_imac/Downloads
-	..
-0
-d/mnt/4TBext4/Backup/dad_imac
-	Dropbox
-5
-d/mnt/4TBext4/Backup/dad_imac/Dropbox
-	..
-0
 d/mnt/4TBext4/Backup/dad_imac
 	Movies
 6
@@ -342,62 +288,62 @@ d/home/aleksozolins/repos/deprecated/.config/i3
 d/home/aleksozolins/repos/deprecated/.config
 	i3
 1
+d/home/aleksozolins
+	Dropbox
+1
+d/mnt
+	4TBext4
+1
+d/home/aleksozolins
+	dls
+3
+d/home/aleksozolins/dls
+	The Golden Girls
+2
+d/home/aleksozolins/dls/The Golden Girls
+	..
+0
+d/home/aleksozolins/dls
+	Det Som Goms I Sno (The Truth Will Out) - season 1
+1
+d/home/aleksozolins
+	dls
+3
+d/home/aleksozolins/dls
+	Det Som Goms I Sno (The Truth Will Out) - season 1
+1
+d/home/aleksozolins/dls/Det Som Goms I Sno (The Truth Will Out) - season 1
+	..
+0
+d/home/aleksozolins/dls
+	..
+0
+d/home/aleksozolins
+	dls
+3
+d/home
+	aleksozolins
+2
+d/home/aleksozolins
+	.local
+8
+d/home/aleksozolins/.local
+	share
+2
+d/home/aleksozolins/.local/share
+	vifm
+17
+d/home/aleksozolins/.local/share/vifm
+	Trash
+1
+d/home/aleksozolins/.local/share/vifm/Trash
+	..
+0
+d/home/aleksozolins
+	desk
+2
 
 # Right window history (oldest to newest):
-D/home/aleksozolins
-	..
-0
-D/home/aleksozolins/.config/vifm
-	..
-0
-D/home/aleksozolins/.config
-	..
-0
-D/home/aleksozolins
-	virtualbox_vms
-10
-D/home/aleksozolins/virtualbox_vms
-	..
-0
-D/home/aleksozolins
-	virtualbox_vms
-10
-D/home/aleksozolins/virtualbox_vms
-	..
-0
-D/home/aleksozolins
-	virtualbox_vms
-10
-D/home/aleksozolins/virtualbox_vms
-	..
-0
-D/home/aleksozolins
-	virtualbox_vms
-10
-D/home/aleksozolins/virtualbox_vms
-	..
-0
-D/home/aleksozolins
-	virtualbox_vms
-10
-D/home/aleksozolins/virtualbox_vms
-	..
-0
-D/home/aleksozolins
-	mus
-6
-D/home/aleksozolins/mus
-	..
-0
-D/home/aleksozolins
-	mus
-6
-D/home/aleksozolins/mus
-	..
-0
-D/home/aleksozolins
-	mus
-6
 D/home/aleksozolins/mus
 	..
 0
@@ -563,13 +509,151 @@ D/home/aleksozolins
 D/home/aleksozolins/repos/deprecated
 	..
 0
+D/home/aleksozolins
+	dls
+3
+D/mnt
+	..
+0
+D/
+	mnt
+8
+D/mnt
+	4TBext4
+1
+D/mnt/4TBext4
+	..
+0
+D/mnt
+	4TBext4
+1
+D/mnt/4TBext4
+	Backup
+1
+D/mnt/4TBext4/Backup
+	Amelia MBP
+1
+D/mnt/4TBext4/Backup/Amelia MBP
+	Documents
+2
+D/mnt/4TBext4/Backup/Amelia MBP/Documents
+	..
+0
+D/mnt/4TBext4/Backup/Amelia MBP
+	Downloads
+3
+D/mnt/4TBext4/Backup/Amelia MBP/Downloads
+	..
+0
+D/mnt/4TBext4/Backup/Amelia MBP
+	Movies
+4
+D/mnt/4TBext4/Backup/Amelia MBP/Movies
+	..
+0
+D/mnt/4TBext4/Backup/Amelia MBP
+	Music
+5
+D/mnt/4TBext4/Backup/Amelia MBP/Music
+	..
+0
+D/mnt/4TBext4/Backup/Amelia MBP
+	Pictures
+6
+D/mnt/4TBext4/Backup/Amelia MBP/Pictures
+	..
+0
+D/mnt/4TBext4/Backup/Amelia MBP
+	Pictures
+6
+D/home/aleksozolins
+	mus
+6
+D/home
+	aleksozolins
+2
+D/home/aleksozolins
+	dls
+3
+D/home/aleksozolins/dls
+	..
+0
+D/home/aleksozolins
+	dls
+3
+D/home/aleksozolins/dls
+	Det Som Goms I Sno (The Truth Will Out) - season 1
+1
+D/home/aleksozolins/dls/Det Som Goms I Sno (The Truth Will Out) - season 1
+	..
+0
+D/home/aleksozolins/dls
+	The Golden Girls
+2
+D/home/aleksozolins/dls/The Golden Girls
+	..
+0
+D/home/aleksozolins/dls
+	Det Som Goms I Sno (The Truth Will Out) - season 1
+1
+D/home/aleksozolins
+	dls
+3
+D/home/aleksozolins/dls
+	Det Som Goms I Sno (The Truth Will Out) - season 1
+1
+D/home/aleksozolins
+	docs
+4
+D/home/aleksozolins/docs
+	2015_139_payson_ave_lease.pdf
+29
+D/home/aleksozolins
+	Dropbox
+1
+D/home
+	aleksozolins
+2
+D/
+	mnt
+8
+D/mnt
+	4TBext4
+1
+D/mnt/4TBext4
+	plex
+3
+D/mnt/4TBext4/plex
+	Series
+3
+D/mnt/4TBext4/plex/Series
+	..
+0
+D/mnt/4TBext4/plex
+	Series
+3
+D/mnt/4TBext4/plex/Series
+	The Truth Will Out
+25
+D/mnt/4TBext4/plex/Series/The Truth Will Out
+	..
+0
+D/mnt/4TBext4/plex/Series
+	The Truth Will Out
+25
+D/mnt/4TBext4/plex/Series/The Truth Will Out
+	..
+0
 
 # Command line history (oldest to newest):
 :marks
 :exit
 :mkdir Documentaries
-:help
 :wq
+:q!
+:help
+:mkdir The Truth Will Out
+:mkdir "The Truth Will Out"
 :empty
 :q
 
@@ -595,10 +679,10 @@ pDownloadFile HOISE
 # State:
 f
 i1
-[.0
+[.1
 [F
 F
 I1
-].0
+].1
 ]F
 s0
