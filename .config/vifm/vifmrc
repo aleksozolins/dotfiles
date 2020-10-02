@@ -396,7 +396,11 @@ set vifminfo=dhistory,chistory,state,tui,shistory,
 " Sample mappings
 
 " Start shell in current directory
-nnoremap s :shell<cr>
+nnoremap ss :shell<cr>
+
+" Set wallpaper
+nnoremap sw :!feh --no-fehbg --bg-scale %f && cp %f ~/.local/share/wal.jpg<cr>
+nnoremap sW :!cp %f ~/.local/share/wal1.jpg<cr>
 
 " Display sorting dialog
 nnoremap S :sort<cr>
