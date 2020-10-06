@@ -12,7 +12,7 @@ super + p
 super + f
 	$TERMINAL -e $FILE
 super + shift + f
-  thunar 
+  pcmanfm 
 super + e
 	$TERMINAL -e neomutt
 super + shift + e
