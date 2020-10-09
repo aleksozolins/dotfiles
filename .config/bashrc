@@ -43,6 +43,7 @@ alias cls='clear'
 alias taskp='task +personal'
 alias taskt='task +tech'
 alias tasks='task +software'
+alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'
 
 # Set history to infinite
 HISTSIZE=
