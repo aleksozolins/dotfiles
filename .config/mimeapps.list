@@ -33,3 +33,4 @@ application/epub+zip=mupdf.desktop;
 audio/mp4=mpv.desktop;
 application/xhtml+xml=firefox.desktop;
 video/x-ms-wmv=mpv.desktop;
+application/x-nes-rom=nestopia.desktop;

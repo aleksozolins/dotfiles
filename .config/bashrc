@@ -44,8 +44,8 @@ alias taskp='task +personal'
 alias taskt='task +tech'
 alias tasks='task +software'
 alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'
-alias yt='straw-viewer'
-alias ytdl='youtube-dl -C'
+alias yt='straw-viewer -C'
+alias ytdl='youtube-dl'
 
 # Set history to infinite
 HISTSIZE=
