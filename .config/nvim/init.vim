@@ -29,6 +29,7 @@ Plugin 'tpope/vim-commentary'
 " Plugin 'jreybert/vimagit' " Check this out later
 Plugin 'scrooloose/nerdtree'
 Plugin 'kovetskiy/sxhkd-vim'
+Plugin 'ap/vim-css-color'
 
 " remove the trailing whitespace warning from airline
 let g:airline#extensions#whitespace#enabled = 0
