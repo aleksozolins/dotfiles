@@ -9,7 +9,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"
-export READER="mupdf"
+export READER="zathura"
 export FILE="vifm"
 
 # XDG base directories

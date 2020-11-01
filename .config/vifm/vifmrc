@@ -187,6 +187,10 @@ filextype *.djvu
         \ zathura %f,
         \ {View in apvlv}
         \ apvlv %f,
+" ePub
+filextype *.epub
+        \ {View in zathura}
+        \ zathura %f,
 
 " Audio
 filetype *.wav,*.mp3,*.flac,*.m4a,*.wma,*.ape,*.ac3,*.og[agx],*.spx,*.opus
