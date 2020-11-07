@@ -404,17 +404,15 @@ nnoremap ss :shell<cr>
 nnoremap sw :!feh --no-fehbg --bg-scale %f && cp %f ~/.local/share/wal.jpg<cr>
 nnoremap sW :!cp %f ~/.local/share/wal1.jpg<cr>
 
+" Create desktop symlink
+nnoremap ,d :!ln -s --target-directory=/home/aleksozolins/desk %d/%f<cr>
+
 " Display sorting dialog
 nnoremap S :sort<cr>
 
 " Toggle visibility of preview window
 nnoremap w :view<cr>
 vnoremap w :view<cr>gv
-
-" Open file in existing instance of gvim
-nnoremap o :!gvim --remote-tab-silent %f<cr>
-" Open file in new instance of gvim
-nnoremap O :!gvim %f<cr>
 
 " Open file in the background using its default program
 nnoremap gb :file &<cr>l
