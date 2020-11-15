@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
 Name=Transmission
-Exec=transmission-remote-cli
+Exec=tremc
 Terminal=true
 Categories=Utility
