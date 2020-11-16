@@ -11,9 +11,9 @@
   Xft.dpi: 96
 #endif
 
-#ifdef SRVR_tpx1
-  Xft.dpi: 192
-#endif
+! #ifdef SRVR_tpx1
+!   Xft.dpi: 192
+! #endif
 
 ! cursor
 Xcursor.theme: Breeze_Default
