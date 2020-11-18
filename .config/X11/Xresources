@@ -17,6 +17,7 @@
 
 ! cursor
 Xcursor.theme: Breeze_Default
+Xcursor.size: 24
 
 ! Fonts
 Xft.antialias: true
