@@ -12,6 +12,8 @@ fi
 if [ $(uname -n) == "tpx1" ]
   then
   # Touchpad and Trackpoint settings
+  xinput --set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Speed" 0.40
+  xinput --set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Profile Enabled" 1 0
   synclient TouchpadOff=1
   synclient TapButton1=0
   synclient TapButton2=0
