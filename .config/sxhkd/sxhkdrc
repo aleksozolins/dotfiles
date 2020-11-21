@@ -4,9 +4,9 @@ super + Return
 super + d
   j4-dmenu-desktop
 super + shift + d
-  dmenu_run
-super + control + d
   (cd ~/desk && ls -1 --color=never | dmenu -l 20 -fn Monospace-16 | xargs -d '\n' xdg-open)  
+super + control + d
+  dmenu_run
 super + p
   passmenu -fn Monospace-10
 super + f
