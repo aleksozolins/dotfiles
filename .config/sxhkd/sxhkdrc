@@ -1,32 +1,32 @@
 # Basic binds
 super + Return
-	$TERMINAL
+  $TERMINAL
 super + d
-   j4-dmenu-desktop
+  j4-dmenu-desktop
 super + shift + d
   dmenu_run
 super + control + d
   (cd ~/desk && ls -1 --color=never | dmenu -l 20 -fn Monospace-16 | xargs -d '\n' xdg-open)  
 super + p
-	passmenu -fn Monospace-10
+  passmenu -fn Monospace-10
 super + f
-	$TERMINAL -e $FILE
+  $TERMINAL -e $FILE
 super + shift + f
   pcmanfm 
 super + e
-	$TERMINAL -e neomutt
+  $TERMINAL -e neomutt
 super + shift + e
   thunderbird
 super + m
-	$TERMINAL -e ncmpcpp
+  $TERMINAL -e ncmpcpp
 super + a
-  $TERMINAL -e abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$HOME"/Dropbox/apps/abook/addressbook
-super + shift + a
   $TERMINAL -e pulsemixer
+super + shift + a
+  $TERMINAL -e abook --config "$XDG_CONFIG_HOME"/abook/abookrc --datafile "$HOME"/Dropbox/apps/abook/addressbook
 super + c
-	calibre
+  calibre
 super + shift + c
-	camtoggle
+  camtoggle
 super + b
   $BROWSER
 super + shift + b
@@ -44,7 +44,7 @@ super + shift + r
 super + control + r
   $TERMINAL -e rtv
 super + t
-	$TERMINAL -e bash -c 'task;$SHELL'
+  $TERMINAL -e bash -c 'task;$SHELL'
 super + shift + t
   $TERMINAL -e tremc
 super + o
@@ -54,7 +54,7 @@ super + s
 super + Print
   flameshot gui -d 2000 -p ~/pics/screenshots
 super + grave
-	dmenuunicode
+  dmenuunicode
 XF86AudioMute
   pactl set-sink-mute 0 toggle
 XF86AudioLowerVolume
@@ -80,4 +80,3 @@ XF86TouchpadToggle
 # for X1
 XF86Display
   toggletouchpad
-
