@@ -28,11 +28,11 @@ super + c
 super + shift + c
   camtoggle
 super + b
-  $BROWSER
+  $BROWSER -p "aleksozolins"
 super + shift + b
-  qutebrowser  
+  $BROWSER -p "aleksicanotes"
 super + control + b
-  $TERMINAL -e w3m duckduckgo.com
+  qutebrowser  
 super + n
   $TERMINAL -e nmtui
 super + shift + n
@@ -50,6 +50,8 @@ super + shift + t
 super + o
   libreoffice
 super + s
+  slack-desktop
+super + shift + s
   signal-desktop
 super + Print
   flameshot gui -d 2000 -p ~/pics/screenshots
