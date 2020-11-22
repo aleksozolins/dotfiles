@@ -50,7 +50,7 @@ super + shift + t
 super + o
   libreoffice
 super + s
-  slack-desktop
+  slack
 super + shift + s
   signal-desktop
 super + Print
