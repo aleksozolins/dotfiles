@@ -28,9 +28,9 @@ super + c
 super + shift + c
   camtoggle
 super + b
-  $BROWSER -p "aleksozolins"
+  $BROWSER
 super + shift + b
-  $BROWSER -p "aleksicanotes"
+  google-chrome-stable
 super + control + b
   qutebrowser  
 super + n
