@@ -49,6 +49,9 @@ echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.config/bashrc ] && source "$H
 # switch escape and caps if tty:
 sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
 
+# Ensure the system clock is accurate
+sudo timedatectl set-ntp true
+
 # start DWM if TTY1
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm >/dev/null && pullask && exec startx "$XDG_CONFIG_HOME/X11/xinitrc"
 
