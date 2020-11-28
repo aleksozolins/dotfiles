@@ -48,7 +48,7 @@ alias yt='straw-viewer -C'
 alias ytdl='youtube-dl'
 alias solitaire='ttysolitaire --no-background-color'
 alias newapps='sudo pacman -S --needed - < ~/repos/reprov/pacman_reprov.txt'
-alias newtix='vim $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt"'
+alias newtix='cp $HOME/docs/icanotes/tix/tix.txt $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt" && vim $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt"'
 
 # Set history to infinite
 HISTSIZE=
