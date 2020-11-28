@@ -4,9 +4,6 @@
 [ -f $XDG_CONFIG_HOME/X11/Xmachine ] && $XDG_CONFIG_HOME/X11/Xmachine
 [ -f $XDG_CONFIG_HOME/X11/Xresources ] && xrdb -merge $XDG_CONFIG_HOME/X11/Xresources
 
-# run the default screen layout
-[ -f "$XDG_CONFIG_HOME/screenlayout/default.sh" ] && . $XDG_CONFIG_HOME/screenlayout/default.sh
-
 # set screen blanking to 20 minutes
 xset s 1200 &
 
