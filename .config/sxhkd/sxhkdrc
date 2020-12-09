@@ -80,7 +80,7 @@ super + bracketleft
 
 # for X230, etc.
 XF86TouchpadToggle
-  toggletouchpad
+  toggletouch230
 # for X1
 XF86Display
   toggletouchpad
