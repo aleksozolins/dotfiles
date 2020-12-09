@@ -6,5 +6,5 @@ then
   synclient TouchpadOff=0 & xinput set-prop 12 "Device Enabled" 1
 
 else
-  synclient TouchpadOff=1 xinput set-prop 12 "Device Enabled" 0
+  synclient TouchpadOff=1 & xinput set-prop 12 "Device Enabled" 0
 fi
