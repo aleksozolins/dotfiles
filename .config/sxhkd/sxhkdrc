@@ -28,11 +28,11 @@ super + c
 super + shift + c
   camtoggle
 super + b
-  $BROWSER
+  $BROWSER --profile-directory=Default
 super + shift + b
-  google-chrome-stable
+  $BROWSER --profile-directory="Profile 1"
 super + control + b
-  qutebrowser  
+  firefox  
 super + shift + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + n
