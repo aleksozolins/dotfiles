@@ -5,7 +5,8 @@
 # nzxt
 if [ $(uname -n) == "nzxt" ]
   then
-  echo hi
+  xinput --set-prop 10 "libinput Accel Speed" 1.0 
+  xinput --set-prop 10 "libinput Accel Profile Enabled" 1 0
 fi
 
 # tpx1
