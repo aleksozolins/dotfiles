@@ -451,8 +451,8 @@ nnoremap ,c :write | edit $MYVIFMRC | restart<cr>
 " Toggle wrap setting on ,w key
 nnoremap ,w :set wrap!<cr>
 
-" Mount and unmount 4TBext4 on nzxt
-nnoremap ,4 :!sshfs nzxt:/mnt/4TBext4 /mnt/4TBext4<cr>
+" Mount and unmount 8TBRAID0 on nzxt
+nnoremap ,8 :!sshfs nzxt:/mnt/8TBRAID0 /mnt/8TBRAID0<cr>
 
 " Example of standard two-panel file managers mappings
 nnoremap <f3> :!less %f<cr>

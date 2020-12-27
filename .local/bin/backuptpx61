@@ -1,6 +1,0 @@
-#!/bin/bash
-clear
-echo This will backup aleksozoins/home on TPX61 to GDrive
-echo GDrive must be mounted! Are you sure you want to proceed?
-read -p "Press Enter to begin backup..."
-rsync -r -t -p -o -g -v --progress --delete -s --exclude Dropbox --exclude .cache /home/aleksozolins /mnt/GDrive/Backup/TPX61
