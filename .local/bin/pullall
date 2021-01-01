@@ -7,8 +7,10 @@ echo "pulling .password-store..."
 pass git pull
 echo "pulling reprov"
 cd ~/repos/reprov && git pull
+echo "pulling dmenu"
+cd ~/repos/dwm62c_1080 && git pull
 echo "pulling dwm"
-cd ~/repos/dwm62c && git pull
+cd ~/repos/dwm62c_1080 && git pull
 echo "pulling dwmblocks"
 cd ~/repos/dwmblocks_apo && git pull
 echo "all done!"
