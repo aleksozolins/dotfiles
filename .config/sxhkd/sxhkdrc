@@ -8,7 +8,7 @@ super + shift + d
 super + control + d
   dmenu_run
 super + p
-  passmenu -fn Monospace-10
+  passmenu
 super + f
   $TERMINAL -e $FILE
 super + shift + f
