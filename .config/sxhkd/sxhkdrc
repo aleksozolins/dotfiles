@@ -28,12 +28,10 @@ super + c
 super + shift + c
   camtoggle
 super + b
-  $BROWSER --profile-directory=Default
+  $BROWSER
 super + shift + b
-  $BROWSER --profile-directory="Profile 1"
+  firefox
 super + control + b
-  firefox  
-super + shift + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + n
   $TERMINAL -e nmtui
