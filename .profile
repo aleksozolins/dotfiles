@@ -11,6 +11,7 @@ export TERMINAL="st"
 export BROWSER="brave"
 export READER="zathura"
 export FILE="vifm"
+export MANPAGER="nvim -c 'set ft=man' -"
 
 # XDG base directories
 export XDG_CONFIG_HOME="$HOME"/.config/
