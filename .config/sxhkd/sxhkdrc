@@ -12,11 +12,11 @@ super + p
 super + f
   $TERMINAL -e $FILE
 super + shift + f
-  pcmanfm 
+	$TERMINAL -e vifm 
 super + e
-  $TERMINAL -e neomutt
-super + shift + e
   thunderbird
+super + shift + e
+  $TERMINAL -e neomutt
 super + m
   $TERMINAL -e ncmpcpp
 super + a
@@ -30,7 +30,7 @@ super + shift + c
 super + b
   $BROWSER
 # super + shift + b
-#  firefox
+#  brave? qutebrowser?
 super + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + n
@@ -44,8 +44,6 @@ super + shift + r
 super + control + r
   $TERMINAL -e rtv
 super + t
-  $TERMINAL -e bash -c 'task;$SHELL'
-super + shift + t
   $TERMINAL -e tremc
 super + g
   gnucash
