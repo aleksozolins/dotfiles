@@ -48,8 +48,10 @@ alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'
 alias yt='straw-viewer -C'
 alias ytdl='youtube-dl'
 alias solitaire='ttysolitaire --no-background-color'
+alias chess='gnuchess'
 alias newapps='sudo pacman -S --needed - < ~/repos/reprov/pacman_reprov.txt'
 alias newtix='cp $HOME/docs/icanotes/tix/tix.txt $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt" && vim $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt"'
+alias yay='echo USE PARU'
 
 # Set history to infinite
 HISTSIZE=
