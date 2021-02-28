@@ -10,7 +10,7 @@ export VISUAL="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"
 export READER="zathura"
-export FILE="vifm"
+export FILE="pcmanfm"
 export MANPAGER="nvim -c 'set ft=man' -"
 
 # XDG base directories
