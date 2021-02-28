@@ -23,7 +23,7 @@ application/lrf=calibre-lrfviewer.desktop
 /https=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
-x-scheme-handler/mailto=mail.desktop
+x-scheme-handler/mailto=thunderbird.desktop
 x-scheme-handler/webcal=firefox.desktop
 image/png=sxiv.desktop
 
