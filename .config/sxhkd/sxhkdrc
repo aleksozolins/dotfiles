@@ -10,7 +10,7 @@ super + control + d
 super + p
   passmenu
 super + f
-  $TERMINAL -e $FILE
+  $FILE
 super + shift + f
 	$TERMINAL -e vifm 
 super + e
