@@ -2,7 +2,7 @@
 # keep-articles-days 30
 # feed-sort-order firstag
 auto-reload yes
-browser brave
+browser firefox
 download-path "/home/aleksozolins/dls/consoom"
 player mpv
 refresh-on-startup yes
@@ -43,9 +43,9 @@ color info red black bold
 color article cyan default
 
 macro , open-in-browser
-macro y set browser "mpv %u"; open-in-browser ; set browser brave
-macro t set browser "youtube-dl"; open-in-browser ; set browser brave
-macro 3 set browser "youtube-dl -f 18"; open-in-browser ; set browser brave
-macro 7 set browser "youtube-dl -f 22"; open-in-browser ; set browser brave
-macro a set browser "youtube-dl -x -f bestaudio/best"; open-in-browser ; set browser brave
-macro w set browser "w3m"; open-in-browser ; set browser brave
+macro w set browser "mpv %u"; open-in-browser ; set browser firefox
+macro c set browser "youtube-dl"; open-in-browser ; set browser firefox
+macro 3 set browser "youtube-dl -f 18"; open-in-browser ; set browser firefox
+macro 7 set browser "youtube-dl -f 22"; open-in-browser ; set browser firefox
+macro a set browser "youtube-dl -x -f bestaudio/best"; open-in-browser ; set browser firefox
+macro t set browser "w3m"; open-in-browser ; set browser 
