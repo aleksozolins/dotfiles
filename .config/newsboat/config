@@ -3,7 +3,7 @@
 # feed-sort-order firstag
 auto-reload yes
 browser brave
-download-path "/home/aleksozolins/dls"
+download-path "/home/aleksozolins/dls/consoom"
 player mpv
 refresh-on-startup yes
 reload-time 20
