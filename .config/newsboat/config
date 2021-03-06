@@ -3,7 +3,7 @@
 # feed-sort-order firstag
 auto-reload yes
 browser firefox
-download-path "/home/aleksozolins/dls/consoom"
+download-path "/home/aleksozolins/vids/consoom"
 player mpv
 refresh-on-startup yes
 reload-time 20
