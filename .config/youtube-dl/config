@@ -1,5 +1,5 @@
-# Save all vids under dls dir with custom format
--o ~/dls/%(title)s.%(ext)s
+# Save all vids under dls/consoom dir with custom format
+-o ~/dls/consoom/%(title)s.%(ext)s
 # Ignore errors
 -i
 # Continue downloads
