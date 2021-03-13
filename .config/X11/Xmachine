@@ -20,7 +20,7 @@ if [ $(uname -n) == "tpx1" ]
   synclient TapButton3=0
   synclient HorizTwoFingerScroll=1
   synclient TouchpadOff=1
-  xinput set-prop 13 "Device Enabled" 0
+  xinput --set-prop "Synaptics TM3289-021" "Device Enabled" 0
 fi
 
 # tpx230
