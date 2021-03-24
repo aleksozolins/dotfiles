@@ -13,7 +13,6 @@ alias m3uflac='ls -1v |grep .flac > '
 set -o vi
 
 # directory shortcuts
-alias g8='cd /mnt/8TBRAID0'
 alias gf='cd ~/docs/finances'
 alias gd='cd ~/docs'
 alias gD='cd ~/Dropbox'
