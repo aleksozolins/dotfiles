@@ -53,6 +53,7 @@ alias chess='gnuchess'
 alias newapps='sudo pacman -S --needed - < ~/repos/reprov/pacman_reprov.txt'
 alias newtix='cp $HOME/docs/icanotes/tix/tix.txt $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt" && vim $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt"'
 alias yay='echo USE PARU'
+alias db='dropbox-cli status'
 
 # Set history to infinite
 HISTSIZE=
