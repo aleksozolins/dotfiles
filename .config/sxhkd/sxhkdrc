@@ -29,7 +29,7 @@ super + shift + c
   camtoggle
 super + b
   $BROWSER
-# super + shift + b
+super + shift + b
   qutebrowser
 super + control + b
   $TERMINAL -e w3m duckduckgo.com
