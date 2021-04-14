@@ -30,7 +30,7 @@ super + shift + c
 super + b
   $BROWSER
 # super + shift + b
-#  brave? qutebrowser?
+  qutebrowser
 super + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + n
