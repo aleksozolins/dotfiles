@@ -1,0 +1,10 @@
+#1/bin/bash
+STR=$(synclient | grep Touchpad | awk '{ print $3 }')
+
+if [ $STR = '1' ]
+then
+  synclient TouchpadOff=0 & xinput --set-prop "Synaptics TM3289-021" "Device Enabled" 1
+
+else
+  synclient TouchpadOff=1 & xinput --set-prop "Synaptics TM3289-021" "Device Enabled" 0
+fi

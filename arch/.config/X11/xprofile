@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+[ -f $XDG_CONFIG_HOME/X11/Xmodmap ] && xmodmap $XDG_CONFIG_HOME/X11/Xmodmap
+[ -f $XDG_CONFIG_HOME/X11/Xmachine ] && $XDG_CONFIG_HOME/X11/Xmachine
+[ -f $XDG_CONFIG_HOME/X11/Xresources ] && xrdb -merge $XDG_CONFIG_HOME/X11/Xresources
+
+# set screen blanking to 20 minutes
+xset s 1200 &
+
+# set screen off to 30 minutes
+xset dpms 1800 1800 1800
+
+sxhkd &
+stalonetray &
+xss-lock -- slock &
+unclutter &
+dwmblocks &
+picom &
+transmission-daemon &
+dunst &
+feh --no-fehbg --bg-scale ~/.local/share/wal.jpg &
+flameshot &
+dropbox &

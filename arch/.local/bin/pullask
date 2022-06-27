@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# ask about pulling repos
+echo "Would you like to pull all your repos now? yes or no ?"
+read pull
+
+# pull personal repos if yes
+if [[ $pull == y* ]]
+  then
+  pullall
+  read -p "Press Enter to continue..."
+  else
+  echo "moving along..."
+fi

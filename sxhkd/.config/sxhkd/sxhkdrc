@@ -1,0 +1,84 @@
+# Basic binds
+super + Return
+  $TERMINAL
+super + d
+  j4-dmenu-desktop
+super + shift + d
+  (cd ~/desk && ls -1 --color=never | dmenu -l 20 -fn Monospace-16 | xargs -d '\n' xdg-open)  
+super + control + d
+  dmenu_run
+super + p
+  passmenu
+super + f
+  $FILE
+super + shift + f
+  $TERMINAL -e mc
+super + e
+  emacs
+super + m
+  $TERMINAL -e ncmpcpp
+super + a
+  $TERMINAL -e pulsemixer
+super + shift + c
+  camtoggle
+super + b
+  $BROWSER
+super + shift + b
+  google-chrome-stable
+super + control + b
+  qutebrowser
+super + shift + control + b
+  $TERMINAL -e w3m duckduckgo.com
+super + n
+  $TERMINAL -e nmtui
+super + shift + n
+  sudo systemctl restart NetworkManager
+super + r
+  $TERMINAL -e newsboat -c $HOME/Dropbox/apps/newsboat/cache.db
+super + shift + r
+  $TERMINAL -e podboat
+super + control + r
+  $TERMINAL -e rtv
+super + t
+  $TERMINAL -e tremc
+super + g
+  gnucash
+super + shift + g
+  gimp
+super + o
+  libreoffice
+super + s
+  slack
+super + shift + s
+  signal-desktop
+super + Print
+  flameshot gui -d 2000 -p ~/pics/screenshots
+super + grave
+  dmenuunicode
+XF86AudioMute
+  pactl set-sink-mute 0 toggle
+XF86AudioLowerVolume
+  pactl set-sink-volume 0 -5% ; pkill -RTMIN+4 dwmblocks
+control+XF86AudioLowerVolume
+  pactl set-sink-volume 0 -1% ; pkill -RTMIN+4 dwmblocks
+XF86AudioRaiseVolume
+  pactl set-sink-volume 0 +5% ; pkill -RTMIN+4 dwmblocks
+control+XF86AudioRaiseVolume
+  pactl set-sink-volume 0 +1% ; pkill -RTMIN+4 dwmblocks
+XF86MonBrightnessDown
+  xbacklight -dec 10
+XF86MonBrightnessUp
+  xbacklight -inc 10
+super + bracketright
+  ~/.config/screenlayout/docked.sh
+super + bracketleft
+  ~/.config/screenlayout/default.sh
+super + backslash
+  ~/.config/screenlayout/external.sh
+  
+# for X230, etc.
+XF86TouchpadToggle
+  toggletouch230
+# for X1
+XF86Display
+  toggletouchpad

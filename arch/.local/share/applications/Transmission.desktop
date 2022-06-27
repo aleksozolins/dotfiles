@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Transmission
+Exec=tremc
+Terminal=true
+Categories=Utility

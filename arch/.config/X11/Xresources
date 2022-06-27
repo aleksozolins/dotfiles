@@ -1,0 +1,22 @@
+!     _    ___
+!    / \  / _ \   Aleks Ozolins
+!   / _ \| | | |  aleks@aleksozolins.com
+!  / ___ \ |_| |  https://www.aleksozolins.com
+! /_/   \_\___/
+!
+! .Xresources
+
+ifdef SRVR_tpx1
+  Xcursor.theme: Breeze_Default
+  Xcursor.size: 24
+endif
+
+ifdef SRVR_tpx230
+  Xcursor.theme: Breeze_Default
+  Xcursor.size: 18
+endif
+
+! Fonts
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintfull

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=tmux
+Comment=Terminal Multiplexer
+Exec=tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf
+Icon=folder
+MimeType=inode/directory
+Terminal=true
+Categories=Utility

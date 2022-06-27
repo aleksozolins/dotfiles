@@ -1,0 +1,50 @@
+#!/bin/sh
+# Machine Specific Script for Various Hosts
+# To be called from xprofile
+
+# nzxt
+if [ $(uname -n) == "nzxt" ]
+  then
+  xinput --set-prop 10 "libinput Accel Speed" 1.0 
+  xinput --set-prop 10 "libinput Accel Profile Enabled" 1 0
+fi
+
+# tpx1
+if [ $(uname -n) == "tpx1" ]
+  then
+  # Touchpad and Trackpoint settings
+  xinput --set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Speed" 0.60
+  xinput --set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Profile Enabled" 1 0
+  synclient TapButton1=0
+  synclient TapButton2=0
+  synclient TapButton3=0
+  synclient HorizTwoFingerScroll=1
+  synclient TouchpadOff=1
+  xinput --set-prop "Synaptics TM3289-021" "Device Enabled" 0
+fi
+
+# tpx230
+if [ $(uname -n) == "tpx230" ]
+  then
+  # Touchpad and Trackpoint settings
+  echo 175 | sudo tee /sys/devices/platform/i8042/serio1/serio2/sensitivity
+  echo 175 | sudo tee /sys/devices/platform/i8042/serio1/serio2/speed
+  synclient TapButton1=0
+  synclient TapButton2=0
+  synclient TapButton3=0
+  synclient HorizTwoFingerScroll=1
+  synclient TouchpadOff=1
+  xinput set-prop 11 "Device Enabled" 0
+fi
+
+# tpx201
+if [ $(uname -n) == "tpx201" ]
+  then
+  echo hi
+fi
+
+# tpx60
+if [ $(uname -n) == "tpx60" ]
+  then
+  echo hi
+fi

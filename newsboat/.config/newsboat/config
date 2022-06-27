@@ -1,0 +1,51 @@
+#show-read-feeds no
+# keep-articles-days 30
+# feed-sort-order firstag
+auto-reload yes
+browser firefox
+download-path "/home/aleksozolins/dls"
+player mpv
+refresh-on-startup yes
+reload-time 20
+
+# hide articles matching: ---------------------------------------------
+ignore-article "*" "title =~ \"Sponsor\""
+ignore-article "*" "title =~ \"Advertisement\""
+# ignore-mode "display"
+
+# keybindings
+bind-key j down
+bind-key k up
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key G end
+bind-key g home
+bind-key d pagedown
+bind-key u pageup
+bind-key l open
+bind-key h quit
+bind-key a toggle-article-read
+bind-key n next-unread
+bind-key N prev-unread
+bind-key D pb-download
+bind-key U show-urls
+bind-key x pb-delete
+bind-key ^t next-unread
+
+# colors
+color listnormal cyan default
+color listfocus black yellow standout bold
+color listnormal_unread blue default
+color listfocus_unread yellow default bold
+color info red black bold
+color article cyan default
+
+macro , open-in-browser
+macro w set browser "mpv %u"; open-in-browser ; set browser firefox
+macro c set browser "youtube-dl"; open-in-browser ; set browser firefox
+macro 3 set browser "youtube-dl -f 18"; open-in-browser ; set browser firefox
+macro 7 set browser "youtube-dl -f 22"; open-in-browser ; set browser firefox
+macro a set browser "youtube-dl -x -f bestaudio/best"; open-in-browser ; set browser firefox
+macro t set browser "w3m"; open-in-browser ; set browser 

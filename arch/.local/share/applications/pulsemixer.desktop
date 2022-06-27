@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Pulse Mixer
+Type=Application
+Categories=Audio;AudioVideo;AudioVideoEditing;
+Exec=pulsemixer
+Terminal=true
+StartupNotify=true
+

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=nmtui
+Comment=Manage network connections
+Exec=nmtui
+Icon=folder
+MimeType=inode/directory
+Terminal=true
+Categories=Utility

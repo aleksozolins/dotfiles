@@ -1,0 +1,8 @@
+# Save all vids under vids/consoom dir with custom format
+-o ~/%(title)s.%(ext)s
+# Ignore errors
+-i
+# Continue downloads
+-c
+# Add metadata
+--add-metadata

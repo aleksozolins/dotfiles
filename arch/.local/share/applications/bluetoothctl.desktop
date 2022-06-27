@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=bluetoothctl
+Comment=Manage bluetooth connections
+Exec=bluetoothctl
+Icon=folder
+MimeType=inode/directory
+Terminal=true
+Categories=Utility

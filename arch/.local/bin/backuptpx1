@@ -1,0 +1,6 @@
+#!/bin/bash
+clear
+echo This will backup aleksozoins/home on tpx1 to samsung_t7 - /backup/tpx1
+echo Are you sure you want to proceed?
+read -p "Press Enter to begin backup..."
+rsync -r -t -p -o -g -v --progress --delete -s --exclude .cache --exclude .dropbox-dist --exclude .cache /home/aleksozolins /mnt/samsung_t7/backup/tpx1

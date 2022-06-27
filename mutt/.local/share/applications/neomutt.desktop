@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=neomutt
+Comment=Email
+Exec=neomutt
+Icon=folder
+MimeType=inode/directory
+Terminal=true
+Categories=Utility

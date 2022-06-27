@@ -1,0 +1,6 @@
+#!/bin/sh
+
+[ "$(cat /sys/class/net/w*/operstate)" = 'down' ] && wifi="📡" ||
+	wifi=$(grep "^\s*w" /proc/net/wireless | awk '{ print "📶:", int($3 * 100 / 70) "%" }')
+
+printf "%s %s\n" "$wifi" "$(sed "s/down/❎/;s/up/🌐/" /sys/class/net/e*/operstate)"

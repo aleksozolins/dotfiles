@@ -1,0 +1,40 @@
+# vim: filetype=neomuttrc
+# muttrc file for account icloud
+set realname = "Aleks Ozolins"
+set from = "aleksozolins@me.com"
+set sendmail = "msmtp -a icloud"
+alias me Aleks Ozolins <aleksozolins@me.com>
+set folder = "/home/aleksozolins/.local/share/mail/icloud"
+set header_cache = /home/aleksozolins/.cache/mutt/icloud/headers
+set message_cachedir = /home/aleksozolins/.cache/mutt/icloud/bodies
+set mbox_type = Maildir
+
+bind index,pager gg noop
+bind index,pager g noop
+bind index,pager M noop
+bind index,pager C noop
+bind index gg first-entry
+macro index o "<shell-escape>mbsync -c ~/.config/mbsyncrc icloud<enter>" "run mbsync to sync icloud"
+unmailboxes *
+
+set spoolfile = "+INBOX"
+set record = "+Sent\ Messages"
+set postponed = "+Drafts"
+set trash = "+Deleted\ Messages"
+mailboxes "=Junk" "=INBOX" "=Sent\ Messages" "=Archive" "=Drafts" "=Notes" "=Deleted\ Messages" 
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager Mi "<save-message>=INBOX<enter>" "move mail to inbox"
+macro index,pager Ci "<copy-message>=INBOX<enter>" "copy mail to inbox"
+macro index,pager gs "<change-folder>=Sent\ Messages<enter>" "go to sent"
+macro index,pager Ms "<save-message>=Sent\ Messages<enter>" "move mail to sent"
+macro index,pager Cs "<copy-message>=Sent\ Messages<enter>" "copy mail to sent"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager Md "<save-message>=Drafts<enter>" "move mail to drafts"
+macro index,pager Cd "<copy-message>=Drafts<enter>" "copy mail to drafts"
+macro index,pager gj "<change-folder>=Junk<enter>" "go to junk"
+macro index,pager Mj "<save-message>=Junk<enter>" "move mail to junk"
+macro index,pager Cj "<copy-message>=Junk<enter>" "copy mail to junk"
+macro index,pager ga "<change-folder>=Archive<enter>" "go to archive"
+macro index,pager Ma "<save-message>=Archive<enter>" "move mail to archive"
+macro index,pager Ca "<copy-message>=Archive<enter>" "copy mail to archive"
+macro index,pager gt "<change-folder>=Deleted\ Messages<enter>" "go to trash"
