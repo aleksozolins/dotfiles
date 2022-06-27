@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2022-06-24
++ Updated: 2022-06-27
 
 Information pertaining to my current build of Emacs:
 
@@ -28,7 +28,7 @@ Information pertaining to my current build of Emacs:
 * Package Management
 ** Package Sources
 
-We're defining which remote repositories emacs will download packages from below. I've temporarily added the =gnu-devel= archive for macOS only as =magit= won't install otherwise.
+To start, we're defining which remote repositories Emacs will download packages from below. I've temporarily added the =gnu-devel= archive for macOS only as =magit= won't install otherwise.
 
 #+begin_src elisp
   ;; Initialize package sources
@@ -92,7 +92,7 @@ The following settings make the interface a bit more minimal and clean. In the f
 
 ** Misc One-Off Settings
 
-Below are any settings where I'm not sure to put in this file just yet.
+Below are any settings where I'm not quite sure where to put in this file just yet.
 
 #+begin_src elisp
   ;; Stop Emacs from asking about following symlinks when opening files
@@ -101,7 +101,7 @@ Below are any settings where I'm not sure to put in this file just yet.
 #+end_src
 ** Font Configuration
 
-I'll need to take a deeper look at the font config in the future as I'd like to implement the code so that, at least in org files, source blocks always contain fixed-width fonts, but regular text is variable width (a-la MS word). I believe the System Crafters video on org config has that info in it.
+I'll need to take a deeper look at the font config in the future as I'd like to implement code so that, at least in org files, source blocks always contain fixed-width fonts, but regular text is variable width (a-la MS word). I believe the System Crafters video on org config (YouTube) has that info in it.
 
 #+begin_src elisp
   (set-face-attribute 'default nil :font "Liberation Mono" :height 130)
@@ -161,7 +161,7 @@ More info here: [[https://protesilaos.com/e7629734301macs/modus-themes][Modus Th
 
 ** Backup Settings
 
-For some reason, Emacs is still autosaving files in the same directory as file that is being edited. I thought I disabled that with the code below, but I'll need to look into this further as this causes some annoyances with git (unstanged files).
+For some reason, Emacs is still autosaving files in the same directory as the file that is being edited. I thought I disabled that with the code below, but I'll need to look into this further as this causes some annoyances with git (unstanged files).
 
 #+begin_src elisp
   ;; Backup options
@@ -177,7 +177,7 @@ For some reason, Emacs is still autosaving files in the same directory as file t
 
 * Completion Framework
 
-We'll define the default completion styles here before adding features:
+We'll define the default completion style(s) here before adding features:
 
 #+begin_src elisp
   (setq completion-styles '(substring))
@@ -247,7 +247,7 @@ Embark is invoked by using =C-.= and allows common operations to be performed to
 * Dired
 ** Sort Directories First
 
-This only sort of works because it doesn't work with symlinks. Need to find a better solution. I believe the System Crafters videos on dired might have something better to offer but I'll need to review them.
+This only sort of works because it doesn't yet work with symlinks. I'll need to find a better solution! I believe the System Crafters videos on dired might have something better to offer but I'll need to review them.
 
 #+begin_src elisp
   ;; Sort directories first in dired
@@ -275,7 +275,7 @@ This only sort of works because it doesn't work with symlinks. Need to find a be
 * One-Off Packages
 ** Rainbow Delimiters
 
-The =rainbow-delimiters= package makes each new set of parenthesis a different color, so it's easy to see when they match!
+The =rainbow-delimiters= package makes each new set of parenthesis a different color so it's easy to see when they match!
 
 #+begin_src elisp
   (use-package rainbow-delimiters
@@ -285,7 +285,7 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
 
 ** Magit
 
-Magit is the most common git interface for emacs and doesn't require any additional configuration out of the box. It can be invoked by =C-x g=
+Magit is the most common git interface for Emacs and doesn't require any additional configuration out of the box. It can be invoked by =C-x g=
 
 #+begin_src elisp
   ;; Magit
@@ -368,7 +368,7 @@ Magit is the most common git interface for emacs and doesn't require any additio
 
 ** Modules
 
-Additional modules are included with the package but need to be loaded explicitly for use. Below, we're enabling th =org-habit= module to allow habit tracking in the agenda view.
+Additional modules are included with the =org-mode= package but need to be loaded explicitly for use. Below, we're enabling th =org-habit= module to allow habit tracking in the agenda view.
 
 #+begin_src elisp
   ;; Add some modules
@@ -391,7 +391,7 @@ Simple contact management for org. Contacts can be captured via a template by us
 
 ** Org Capture
 
-=org-capture= allows quick capture using templates into your existing files. So far, we have templates in place for contacts, tasks, next tasks, entries to check out (like links or articles), and a metrics capture that can currently quickly take my weight and add it to a table.
+=org-capture= allows quick capture using templates into your existing org files. So far, we have templates in place for contacts, tasks, next tasks, entries to check out (like links or articles), and a metrics capture that can currently quickly take my weight and add it to a table.
 
 #+begin_src elisp
   ;; Org capture
@@ -435,12 +435,12 @@ Simple contact management for org. Contacts can be captured via a template by us
 
 ** Org Babel
 
-Org Babel allows org files to "tangle" source blocks into external files. It's what makes this configuration possible in this form. The text and source blocks are all contained in a single org file and each source block is tangled into emacs' config file, =init.el=. Luckily, GitHub can render org files completely, so this file acts as both the documentation, /and/ the source code for my emacs config.
+Org Babel allows org files to "tangle" source blocks into external files. It's what makes this configuration possible in this form. The text and source blocks are all contained in a single org file and each source block is tangled into emacs' config file, =init.el=. Luckily, GitHub can render org files completely, so this file acts as both the documentation, /and/ the source code for my Emacs config.
 
 *** Keybindings
 
-=C-c C-c= Evaluate source block
-=C-c C-v t= org-babel-tangle
+- =C-c C-c= Evaluate source block
+- =C-c C-v t= org-babel-tangle
 
 *** Settings
 #+begin_src elisp
