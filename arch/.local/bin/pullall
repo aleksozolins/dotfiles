@@ -3,7 +3,7 @@ echo "pulling dotfiles"
 cd ~/.dotfiles && git pull
 echo "pulling .password-store"
 pass git pull
-echo "pulling reprov_new"
-cd ~/repos/reprov_new && git pull
+echo "pulling reprov"
+cd ~/repos/reprov && git pull
 echo "all done!"
 cd
