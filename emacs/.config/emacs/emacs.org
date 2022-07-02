@@ -412,10 +412,10 @@ Simple contact management for org. Contacts can be captured via a template by us
 	   my/org-contacts-template :empty-lines 1)
 
 	  ("t" "Tasks")
-	  ("tt" "Task" entry (file+olp "~/docs/orgfiles/inbox.txt" "Inbox")
+	  ("tt" "Task" entry (file+olp "~/docs/orgfiles/todos.org" "Inbox")
 	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	  ("tn" "Next Task" entry (file+olp "~/docs/orgfiles/inbox.txt" "Inbox")
+	  ("tn" "Next Task" entry (file+olp "~/docs/orgfiles/todos.org" "Inbox")
 	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	  ("tc" "Check Out" entry (file+headline "~/docs/orgfiles/todos.org" "Check Out")
