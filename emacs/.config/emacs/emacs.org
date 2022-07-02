@@ -413,13 +413,13 @@ Simple contact management for org. Contacts can be captured via a template by us
 
 	  ("t" "Tasks")
 	  ("tt" "Task" entry (file+olp "~/docs/orgfiles/inbox.txt" "Inbox")
-	   "* TODO %?\n%U\n%i" :empty-lines 1)
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	  ("tn" "Next Task" entry (file+olp "~/docs/orgfiles/inbox.txt" "Inbox")
-	   "* NEXT %?\n%U\n%i" :empty-lines 1)
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	  ("tc" "Check Out" entry (file+headline "~/docs/orgfiles/todos.org" "Check Out")
-	   "* TODO Check out %?\n%U\n%i" :empty-lines 1)
+	   "* TODO Check out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	  ("m" "Metrics")
 	  ("mw" "Weight" table-line (file+headline "~/docs/orgfiles/weight.org" "Graph")
