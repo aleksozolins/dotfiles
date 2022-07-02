@@ -256,7 +256,10 @@
 
 	("m" "Metrics")
 	("mw" "Weight" table-line (file+headline "~/docs/orgfiles/weight.org" "Graph")
-	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)))
+	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
+
+	("M" "Meeting" entry (file "~/docs/orgfiles/meetings.org")
+	 "* %^U - %^{With} - %^{Event}     %^g\n\n%?" :empty-lines 1)))
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "/inbox.txt"))
