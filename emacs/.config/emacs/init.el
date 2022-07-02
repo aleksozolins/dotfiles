@@ -259,7 +259,21 @@
 	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
 	("M" "Meeting" entry (file "~/docs/orgfiles/meetings.org")
-	 "* %^U - %^{With} - %^{Event}     %^g\n\n%?" :empty-lines 1)))
+	 "* %^U - %^{With} - %^{Event}     %^g\n\n%?" :empty-lines 1)
+
+	("o" "Mouthpiece")
+	("o1" "One-Piece" table-line (file "~/docs/orgfiles/mouthpieces.org")
+	 "| %^{Make} | one-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
+
+	("o2" "Two-Piece" table-line (file "~/docs/orgfiles/mouthpieces.org")
+	 "| %^{Make} | two-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
+
+	("or" "Rim" table-line (file "~/docs/orgfiles/mouthpieces.org")
+	 "| %^{Make} | rim | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
+
+	("oc" "Cup" table-line (file "~/docs/orgfiles/mouthpieces.org")
+	 "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
+
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "/inbox.txt"))
