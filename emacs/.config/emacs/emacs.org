@@ -443,7 +443,7 @@ Simple contact management for org. Contacts can be captured via a template by us
 
 	  ("z" "Zapier")
 	  ("zb" "Brag" table-line (file+headline "~/docs/orgfiles/zapier.org" "Brags and Contributions")
-	   "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|brag|other} | | %^{Note} |")))
+	   "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|brag|other} | [[%^{Link}][link]] | %^{Note} |")))
 
 
   ;; Default org capture file
