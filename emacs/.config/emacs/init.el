@@ -143,6 +143,18 @@
 ;; Allow command to visit directories and kill buffer in dired
 (put 'dired-find-alternate-file 'disabled nil)
 
+(defvar *afilename-cmd*
+  '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh"))
+  "File association list with their respective command.")
+
+(defun my/cmd-after-saved-file ()
+  "Execute a command after saved a specific file."
+  (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+    (when match
+      (shell-command (cdr match)))))
+
+(add-hook 'after-save-hook 'my/cmd-after-saved-file)
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 

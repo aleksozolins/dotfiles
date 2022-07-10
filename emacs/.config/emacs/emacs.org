@@ -272,6 +272,24 @@ This only sort of works because it doesn't yet work with symlinks. I'll need to 
   (put 'dired-find-alternate-file 'disabled nil)
   
 #+end_src
+* Bespoke Functions
+** Run Shell Command After Save
+This will allow you to specify a list of files and run a bespoke shell command after a save event.
+
+#+begin_src elisp
+  (defvar *afilename-cmd*
+    '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh"))
+    "File association list with their respective command.")
+
+  (defun my/cmd-after-saved-file ()
+    "Execute a command after saved a specific file."
+    (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+      (when match
+	(shell-command (cdr match)))))
+
+  (add-hook 'after-save-hook 'my/cmd-after-saved-file)
+
+#+end_src
 * One-Off Packages
 ** Rainbow Delimiters
 
