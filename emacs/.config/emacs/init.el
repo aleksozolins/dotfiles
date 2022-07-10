@@ -272,7 +272,11 @@
 	 "| %^{Make} | rim | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
 	("oc" "Cup" table-line (file "~/docs/orgfiles/mouthpieces.org")
-	 "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
+	 "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
+
+	("z" "Zapier")
+	("zb" "Brag" table-line (file+headline "~/docs/orgfiles/zapier.org" "Brags and Contributions")
+	 "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|brag|other} | | %^{Note} |")))
 
 
 ;; Default org capture file
