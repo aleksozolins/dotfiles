@@ -144,7 +144,8 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (defvar *afilename-cmd*
-  '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh"))
+  '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
+    ("/Users/aleksozolins/docs/orgfiles/zapier.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh"))
   "File association list with their respective command.")
 
 (defun my/cmd-after-saved-file ()

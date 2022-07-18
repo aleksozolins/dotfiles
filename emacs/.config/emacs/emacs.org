@@ -278,7 +278,8 @@ This will allow you to specify a list of files and run a bespoke shell command a
 
 #+begin_src elisp
   (defvar *afilename-cmd*
-    '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh"))
+    '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
+      ("/Users/aleksozolins/docs/orgfiles/zapier.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh"))
     "File association list with their respective command.")
 
   (defun my/cmd-after-saved-file ()
