@@ -699,6 +699,19 @@ The code below adds a keybinding (=C-c RET C-a=) so I can attach files to emails
   
 #+end_src
 
+* Development
+** Python
+
+Here we'll install and invoke ELPY, the Emacs Integrated Python Environment.
+
+#+begin_src elisp
+  (use-package elpy
+    :ensure t
+    :init
+    (elpy-enable))
+
+#+end_src
+
 * Custom Set Variables
 #+begin_src elisp
   (custom-set-variables
