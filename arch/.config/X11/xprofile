@@ -18,6 +18,5 @@ dwmblocks &
 picom &
 transmission-daemon &
 dunst &
-feh --no-fehbg --bg-scale ~/.local/share/wal.jpg &
 flameshot &
 dropbox &
