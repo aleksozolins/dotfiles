@@ -712,6 +712,13 @@ Here we'll install and invoke ELPY, the Emacs Integrated Python Environment.
 
 #+end_src
 
+On Mac, an error message needs to be supressed when running the python shell. More info here [[https://github.com/brittAnderson/psych363Practice/issues/124]]
+
+#+begin_src elisp
+  (setq python-shell-completion-native-disabled-interpreters '("python3"))
+  
+#+end_src
+
 * Custom Set Variables
 #+begin_src elisp
   (custom-set-variables
