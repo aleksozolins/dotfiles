@@ -719,6 +719,15 @@ On Mac, an error message needs to be supressed when running the python shell. Mo
   
 #+end_src
 
+Let's make sure the shell, ELPY, and org-babel are all defaulting to Python 3.
+
+#+begin_src elisp
+  (setq python-shell-interpreter "python3")
+  (setq elpy-rpc-python-command "python3")
+  (setq org-babel-python-command "python3")
+
+#+end_src
+
 * Custom Set Variables
 #+begin_src elisp
   (custom-set-variables

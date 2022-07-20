@@ -472,6 +472,10 @@
 
 (setq python-shell-completion-native-disabled-interpreters '("python3"))
 
+(setq python-shell-interpreter "python3")
+(setq elpy-rpc-python-command "python3")
+(setq org-babel-python-command "python3")
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
