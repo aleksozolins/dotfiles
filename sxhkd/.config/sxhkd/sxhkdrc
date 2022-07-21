@@ -24,9 +24,9 @@ super + shift + c
 super + b
   $BROWSER
 super + shift + b
-  google-chrome-stable
-super + control + b
   qutebrowser
+super + control + b
+  google-chrome-stable
 super + shift + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + n
