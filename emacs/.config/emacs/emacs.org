@@ -473,7 +473,7 @@ Simple contact management for org. Contacts can be captured via a template by us
 
 	  ("z" "Zapier")
 	  ("zb" "Brag" table-line (file+headline "~/docs/orgfiles/zapier.org" "Brags and Contributions")
-	   "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|brag|other} | [[%^{Link}][link]] | %^{Note} |")
+	   "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|Rover note|brag|other} | [[%^{Link}][link]] | %^{Note} |")
 
 	  ("zp" "Real Python Course Completion" table-line (file+olp "~/docs/orgfiles/zapier.org" "Learning Platforms" "Real Python" "Course Log")
 	   "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
