@@ -92,6 +92,12 @@
       kept-old-versions 5    ; and how many of the old
       )
 
+;; auto-save
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+(setq kill-buffer-delete-auto-save-files t)
+
 (setq completion-styles '(substring))
 
 ;; whick-key
@@ -301,9 +307,6 @@
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "/inbox.txt"))
-
-;; Prevent org capture from making bookmarks
-(setq org-capture-bookmark nil)
 
 ;;Enable certain languages
 (org-babel-do-load-languages
