@@ -475,9 +475,6 @@ Simple contact management for org. Contacts can be captured via a template by us
   ;; Default org capture file
   (setq org-default-notes-file (concat org-directory "/inbox.txt"))
 
-  ;; Prevent org capture from making bookmarks
-  (setq org-capture-bookmark nil)
-
 #+end_src
 
 ** Org Babel
