@@ -98,7 +98,8 @@
 
 (setq kill-buffer-delete-auto-save-files t)
 
-(setq completion-styles '(substring))
+(setq completion-styles '(substring))  ;; define the completion style
+(setq completion-ignore-case  t)  ;; ignore case
 
 ;; whick-key
 (use-package which-key

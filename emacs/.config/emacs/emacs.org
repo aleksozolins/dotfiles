@@ -186,8 +186,9 @@ For some reason, Emacs is still autosaving files in the same directory as the fi
 We'll define the default completion style(s) here before adding features:
 
 #+begin_src elisp
-  (setq completion-styles '(substring))
-
+  (setq completion-styles '(substring))  ;; define the completion style
+  (setq completion-ignore-case  t)  ;; ignore case
+  
 #+end_src
 
 ** Which-Key
