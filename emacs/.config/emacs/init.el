@@ -324,6 +324,19 @@
 (add-to-list 'org-structure-template-alist '("el" . "src elisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/docs/org-roam")
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+	 ("C-c n f" . org-roam-node-find)
+	 ("C-c n i" . org-roam-node-insert)
+	 :map org-mode-map
+	 ("C-M-i"    . completion-at-point))
+  :config
+  (org-roam-setup))
+
 ;; Install the package
 (pcase system-type
   ('gnu/linux (use-package mu4e

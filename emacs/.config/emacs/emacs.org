@@ -516,6 +516,38 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
   
 #+end_src
 
+** Org Roam
+
+Org Roam is the package that allows us to use an SQLite database to manage our org files to form a "second brain"
+
+*** Keybindings
+
+- ~C-c n f~ - Find an existing node **or** make a new node
+- ~C-c n i~ - Insert a link to an existing node or make a new node
+- ~C-c n l~ - Open the Roam bugger to show backlinks
+- ~C-M-i~ - Completion at point for inserting a partially typed link
+
+*** Other functions
+
+- ~org-roam-alias-add~ Add aliases to the properties of the current node (say for duplicate names)
+- ~org-id-get-create~ Creates a node within an existing node from a **top level heading** only
+
+#+begin_src elisp
+  (use-package org-roam
+    :ensure t
+    :custom
+    (org-roam-directory "~/docs/org-roam")
+    (org-roam-completion-everywhere t)
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+	   ("C-c n f" . org-roam-node-find)
+	   ("C-c n i" . org-roam-node-insert)
+	   :map org-mode-map
+	   ("C-M-i"    . completion-at-point))
+    :config
+    (org-roam-setup))
+
+#+end_src
+
 * Mu4e
 
 Email is managed via =mu4e= in plain text when possible, altough it's always quick to send any existing message over to a browser using =A v= for a full html render.
