@@ -473,10 +473,10 @@ Simple contact management for org. Contacts can be captured via a template by us
 	   "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
 	  ("z" "Zapier")
-	  ("zb" "Brag" table-line (file+headline "~/docs/orgfiles/zapier.org" "Brags and Contributions")
+	  ("zb" "Brag" table-line (file "~/docs/org-roam/20220725213752-zapier_brags_and_contributions.org")
 	   "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|Rover note|brag|other} | [[%^{Link}][link]] | %^{Note} |")
 
-	  ("zp" "Real Python Course Completion" table-line (file+olp "~/docs/orgfiles/zapier.org" "Learning Platforms" "Real Python" "Course Log")
+	  ("r" "Real Python Course Completion" table-line (file "~/docs/org-roam/20220725214725-real_python_course_log.org")
 	   "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
   
   ;; Default org capture file
