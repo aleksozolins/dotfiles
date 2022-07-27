@@ -151,8 +151,12 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (defvar *afilename-cmd*
-  '(("/home/aleksozolins/docs/orgfiles/zapier.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-    ("/Users/aleksozolins/docs/orgfiles/zapier.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh"))
+  '(("/home/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
+    ("/Users/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
+    ("/home/aleksozolins/docs/org-roam/real_python_course_log.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
+    ("/Users/aleksozolins/docs/org-roam/real_python_course_log.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
+    ("/home/aleksozolins/docs/org-roam/zapier_scc_competencies.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
+    ("/Users/aleksozolins/docs/org-roam/zapier_scc_competencies.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh"))
   "File association list with their respective command.")
 
 (defun my/cmd-after-saved-file ()
