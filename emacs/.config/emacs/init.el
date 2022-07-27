@@ -191,10 +191,10 @@
 (setq org-startup-folded t)
 
 ;; Set org directory
-(setq org-directory "~/docs/orgfiles")
+(setq org-directory "~/docs/org-roam")
 
 ;; Set org-agenda files
-(setq org-agenda-files (expand-file-name "~/docs/orgfiles/agenda.org" org-directory))
+(setq org-agenda-files (expand-file-name "~/docs/agenda.txt" org-directory))
 
 ;; Include archived trees in the agenda view
 ;; Used to have this to nil. Now it's recommended to use "v" in the agenda view to include archived items.
@@ -254,7 +254,7 @@
 (use-package org-contacts
   :ensure t
   :after org
-  :custom (org-contacts-files '("~/docs/orgfiles/contacts.org")))
+  :custom (org-contacts-files '("~/docs/org-roam/contacts.org")))
 
 ;; Org capture
 (use-package org-capture
@@ -270,24 +270,24 @@
     :END:" "Template for org-contacts.")
 
 (setq org-capture-templates
-      `(("c" "Contact" entry (file+headline "~/docs/orgfiles/contacts.org" "Misc"),
+      `(("c" "Contact" entry (file+headline "~/docs/org-roam/contacts.org" "Misc"),
 	 my/org-contacts-template :empty-lines 1)
 
 	("t" "Tasks")
-	("tt" "Task" entry (file+olp "~/docs/orgfiles/todos.org" "Inbox")
+	("tt" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
 	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tn" "Next Task" entry (file+olp "~/docs/orgfiles/todos.org" "Inbox")
+	("tn" "Next Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
 	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tc" "Check Out" entry (file+headline "~/docs/orgfiles/todos.org" "Check Out")
+	("tc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
 	 "* TODO Check out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("m" "Metrics")
 	("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
 	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
-	("M" "Meeting" entry (file "~/docs/orgfiles/meetings.org")
+	("M" "Meeting" entry (file "~/docs/org-roam/meetings.org")
 	 "* %^U - %^{With} - %^{Event}     %^g\n\n%?" :empty-lines 1)
 
 	("o" "Mouthpiece")
@@ -311,7 +311,7 @@
 	 "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
 
 ;; Default org capture file
-(setq org-default-notes-file (concat org-directory "/inbox.txt"))
+(setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
 
 ;;Enable certain languages
 (org-babel-do-load-languages
@@ -435,7 +435,7 @@
 (setq mu4e-headers-include-related nil)
 
 ;; Use org-contacts
-(setq mu4e-org-contacts-file  "~/docs/orgfiles/contacts.org")
+(setq mu4e-org-contacts-file  "~/docs/org-roam/contacts.org")
 ;; BELOW DISABLED AS I THINK IT'S BETTER TO JUST USE ORG CAPTURE FOR REFILING
 ;;(add-to-list 'mu4e-headers-actions
 ;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
