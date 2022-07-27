@@ -280,30 +280,30 @@
 	 "* TODO Check out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("m" "Metrics")
-	("mw" "Weight" table-line (file "~/docs/org-roam/20220724165707-weight.org")
+	("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
 	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
 	("M" "Meeting" entry (file "~/docs/orgfiles/meetings.org")
 	 "* %^U - %^{With} - %^{Event}     %^g\n\n%?" :empty-lines 1)
 
 	("o" "Mouthpiece")
-	("o1" "One-Piece" table-line (file "~/docs/org-roam/20220725210154-my_mouthpieces.org")
+	("o1" "One-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
 	 "| %^{Make} | one-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
 
-	("o2" "Two-Piece" table-line (file "~/docs/org-roam/20220725210154-my_mouthpieces.org")
+	("o2" "Two-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
 	 "| %^{Make} | two-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-	("or" "Rim" table-line (file "~/docs/org-roam/20220725210154-my_mouthpieces.org")
+	("or" "Rim" table-line (file "~/docs/org-roam/my_mouthpieces.org")
 	 "| %^{Make} | rim | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-	("oc" "Cup" table-line (file "~/docs/org-roam/20220725210154-my_mouthpieces.org")
+	("oc" "Cup" table-line (file "~/docs/org-roam/my_mouthpieces.org")
 	 "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
 	("z" "Zapier")
-	("zb" "Brag" table-line (file "~/docs/org-roam/20220725213752-zapier_brags_and_contributions.org")
+	("zb" "Brag" table-line (file "~/docs/org-roam/zapier_brags_and_contributions.org")
 	 "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|Rover note|brag|other} | [[%^{Link}][link]] | %^{Note} |")
 
-	("r" "Real Python Course Completion" table-line (file "~/docs/org-roam/20220725214725-real_python_course_log.org")
+	("r" "Real Python Course Completion" table-line (file "~/docs/org-roam/real_python_course_log.org")
 	 "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
 
 ;; Default org capture file
@@ -330,6 +330,11 @@
   :custom
   (org-roam-directory "~/docs/org-roam")
   (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain
+      "%?"
+      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n\n")
+      :unnarrowed t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n i" . org-roam-node-insert)
