@@ -333,7 +333,7 @@
   (org-roam-capture-templates
    '(("d" "default" plain
       "%?"
-      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n\n")
+      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n")
       :unnarrowed t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
