@@ -236,15 +236,19 @@
       '((:startgroup)
 	; Put mutually exclusive tags here
 	(:endgroup)
-	("@errand" . ?E)
-	("@home" . ?H)
-	("@work" . ?W)
-	("note" . ?n)
-	("idea" . ?i)
-	("emacs" . ?e)
-	("recurring" . ?r)
+	("home" . ?h)
+	("tech" . ?t)
+	("financial" . ?f)
+	("zapier" . ?z)
+	("gigs" . ?g)
+	("ozostudio" . ?o)
 	("parents" . ?p)
-	("gigs" . ?g)))
+	("check out" . ?c)
+	("shopping" . ?s)
+	("connections" . ?C)
+	("someday" . ?S)
+	("emacs" . ?e)
+	("recurring" . ?r)))
 
 ;; Add some modules
 (with-eval-after-load 'org
