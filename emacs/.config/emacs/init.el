@@ -347,6 +347,9 @@
       "%?"
       :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n#+category: ${title}\n#+filetage: project\n")
       :unnarrowed t)))
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n i" . org-roam-node-insert)
