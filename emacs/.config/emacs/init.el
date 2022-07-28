@@ -350,6 +350,7 @@
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n i" . org-roam-node-insert)
+	 ("C-c n I" . org-roam-node-insert-immediate)
 	 :map org-mode-map
 	 ("C-M-i"    . completion-at-point)
 	 :map org-roam-dailies-map
@@ -360,6 +361,13 @@
   :config
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode))
+
+(defun org-roam-node-insert-immediate (arg &rest args)
+  (interactive "P")
+  (let ((args (cons arg args))
+	(org-roam-capture-templates (list (append (car org-roam-capture-templates)
+						  '(:immediate-finish t)))))
+    (apply #'org-roam-node-insert args)))
 
 ;; Install the package
 (pcase system-type

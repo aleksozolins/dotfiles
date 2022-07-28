@@ -533,6 +533,7 @@ Org Roam is the package that allows us to use an SQLite database to manage our o
 
 - ~C-c n f~ - Find an existing node **or** make a new node
 - ~C-c n i~ - Insert a link to an existing node or make a new node
+- ~C-c n I~ - Insert a link to an existing node or make a new node
 - ~C-c n l~ - Open the Roam bugger to show backlinks
 - ~C-M-i~ - Completion at point for inserting a partially typed link
 - ~C-c n d n~ - Create a daily node for today
@@ -550,7 +551,7 @@ Org Roam is the package that allows us to use an SQLite database to manage our o
 - ~org-roam-alias-add~ Add aliases to the properties of the current node (say for duplicate names)
 - ~org-id-get-create~ Creates a node within an existing node from a **top level heading** only
 
-*** Code
+*** Main Config
 
 #+begin_src elisp
   (use-package org-roam
@@ -570,6 +571,7 @@ Org Roam is the package that allows us to use an SQLite database to manage our o
     :bind (("C-c n l" . org-roam-buffer-toggle)
 	   ("C-c n f" . org-roam-node-find)
 	   ("C-c n i" . org-roam-node-insert)
+	   ("C-c n I" . org-roam-node-insert-immediate)
 	   :map org-mode-map
 	   ("C-M-i"    . completion-at-point)
 	   :map org-roam-dailies-map
@@ -580,6 +582,18 @@ Org Roam is the package that allows us to use an SQLite database to manage our o
     :config
     (require 'org-roam-dailies) ;; Ensure the keymap is available
     (org-roam-db-autosync-mode))
+
+#+end_src
+
+*** Insert a Node Without Opening Buffer
+
+#+begin_src elisp
+  (defun org-roam-node-insert-immediate (arg &rest args)
+    (interactive "P")
+    (let ((args (cons arg args))
+	  (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+						    '(:immediate-finish t)))))
+      (apply #'org-roam-node-insert args)))
 
 #+end_src
 
