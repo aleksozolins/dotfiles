@@ -324,6 +324,15 @@ Magit is the most common git interface for Emacs and doesn't require any additio
   
 #+end_src
 
+** Ledger Mode
+
+I'll be using this hopefully soon to manage finances.
+
+#+begin_src elisp
+  (use-package ledger-mode)
+  
+#+end_src
+
 * Org Mode
 ** Settings
 #+begin_src elisp
