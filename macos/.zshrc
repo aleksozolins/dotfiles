@@ -17,8 +17,8 @@ alias gf='cd ~/Dropbox/docs/finances'
 alias gd='cd ~/Dropbos/docs'
 alias gD='cd ~/Dropbox'
 alias gm='cd ~/Dropbox/mus'
-alias gp='cd ~/Dropbos/pics'
-alias gv='cd ~/Dropbos/vids'
+alias gp='cd ~/Dropbox/pics'
+alias gv='cd ~/Dropbox/vids'
 alias gr='cd ~/repos'
 
 # homedir cleanup
