@@ -542,7 +542,7 @@ Org Roam is the package that allows us to use an SQLite database to manage our o
 
 - ~C-c n f~ - Find an existing node **or** make a new node
 - ~C-c n i~ - Insert a link to an existing node or make a new node
-- ~C-c n I~ - Insert a link to an existing node or make a new node
+- ~C-c n I~ - Insert a link to an existing node or make a new node without opening a new buffer
 - ~C-c n l~ - Open the Roam bugger to show backlinks
 - ~C-M-i~ - Completion at point for inserting a partially typed link
 - ~C-c n d n~ - Create a daily node for today
