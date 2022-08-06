@@ -40,8 +40,21 @@
 (minibuffer-electric-default-mode t)  ; Make default disappear in the minibuffer when typing
 (setq suggest-key-bindings 3)         ; Make keybinding suggestions stick around longer
 
-;; Stop Emacs from asking about following symlinks when opening files
-(setq vc-follow-symlinks nil)
+;; Change the startup message in the minibuffer to a nice greeting
+(defun display-startup-echo-area-message ()
+  (message "Welcome back Aleks!"))
+
+(setq vc-follow-symlinks nil) ; Stop Emacs from asking about following symlinks when opening files
+(recentf-mode 1) ; Have Emacs remember recently opened files when using fild file
+
+;; Save what you enter into minibuffer prompts
+(setq history-length 25)
+(savehist-mode 1)
+
+(save-place-mode 1) ; Remember and restore the last cursor location of opened files
+
+(global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
+(setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
 
 (set-face-attribute 'default nil :font "Liberation Mono" :height 130)
 
@@ -534,16 +547,5 @@
 (setq elpy-rpc-python-command "python3")
 (setq org-babel-python-command "python3")
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(magit embark marginalia vertico which-key rainbow-delimiters use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
+(load custom-file 'noerror 'nomessage)

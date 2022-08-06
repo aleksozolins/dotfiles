@@ -87,7 +87,11 @@ The following settings make the interface a bit more minimal and clean. In the f
   (setq visible-bell t)                 ; Set up the visible bell
   (minibuffer-electric-default-mode t)  ; Make default disappear in the minibuffer when typing
   (setq suggest-key-bindings 3)         ; Make keybinding suggestions stick around longer
-  
+
+  ;; Change the startup message in the minibuffer to a nice greeting
+  (defun display-startup-echo-area-message ()
+    (message "Welcome back Aleks!"))
+
 #+end_src
 
 ** Misc One-Off Settings
@@ -95,8 +99,18 @@ The following settings make the interface a bit more minimal and clean. In the f
 Below are any settings where I'm not quite sure where to put in this file just yet.
 
 #+begin_src elisp
-  ;; Stop Emacs from asking about following symlinks when opening files
-  (setq vc-follow-symlinks nil)
+
+  (setq vc-follow-symlinks nil) ; Stop Emacs from asking about following symlinks when opening files
+  (recentf-mode 1) ; Have Emacs remember recently opened files when using fild file
+
+  ;; Save what you enter into minibuffer prompts
+  (setq history-length 25)
+  (savehist-mode 1)
+
+  (save-place-mode 1) ; Remember and restore the last cursor location of opened files
+
+  (global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
+  (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
   
 #+end_src
 ** Font Configuration
@@ -830,25 +844,11 @@ Let's make sure the shell, ELPY, and org-babel are all defaulting to Python 3.
 #+end_src
 
 * Custom Set Variables
+
+Move customization variables to a separate file and load it
+
 #+begin_src elisp
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(package-selected-packages
-     '(magit embark marginalia vertico which-key rainbow-delimiters use-package)))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
+  (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+  (load custom-file 'noerror 'nomessage)
 
 #+end_src
-
-
-
-
-
-
