@@ -211,6 +211,10 @@
 ;; Set org-agenda files
 (setq org-agenda-files (expand-file-name "~/docs/agenda.txt" org-directory))
 
+;; org-agenda window settings
+(setq org-agenda-window-setup 'only-window) ; open the agenda full screen
+(setq org-agenda-restore-windows-after-quit t) ; restore the previous window arrangement after quitting
+
 ;; Include archived trees in the agenda view
 ;; Used to have this to nil. Now it's recommended to use "v" in the agenda view to include archived items.
 (setq org-agenda-skip-archived-trees t)
@@ -225,6 +229,7 @@
 ;; Logging
 (setq org-log-done 'time)
 (setq org-log-into-drawer t)
+(setq org-clock-into-drawer "CLOCKING")
 (setq org-log-note-clock-out nil)
 (setq org-log-redeadline 'time)
 (setq org-log-reschedule 'time)
@@ -244,7 +249,27 @@
 	("D" "Day Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
 	  (todo "NEXT"
-		((org-agenda-overriding-header "Next Tasks")))))))
+		((org-agenda-overriding-header "Next Tasks")))))
+
+	("h" "Home Week Dashboard"
+	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
+	  (todo "NEXT"
+		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
+
+	("H" "Home Day Dashboard"
+	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "NEXT"
+		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
+
+	("z" "Zapier Week Dashboard"
+	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
+	  (todo "NEXT"
+		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))
+
+	("Z" "Zapier Day Dashboard"
+	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "NEXT"
+		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
