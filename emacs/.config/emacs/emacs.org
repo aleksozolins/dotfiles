@@ -347,6 +347,17 @@ I'll be using this hopefully soon to manage finances.
   
 #+end_src
 
+** Ripgrep (rg.el)
+
+rg.el adds to Emacs' grep mode functionality with editing/etc.
+
+#+begin_src elisp
+  (use-package rg
+  :config
+  (rg-enable-default-bindings))
+  
+#+end_src
+
 * Org Mode
 ** Settings
 #+begin_src elisp

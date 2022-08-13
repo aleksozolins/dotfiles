@@ -189,6 +189,10 @@
 
 (use-package ledger-mode)
 
+(use-package rg
+:config
+(rg-enable-default-bindings))
+
 ;; Org keybindings
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
