@@ -193,6 +193,20 @@
 :config
 (rg-enable-default-bindings))
 
+;; Put the elfeed DB on my Dropbox so the state syncs accross machines
+(setq elfeed-db-directory "~/Dropbox/apps/elfeed")
+
+;; Install the package
+(use-package elfeed
+  :ensure t)
+
+;; Install another package to allow us to use an org file as the source for feeds
+(use-package elfeed-org
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/Dropbox/docs/org-roam/rss_feeds.org")))
+
 ;; Org keybindings
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
