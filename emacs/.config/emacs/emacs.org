@@ -379,6 +379,24 @@ RSS reader!
 
 #+end_src
 
+* Perspective
+
+Perspective.el allows multiple workspaces with compartmentalized buffers and windows. Almost like a window manager.
+
+#+begin_src elisp
+  (use-package perspective
+    :ensure t
+    :bind
+    ("C-x k" . persp-kill-buffer*)
+    ("C-x C-b" . persp-list-buffers)
+    :custom
+    (persp-mode-prefix-key (kbd "C-x x"))
+    :init
+    (setq persp-initial-frame-name "master")
+    (persp-mode))
+
+#+end_src
+
 * Org Mode
 ** Settings
 #+begin_src elisp

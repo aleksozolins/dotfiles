@@ -207,6 +207,17 @@
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/Dropbox/docs/org-roam/rss_feeds.org")))
 
+(use-package perspective
+  :ensure t
+  :bind
+  ("C-x k" . persp-kill-buffer*)
+  ("C-x C-b" . persp-list-buffers)
+  :custom
+  (persp-mode-prefix-key (kbd "C-x x"))
+  :init
+  (setq persp-initial-frame-name "master")
+  (persp-mode))
+
 ;; Org keybindings
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
