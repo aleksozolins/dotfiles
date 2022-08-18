@@ -415,7 +415,7 @@
       :unnarrowed t)
      ("p" "project" plain
       "%?"
-      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n#+category: ${title}\n#+filetage: project\n")
+      :target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n#+category: ${title}\n#+filetags: project\n")
       :unnarrowed t)))
   (org-roam-dailies-capture-templates
    '(("d" "default" entry "* %<%I:%M %p>: %?"
