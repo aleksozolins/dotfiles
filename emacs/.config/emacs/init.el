@@ -270,42 +270,42 @@
 
 ;; Configure custom agenda views
 (setq org-agenda-custom-commands
-      '(("d" "Week Dashboard"
+      '(("D" "Week Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)))
 	  (todo "NEXT"
 		((org-agenda-overriding-header "Next Tasks")))
 	  (todo "ONG"
 		((org-agenda-overriding-header "Ongoing Tasks")))))
 
-	("D" "Day Dashboard"
+	("d" "Day Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
 	  (todo "NEXT"
 		((org-agenda-overriding-header "Next Tasks")))
 	  (todo "ONG"
 		((org-agenda-overriding-header "Ongoing Tasks")))))
 
-	("h" "Home Week Dashboard"
+	("H" "Home Week Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))
 	  (todo "ONG"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Ongoing Tasks")))))
 
-	("H" "Home Day Dashboard"
+	("h" "Home Day Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))
 	  (todo "ONG"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Ongoing Tasks")))))
 
-	("z" "Zapier Week Dashboard"
+	("Z" "Zapier Week Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))
 	  (todo "ONG"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))))
 
-	("Z" "Zapier Day Dashboard"
+	("z" "Zapier Day Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))
