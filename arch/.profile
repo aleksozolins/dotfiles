@@ -8,8 +8,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/bin/statusbar:$PATH"
 
 # More variables to export
-export EDITOR="nvim"
-export VISUAL="nvim"
+export ALTERNATE_EDITOR="nvim"
+export EDITOR="emacsclient -t -a"
+export VISUAL="emacsclient -c -a emacs"
 export TERMINAL="st"
 export BROWSER="firefox"
 export READER="zathura"

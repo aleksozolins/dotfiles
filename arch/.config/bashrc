@@ -28,7 +28,7 @@ alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
 
 # misc aliases
 alias cfg="git -C ~/.dotfiles"
-alias e="nvim"
+alias e="emacsclient -t -a"
 alias tvim='nvim -c "colorscheme default"'
 alias trans="tremc"
 alias hdc="ls -a ~ | wc -l"
