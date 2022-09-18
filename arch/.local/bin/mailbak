@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rsync -rvh ~/.local/share/mail/local_aleksozolins/ ~/Dropbox/archive/mail/local_aleksozolins/ --delete
