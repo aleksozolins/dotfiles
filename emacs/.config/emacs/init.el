@@ -390,7 +390,7 @@
 
 	("z" "Zapier")
 	("zb" "Brag" table-line (file "~/docs/org-roam/zapier_brags_and_contributions.org")
-	 "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|Rover note|brag|other} | [[%^{Link}][link]] | %^{Note} |")
+	 "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|Rover note|brag|support points|other} | [[%^{Link}][link]] | %^{Note} |")
 
 	("r" "Real Python Course Completion" table-line (file "~/docs/org-roam/real_python_course_log.org")
 	 "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
