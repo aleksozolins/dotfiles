@@ -49,3 +49,7 @@ alias stow='stow --no-folding'
 # Set history to infinite
 HISTSIZE=
 HISTFILESIZE=
+
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
