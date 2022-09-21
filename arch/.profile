@@ -58,12 +58,3 @@ sudo timedatectl set-ntp true
 
 # start DWM if TTY1
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm >/dev/null && pullask && exec startx "$XDG_CONFIG_HOME/X11/xinitrc"
-
-# An if statement is used to get the proper sequence. It's messy but it works.
-if [[ "$(tty)" = "/dev/tty2" ]] && ! pgrep -x tmux >/dev/null; then
-  dropbox &
-  sleep 5
-  clear
-  pullask
-  exec tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf
-fi
