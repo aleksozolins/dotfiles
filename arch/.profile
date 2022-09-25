@@ -57,4 +57,4 @@ sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
 sudo timedatectl set-ntp true
 
 # start DWM if TTY1
-[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm >/dev/null && pullask && exec startx "$XDG_CONFIG_HOME/X11/xinitrc"
+[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm >/dev/null && exec startx "$XDG_CONFIG_HOME/X11/xinitrc"
