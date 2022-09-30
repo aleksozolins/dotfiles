@@ -141,6 +141,15 @@ I'll need to take a deeper look at the font config in the future as I'd like to 
   
 #+end_src
 
+** Set Fonts
+
+Very basic setting for now.
+
+#+begin_src elisp
+  (set-face-attribute 'default nil :font "Monospace" :height 140)
+
+#+end_src
+
 ** Set a Theme
 
 I'm using the Modus themes which are supplied out of the box. They were built by Protesilaos Stavrou.
@@ -166,7 +175,7 @@ More info here: [[https://protesilaos.com/e7629734301macs/modus-themes][Modus Th
 	  (t . (semilight 1.1))))
 
   ;; Load a Theme
-  (load-theme 'modus-operandi t)
+  (load-theme 'modus-vivendi t)
 
   ;; Set a hot-key for switching between light and dark theme
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
