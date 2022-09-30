@@ -4,14 +4,6 @@ alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias sudo='sudo '
 
-# Generate m3u Playlists
-alias m3ump3='ls -1v |grep .mp3 > '
-alias m3um4a='ls -1v |grep .m4a > '
-alias m3uflac='ls -1v |grep .flac > '
-
-# Set vim mode
-set -o vi
-
 # directory shortcuts
 alias gf='cd ~/docs/finances'
 alias gd='cd ~/docs'
@@ -27,8 +19,7 @@ alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
 
 # misc aliases
-alias cfg="git -C ~/.dotfiles"
-alias e="emacsclient"
+alias e="emacsclient -t"
 alias tvim='nvim -c "colorscheme default"'
 alias trans="tremc"
 alias hdc="ls -a ~ | wc -l"
@@ -41,8 +32,6 @@ alias yt='pipe-viewer'
 alias ytdl='youtube-dl'
 alias solitaire='ttysolitaire --no-background-color'
 alias newapps='sudo pacman -S --needed - < ~/repos/reprov_new/pacman_reprov.txt'
-alias newtix='cp $HOME/docs/icanotes/tix/tix.txt $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt" && vim $HOME/docs/icanotes/tix/"20$(date +%y)-$(date +%m)-$(date +%d).txt"'
-alias yay='echo USE PARU'
 alias db='dropbox-cli status'
 alias stow='stow --no-folding'
 
