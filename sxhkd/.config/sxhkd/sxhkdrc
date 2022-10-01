@@ -33,12 +33,6 @@ super + n
   $TERMINAL -e nmtui
 super + shift + n
   sudo systemctl restart NetworkManager
-super + r
-  $TERMINAL -e newsboat -c $HOME/Dropbox/apps/newsboat/cache.db
-super + shift + r
-  $TERMINAL -e podboat
-super + control + r
-  $TERMINAL -e rtv
 super + t
   $TERMINAL -e tremc
 super + g
@@ -82,3 +76,11 @@ XF86TouchpadToggle
 # for X1
 XF86Display
   toggletouchpad
+
+# deprecated
+super + r
+  $TERMINAL -e newsboat -c $HOME/Dropbox/apps/newsboat/cache.db
+super + shift + r
+  $TERMINAL -e podboat
+super + control + r
+  $TERMINAL -e rtv

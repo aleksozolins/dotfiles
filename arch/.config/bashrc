@@ -27,13 +27,14 @@ alias logout='pkill -u'
 alias vim='nvim'
 alias w3md='w3m duckduckgo.com'
 alias cls='clear'
-alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'
 alias yt='pipe-viewer'
 alias ytdl='youtube-dl'
 alias solitaire='ttysolitaire --no-background-color'
 alias newapps='sudo pacman -S --needed - < ~/repos/reprov_new/pacman_reprov.txt'
 alias db='dropbox-cli status'
 alias stow='stow --no-folding'
+# note: newsboat has been deprecated in favor of elfeed
+# alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'
 
 # Set history to infinite
 HISTSIZE=
