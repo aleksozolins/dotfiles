@@ -1,9 +1,7 @@
 #!/bin/bash
 # Profile file. Runs on login.
 
-# Adds `~/.local/bin` and all subdirectories to $PATH -- Hmm... This doesn't work any more
-# export PATH="$(du $HOME/.local/bin/ | cut -f2 | tr '\n' ':')$PATH"
-
+# Adds `~/.local/bin` and all subdirectories to $PATH
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/bin/statusbar:$PATH"
 
@@ -32,9 +30,9 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc-2.0
 # export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line will break some DMs.
 export NOTMUCH_CONFIG="$XDG_CONFIG_HOME"/notmuch-config
 [ -f $HOME/.lesshst ] && rm $HOME/.lesshst
-# [ -f $HOME/.Xauthority ] && rm $HOME/.Xauthority
-export TASKRC="$XDG_CONFIG_HOME"/task/taskrc
-export TASKDATA="$HOME"/Dropbox/apps/task
+# Taskwarrior is no longer used
+# export TASKRC="$XDG_CONFIG_HOME"/task/taskrc
+# export TASKDATA="$HOME"/Dropbox/apps/task
 
 # bash config cleanup
 export HISTFILE="$XDG_DATA_HOME/history"
