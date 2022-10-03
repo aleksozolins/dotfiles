@@ -474,6 +474,9 @@
            (setq epg-gpg-program "/opt/homebrew/bin/gpg")
            (epa-file-enable)))
 
+;; set the default mail user agent
+(setq mail-user-agent 'mu4e-user-agent)
+
 ;; This is set to 't' to avoid mail syncing issues when using mbsync
 (setq mu4e-change-filenames-when-moving t)
 
@@ -543,48 +546,48 @@
 
 (setq mu4e-maildir-shortcuts
       '(("/aleksozolins/INBOX"                . ?i)
-        ("/aleksozolins/Sent Messages"        . ?s)
-        ("/aleksozolins/Drafts"               . ?d)
-        ("/aleksozolins/Archive"              . ?a)
-        ("/aleksozolins/Trash"                . ?t)))
-
-;; Run mu4e in the background to sync mail periodically
-;;(mu4e t)
+	("/aleksozolins/Sent Messages"        . ?s)
+	("/aleksozolins/Drafts"               . ?d)
+	("/aleksozolins/Archive"              . ?a)
+	("/aleksozolins/Trash"                . ?t)))
 
 (setq mu4e-contexts
       (list
        ;; aleksozolins account
        (make-mu4e-context
-        :name "aleksozolins"
-        :match-func
-        (lambda (msg)
-          (when msg
-            (string-prefix-p "/aleksozolins" (mu4e-message-field msg :maildir))))
-        :vars '((user-mail-address     . "aleks@aleksozolins.com")
-                (user-full-name        . "Aleks Ozolins")
-                (smtpmail-smtp-server  . "smtp.powweb.com")
-                (smtpmail-smtp-service . 465)
-                (smtpmail-stream-type  . ssl)
-                (mu4e-drafts-folder    . "/aleksozolins/Drafts")
-                (mu4e-sent-folder      . "/aleksozolins/Sent Messages")
-                (mu4e-refile-folder    . "/aleksozolins/Archive")
-                (mu4e-trash-folder     . "/aleksozolins/Trash")))
+	:name "aleksozolins"
+	:match-func
+	(lambda (msg)
+	  (when msg
+	    (string-prefix-p "/aleksozolins" (mu4e-message-field msg :maildir))))
+	:vars '((user-mail-address     . "aleks@aleksozolins.com")
+		(user-full-name        . "Aleks Ozolins")
+		(smtpmail-smtp-server  . "smtp.powweb.com")
+		(smtpmail-smtp-service . 465)
+		(smtpmail-stream-type  . ssl)
+		(mu4e-drafts-folder    . "/aleksozolins/Drafts")
+		(mu4e-sent-folder      . "/aleksozolins/Sent Messages")
+		(mu4e-refile-folder    . "/aleksozolins/Archive")
+		(mu4e-trash-folder     . "/aleksozolins/Trash")))
        ;; icloud account
        (make-mu4e-context
-        :name "icloud"
-        :match-func
-        (lambda (msg)
-          (when msg
-            (string-prefix-p "/icloud" (mu4e-message-field msg :maildir))))
-        :vars '((user-mail-address     . "aleksozolins@me.com")
-                (user-full-name        . "Aleks Ozolins")
-                (smtpmail-smtp-server  . "smtp.mail.me.com")
-                (smtpmail-smtp-service . 587)
-                (smtpmail-stream-type  . starttls)
-                (mu4e-drafts-folder    . "/icloud/Drafts")
-                (mu4e-sent-folder      . "/icloud/Sent Messages")
-                (mu4e-refile-folder    . "/icloud/Archive")
-                (mu4e-trash-folder     . "/icloud/Deleted Messages")))))
+	:name "icloud"
+	:match-func
+	(lambda (msg)
+	  (when msg
+	    (string-prefix-p "/icloud" (mu4e-message-field msg :maildir))))
+	:vars '((user-mail-address     . "aleksozolins@me.com")
+		(user-full-name        . "Aleks Ozolins")
+		(smtpmail-smtp-server  . "smtp.mail.me.com")
+		(smtpmail-smtp-service . 587)
+		(smtpmail-stream-type  . starttls)
+		(mu4e-drafts-folder    . "/icloud/Drafts")
+		(mu4e-sent-folder      . "/icloud/Sent Messages")
+		(mu4e-refile-folder    . "/icloud/Archive")
+		(mu4e-trash-folder     . "/icloud/Deleted Messages")))))
+
+;; Set the compose context policy
+(setq mu4e-compose-context-policy 'pick-first)
 
 ;; Allow attaching files from within dired with C-c RET C-a
 (require 'gnus-dired)
@@ -604,6 +607,9 @@
 
 (setq gnus-dired-mail-mode 'mu4e-user-agent)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
+;; Run mu4e in the background to sync mail periodically
+(mu4e t)
 
 (use-package elpy
   :ensure t

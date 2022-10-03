@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Mu4e Compose
+Exec=emacsclient -c -e '(message-mailto "%u")'
+Terminal=false
+Categories=Utility

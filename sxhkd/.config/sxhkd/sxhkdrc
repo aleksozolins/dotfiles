@@ -14,7 +14,7 @@ super + f
 super + shift + f
   $TERMINAL -e mc
 super + e
-  emacs
+  emacsclient -c
 super + m
   $TERMINAL -e ncmpcpp
 super + a

@@ -759,6 +759,9 @@ Settings of note:
 - Various settings to both view and compose mail in plain text only. I might add the ability later to compose in org and then render to html at send.
 
 #+begin_src elisp
+  ;; set the default mail user agent
+  (setq mail-user-agent 'mu4e-user-agent)
+
   ;; This is set to 't' to avoid mail syncing issues when using mbsync
   (setq mu4e-change-filenames-when-moving t)
 
@@ -827,15 +830,12 @@ Settings of note:
   ;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
 
   (setq mu4e-maildir-shortcuts
-        '(("/aleksozolins/INBOX"                . ?i)
-          ("/aleksozolins/Sent Messages"        . ?s)
-          ("/aleksozolins/Drafts"               . ?d)
-          ("/aleksozolins/Archive"              . ?a)
-          ("/aleksozolins/Trash"                . ?t)))
+	'(("/aleksozolins/INBOX"                . ?i)
+	  ("/aleksozolins/Sent Messages"        . ?s)
+	  ("/aleksozolins/Drafts"               . ?d)
+	  ("/aleksozolins/Archive"              . ?a)
+	  ("/aleksozolins/Trash"                . ?t)))
 
-  ;; Run mu4e in the background to sync mail periodically
-  ;;(mu4e t)
-  
 #+end_src
 
 ** Contexts
@@ -849,40 +849,43 @@ Note that the @me context is used for reference only.
 
 #+begin_src elisp
   (setq mu4e-contexts
-        (list
-         ;; aleksozolins account
-         (make-mu4e-context
-          :name "aleksozolins"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/aleksozolins" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address     . "aleks@aleksozolins.com")
-                  (user-full-name        . "Aleks Ozolins")
-                  (smtpmail-smtp-server  . "smtp.powweb.com")
-                  (smtpmail-smtp-service . 465)
-                  (smtpmail-stream-type  . ssl)
-                  (mu4e-drafts-folder    . "/aleksozolins/Drafts")
-                  (mu4e-sent-folder      . "/aleksozolins/Sent Messages")
-                  (mu4e-refile-folder    . "/aleksozolins/Archive")
-                  (mu4e-trash-folder     . "/aleksozolins/Trash")))
-         ;; icloud account
-         (make-mu4e-context
-          :name "icloud"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/icloud" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address     . "aleksozolins@me.com")
-                  (user-full-name        . "Aleks Ozolins")
-                  (smtpmail-smtp-server  . "smtp.mail.me.com")
-                  (smtpmail-smtp-service . 587)
-                  (smtpmail-stream-type  . starttls)
-                  (mu4e-drafts-folder    . "/icloud/Drafts")
-                  (mu4e-sent-folder      . "/icloud/Sent Messages")
-                  (mu4e-refile-folder    . "/icloud/Archive")
-                  (mu4e-trash-folder     . "/icloud/Deleted Messages")))))
-  
+	(list
+	 ;; aleksozolins account
+	 (make-mu4e-context
+	  :name "aleksozolins"
+	  :match-func
+	  (lambda (msg)
+	    (when msg
+	      (string-prefix-p "/aleksozolins" (mu4e-message-field msg :maildir))))
+	  :vars '((user-mail-address     . "aleks@aleksozolins.com")
+		  (user-full-name        . "Aleks Ozolins")
+		  (smtpmail-smtp-server  . "smtp.powweb.com")
+		  (smtpmail-smtp-service . 465)
+		  (smtpmail-stream-type  . ssl)
+		  (mu4e-drafts-folder    . "/aleksozolins/Drafts")
+		  (mu4e-sent-folder      . "/aleksozolins/Sent Messages")
+		  (mu4e-refile-folder    . "/aleksozolins/Archive")
+		  (mu4e-trash-folder     . "/aleksozolins/Trash")))
+	 ;; icloud account
+	 (make-mu4e-context
+	  :name "icloud"
+	  :match-func
+	  (lambda (msg)
+	    (when msg
+	      (string-prefix-p "/icloud" (mu4e-message-field msg :maildir))))
+	  :vars '((user-mail-address     . "aleksozolins@me.com")
+		  (user-full-name        . "Aleks Ozolins")
+		  (smtpmail-smtp-server  . "smtp.mail.me.com")
+		  (smtpmail-smtp-service . 587)
+		  (smtpmail-stream-type  . starttls)
+		  (mu4e-drafts-folder    . "/icloud/Drafts")
+		  (mu4e-sent-folder      . "/icloud/Sent Messages")
+		  (mu4e-refile-folder    . "/icloud/Archive")
+		  (mu4e-trash-folder     . "/icloud/Deleted Messages")))))
+
+  ;; Set the compose context policy
+  (setq mu4e-compose-context-policy 'pick-first)
+
 #+end_src
 
 ** Dired Integration
@@ -908,6 +911,16 @@ The code below adds a keybinding (=C-c RET C-a=) so I can attach files to emails
 
   (setq gnus-dired-mail-mode 'mu4e-user-agent)
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+  
+#+end_src
+
+** Run mu4e
+
+Finally, let's run mu4e to make sure it starts and checks mail periodically.
+
+#+begin_src elisp
+  ;; Run mu4e in the background to sync mail periodically
+  (mu4e t)
   
 #+end_src
 

@@ -11,6 +11,7 @@ xset s 1200 &
 xset dpms 1800 1800 1800
 
 sxhkd &
+emacs --daemon
 xss-lock -- slock &
 unclutter &
 dwmblocks &
