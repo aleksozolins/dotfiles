@@ -16,6 +16,8 @@ export FILE="pcmanfm"
 
 # Wayland stuff
 export GTK_THEME=Arc-Gruvbox
+export XCURSOR_THEME=Breeze_Default
+export XCURSOR_SIZE=24
 
 # XDG base directories
 export XDG_CONFIG_HOME="$HOME"/.config/

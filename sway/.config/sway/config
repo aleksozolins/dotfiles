@@ -253,6 +253,13 @@ xwayland disable
 # Get rid of the titlebar
 default_border pixel 2
 
+# Set the cursor theme
+seat seat0 xcursor_theme Breeze_Default 24
+
 ### End Added by Aleks
+
+### Autostart some apps
+# dunst for notifications
+exec dunst
 
 include /etc/sway/config.d/*
