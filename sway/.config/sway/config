@@ -214,7 +214,7 @@ mode "resize" {
     bindsym XF86MonBrightnessUp exec sudo light -A 10
     bindsym XF86MonBrightnessDown exec sudo light -U 10
 #   Start apps
-    bindsym $mod+f exec pcmanfm-qt
+    bindsym $mod+f exec thunar
     bindsym $mod+e exec emacsclient -c
     bindsym $mod+b exec firefox
     bindsym $mod+g exec gnucash
@@ -253,6 +253,9 @@ xwayland disable
 # Get rid of the titlebar
 default_border pixel 2
 
+# Hide borders for single client
+smart_borders on
+
 # Set the cursor theme
 seat seat0 xcursor_theme Breeze_Default 24
 
@@ -261,5 +264,6 @@ seat seat0 xcursor_theme Breeze_Default 24
 ### Autostart some apps
 # dunst for notifications
 exec dunst
+exec transmission-daemon
 
 include /etc/sway/config.d/*
