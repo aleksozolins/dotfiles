@@ -1,12 +1,4 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
-
 ### Variables
-#
-
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 
@@ -182,7 +174,7 @@ bindsym XF86MonBrightnessUp exec sudo light -A 10
 bindsym XF86MonBrightnessDown exec sudo light -U 10
 
 # App bindings
-bindsym $mod+f exec thunar
+bindsym $mod+f exec pcmanfm
 bindsym $mod+e exec emacsclient -c
 bindsym $mod+b exec firefox
 bindsym $mod+g exec gnucash
