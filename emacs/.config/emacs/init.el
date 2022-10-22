@@ -182,6 +182,38 @@
 
 (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 
+(defun zapier_day ()
+    "Gets a personal day started!"
+    (interactive)
+    (org-agenda nil "z")
+    (split-window-right)
+    (other-window 1)
+    (org-roam-dailies-goto-today)
+    (other-window 1)
+    (org-agenda-redo-all)
+    (other-window 1)
+    (persp-rename "agenda")
+    (persp-switch "mail")
+    (mu4e)
+    (sleep-for 3)
+    (persp-switch "agenda"))
+
+(defun home_day ()
+  "Gets a personal day started!"
+  (interactive)
+  (org-agenda nil "d")
+  (split-window-right)
+  (other-window 1)
+  (org-roam-dailies-goto-today)
+  (other-window 1)
+  (org-agenda-redo-all)
+  (other-window 1)
+  (persp-rename "agenda")
+  (persp-switch "mail")
+  (mu4e)
+  (sleep-for 3)
+  (persp-switch "agenda"))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -234,7 +266,7 @@
 (add-hook 'org-mode-hook 'org-mode-setup)
 
 ;; Start org mode folded
-(setq org-startup-folded t)
+(setq org-startup-folded nil)
 
 ;; Set org directory
 (setq org-directory "~/docs/org-roam")

@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2022-06-27
++ Updated: 2022-10-22
 
 Information pertaining to my current build of Emacs:
 
@@ -325,6 +325,49 @@ This will allow you to specify a list of files and run a bespoke shell command a
   (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 
 #+end_src
+
+Here's a function to open my org-agenda with the daily view for work (Zapier) and then open an org-roam daily note beside it.
+
+#+begin_src elisp
+(defun zapier_day ()
+    "Gets a personal day started!"
+    (interactive)
+    (org-agenda nil "z")
+    (split-window-right)
+    (other-window 1)
+    (org-roam-dailies-goto-today)
+    (other-window 1)
+    (org-agenda-redo-all)
+    (other-window 1)
+    (persp-rename "agenda")
+    (persp-switch "mail")
+    (mu4e)
+    (sleep-for 3)
+    (persp-switch "agenda"))
+
+#+end_src
+
+Here's a similar function for personal days.
+
+#+begin_src elisp
+  (defun home_day ()
+    "Gets a personal day started!"
+    (interactive)
+    (org-agenda nil "d")
+    (split-window-right)
+    (other-window 1)
+    (org-roam-dailies-goto-today)
+    (other-window 1)
+    (org-agenda-redo-all)
+    (other-window 1)
+    (persp-rename "agenda")
+    (persp-switch "mail")
+    (mu4e)
+    (sleep-for 3)
+    (persp-switch "agenda"))
+
+#+end_src
+
 * One-Off Packages
 ** Rainbow Delimiters
 
@@ -423,7 +466,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   (add-hook 'org-mode-hook 'org-mode-setup)
 
   ;; Start org mode folded
-  (setq org-startup-folded t)
+  (setq org-startup-folded nil)
 
   ;; Set org directory
   (setq org-directory "~/docs/org-roam")
