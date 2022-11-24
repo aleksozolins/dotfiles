@@ -406,9 +406,6 @@
 	("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
 	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
-	("M" "Meeting" entry (file "~/docs/org-roam/meetings.org")
-	 "* %^U - %^{With} - %^{Event}     %^g\n\n%?" :empty-lines 1)
-
 	("o" "Mouthpiece")
 	("o1" "One-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
 	 "| %^{Make} | one-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
