@@ -113,14 +113,6 @@ Below are any settings where I'm not quite sure where to put in this file just y
   (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
   
 #+end_src
-** Font Configuration
-
-I'll need to take a deeper look at the font config in the future as I'd like to implement code so that, at least in org files, source blocks always contain fixed-width fonts, but regular text is variable width (a-la MS word). I believe the System Crafters video on org config (YouTube) has that info in it.
-
-#+begin_src elisp
-  (set-face-attribute 'default nil :font "Liberation Mono" :height 130)
-  
-#+end_src
 
 ** Line Numbers
 #+begin_src elisp
@@ -326,6 +318,8 @@ This will allow you to specify a list of files and run a bespoke shell command a
 
 #+end_src
 
+** Open Agenda and Roam Daily Node
+
 Here's a function to open my org-agenda with the daily view for work (Zapier) and then open an org-roam daily note beside it.
 
 #+begin_src elisp
@@ -368,7 +362,7 @@ Here's a similar function for personal days.
 
 #+end_src
 
-* One-Off Packages
+* Misc Packages
 ** Rainbow Delimiters
 
 The =rainbow-delimiters= package makes each new set of parenthesis a different color so it's easy to see when they match!

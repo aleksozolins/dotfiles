@@ -56,8 +56,6 @@
 (global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
 (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
 
-(set-face-attribute 'default nil :font "Liberation Mono" :height 130)
-
 ;; Line numbers
 (column-number-mode)
 (global-display-line-numbers-mode -1) ; Right now they are disabled
