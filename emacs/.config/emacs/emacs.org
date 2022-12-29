@@ -453,9 +453,9 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   ;; Define a function and then call a hook to enable some settings whenenver org-mode is loaded
   (defun org-mode-setup ()
-  ;;(org-indent-mode)
-  ;;(variable-pitch-mode 1)
-  (visual-line-mode 1))
+    ;;(org-indent-mode)
+    ;;(variable-pitch-mode 1)
+    (visual-line-mode 1))
 
   (add-hook 'org-mode-hook 'org-mode-setup)
 
@@ -499,44 +499,40 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   ;; Configure custom agenda views
   (setq org-agenda-custom-commands
 	'(("D" "Week Dashboard"
-	   ((todo "ONG"
-		((org-agenda-overriding-header "Ongoing Tasks")))
-	    (agenda "" ((org-deadline-warning-days 7)))
+	   ((agenda "" ((org-deadline-warning-days 7)))
+	    (todo "ONG"
+		  ((org-agenda-overriding-header "Ongoing Tasks")))
 	    (todo "NEXT"
 		  ((org-agenda-overriding-header "Next Tasks")))))
 
 	  ("d" "Day Dashboard"
-	   ((todo "ONG"
+	   ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
+	    (todo "ONG"
 		  ((org-agenda-overriding-header "Ongoing Tasks")))
-	    (agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
 	    (todo "NEXT"
 		  ((org-agenda-overriding-header "Next Tasks")))))
 
 	  ("H" "Home Week Dashboard"
-	   ((todo "ONG"
-		  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
-	    (agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
+	   ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
 	    (todo "NEXT"
 		  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
 
 	  ("h" "Home Day Dashboard"
-	   ((todo "ONG"
-		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
-	    (agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	   ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
 	    (todo "NEXT"
 		  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
 
 	  ("Z" "Zapier Week Dashboard"
-	   ((todo "ONG"
+	   ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
+	    (todo "ONG"
 		  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
-	    (agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
 	    (todo "NEXT"
 		  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))
 
 	  ("z" "Zapier Day Dashboard"
-	   ((todo "ONG"
+	   ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	    (todo "ONG"
 		  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
-	    (agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
 	    (todo "NEXT"
 		  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))))
 
