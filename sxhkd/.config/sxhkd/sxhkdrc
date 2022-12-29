@@ -9,6 +9,8 @@ super + control + d
   dmenu_run
 super + p
   passmenu
+super + shift+ p
+	qtpass
 super + f
   $FILE
 super + shift + f
