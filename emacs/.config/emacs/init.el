@@ -181,25 +181,22 @@
 (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 
 (defun zapier_day ()
-    "Gets a personal day started!"
-    (interactive)
-    (org-agenda nil "z")
-    (split-window-right)
-    (other-window 1)
-    (org-roam-dailies-goto-today)
-    (other-window 1)
-    (org-agenda-redo-all)
-    (other-window 1)
-    (persp-rename "agenda")
-    (persp-switch "mail")
-    (mu4e)
-    (sleep-for 3)
-    (persp-switch "agenda"))
+  "Gets a work day started!"
+  (interactive)
+  (org-agenda nil "z")
+  (split-window-right)
+  (other-window 1)
+  (org-roam-dailies-goto-today)
+  (other-window 1)
+  (org-agenda-redo-all)
+  (other-window 1)
+  (persp-rename "agenda")
+  (save-buffer))
 
 (defun home_day ()
   "Gets a personal day started!"
   (interactive)
-  (org-agenda nil "d")
+  (org-agenda nil "h")
   (split-window-right)
   (other-window 1)
   (org-roam-dailies-goto-today)
@@ -210,7 +207,8 @@
   (persp-switch "mail")
   (mu4e)
   (sleep-for 3)
-  (persp-switch "agenda"))
+  (persp-switch "agenda")
+  (save-buffer))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
