@@ -10,13 +10,15 @@ super + control + d
 super + p
   passmenu
 super + shift+ p
-	qtpass
+  qtpass
 super + f
   $FILE
 super + shift + f
   $TERMINAL -e mc
 super + e
   emacsclient -c
+super shift + e
+  thunderbird
 super + m
   $TERMINAL -e ncmpcpp
 super + a
