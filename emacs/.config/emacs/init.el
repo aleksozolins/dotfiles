@@ -367,6 +367,11 @@
   :after org
   :custom (org-contacts-files '("~/docs/org-roam/contacts.org")))
 
+;; Org Contacts
+(use-package org-vcard
+  :ensure t
+  :after org)
+
 ;; Org capture
 (use-package org-capture
   :ensure nil

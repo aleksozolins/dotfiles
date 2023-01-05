@@ -578,6 +578,18 @@ Simple contact management for org. Contacts can be captured via a template by us
   
 #+end_src
 
+** org-vcard
+
+Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in new contacts to your contacts.org file.
+
+#+begin_src elisp
+  ;; Org Contacts
+  (use-package org-vcard
+    :ensure t
+    :after org)
+  
+#+end_src
+
 ** Org Capture
 
 =org-capture= allows quick capture using templates into your existing org files. So far, we have templates in place for contacts, tasks, next tasks, entries to check out (like links or articles), and a metrics capture that can currently quickly take my weight and add it to a table.
