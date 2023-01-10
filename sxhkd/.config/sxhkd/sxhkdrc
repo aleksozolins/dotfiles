@@ -23,6 +23,8 @@ super + m
   $TERMINAL -e ncmpcpp
 super + a
   $TERMINAL -e pulsemixer
+super + c
+  calibre
 super + shift + c
   camtoggle
 super + b
