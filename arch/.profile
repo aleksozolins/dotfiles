@@ -7,8 +7,8 @@ export PATH="$HOME/.local/bin/statusbar:$PATH"
 
 # More variables to export
 export ALTERNATE_EDITOR="nvim"
-export EDITOR="emacsclient -t -a"
-export VISUAL="emacsclient -c -a"
+export EDITOR="emacsclient -c -a=nvim"
+export VISUAL="emacsclient -c -a=nvim"
 export TERMINAL="alacritty"
 export BROWSER="firefox"
 export READER="zathura"
