@@ -585,6 +585,7 @@
 	("/aleks@ozolins.xyz/Archive"         . ?a)
 	("/aleks@ozolins.xyz/Trash"           . ?t)
 	("/aleks@ozolins.xyz/Admin"           . ?n)
+	("/aleks@ozolins.xyz/Admin-Archive"   . ?N)
 	("/aleks@ozolins.xyz/Receipts"        . ?r)
 	("/aleks@ozolins.xyz/Parents"         . ?p)
 	("/aleksozolins/INBOX"                . ?I)
