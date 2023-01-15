@@ -23,7 +23,7 @@ Information pertaining to my current build of Emacs:
 #+end_src
 
 #+RESULTS:
-: --sysconfdir=/etc --prefix=/usr --libexecdir=/usr/lib --localstatedir=/var --with-cairo --with-harfbuzz --with-libsystemd --with-modules --with-x-toolkit=gtk3 'CFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fno-plt -fexceptions         -Wp,-D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security         -fstack-clash-protection -fcf-protection -g -ffile-prefix-map=/build/emacs/src=/usr/src/debug -flto=auto' 'LDFLAGS=-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -flto=auto'
+: --sysconfdir=/etc --prefix=/usr --libexecdir=/usr/lib --localstatedir=/var --with-cairo --with-harfbuzz --with-libsystemd --with-modules --with-x-toolkit=gtk3 'CFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fno-plt -fexceptions         -Wp,-D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security         -fstack-clash-protection -fcf-protection -g -ffile-prefix-map=/build/emacs/src=/usr/src/debug/emacs -flto=auto' 'LDFLAGS=-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -flto=auto'
 
 * Package Management
 ** Package Sources
