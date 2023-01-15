@@ -56,6 +56,8 @@
 (global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
 (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
 
+(windmove-default-keybindings) ; Navigate between windows with S-<arrow keys>
+
 ;; Line numbers
 (column-number-mode)
 (global-display-line-numbers-mode -1) ; Right now they are disabled
@@ -110,6 +112,9 @@
       `((".*" ,temporary-file-directory t)))
 
 (setq kill-buffer-delete-auto-save-files t)
+
+;; Key re-bindings
+(global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 
 (setq completion-styles '(substring))  ;; define the completion style
 (setq completion-ignore-case  t)  ;; ignore case
@@ -190,7 +195,6 @@
   (other-window 1)
   (org-agenda-redo-all)
   (other-window 1)
-  (persp-rename "agenda")
   (save-buffer))
 
 (defun home_day ()
@@ -203,11 +207,12 @@
   (other-window 1)
   (org-agenda-redo-all)
   (other-window 1)
-  (persp-rename "agenda")
-  (persp-switch "mail")
+  (tab-rename "Agenda")
+  (tab-new)
   (mu4e)
   (sleep-for 3)
-  (persp-switch "agenda")
+  (tab-rename "Email")
+  (tab-next)
   (save-buffer))
 
 (use-package rainbow-delimiters

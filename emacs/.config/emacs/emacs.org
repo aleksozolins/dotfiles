@@ -111,6 +111,8 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
   (global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
   (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
+
+  (windmove-default-keybindings) ; Navigate between windows with S-<arrow keys>
   
 #+end_src
 
@@ -194,6 +196,16 @@ For some reason, Emacs is still autosaving files in the same directory as the fi
 
   (setq kill-buffer-delete-auto-save-files t)
   
+#+end_src
+
+** Key Re-bindings
+
+Here's where I'm deviating from Emacs' built in key-bindings or adding my own bespoke bindings.
+
+#+begin_src elisp
+  ;; Key re-bindings
+  (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
+
 #+end_src
 
 * Completion Framework
@@ -333,7 +345,6 @@ Here's a function to open my org-agenda with the daily view for work (Zapier) an
     (other-window 1)
     (org-agenda-redo-all)
     (other-window 1)
-    (persp-rename "agenda")
     (save-buffer))
   
 #+end_src
@@ -351,11 +362,12 @@ Here's a similar function for personal days.
     (other-window 1)
     (org-agenda-redo-all)
     (other-window 1)
-    (persp-rename "agenda")
-    (persp-switch "mail")
+    (tab-rename "Agenda")
+    (tab-new)
     (mu4e)
     (sleep-for 3)
-    (persp-switch "agenda")
+    (tab-rename "Email")
+    (tab-next)
     (save-buffer))
 
 #+end_src
