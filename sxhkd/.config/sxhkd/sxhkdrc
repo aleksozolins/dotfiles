@@ -9,52 +9,56 @@ super + control + d
   dmenu_run
 super + p
   passmenu
-super + shift+ p
-  qtpass
-super + f
-  $FILE
-super + shift + f
-  $TERMINAL -e mc
-super + e
-  emacsclient -c
-super shift + e
-  thunderbird
-super + m
-  $TERMINAL -e ncmpcpp
-super + a
-  $TERMINAL -e pulsemixer
-super + c
-  calibre
-super + shift + c
-  camtoggle
-super + b
-  $BROWSER
-super + shift + b
-  qutebrowser
-super + control + b
-  google-chrome-stable
-super + shift + control + b
-  $TERMINAL -e w3m duckduckgo.com
-super + n
-  $TERMINAL -e nmtui
-super + shift + n
-  sudo systemctl restart NetworkManager
-super + t
-  $TERMINAL -e tremc
-super + g
-  gnucash
-super + shift + g
-  gimp
-super + o
-  libreoffice
-super + s
-  slack
-super + shift + s
-  signal-desktop
 super + Print
   flameshot gui -d 2000 -p ~/pics/screenshots
 super + grave
   dmenuunicode
+super + shift + n
+  sudo systemctl restart NetworkManager
+
+# Open some programs (super + x) chain
+super + x ; p
+  qtpass
+super + x ; f
+  $FILE
+super + x ; shift + f
+  $TERMINAL -e mc
+super + x ; e
+  emacsclient -c
+super + x ; shift + e
+  thunderbird
+super + x ; m
+  $TERMINAL -e ncmpcpp
+super + x ; a
+  $TERMINAL -e pulsemixer
+super + x ; c
+  calibre
+super + x ; shift + c
+  camtoggle
+super + x ; b
+  $BROWSER
+super + x ; shift + b
+  qutebrowser
+super + x ; control + b
+  google-chrome-stable
+super + x ; shift + control + b
+  $TERMINAL -e w3m duckduckgo.com
+super + x ; n
+  $TERMINAL -e nmtui
+super + x ; t
+  $TERMINAL -e tremc
+super + x ; g
+  gnucash
+super + x ; shift + g
+  gimp
+super + x ; o
+  libreoffice
+super + x ; s
+  slack
+super + x ; shift + s
+  signal-desktop
+
+# Audio, brightness, docking
 XF86AudioMute
   pactl set-sink-mute 0 toggle
 XF86AudioLowerVolume
@@ -69,11 +73,11 @@ XF86MonBrightnessDown
   xbacklight -dec 10
 XF86MonBrightnessUp
   xbacklight -inc 10
-super + bracketright
+super + x ; bracketright
   ~/.config/screenlayout/docked.sh
-super + bracketleft
+super + x ; bracketleft
   ~/.config/screenlayout/default.sh
-super + backslash
+super + x ; backslash
   ~/.config/screenlayout/external.sh
   
 # for X230, etc.
