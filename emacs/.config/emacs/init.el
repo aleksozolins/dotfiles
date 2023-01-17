@@ -237,7 +237,7 @@
 (setq tab-bar-tab-hints nil)                                     ; Hide the tab numbers
 (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
-;; keybindings
+;; Keybindings
 (global-set-key (kbd "s-{") 'tab-bar-switch-to-prev-tab)
 (global-set-key (kbd "s-}") 'tab-bar-switch-to-next-tab)
 (global-set-key (kbd "s-t") 'tab-bar-new-tab)
