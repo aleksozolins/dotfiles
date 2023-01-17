@@ -80,9 +80,10 @@ super + x ; bracketleft
 super + x ; backslash
   ~/.config/screenlayout/external.sh
   
-# for X230, etc.
+# for X230
 XF86TouchpadToggle
   toggletouch230
+
 # for X1
 XF86Display
   toggletouchpad
