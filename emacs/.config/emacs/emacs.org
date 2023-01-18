@@ -1030,31 +1030,33 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
 #+end_src
 
 * Development
-** Python
+** Python (OLD ELPY CONFIG)
+
+NOTE: We have commented the following lines out to reconfigure with LSP mode?
 
 Here we'll install and invoke ELPY, the Emacs Integrated Python Environment.
 
 #+begin_src elisp
-  (use-package elpy
-    :ensure t
-    :init
-    (elpy-enable))
+  ;; (use-package elpy
+    ;; :ensure t
+    ;; :init
+    ;; (elpy-enable))
 
 #+end_src
 
 On Mac, an error message needs to be supressed when running the python shell. More info here [[https://github.com/brittAnderson/psych363Practice/issues/124]]
 
 #+begin_src elisp
-  (setq python-shell-completion-native-disabled-interpreters '("python3"))
-  
+  ;; (setq python-shell-completion-native-disabled-interpreters '("python3"))
+
 #+end_src
 
 Let's make sure the shell, ELPY, and org-babel are all defaulting to Python 3.
 
 #+begin_src elisp
-  (setq python-shell-interpreter "python3")
-  (setq elpy-rpc-python-command "python3")
-  (setq org-babel-python-command "python3")
+  ;; (setq python-shell-interpreter "python3")
+  ;; (setq elpy-rpc-python-command "python3")
+  ;; (setq org-babel-python-command "python3")
 
 #+end_src
 

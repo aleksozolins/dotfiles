@@ -690,16 +690,16 @@
 ;; Run mu4e in the background to sync mail periodically
 (mu4e t)
 
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
+;; (use-package elpy
+  ;; :ensure t
+  ;; :init
+  ;; (elpy-enable))
 
-(setq python-shell-completion-native-disabled-interpreters '("python3"))
+;; (setq python-shell-completion-native-disabled-interpreters '("python3"))
 
-(setq python-shell-interpreter "python3")
-(setq elpy-rpc-python-command "python3")
-(setq org-babel-python-command "python3")
+;; (setq python-shell-interpreter "python3")
+;; (setq elpy-rpc-python-command "python3")
+;; (setq org-babel-python-command "python3")
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
