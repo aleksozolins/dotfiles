@@ -115,6 +115,7 @@
 
 ;; Key re-bindings
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
+(global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
 (setq completion-styles '(substring))  ;; define the completion style
 (setq completion-ignore-case  t)  ;; ignore case

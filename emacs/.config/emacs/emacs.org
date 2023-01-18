@@ -205,6 +205,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 #+begin_src elisp
   ;; Key re-bindings
   (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
+  (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
 #+end_src
 
