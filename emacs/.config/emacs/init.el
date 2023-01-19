@@ -691,16 +691,18 @@
 ;; Run mu4e in the background to sync mail periodically
 (mu4e t)
 
-;; (use-package elpy
-  ;; :ensure t
-  ;; :init
-  ;; (elpy-enable))
+;; Initial configuration
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "s-L")         ;; Note: The original binding was supposed to be "s-l" but for the moment, that's take up with DWM
+  :config
+  (lsp-enable-which-key-integration t))
 
-;; (setq python-shell-completion-native-disabled-interpreters '("python3"))
-
-;; (setq python-shell-interpreter "python3")
-;; (setq elpy-rpc-python-command "python3")
-;; (setq org-babel-python-command "python3")
+;; Config for Python Mode -- It comes with Emacs so it doesn't have to be installed
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred))
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
