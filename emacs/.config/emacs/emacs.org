@@ -929,7 +929,7 @@ Settings of note:
 Two contexts here:
 
 - My main email address: aleks@ozolins.xyz
-- A deprecated email address that I'm phasing out: aleks@aleksozolins.com
+- aleks.admin@ozolins.xyz (secondary used for non-personal communication and accounts)
 
 Note that the @me context is used for reference only.
 
