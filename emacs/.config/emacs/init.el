@@ -647,7 +647,7 @@
 		(mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
 
 ;; Set the compose context policy
-(setq mu4e-compose-context-policy 'ask)
+(setq mu4e-compose-context-policy 'pick-first)
 
 ;; Allow attaching files from within dired with C-c RET C-a
 (require 'gnus-dired)

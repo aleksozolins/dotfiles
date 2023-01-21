@@ -970,7 +970,7 @@ Note that the @me context is used for reference only.
 		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
 
   ;; Set the compose context policy
-  (setq mu4e-compose-context-policy 'ask)
+  (setq mu4e-compose-context-policy 'pick-first)
 
 #+end_src
 
