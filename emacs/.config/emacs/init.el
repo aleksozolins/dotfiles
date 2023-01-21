@@ -609,7 +609,7 @@
 	("/aleks@ozolins.xyz/Admin-Archive"   . ?N)
 	("/aleks@ozolins.xyz/Receipts"        . ?r)
 	("/aleks@ozolins.xyz/Parents"         . ?p)
-	("/aleks@ozolins.xyz/Sus"             . ?S)
+	("/aleks@ozolins.xyz/Sus"             . ?S)))
 
 (setq mu4e-contexts
       (list
