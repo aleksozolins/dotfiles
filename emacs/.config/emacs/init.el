@@ -169,23 +169,6 @@
 ;; Allow command to visit directories and kill buffer in dired
 (put 'dired-find-alternate-file 'disabled nil)
 
-(defvar *afilename-cmd*
-  '(("/home/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-    ("/Users/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
-    ("/home/aleksozolins/docs/org-roam/real_python_course_log.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-    ("/Users/aleksozolins/docs/org-roam/real_python_course_log.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
-    ("/home/aleksozolins/docs/org-roam/zapier_scc_competencies.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-    ("/Users/aleksozolins/docs/org-roam/zapier_scc_competencies.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh"))
-  "File association list with their respective command.")
-
-(defun my/cmd-after-saved-file ()
-  "Execute a command after saved a specific file."
-  (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
-    (when match
-      (shell-command (cdr match)))))
-
-(add-hook 'after-save-hook 'my/cmd-after-saved-file)
-
 (defun zapier_day ()
   "Gets a work day started!"
   (interactive)
@@ -196,6 +179,7 @@
   (other-window 1)
   (org-agenda-redo-all)
   (other-window 1)
+  (tab-rename "Agenda")
   (save-buffer))
 
 (defun home_day ()

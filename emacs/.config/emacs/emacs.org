@@ -311,7 +311,9 @@ This only sort of works because it doesn't yet work with symlinks. I'll need to 
 ** Run Shell Command After Save
 This will allow you to specify a list of files and run a bespoke shell command after a save event.
 
-#+begin_src elisp
+NOTE: This is disabled since aodotcom no longer lives at Powweb!
+
+#+begin_src elisp :tangle no
   (defvar *afilename-cmd*
     '(("/home/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
       ("/Users/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
@@ -346,8 +348,9 @@ Here's a function to open my org-agenda with the daily view for work (Zapier) an
     (other-window 1)
     (org-agenda-redo-all)
     (other-window 1)
+    (tab-rename "Agenda")
     (save-buffer))
-  
+
 #+end_src
 
 Here's a similar function for personal days.
