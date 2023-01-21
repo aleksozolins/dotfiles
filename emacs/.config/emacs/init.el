@@ -609,11 +609,7 @@
 	("/aleks@ozolins.xyz/Admin-Archive"   . ?N)
 	("/aleks@ozolins.xyz/Receipts"        . ?r)
 	("/aleks@ozolins.xyz/Parents"         . ?p)
-	("/aleksozolins/INBOX"                . ?I)
-	("/aleksozolins/Sent Messages"        . ?S)
-	("/aleksozolins/Drafts"               . ?D)
-	("/aleksozolins/Archive"              . ?A)
-	("/aleksozolins/Trash"                . ?T)))
+	("/aleks@ozolins.xyz/Sus"             . ?S)
 
 (setq mu4e-contexts
       (list
@@ -648,23 +644,7 @@
 		(mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
 		(mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
 		(mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-		(mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
-       ;; aleks@aleksozolins.com account
-       (make-mu4e-context
-	:name "3-aleks@aleksozolins.com"
-	:match-func
-	(lambda (msg)
-	  (when msg
-	    (string-prefix-p "/aleksozolins" (mu4e-message-field msg :maildir))))
-	:vars '((user-mail-address     . "aleks@aleksozolins.com")
-		(user-full-name        . "Aleks Ozolins")
-		(smtpmail-smtp-server  . "smtp.powweb.com")
-		(smtpmail-smtp-service . 465)
-		(smtpmail-stream-type  . ssl)
-		(mu4e-drafts-folder    . "/aleksozolins/Drafts")
-		(mu4e-sent-folder      . "/aleksozolins/Sent Messages")
-		(mu4e-refile-folder    . "/aleksozolins/Archive")
-		(mu4e-trash-folder     . "/aleksozolins/Trash")))))
+		(mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
 
 ;; Set the compose context policy
 (setq mu4e-compose-context-policy 'ask)
