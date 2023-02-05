@@ -56,7 +56,7 @@
 (global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
 (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
 
-(windmove-default-keybindings) ; Navigate between windows with S-<arrow keys>
+(windmove-default-keybindings 'super) ; Navigate between windows with s-<arrow keys>
 
 ;; Line numbers
 (column-number-mode)
