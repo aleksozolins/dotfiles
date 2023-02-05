@@ -135,6 +135,25 @@
   :init
   (vertico-mode))
 
+(use-package corfu
+  :ensure t)
+
+(global-corfu-mode 1)
+
+(corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+(define-key corfu-map (kbd "<tab>") #'corfu-complete)
+(setq tab-always-indent 'complete) ;; This we needed for tab to work. Not from Prot's config.
+
+;; Adapted from Corfu's manual.
+(defun contrib/corfu-enable-always-in-minibuffer ()
+  "Enable Corfu in the minibuffer if Vertico is not active.
+  Useful for prompts such as `eval-expression' and `shell-command'."
+  (unless (bound-and-true-p vertico--input)
+    (corfu-mode 1)))
+
+(add-hook 'minibuffer-setup-hook #'contrib/corfu-enable-always-in-minibuffer 1)
+
 (use-package marginalia
   :after vertico
   :ensure t

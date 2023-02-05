@@ -248,6 +248,34 @@ This is the main completion framework I've chosen, over Ivy or Helm as it is mor
   
 #+end_src
 
+** Corfu
+
+Corfu enhances completion at point with a small completion popup. The current candidates are shown in a popup below or above the point. Corfu is the minimalistic completion-in-region counterpart of the Vertico minibuffer UI.
+
+The following code is taken right from Prot's config:
+
+#+begin_src elisp
+  (use-package corfu
+    :ensure t)
+
+  (global-corfu-mode 1)
+
+  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+  (define-key corfu-map (kbd "<tab>") #'corfu-complete)
+  (setq tab-always-indent 'complete) ;; This we needed for tab to work. Not from Prot's config.
+
+  ;; Adapted from Corfu's manual.
+  (defun contrib/corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico is not active.
+    Useful for prompts such as `eval-expression' and `shell-command'."
+    (unless (bound-and-true-p vertico--input)
+      (corfu-mode 1)))
+
+  (add-hook 'minibuffer-setup-hook #'contrib/corfu-enable-always-in-minibuffer 1)
+
+#+end_src
+
 ** Marginalia
 
 Marginalia provides extra information in each completion buffer to the right of selection when using Vertico.
