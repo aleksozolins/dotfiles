@@ -613,7 +613,7 @@
 	("/aleks@ozolins.xyz/Receipts"        . ?r)
 	("/aleks@ozolins.xyz/Parents"         . ?p)
 	("/aleks@ozolins.xyz/Sus"             . ?u)
-	("/aleks@ozolins.xyz/Spam"            . ?S)))
+	("/aleks@ozolins.xyz/Spam?"           . ?S)))
 
 (setq mu4e-contexts
       (list
