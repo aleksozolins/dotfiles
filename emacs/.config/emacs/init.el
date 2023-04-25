@@ -93,7 +93,7 @@
 	(t . (semilight 1.1))))
 
 ;; Load a Theme
-(load-theme 'modus-operandi t)
+(load-theme 'modus-vivendi t)
 
 ;; Set a hot-key for switching between light and dark theme
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
