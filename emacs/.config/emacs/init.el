@@ -231,6 +231,9 @@
   (setq ledger-clear-whole-transactions 1)
   (setq ledger-default-date-format "%Y-%m-%d"))
 
+;; Any file ending in _ledger.txt opens in ledger mode
+(add-to-list 'auto-mode-alist '("_ledger\\.txt\\'" . ledger-mode))
+
 (use-package rg
 :config
 (rg-enable-default-bindings))
