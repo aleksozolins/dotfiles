@@ -227,8 +227,9 @@
   :ensure t)
 
 (use-package ledger-mode
-  :init
-  (setq ledger-clear-whole-transactions t))
+  :config
+  (setq ledger-clear-whole-transactions 1)
+  (setq ledger-default-date-format "%Y-%m-%d"))
 
 (use-package rg
 :config
