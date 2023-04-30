@@ -226,7 +226,9 @@
 (use-package magit
   :ensure t)
 
-(use-package ledger-mode)
+(use-package ledger-mode
+  :init
+  (setq ledger-clear-whole-transactions t))
 
 (use-package rg
 :config
