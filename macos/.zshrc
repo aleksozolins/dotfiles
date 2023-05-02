@@ -21,6 +21,10 @@ alias gp='cd ~/Dropbox/pics'
 alias gv='cd ~/Dropbox/vids'
 alias gr='cd ~/repos'
 
+# ledger
+alias l='ledger -f ~/docs/finances/ledger/my_ledger.txt'
+alias lc='ledger -C -f ~/docs/finances/ledger/my_ledger.txt'
+
 # homedir cleanup
 alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
 alias tmux='tmux -f ~/.config/tmux/tmux.conf'
