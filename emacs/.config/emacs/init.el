@@ -219,6 +219,18 @@
   (tab-next)
   (save-buffer))
 
+(defun backup-my-ledger-file ()
+  (when (string= (buffer-file-name)
+		 (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
+    (let* ((current-date (format-time-string "%Y-%m-%d"))
+	   (backup-dir (expand-file-name "~/docs/finances/ledger/backup/"))
+	   (backup-file (concat backup-dir current-date "_my_ledger.txt")))
+      (unless (file-exists-p backup-dir)
+	(make-directory backup-dir))
+      (write-region (point-min) (point-max) backup-file))))
+
+(add-hook 'after-save-hook 'backup-my-ledger-file)
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
