@@ -1,0 +1,34 @@
+# directory shortcuts
+alias gf='cd ~/docs/finances'
+alias gd='cd ~/docs'
+alias gD='cd ~/Dropbox'
+alias gm='cd ~/mus'
+alias gp='cd ~/pics'
+alias gv='cd ~/vids'
+alias gr='cd ~/repos'
+
+# homedir cleanup
+alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
+alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
+alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
+
+# ledger
+alias l='ledger -f ~/docs/finances/ledger/my_ledger.txt'
+alias lc='ledger -C -f ~/docs/finances/ledger/my_ledger.txt'
+
+# misc aliases
+alias e="emacsclient -t"
+alias tvim='nvim -c "colorscheme default"'
+alias trans="stig"
+alias hdc="ls -a ~ | wc -l"
+alias logout='pkill -u'
+alias vim='nvim'
+alias w3md='w3m duckduckgo.com'
+alias cls='clear'
+alias yt='pipe-viewer'
+alias ytdl='yt-dlp'
+alias solitaire='ttysolitaire --no-background-color'
+alias db='dropbox-cli status'
+alias stow='stow --no-folding'
+# note: newsboat has been deprecated in favor of elfeed
+# alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'

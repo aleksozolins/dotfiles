@@ -1,41 +1,15 @@
+# Set history to infinite
+HISTSIZE=
+HISTFILESIZE=
+
 # add color and functionality to core-utils
+# this doesn't work on macOS
 alias ls='ls -hN --color=always --group-directories-first'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias sudo='sudo '
 
-# directory shortcuts
-alias gf='cd ~/docs/finances'
-alias gd='cd ~/docs'
-alias gD='cd ~/Dropbox'
-alias gm='cd ~/mus'
-alias gp='cd ~/pics'
-alias gv='cd ~/vids'
-alias gr='cd ~/repos'
-
-# homedir cleanup
-alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
-alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
-alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
-
-# misc aliases
-alias e="emacsclient -t"
-alias tvim='nvim -c "colorscheme default"'
-alias trans="stig"
-alias hdc="ls -a ~ | wc -l"
-alias logout='pkill -u'
-alias vim='nvim'
-alias w3md='w3m duckduckgo.com'
-alias cls='clear'
-alias yt='pipe-viewer'
-alias ytdl='yt-dlp'
-alias solitaire='ttysolitaire --no-background-color'
-alias newapps='sudo pacman -S --needed - < ~/repos/reprov_new/pacman_reprov.txt'
-alias db='dropbox-cli status'
-alias stow='stow --no-folding'
-# note: newsboat has been deprecated in favor of elfeed
-# alias newsboat='newsboat -c $HOME/Dropbox/apps/newsboat/cache.db'
-
-# Set history to infinite
-HISTSIZE=
-HISTFILESIZE=
+# Source aliasrc if it exists
+if [ -f ~/.config/aliasrc ]; then
+    source ~/.config/aliasrc
+fi
