@@ -335,31 +335,8 @@ This only sort of works because it doesn't yet work with symlinks. I'll need to 
   (put 'dired-find-alternate-file 'disabled nil)
   
 #+end_src
+
 * Bespoke Functions
-** Run Shell Command After Save
-This will allow you to specify a list of files and run a bespoke shell command after a save event.
-
-NOTE: This is disabled since aodotcom no longer lives at Powweb!
-
-#+begin_src elisp :tangle no
-  (defvar *afilename-cmd*
-    '(("/home/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-      ("/Users/aleksozolins/docs/org-roam/zapier_brags_and_contributions.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
-      ("/home/aleksozolins/docs/org-roam/real_python_course_log.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-      ("/Users/aleksozolins/docs/org-roam/real_python_course_log.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh")
-      ("/home/aleksozolins/docs/org-roam/zapier_scc_competencies.org" . ". /home/aleksozolins/repos/aodotcom/zbp.sh")
-      ("/Users/aleksozolins/docs/org-roam/zapier_scc_competencies.org" . ". /Users/aleksozolins/repos/aodotcom/zbp.sh"))
-    "File association list with their respective command.")
-
-  (defun my/cmd-after-saved-file ()
-    "Execute a command after saved a specific file."
-    (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
-      (when match
-	(shell-command (cdr match)))))
-
-  (add-hook 'after-save-hook 'my/cmd-after-saved-file)
-
-#+end_src
 
 ** Open Agenda and Roam Daily Node
 
@@ -404,23 +381,6 @@ Here's a similar function for personal days.
 
 #+end_src
 
-Whenever I save my ledger file, a daily backup is created in the backup subdirectory.
-
-#+begin_src elisp
-  (defun backup-my-ledger-file ()
-    (when (string= (buffer-file-name)
-		   (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
-      (let* ((current-date (format-time-string "%Y-%m-%d"))
-	     (backup-dir (expand-file-name "~/docs/finances/ledger/backup/"))
-	     (backup-file (concat backup-dir current-date "_my_ledger.txt")))
-	(unless (file-exists-p backup-dir)
-	  (make-directory backup-dir))
-	(write-region (point-min) (point-max) backup-file))))
-
-  (add-hook 'after-save-hook 'backup-my-ledger-file)
-
-#+end_src
-
 * Misc Packages
 ** Rainbow Delimiters
 
@@ -443,9 +403,11 @@ Magit is the most common git interface for Emacs and doesn't require any additio
   
 #+end_src
 
-** Ledger Mode
+** Ledger
 
-I'll be using this hopefully soon to manage finances.
+I use this to manage my finances
+
+*** ledger-mode
 
 #+begin_src elisp
   (use-package ledger-mode
@@ -455,6 +417,38 @@ I'll be using this hopefully soon to manage finances.
 
   ;; Any file ending in _ledger.txt opens in ledger mode
   (add-to-list 'auto-mode-alist '("_ledger\\.txt\\'" . ledger-mode))
+
+#+end_src
+
+*** Open My Ledger With F4
+
+#+begin_src elisp
+  (defun my-ledger ()
+    "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
+    (interactive)
+    (find-file "~/docs/finances/ledger/my_ledger.txt"))
+
+  ;; Bind the function to F4
+  (global-set-key (kbd "<f4>") 'my-ledger)
+  
+#+end_src
+
+*** Auto Backup my Ledger
+
+Whenever I save my ledger file, a daily backup is created in the backup subdirectory.
+
+#+begin_src elisp
+  (defun backup-my-ledger-file ()
+    (when (string= (buffer-file-name)
+		   (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
+      (let* ((current-date (format-time-string "%Y-%m-%d"))
+	     (backup-dir (expand-file-name "~/docs/finances/ledger/backup/"))
+	     (backup-file (concat backup-dir current-date "_my_ledger.txt")))
+	(unless (file-exists-p backup-dir)
+	  (make-directory backup-dir))
+	(write-region (point-min) (point-max) backup-file))))
+
+  (add-hook 'after-save-hook 'backup-my-ledger-file)
 
 #+end_src
 
