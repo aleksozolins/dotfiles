@@ -452,6 +452,23 @@ Whenever I save my ledger file, a daily backup is created in the backup subdirec
 
 #+end_src
 
+*** ledger-remove-extra-blank-lines
+
+A bespoke function to remove extra blank lines only in ledger-mode.
+
+#+begin_src elisp
+  (defun ledger-remove-extra-blank-lines ()
+    "Remove consecutive blank lines in ledger-mode buffers, leaving only a single blank line between text."
+    (interactive)
+    (if (eq major-mode 'ledger-mode)
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "\\(^[[:space:]]*\n\\)[[:space:]]*\n+" nil t)
+	    (replace-match "\\1")))
+      (message "Warning: This function can only be used in ledger-mode.")))
+
+#+end_src
+
 ** Ripgrep (rg.el)
 
 rg.el adds to Emacs' grep mode functionality with editing/etc.

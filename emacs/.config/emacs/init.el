@@ -254,6 +254,16 @@
 
 (add-hook 'after-save-hook 'backup-my-ledger-file)
 
+(defun ledger-remove-extra-blank-lines ()
+  "Remove consecutive blank lines in ledger-mode buffers, leaving only a single blank line between text."
+  (interactive)
+  (if (eq major-mode 'ledger-mode)
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward "\\(^[[:space:]]*\n\\)[[:space:]]*\n+" nil t)
+	  (replace-match "\\1")))
+    (message "Warning: This function can only be used in ledger-mode.")))
+
 (use-package rg
 :config
 (rg-enable-default-bindings))
