@@ -17,6 +17,7 @@ alias l='ledger -f ~/docs/finances/ledger/my_ledger.txt'
 alias lc='ledger -C -f ~/docs/finances/ledger/my_ledger.txt'
 alias ltodo='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %todo'
 alias lowed='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %owed'
+alias lreview='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %review'
 
 # misc aliases
 alias e="emacsclient -t"
