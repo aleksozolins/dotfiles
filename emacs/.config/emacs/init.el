@@ -237,7 +237,8 @@
 (defun my-ledger ()
   "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
   (interactive)
-  (find-file "~/docs/finances/ledger/my_ledger.txt"))
+  (find-file "~/docs/finances/ledger/my_ledger.txt")
+  (goto-char (point-max)))
 
 ;; Bind the function to F4
 (global-set-key (kbd "<f4>") 'my-ledger)
