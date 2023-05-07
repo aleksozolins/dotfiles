@@ -36,9 +36,9 @@ super + x ; shift + c
 super + x ; b
   $BROWSER
 super + x ; shift + b
-  qutebrowser
+  firefox -P "Zapier"
 super + x ; control + b
-  google-chrome-stable
+  qutebrowser
 super + x ; shift + control + b
   $TERMINAL -e w3m duckduckgo.com
 super + x ; n
