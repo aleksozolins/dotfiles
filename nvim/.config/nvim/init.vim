@@ -1,7 +1,7 @@
 "     _    ___
 "    / \  / _ \   Aleks Ozolins
-"   / _ \| | | |  aleks@aleksozolins.com
-"  / ___ \ |_| |  https://www.aleksozolins.com
+"   / _ \| | | |  aleks@ozolins.xyz
+"  / ___ \ |_| |  https://www.ozolins.xyz
 " /_/   \_\___/
 "
 " .vimrc
