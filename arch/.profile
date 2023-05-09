@@ -2,8 +2,7 @@
 # Profile file. Runs on login.
 
 # Adds `~/.local/bin` and all subdirectories to $PATH
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/bin/statusbar:$PATH"
+for dir in "$HOME/.local/bin" $(find "$HOME/.local/bin" -type d); do export PATH="$dir:$PATH"; done
 
 # More variables to export
 export ALTERNATE_EDITOR="nvim"
