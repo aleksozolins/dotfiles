@@ -13,11 +13,6 @@ export BROWSER="firefox"
 export READER="zathura"
 export FILE="pcmanfm"
 
-# Wayland stuff
-export GTK_THEME=Arc-Gruvbox
-export XCURSOR_THEME=Breeze_Default
-export XCURSOR_SIZE=24
-
 # XDG base directories
 export XDG_CONFIG_HOME="$HOME"/.config/
 export XDG_CACHE_HOME="$HOME"/.cache/
@@ -46,7 +41,7 @@ export MC_XDG_OPEN="$HOME"/.local/bin/nohup-open
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
  
 # source bashrc
-echo "$0" | grep "bash$" >/dev/null && [ -f $HOME/.config/bashrc ] && source "$HOME/.config/bashrc"
+[ -f "$HOME/.config/bashrc" ] && source "$HOME/.config/bashrc"
 
 # set caps lock to control if tty:
 sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
