@@ -171,22 +171,36 @@
   :init
   (setq prefix-help-command #'embark-prefix-help-command))
 
-;; Sort directories first in dired
-(defun mydired-sort ()
-  "Sort dired listings with directories first."
-  (save-excursion
-    (let (buffer-read-only)
-      (forward-line 2) ;; beyond dir. header 
-      (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max)))
-    (set-buffer-modified-p nil)))
+;; Use GNU ls as insert-directory-program in case of macOS
+(when (eq system-type 'darwin)
+  (setq insert-directory-program "gls"))
 
-(defadvice dired-readin
-    (after dired-after-updating-hook first () activate)
-  "Sort dired listings with directories first before adding marks."
-  (mydired-sort))
+;; Use human readable sizes and group directories first
+(setq dired-listing-switches "-alh --group-directories-first")
 
-;; Allow command to visit directories and kill buffer in dired
+(setq dired-dwim-target t)            ;; When copying/moving, suggest other dired buffer as target
+(setq dired-recursive-copies 'always) ;; Always copy/delete recursively
+(setq dired-recursive-deletes 'top)   ;; Ask once before performing a recursive delete
+
+;; Hide details by default
+(add-hook 'dired-mode-hook
+	  (lambda ()
+	    (dired-hide-details-mode 1)))
+
+;; Do not disable using 'a' to visit a new directory without killing the buffer
 (put 'dired-find-alternate-file 'disabled nil)
+
+(use-package dired-hide-dotfiles
+  :ensure t)
+
+(defun my-dired-mode-hook ()
+  "My `dired' mode hook."
+  ;; To hide dot-files by default
+  (dired-hide-dotfiles-mode))
+
+;; To toggle hiding
+(define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
+(add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
 (defun zapier_day ()
   "Gets a work day started!"
