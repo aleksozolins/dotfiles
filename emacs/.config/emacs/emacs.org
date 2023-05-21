@@ -209,6 +209,25 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 
 #+end_src
 
+* Bookmarks
+
+Set the bookmarks file to synchronize via Dropbox. The same file will be in slightly different locations depending on whether we're on Linux or macOS.
+
+#+begin_src elisp
+  (setq bookmark-default-file
+	(pcase system-type
+	  ('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
+	  ('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
+
+#+end_src
+
+Bind =bookmark-bmenu-list= to =F8=
+
+#+begin_src elisp
+  (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
+
+#+end_src
+
 * Completion Framework
 
 We'll define the default completion style(s) here before adding features:

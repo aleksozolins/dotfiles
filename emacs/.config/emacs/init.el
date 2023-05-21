@@ -117,6 +117,13 @@
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
+(setq bookmark-default-file
+      (pcase system-type
+	('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
+	('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
+
+(global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
+
 (setq completion-styles '(substring))  ;; define the completion style
 (setq completion-ignore-case  t)  ;; ignore case
 
