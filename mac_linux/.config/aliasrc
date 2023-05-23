@@ -22,7 +22,7 @@ alias lreview='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %review'
 # misc aliases
 alias e="emacsclient -t"
 alias tvim='nvim -c "colorscheme default"'
-alias trans="transmission-cli"
+alias trans="transmission-remote"
 alias hdc="ls -a ~ | wc -l"
 alias logout='pkill -u'
 alias vim='nvim'
