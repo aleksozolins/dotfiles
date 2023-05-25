@@ -209,6 +209,15 @@
 (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
 (add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
+(defun dired-xdg-open-file ()
+  "Use xdg-open command on a file from dired."
+  (interactive)
+  (let ((file (dired-get-file-for-visit)))
+    (message "Opening %s..." file)
+    (call-process "xdg-open" nil 0 nil file)))
+
+(define-key dired-mode-map (kbd "V") 'dired-xdg-open-file)
+
 (defun zapier_day ()
   "Gets a work day started!"
   (interactive)

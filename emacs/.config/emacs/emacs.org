@@ -370,6 +370,22 @@ Add this package to enable the hiding of dotfiles
 
 #+end_src
 
+** Use xdg-open to open files
+
+Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bound to =v=
+
+#+begin_src elisp
+  (defun dired-xdg-open-file ()
+    "Use xdg-open command on a file from dired."
+    (interactive)
+    (let ((file (dired-get-file-for-visit)))
+      (message "Opening %s..." file)
+      (call-process "xdg-open" nil 0 nil file)))
+
+  (define-key dired-mode-map (kbd "V") 'dired-xdg-open-file)
+
+#+end_src
+
 * Bespoke Functions
 
 ** Open Agenda and Roam Daily Node
