@@ -799,9 +799,13 @@ Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in
 
 	  ("r" "Real Python Course Completion" table-line (file "~/docs/org-roam/real_python_course_log.org")
 	   "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
-  
+
   ;; Default org capture file
   (setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
+
+  ;; Prevent org-capture from saving bookmarks
+  (setq org-bookmarks-names-plist '())
+  (setq org-capture-bookmark nil)
 
 #+end_src
 

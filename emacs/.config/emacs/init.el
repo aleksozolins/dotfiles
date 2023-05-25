@@ -522,6 +522,10 @@
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
 
+;; Prevent org-capture from saving bookmarks
+(setq org-bookmarks-names-plist '())
+(setq org-capture-bookmark nil)
+
 ;;Enable certain languages
 (org-babel-do-load-languages
  'org-babel-load-languages
