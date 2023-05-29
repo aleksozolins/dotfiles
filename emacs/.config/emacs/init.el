@@ -256,6 +256,20 @@
 (use-package magit
   :ensure t)
 
+(use-package pulsar
+  :ensure t
+  :init
+  (setq pulsar-pulse t
+	pulsar-delay 0.055
+	pulsar-iterations 10
+	pulsar-face 'pulsar-magenta
+	pulsar-highlight-face 'pulsar-blue)
+  :config
+  (pulsar-global-mode 1)
+  (let ((map global-map))
+    (define-key map (kbd "C-x l") #'pulsar-pulse-line)
+    (define-key map (kbd "C-x L") #'pulsar-highlight-dwim)))
+
 (use-package ledger-mode
   :config
   (setq ledger-clear-whole-transactions 1)
