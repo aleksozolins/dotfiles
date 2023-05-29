@@ -14,7 +14,7 @@ do
     # If the line starts with an alias, print the alias and the comment
     case "$line" in alias\ *)
         # Removing the 'alias ' part and printing alias with description
-        printf "%s=%s\n" "$(echo "$line" | cut -d' ' -f2 | cut -d'=' -f1)" "$comment"
+        printf "%s = %s\n" "$(echo "$line" | cut -d' ' -f2 | cut -d'=' -f1)" "$comment"
     esac
 done
 echo --------------------
