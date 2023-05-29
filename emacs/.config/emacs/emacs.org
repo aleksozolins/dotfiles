@@ -144,7 +144,7 @@ Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac
     ('gnu/linux
      (set-face-attribute 'default nil :font "Liberation Mono" :height 140))
     ('darwin
-     (set-face-attribute 'default nil :font "Monaco" :height 140)))
+     (set-face-attribute 'default nil :font "Monaco" :height 170)))
 
 #+end_src
 

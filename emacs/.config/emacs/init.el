@@ -77,7 +77,7 @@
   ('gnu/linux
    (set-face-attribute 'default nil :font "Liberation Mono" :height 140))
   ('darwin
-   (set-face-attribute 'default nil :font "Monaco" :height 140)))
+   (set-face-attribute 'default nil :font "Monaco" :height 170)))
 
 ;; Configure the Modus Theme's appearance
 (setq modus-themes-mode-line '(accented)
