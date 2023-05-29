@@ -73,7 +73,11 @@
                 org-agenda-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-face-attribute 'default nil :font "Monospace" :height 140)
+(pcase system-type
+  ('gnu/linux
+   (set-face-attribute 'default nil :font "Liberation Mono" :height 140))
+  ('darwin
+   (set-face-attribute 'default nil :font "Monaco" :height 140)))
 
 ;; Configure the Modus Theme's appearance
 (setq modus-themes-mode-line '(accented)
@@ -757,8 +761,9 @@
 (setq gnus-dired-mail-mode 'mu4e-user-agent)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
-;; Run mu4e in the background to sync mail periodically
-(mu4e t)
+;; Run mu4e in the background to sync mail periodically - only in Linux
+(when (eq system-type 'gnu/linux)
+  (mu4e t))
 
 ;; Initial configuration
 (use-package lsp-mode

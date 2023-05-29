@@ -137,10 +137,14 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
 ** Set Fonts
 
-Very basic setting for now.
+Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac.
 
 #+begin_src elisp
-  (set-face-attribute 'default nil :font "Monospace" :height 140)
+  (pcase system-type
+    ('gnu/linux
+     (set-face-attribute 'default nil :font "Liberation Mono" :height 140))
+    ('darwin
+     (set-face-attribute 'default nil :font "Monaco" :height 140)))
 
 #+end_src
 
