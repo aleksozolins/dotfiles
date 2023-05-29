@@ -1145,8 +1145,9 @@ The code below adds a keybinding (=C-c RET C-a=) so I can attach files to emails
 Finally, let's run mu4e to make sure it starts and checks mail periodically.
 
 #+begin_src elisp
-  ;; Run mu4e in the background to sync mail periodically
-  (mu4e t)
+  ;; Run mu4e in the background to sync mail periodically - only in Linux
+  (when (eq system-type 'gnu/linux)
+    (mu4e t))
   
 #+end_src
 
