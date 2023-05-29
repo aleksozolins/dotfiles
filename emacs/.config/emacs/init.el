@@ -651,7 +651,7 @@
 (setq mu4e-headers-show-threads nil)
 
 ;; Turn off automatic mark as read (use ! instead)
-(setq mu4e-view-auto-mark-as-read nil)
+;; (setq mu4e-view-auto-mark-as-read nil)
 
 ;; Set the download directory for attachments
 (pcase system-type
