@@ -717,13 +717,14 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 	  ; Put mutually exclusive tags here
 	  (:endgroup)
 	  ("home" . ?h)
+	  ("habit" . ?H)
 	  ("tech" . ?t)
 	  ("financial" . ?f)
 	  ("zapier" . ?z)
 	  ("gigs" . ?g)
 	  ("ozostudio" . ?o)
 	  ("parents" . ?p)
-	  ("check out" . ?c)
+	  ("checkout" . ?c)
 	  ("shopping" . ?s)
 	  ("connections" . ?C)
 	  ("someday" . ?S)
@@ -789,15 +790,79 @@ Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in
 	`(("c" "Contact" entry (file+headline "~/docs/org-roam/contacts.org" "Misc"),
 	   my/org-contacts-template :empty-lines 1)
 
-	  ("t" "Tasks")
+	  ("t" "Task")
 	  ("tt" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
 	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	  ("tn" "Next Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
+	  ("tc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
+	   "* TODO Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("th" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("ts" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tg" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("to" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("tS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
+	   "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("n" "Task (Next)")
+	  ("nn" "Task (Next)" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
 	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	  ("tc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
-	   "* TODO Check out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+	  ("nc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
+	   "* NEXT Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("nh" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("nT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("nf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("nC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("ns" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("np" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("ng" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("no" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("nz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	  ("nS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
+	   "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	  ("m" "Metrics")
 	  ("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
@@ -814,14 +879,7 @@ Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in
 	   "| %^{Make} | rim | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
 	  ("oc" "Cup" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	   "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
-
-	  ("z" "Zapier")
-	  ("zb" "Brag" table-line (file "~/docs/org-roam/zapier_brags_and_contributions.org")
-	   "| %^u | %^{Size||small|medium|large} | %^{Type||Loki issue|Loki FR|Rover note|brag|support points|ticket|other} | [[%^{Link}][link]] | %^{Note} |")
-
-	  ("r" "Real Python Course Completion" table-line (file "~/docs/org-roam/real_python_course_log.org")
-	   "| %^u | %^{Course Name} | [[%^{Certificate Link}][link]] |")))
+	   "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
   ;; Default org capture file
   (setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
