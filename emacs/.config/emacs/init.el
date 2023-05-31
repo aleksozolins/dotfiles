@@ -261,7 +261,8 @@
       (save-buffer))
     (display-buffer buffer)))
 
-(define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables)
+(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))

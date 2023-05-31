@@ -448,7 +448,8 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 	(save-buffer))
       (display-buffer buffer)))
 
-  (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables)
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
 
 #+end_src
 
