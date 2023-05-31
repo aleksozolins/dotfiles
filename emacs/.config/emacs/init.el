@@ -226,32 +226,42 @@
   "Gets a work day started!"
   (interactive)
   (org-agenda nil "z")
-  (split-window-right)
-  (other-window 1)
-  (org-roam-dailies-goto-today)
-  (other-window 1)
-  (org-agenda-redo-all)
-  (other-window 1)
   (tab-rename "Agenda")
-  (save-buffer))
+  (tab-new)
+  (org-roam-dailies-goto-today)
+  (tab-rename "Notes")
+  (save-buffer)
+  (tab-next))
 
 (defun home_day ()
   "Gets a personal day started!"
   (interactive)
   (org-agenda nil "h")
-  (split-window-right)
-  (other-window 1)
-  (org-roam-dailies-goto-today)
-  (other-window 1)
-  (org-agenda-redo-all)
-  (other-window 1)
   (tab-rename "Agenda")
+  (tab-new)
+  (org-roam-dailies-goto-today)
+  (tab-rename "Notes")
+  (save-buffer)
   (tab-new)
   (mu4e)
   (sleep-for 3)
   (tab-rename "Email")
-  (tab-next)
-  (save-buffer))
+  (tab-next))
+
+(defun my/view-and-update-clocktables ()
+  "Open time_tracking.org in a split buffer and update all clock tables."
+  (interactive)
+  (let ((buffer (find-file-noselect "~/docs/org-roam/time_tracking.org")))
+    (with-current-buffer buffer
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	  (org-ctrl-c-ctrl-c)
+	  (forward-line)))
+      (save-buffer))
+    (display-buffer buffer)))
+
+(define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))

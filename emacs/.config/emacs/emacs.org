@@ -401,14 +401,12 @@ Here's a function to open my org-agenda with the daily view for work (Zapier) an
     "Gets a work day started!"
     (interactive)
     (org-agenda nil "z")
-    (split-window-right)
-    (other-window 1)
-    (org-roam-dailies-goto-today)
-    (other-window 1)
-    (org-agenda-redo-all)
-    (other-window 1)
     (tab-rename "Agenda")
-    (save-buffer))
+    (tab-new)
+    (org-roam-dailies-goto-today)
+    (tab-rename "Notes")
+    (save-buffer)
+    (tab-next))
 
 #+end_src
 
@@ -419,19 +417,38 @@ Here's a similar function for personal days.
     "Gets a personal day started!"
     (interactive)
     (org-agenda nil "h")
-    (split-window-right)
-    (other-window 1)
-    (org-roam-dailies-goto-today)
-    (other-window 1)
-    (org-agenda-redo-all)
-    (other-window 1)
     (tab-rename "Agenda")
+    (tab-new)
+    (org-roam-dailies-goto-today)
+    (tab-rename "Notes")
+    (save-buffer)
     (tab-new)
     (mu4e)
     (sleep-for 3)
     (tab-rename "Email")
-    (tab-next)
-    (save-buffer))
+    (tab-next))
+
+#+end_src
+
+** Open My Time Tracking Node From Org Agenda
+
+While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
+
+#+begin_src elisp
+  (defun my/view-and-update-clocktables ()
+    "Open time_tracking.org in a split buffer and update all clock tables."
+    (interactive)
+    (let ((buffer (find-file-noselect "~/docs/org-roam/time_tracking.org")))
+      (with-current-buffer buffer
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	    (org-ctrl-c-ctrl-c)
+	    (forward-line)))
+	(save-buffer))
+      (display-buffer buffer)))
+
+  (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables)
 
 #+end_src
 
