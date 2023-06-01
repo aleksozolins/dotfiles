@@ -455,6 +455,8 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 
 ** Close Org Agenda and Kill All Agenda Buffers
 
+- Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
+  
 #+begin_src elisp
   (defun kill-all-agenda-files ()
     "Close all buffers associated with files in `org-agenda-files'."
