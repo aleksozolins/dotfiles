@@ -264,6 +264,19 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
 
+(defun kill-all-agenda-files ()
+  "Close all buffers associated with files in `org-agenda-files'."
+  (interactive)
+  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
+    (dolist (buffer (buffer-list))
+      (let ((buffer-file-name (buffer-file-name buffer)))
+	(when (and buffer-file-name (member buffer-file-name agenda-files))
+	  (kill-buffer buffer)))))
+  (org-agenda-quit))
+
+(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "Q") 'kill-all-agenda-files))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
