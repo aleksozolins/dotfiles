@@ -121,6 +121,8 @@
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
+(setq auth-sources '("~/.authinfo.gpg"))
+
 (setq bookmark-default-file
       (pcase system-type
 	('gnu/linux "~/Dropbox/apps/emacs/bookmarks")

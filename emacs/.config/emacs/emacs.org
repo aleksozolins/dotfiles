@@ -213,6 +213,15 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 
 #+end_src
 
+** Set authinfo source
+
+I'd like emacs to default to using authinfo.gpg to store passwords
+
+#+begin_src elisp
+  (setq auth-sources '("~/.authinfo.gpg"))
+
+#+end_src
+
 * Bookmarks
 
 Set the bookmarks file to synchronize via Dropbox. The same file will be in slightly different locations depending on whether we're on Linux or macOS.
