@@ -635,7 +635,9 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (python . t)))
+   (python . t)
+   (js . t)
+   (shell . t)))
 
 ;; Skip confirming when evaluating source blocks
 (setq org-confirm-babel-evaluate nil)
@@ -647,6 +649,8 @@
 (add-to-list 'org-structure-template-alist '("el" . "src elisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 (add-to-list 'org-structure-template-alist '("pyo" . "src python :results output"))
+(add-to-list 'org-structure-template-alist '("js" . "src js"))
+(add-to-list 'org-structure-template-alist '("jso" . "src js :results output"))
 
 (use-package org-roam
   :ensure t
