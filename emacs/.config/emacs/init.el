@@ -439,12 +439,14 @@
 
 ;; Set todo sequence
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
+    '((sequence "BACKLOG(b)" "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
 ;; Configure custom agenda views
 (setq org-agenda-custom-commands
       '(("D" "Week Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)))
+	  (todo "WAIT"
+		((org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "ONG"
 		((org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
@@ -452,6 +454,8 @@
 
 	("d" "Day Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "WAIT"
+		((org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "ONG"
 		((org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
@@ -459,16 +463,22 @@
 
 	("H" "Home Week Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
+	  (todo "WAIT"
+		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
 
 	("h" "Home Day Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "WAIT"
+		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
 
 	("Z" "Zapier Week Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
+	  (todo "WAIT"
+		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "ONG"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
@@ -476,10 +486,13 @@
 
 	("z" "Zapier Day Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "WAIT"
+		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "ONG"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))))
+
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
@@ -606,6 +619,43 @@
 
 	("nS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
 	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("b" "Task (Backlog)")
+	("bn" "Task (Backlog)" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
+	 "* BACKLOG Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bh" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bs" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bg" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bo" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("bS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
+	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("m" "Metrics")
 	("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
