@@ -970,16 +970,16 @@ Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in
 
 	  ("o" "Mouthpiece")
 	  ("o1" "One-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	   "| %^{Make} | one-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
+	   "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
 
 	  ("o2" "Two-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	   "| %^{Make} | two-piece | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
+	   "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
 	  ("or" "Rim" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	   "| %^{Make} | rim | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
+	   "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
 	  ("oc" "Cup" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	   "| %^{Make} | cup | %^{Model} | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
+	   "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
   ;; Default org capture file
   (setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
