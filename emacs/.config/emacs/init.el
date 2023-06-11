@@ -566,7 +566,7 @@
 	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("ts" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+	 "* TODO Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("tp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
 	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
@@ -603,7 +603,7 @@
 	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("ns" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+	 "* NEXT Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("np" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
 	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
@@ -640,7 +640,7 @@
 	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("bs" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+	 "* BACKLOG Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("bp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
 	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
