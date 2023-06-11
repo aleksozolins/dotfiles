@@ -731,6 +731,9 @@
   :bind-keymap
   ("C-c n d" . org-roam-dailies-map)
   :config
+  (setq org-roam-node-display-template ;; Add filetag view to vertico when finding nodes
+    (concat "${title:*} "
+	    (propertize "${tags:30}" 'face 'org-tag)))
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode))
 
