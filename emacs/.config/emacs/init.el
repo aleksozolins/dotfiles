@@ -439,7 +439,7 @@
 
 ;; Set todo sequence
 (setq org-todo-keywords
-    '((sequence "BACKLOG(b)" "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
+    '((sequence "TODO(t)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
 ;; Configure custom agenda views
 (setq org-agenda-custom-commands
