@@ -439,30 +439,32 @@
 
 ;; Set todo sequence
 (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
+    '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
 ;; Configure custom agenda views
 (setq org-agenda-custom-commands
       '(("D" "Week Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)))
+	  (todo "ONG|ACT"
+		((org-agenda-overriding-header "Ongoing/Active Tasks")))
 	  (todo "WAIT"
 		((org-agenda-overriding-header "Waiting Tasks")))
-	  (todo "ONG"
-		((org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
 		((org-agenda-overriding-header "Next Tasks")))))
 
 	("d" "Day Dashboard"
 	 ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "ONG|ACT"
+		((org-agenda-overriding-header "Ongoing/Active Tasks")))
 	  (todo "WAIT"
 		((org-agenda-overriding-header "Waiting Tasks")))
-	  (todo "ONG"
-		((org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
 		((org-agenda-overriding-header "Next Tasks")))))
 
 	("H" "Home Week Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
+	  (todo "ONG|ACT"
+		((org-agenda-overriding-header "Ongoing/Active Tasks")))
 	  (todo "WAIT"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "NEXT"
@@ -470,6 +472,8 @@
 
 	("h" "Home Day Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "ONG|ACT"
+		((org-agenda-overriding-header "Ongoing/Active Tasks")))
 	  (todo "WAIT"
 		((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Waiting Tasks")))
 	  (todo "NEXT"
@@ -477,19 +481,19 @@
 
 	("Z" "Zapier Week Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
+	  (todo "ONG|ACT"
+		((org-agenda-overriding-header "Ongoing/Active Tasks")))
 	  (todo "WAIT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Waiting Tasks")))
-	  (todo "ONG"
-		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))
 
 	("z" "Zapier Day Dashboard"
 	 ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
+	  (todo "ONG|ACT"
+		((org-agenda-overriding-header "Ongoing/Active Tasks")))
 	  (todo "WAIT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Waiting Tasks")))
-	  (todo "ONG"
-		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Ongoing Tasks")))
 	  (todo "NEXT"
 		((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))))
 
@@ -582,6 +586,31 @@
 
 	("tS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
 	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("a" "Task (Active)")
+	("at" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("ah" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("aT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("af" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("ap" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("ag" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("ao" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+	("az" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
+	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
 	("n" "Task (Next)")
 	("nn" "Task (Next)" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
