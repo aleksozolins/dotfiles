@@ -279,6 +279,72 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "Q") 'kill-all-agenda-files))
 
+(define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
+  "Major mode for handling dropbox exclude list."
+  (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
+  (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
+  (define-key dropbox-exclude-mode-map (kbd "x") 'dropbox-add-directory)
+  (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
+  (setq buffer-read-only t))
+
+(defun dropbox-exclude-directory ()
+  (interactive)
+  (if (not (string-equal system-type "gnu/linux"))
+      (message "Sorry, this function only works on Linux.")
+    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+        (message "dropbox-cli does not exist in /usr/bin/.")
+      (let ((directories (dired-get-marked-files)))
+        (dolist (directory directories)
+          (if (not (string-match "Dropbox" directory))
+              (message "Directory %s is not in Dropbox." directory)
+            (let ((command (concat "dropbox-cli exclude add " directory)))
+              (message "Running command: %s" command)
+              (shell-command command)
+              (when (get-buffer "*Dropbox Exclude List*")
+                (with-current-buffer "*Dropbox Exclude List*"
+                  (let ((buffer-read-only nil))
+                    (erase-buffer)
+                    (insert (shell-command-to-string "dropbox-cli exclude"))
+                    (goto-char (point-min))
+                    (setq buffer-read-only t)))))))))))
+
+(defun dropbox-add-directory ()
+  (interactive)
+  (let* ((current-line (thing-at-point 'line t))
+         (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
+    (message "Running command: %s" command)
+    (shell-command command)
+    (with-current-buffer "*Dropbox Exclude List*"
+      (let ((buffer-read-only nil))
+        (erase-buffer)
+        (insert (shell-command-to-string "dropbox-cli exclude"))
+        (goto-char (point-min)))
+      (setq buffer-read-only t))))
+
+(defun dropbox-exclude-list ()
+  (interactive)
+  (if (not (string-equal system-type "gnu/linux"))
+      (message "Sorry, this function only works on Linux.")
+    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+        (message "dropbox-cli does not exist in /usr/bin/.")
+      (if (not (string-match "Dropbox" default-directory))
+          (message "Current directory is not in Dropbox.")
+        (let* ((buffer-name "*Dropbox Exclude List*")
+               (buffer (get-buffer-create buffer-name)))
+          (split-window-right)
+          (other-window 1)
+          (switch-to-buffer buffer)
+          (let ((buffer-read-only nil))
+            (erase-buffer)
+            (insert (shell-command-to-string "dropbox-cli exclude"))
+            (goto-char (point-min))
+            (setq buffer-read-only t))
+          (dropbox-exclude-mode))))))
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "C-c d e") 'dropbox-exclude-list)
+  (define-key dired-mode-map (kbd "C-c d x") 'dropbox-exclude-directory))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
