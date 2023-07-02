@@ -68,9 +68,9 @@ XF86AudioRaiseVolume
 control+XF86AudioRaiseVolume
   pactl set-sink-volume 0 +1% ; pkill -RTMIN+4 dwmblocks
 XF86MonBrightnessDown
-  xbacklight -dec 10
+  brightnessctl s 10%-
 XF86MonBrightnessUp
-  xbacklight -inc 10
+  brightnessctl s 10%+
 super + x ; bracketright
   ~/.config/screenlayout/docked.sh
 super + x ; bracketleft
