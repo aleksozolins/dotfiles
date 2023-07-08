@@ -345,6 +345,38 @@
   (define-key dired-mode-map (kbd "C-c d e") 'dropbox-exclude-list)
   (define-key dired-mode-map (kbd "C-c d x") 'dropbox-exclude-directory))
 
+(defun my/zapier/friday_update_generator()
+  "Migrate entries under the 'Zapier' heading from past 5 days into new org file."
+  (interactive)
+  (require 'org)
+  (let* ((base-dir "~/Dropbox/docs/org-roam/daily")
+         (target-dir "~/Dropbox/docs/zapier/friday_update_gen")
+         (date-format "%Y-%m-%d")
+         (today (format-time-string date-format))
+         (files-to-process
+          (cl-loop for i from 0 to 4
+                   for date-str = (format-time-string date-format (time-subtract (current-time) (days-to-time i)))
+                   for filename = (expand-file-name (concat date-str ".org") base-dir)
+                   if (file-exists-p filename)
+                   collect filename))
+         (target-file (expand-file-name (concat today ".org") target-dir))
+         (zapier-heading "Zapier"))
+    (with-current-buffer (find-file-noselect target-file)
+      (goto-char (point-max))
+      (dolist (file files-to-process)
+        (with-temp-buffer
+          (insert-file-contents file)
+          (goto-char (point-min))
+          (while (re-search-forward (format "^\\* %s" zapier-heading) nil t)
+            (let ((element (org-element-at-point)))
+              (when (eq (org-element-type element) 'headline)
+                (let ((content (buffer-substring-no-properties (org-element-property :contents-begin element)
+                                                               (org-element-property :contents-end element))))
+                  (with-current-buffer (find-file-noselect target-file)
+                    (goto-char (point-max))
+                    (insert (format "* %s\n%s" (file-name-base file) content))))))))
+        (save-buffer)))))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
