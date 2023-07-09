@@ -346,7 +346,7 @@
   (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
 
 (defun my/zapier-friday-update-generator ()
-    "Migrate entries under the 'Zapier' heading from past 7 days into new org file."
+    "Migrate entries under the 'Zapier' heading from past 7 days into new org file to trigger a Zap."
     (interactive)
     (require 'org)
     (let* ((base-dir "~/Dropbox/docs/org-roam/daily")

@@ -571,13 +571,13 @@ From within ~dropbox-exclude-mode~:
 
 ** Zapier Friday Update Generator
 
-This function will look through the last 5 days of org-roam daily org files, take all content from the Zapier top level heading, and create a new org file with everything from this week in ~/Dropbox/docs/zapier/friday_update_gen/~.
+This function, meant to be run on Friday, will look through the last 7 days of org-roam daily org files, take all content from the Zapier top level heading, and create a new org file with everything from this week in =~/Dropbox/docs/zapier/friday_update_gen/=.
 
 A Zap is then triggered which generates my Friday Update using ChatGPT and the content is sent to me in Slack.
 
 #+begin_src elisp
   (defun my/zapier-friday-update-generator ()
-      "Migrate entries under the 'Zapier' heading from past 7 days into new org file."
+      "Migrate entries under the 'Zapier' heading from past 7 days into new org file to trigger a Zap."
       (interactive)
       (require 'org)
       (let* ((base-dir "~/Dropbox/docs/org-roam/daily")
