@@ -224,7 +224,7 @@
 
 (define-key dired-mode-map (kbd "V") 'dired-xdg-open-file)
 
-(defun zapier_day ()
+(defun my/zapier-day ()
   "Gets a work day started!"
   (interactive)
   (org-agenda nil "z")
@@ -235,7 +235,7 @@
   (save-buffer)
   (tab-next))
 
-(defun home_day ()
+(defun my/home-day ()
   "Gets a personal day started!"
   (interactive)
   (org-agenda nil "h")
@@ -266,7 +266,7 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
 
-(defun kill-all-agenda-files ()
+(defun my/kill-all-agenda-files ()
   "Close all buffers associated with files in `org-agenda-files'."
   (interactive)
   (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
@@ -277,17 +277,17 @@
   (org-agenda-quit))
 
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "Q") 'kill-all-agenda-files))
+  (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
 
 (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
   "Major mode for handling dropbox exclude list."
   (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
   (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-  (define-key dropbox-exclude-mode-map (kbd "x") 'dropbox-add-directory)
+  (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
   (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
   (setq buffer-read-only t))
 
-(defun dropbox-exclude-directory ()
+(defun my/dropbox-exclude-directory ()
   (interactive)
   (if (not (string-equal system-type "gnu/linux"))
       (message "Sorry, this function only works on Linux.")
@@ -308,7 +308,7 @@
                     (goto-char (point-min))
                     (setq buffer-read-only t)))))))))))
 
-(defun dropbox-add-directory ()
+(defun my/dropbox-add-directory ()
   (interactive)
   (let* ((current-line (thing-at-point 'line t))
          (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
@@ -321,7 +321,7 @@
         (goto-char (point-min)))
       (setq buffer-read-only t))))
 
-(defun dropbox-exclude-list ()
+(defun my/dropbox-exclude-list ()
   (interactive)
   (if (not (string-equal system-type "gnu/linux"))
       (message "Sorry, this function only works on Linux.")
@@ -342,40 +342,40 @@
           (dropbox-exclude-mode))))))
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-c d e") 'dropbox-exclude-list)
-  (define-key dired-mode-map (kbd "C-c d x") 'dropbox-exclude-directory))
+  (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
+  (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
 
-(defun my/zapier/friday_update_generator()
-  "Migrate entries under the 'Zapier' heading from past 5 days into new org file."
-  (interactive)
-  (require 'org)
-  (let* ((base-dir "~/Dropbox/docs/org-roam/daily")
-         (target-dir "~/Dropbox/docs/zapier/friday_update_gen")
-         (date-format "%Y-%m-%d")
-         (today (format-time-string date-format))
-         (files-to-process
-          (cl-loop for i from 0 to 4
-                   for date-str = (format-time-string date-format (time-subtract (current-time) (days-to-time i)))
-                   for filename = (expand-file-name (concat date-str ".org") base-dir)
-                   if (file-exists-p filename)
-                   collect filename))
-         (target-file (expand-file-name (concat today ".org") target-dir))
-         (zapier-heading "Zapier"))
-    (with-current-buffer (find-file-noselect target-file)
-      (goto-char (point-max))
-      (dolist (file files-to-process)
-        (with-temp-buffer
-          (insert-file-contents file)
-          (goto-char (point-min))
-          (while (re-search-forward (format "^\\* %s" zapier-heading) nil t)
-            (let ((element (org-element-at-point)))
-              (when (eq (org-element-type element) 'headline)
-                (let ((content (buffer-substring-no-properties (org-element-property :contents-begin element)
-                                                               (org-element-property :contents-end element))))
-                  (with-current-buffer (find-file-noselect target-file)
-                    (goto-char (point-max))
-                    (insert (format "* %s\n%s" (file-name-base file) content))))))))
-        (save-buffer)))))
+(defun my/zapier-friday-update-generator ()
+    "Migrate entries under the 'Zapier' heading from past 7 days into new org file."
+    (interactive)
+    (require 'org)
+    (let* ((base-dir "~/Dropbox/docs/org-roam/daily")
+           (target-dir "~/Dropbox/docs/zapier/friday_update_gen")
+           (date-format "%Y-%m-%d")
+           (today (format-time-string date-format))
+           (files-to-process
+            (cl-loop for i from 0 to 6
+                     for date-str = (format-time-string date-format (time-subtract (current-time) (days-to-time i)))
+                     for filename = (expand-file-name (concat date-str ".org") base-dir)
+                     if (file-exists-p filename)
+                     collect filename))
+           (target-file (expand-file-name (concat today ".org") target-dir))
+           (zapier-heading "Zapier"))
+      (with-current-buffer (find-file-noselect target-file)
+        (goto-char (point-max))
+        (dolist (file files-to-process)
+          (with-temp-buffer
+            (insert-file-contents file)
+            (goto-char (point-min))
+            (while (re-search-forward (format "^\\* %s" zapier-heading) nil t)
+              (let ((element (org-element-at-point)))
+                (when (eq (org-element-type element) 'headline)
+                  (let ((content (buffer-substring-no-properties (org-element-property :contents-begin element)
+                                                                (org-element-property :contents-end element))))
+                    (with-current-buffer (find-file-noselect target-file)
+                      (goto-char (point-max))
+                      (insert (format "* %s\n%s" (file-name-base file) content))))))))
+          (save-buffer)))))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -406,16 +406,16 @@
 ;; Any file ending in _ledger.txt opens in ledger mode
 (add-to-list 'auto-mode-alist '("_ledger\\.txt\\'" . ledger-mode))
 
-(defun my-ledger ()
+(defun my/my-ledger ()
   "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
   (interactive)
   (find-file "~/docs/finances/ledger/my_ledger.txt")
   (goto-char (point-max)))
 
 ;; Bind the function to F4
-(global-set-key (kbd "<f4>") 'my-ledger)
+(global-set-key (kbd "<f4>") 'my/my-ledger)
 
-(defun backup-my-ledger-file ()
+(defun my/backup-my-ledger-file ()
   (when (string= (buffer-file-name)
 		 (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
     (let* ((current-date (format-time-string "%Y-%m-%d"))
@@ -425,9 +425,9 @@
 	(make-directory backup-dir))
       (write-region (point-min) (point-max) backup-file))))
 
-(add-hook 'after-save-hook 'backup-my-ledger-file)
+(add-hook 'after-save-hook 'my/backup-my-ledger-file)
 
-(defun ledger-remove-extra-blank-lines ()
+(defun my/ledger-remove-extra-blank-lines ()
   "Remove consecutive blank lines in ledger-mode buffers, leaving only a single blank line between text."
   (interactive)
   (if (eq major-mode 'ledger-mode)
