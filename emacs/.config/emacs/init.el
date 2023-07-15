@@ -637,7 +637,7 @@
 ;; Org capture
 (use-package org-capture
   :ensure nil
-  :after org)
+  :after ORG)
 
 (defvar my/org-contacts-template "* %(org-contacts-template-name)
     :PROPERTIES:
@@ -649,160 +649,61 @@
 
 (setq org-capture-templates
       `(("c" "Contact" entry (file+headline "~/docs/org-roam/contacts.org" "Misc"),
-	 my/org-contacts-template :empty-lines 1)
+         my/org-contacts-template :empty-lines 1)
 
-	("t" "Task")
-	("tt" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("t" "Task")
+        ("tt" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
-	 "* TODO Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("th" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("th" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("ts" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
-	 "* TODO Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("ts" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tg" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tg" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("to" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("to" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("tS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
-	 "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("a" "Task (Active)")
-	("at" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("m" "Metrics")
+        ("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
+         "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
-	("ah" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("o" "Mouthpiece")
+        ("o1" "One-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+         "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
 
-	("aT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("o2" "Two-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+         "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-	("af" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("or" "Rim" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+         "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-	("ap" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("ag" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("ao" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("az" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
-	 "* ACT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("n" "Task (Next)")
-	("nn" "Task (Next)" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
-	 "* NEXT Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nh" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("ns" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
-	 "* NEXT Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("np" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("ng" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("no" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("nS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
-	 "* NEXT %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("b" "Task (Backlog)")
-	("bn" "Task (Backlog)" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
-	 "* BACKLOG Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bh" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bs" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
-	 "* BACKLOG Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bg" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bo" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("bS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
-	 "* BACKLOG %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-	("m" "Metrics")
-	("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
-	 "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
-
-	("o" "Mouthpiece")
-	("o1" "One-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	 "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
-
-	("o2" "Two-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	 "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
-
-	("or" "Rim" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	 "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
-
-	("oc" "Cup" table-line (file "~/docs/org-roam/my_mouthpieces.org")
-	 "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
+        ("oc" "Cup" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+         "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
