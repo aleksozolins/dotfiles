@@ -1410,6 +1410,17 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
 
 #+end_src
 
+** TypeScript
+
+#+begin_src elisp
+  (use-package typescript-mode
+    :ensure t
+    :mode "\\.ts\\'"
+    :config
+    (setq typescript-indent-level 2))
+  
+#+end_src
+
 * Custom Set Variables
 
 Move customization variables to a separate file and load it
