@@ -377,6 +377,41 @@
                       (insert (format "* %s\n%s" (file-name-base file) content))))))))
           (save-buffer)))))
 
+(defun my/add-to-agenda-files ()
+  (interactive)
+  (let ((current-file (buffer-file-name (current-buffer)))
+        (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
+    (with-temp-buffer
+      (insert-file-contents agenda-file)
+      (unless (search-backward current-file nil t)
+        (goto-char (point-max))
+        (unless (bolp)
+          (insert "\n"))
+        (insert current-file)
+        (write-region (point-min) (point-max) agenda-file))
+      (setq org-agenda-files (with-temp-buffer
+                               (insert-file-contents agenda-file)
+                               (split-string (buffer-string) "\n" t))))))
+
+(defun my/remove-from-agenda-files ()
+  (interactive)
+  (let ((current-file (buffer-file-name (current-buffer)))
+        (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
+    (with-temp-buffer
+      (insert-file-contents agenda-file)
+      (goto-char (point-min))
+      (when (search-forward current-file nil t) ; search for current file
+        (beginning-of-line)
+        (let ((begin (point)))
+          (forward-line 1)
+          (if (eobp)  ; if it's end of buffer, don't include newline
+              (delete-region begin (point))
+            (delete-region begin (1+ (point))))  ; else, include newline
+        (write-region (point-min) (point-max) agenda-file))
+      (setq org-agenda-files (with-temp-buffer
+                               (insert-file-contents agenda-file)
+                               (split-string (buffer-string) "\n" t)))))))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 

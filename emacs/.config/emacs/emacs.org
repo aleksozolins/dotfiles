@@ -610,6 +610,53 @@ A Zap is then triggered which generates my Friday Update using ChatGPT and the c
   
 #+end_src
 
+** Add and Remove File Paths from org-agenda-files
+
+*** Add files
+
+#+begin_src elisp
+  (defun my/add-to-agenda-files ()
+    (interactive)
+    (let ((current-file (buffer-file-name (current-buffer)))
+          (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
+      (with-temp-buffer
+        (insert-file-contents agenda-file)
+        (unless (search-backward current-file nil t)
+          (goto-char (point-max))
+          (unless (bolp)
+            (insert "\n"))
+          (insert current-file)
+          (write-region (point-min) (point-max) agenda-file))
+        (setq org-agenda-files (with-temp-buffer
+                                 (insert-file-contents agenda-file)
+                                 (split-string (buffer-string) "\n" t))))))
+
+#+end_src
+
+*** Remove files
+
+#+begin_src elisp
+  (defun my/remove-from-agenda-files ()
+    (interactive)
+    (let ((current-file (buffer-file-name (current-buffer)))
+          (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
+      (with-temp-buffer
+        (insert-file-contents agenda-file)
+        (goto-char (point-min))
+        (when (search-forward current-file nil t) ; search for current file
+          (beginning-of-line)
+          (let ((begin (point)))
+            (forward-line 1)
+            (if (eobp)  ; if it's end of buffer, don't include newline
+                (delete-region begin (point))
+              (delete-region begin (1+ (point))))  ; else, include newline
+          (write-region (point-min) (point-max) agenda-file))
+        (setq org-agenda-files (with-temp-buffer
+                                 (insert-file-contents agenda-file)
+                                 (split-string (buffer-string) "\n" t)))))))
+  
+#+end_src
+
 * Misc Packages
 ** Rainbow Delimiters
 
