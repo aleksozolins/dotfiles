@@ -617,7 +617,7 @@ A Zap is then triggered which generates my Friday Update using ChatGPT and the c
 #+begin_src elisp
   (defun my/add-to-agenda-files ()
     (interactive)
-    (let ((current-file (buffer-file-name (current-buffer)))
+    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
           (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
       (with-temp-buffer
         (insert-file-contents agenda-file)
@@ -638,7 +638,7 @@ A Zap is then triggered which generates my Friday Update using ChatGPT and the c
 #+begin_src elisp
   (defun my/remove-from-agenda-files ()
     (interactive)
-    (let ((current-file (buffer-file-name (current-buffer)))
+    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
           (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
       (with-temp-buffer
         (insert-file-contents agenda-file)
