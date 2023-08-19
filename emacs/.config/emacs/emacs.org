@@ -30,7 +30,12 @@ System configuration options:
 : --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
 
 * TODOs
-** TODO Debug customizations for Modus Themes
+** DONE Debug customizations for Modus Themes
+CLOSED: [2023-08-19 Sat 23:19]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-19 Sat 23:19]
+:END:
+
 ** TODO Fix org-agenda-tag-filter-preset issue
 ** TODO Set up Denote for new workflows
 ** TODO Migrate org-roam data to Denote
