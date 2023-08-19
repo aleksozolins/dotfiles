@@ -147,6 +147,21 @@ I'm using the Modus themes which are supplied out of the box. They were built by
 More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
 #+begin_src elisp
+  (setq modus-themes-mode-line '(accented)
+      modus-themes-bold-constructs t
+      modus-themes-fringes 'subtle
+      modus-themes-tabs-accented t
+      modus-themes-paren-match '(bold-intense)
+      modus-themes-prompts '(bold-intense)
+      modus-themes-org-blocks 'tinted-background
+      modus-themes-region '(bg-only)
+      modus-themes-headings
+      '((0 . (1.6))
+        (1 . (rainbow overline background 1.2))
+        (2 . (rainbow background 1.1))
+        (3 . (rainbow bold 1))
+        (t . (semilight 1))))
+
   ;; Load a Theme
   (load-theme 'modus-operandi t)
 
