@@ -3,7 +3,7 @@
 #+EMAIL: aleks@ozolins.xyz
 #+OPTIONS: toc:2
 #+STARTUP: show2levels
-#+PROPERTY: header-args:elisp :tangle init.el
+#+PROPERTY: header-args:elisp :tangle ~/.dotfiles/emacs/.config/emacs/init.el
 
 + Created: 2022-06-24
 + Updated: 2023-08-19
