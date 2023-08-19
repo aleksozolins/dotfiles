@@ -6,7 +6,9 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2023-07-08
++ Updated: 2023-08-19
+
+*Note:* the following two code blocks were last evaluated on Mac - I do also use a Linux system.
 
 Information pertaining to my current build of Emacs:
 
@@ -15,20 +17,31 @@ Information pertaining to my current build of Emacs:
 #+end_src
 
 #+RESULTS:
-: GNU Emacs 28.1 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.33, cairo version 1.17.6)
-:  of 2022-04-27
+: GNU Emacs 29.1 (build 1, aarch64-apple-darwin21.6.0, NS appkit-2113.60 Version 12.6.6 (Build 21G646))
+:  of 2023-08-17
+
+System configuration options:
 
 #+begin_src emacs-lisp :tangle no :exports both
   system-configuration-options
 #+end_src
 
 #+RESULTS:
-: --sysconfdir=/etc --prefix=/usr --libexecdir=/usr/lib --localstatedir=/var --with-cairo --with-harfbuzz --with-libsystemd --with-modules --with-x-toolkit=gtk3 'CFLAGS=-march=x86-64 -mtune=generic -O2 -pipe -fno-plt -fexceptions         -Wp,-D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security         -fstack-clash-protection -fcf-protection -g -ffile-prefix-map=/build/emacs/src=/usr/src/debug/emacs -flto=auto' 'LDFLAGS=-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -flto=auto'
+: --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
 
-* Package Management
+* TODOs
+** TODO Debug customizations for Modus Themes
+** TODO Fix org-agenda-tag-filter-preset issue
+** TODO Set up Denote for new workflows
+** TODO Migrate org-roam data to Denote
+** TODO Move to orderless for completion framework
+** TODO Move some custom functions to their own packages
+** TODO Figure out better archiving for todos.org
+** TODO Consider trashing org-contacts
+** TODO Clean up mu4e config
+
+* Packages
 ** Package Sources
-
-To start, we're defining which remote repositories Emacs will download packages from below. I've temporarily added the =gnu-devel= archive for macOS only as =magit= won't install otherwise.
 
 #+begin_src elisp
   ;; Initialize package sources
@@ -37,45 +50,23 @@ To start, we're defining which remote repositories Emacs will download packages 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("elpa" . "https://elpa.gnu.org/packages/")))
 
-  ;; Magit won't install on the Mac on 28.1 so this is a temporary workaround
-  (pcase system-type 
-    ('darwin (add-to-list 'package-archives
-			  (cons "gnu-devel" "https://elpa.gnu.org/devel/")
-			  t)))
-
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
 
-  ;; Initialize use-package on non-Linux platforms
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+#+end_src
 
+** use-package
+
+#+begin_src elisp
   (require 'use-package)
   (setq use-package-always-ensure t)
 
 #+end_src
 
-** exec-path-from-shell
+* Clean Up The Interface
 
-This is a Mac only setting that I believe is needed so packages execute using the correct PATH environment variable. Need to investigate this further as I can't fully remember why I added it.
-
-#+begin_src elisp
-  ;; macOS Only but might want in Linux
-  (pcase system-type
-    ('darwin (use-package exec-path-from-shell
-	       :ensure t
-	       :if (memq window-system '(mac ns x))
-	       :config
-	       ;; (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
-	       (exec-path-from-shell-initialize))))
-  
-#+end_src
-
-* Basic Settings
-** Clean Up The Interface
-
-The following settings make the interface a bit more minimal and clean. In the future, I might consider disabling the =visible-bell= on macOS only since it's much more annoying there than on Linux.
+The following settings make the interface a bit more minimal and clean.
 
 #+begin_src elisp
   (setq inhibit-startup-message t)      ; Disable startup message
@@ -94,7 +85,7 @@ The following settings make the interface a bit more minimal and clean. In the f
 
 #+end_src
 
-** Misc One-Off Settings
+* Other Settings
 
 Below are any settings where I'm not quite sure where to put in this file just yet.
 
@@ -116,7 +107,8 @@ Below are any settings where I'm not quite sure where to put in this file just y
   
 #+end_src
 
-** Line Numbers
+* Line Numbers
+
 #+begin_src elisp
   ;; Line numbers
   (column-number-mode)
@@ -135,7 +127,7 @@ Below are any settings where I'm not quite sure where to put in this file just y
   
 #+end_src
 
-** Set Fonts
+* Set Fonts
 
 Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac.
 
@@ -148,30 +140,13 @@ Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac
 
 #+end_src
 
-** Set a Theme
+* Set a Theme
 
 I'm using the Modus themes which are supplied out of the box. They were built by Protesilaos Stavrou.
 
 More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
 #+begin_src elisp
-  ;; Configure the Modus Theme's appearance
-  (setq modus-themes-mode-line '(accented)
-	modus-themes-bold-constructs t
-	modus-themes-fringes 'subtle
-	modus-themes-tabs-accented t
-	modus-themes-paren-match '(bold-intense)
-	modus-themes-prompts '(bold-intense)
-	modus-themes-completions 'opinionated
-	modus-themes-org-blocks 'tinted-background
-	modus-themes-scale-headings nil
-	modus-themes-region '(bg-only)
-	modus-themes-headings
-	'((1 . (rainbow overline background 1.4))
-	  (2 . (rainbow background 1.3))
-	  (3 . (rainbow bold 1.2))
-	  (t . (semilight 1.1))))
-
   ;; Load a Theme
   (load-theme 'modus-operandi t)
 
@@ -180,9 +155,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
 #+end_src
 
-** Backup Settings
-
-For some reason, Emacs is still autosaving files in the same directory as the file that is being edited. I thought I disabled that with the code below, but I'll need to look into this further as this causes some annoyances with git (unstanged files).
+* Backup Settings
 
 #+begin_src elisp
   ;; Backup options
@@ -202,7 +175,7 @@ For some reason, Emacs is still autosaving files in the same directory as the fi
   
 #+end_src
 
-** Key Re-bindings
+* Key Re-bindings
 
 Here's where I'm deviating from Emacs' built in key-bindings or adding my own bespoke bindings.
 
@@ -213,7 +186,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 
 #+end_src
 
-** Set authinfo source
+* Set authinfo Source
 
 I'd like emacs to default to using authinfo.gpg to store passwords
 
@@ -251,12 +224,10 @@ We'll define the default completion style(s) here before adding features:
   
 #+end_src
 
-** Which-Key
-
-We might want to consider eliminating which-key in the future since we use embark now. It is still helpful in some cases.
+* Which-Key
 
 #+begin_src elisp
-  ;; whick-key
+  ;; which-key
   (use-package which-key
     :init (which-key-mode)
     :diminish which-key-mode
@@ -265,7 +236,7 @@ We might want to consider eliminating which-key in the future since we use embar
   
 #+end_src
 
-** Vertico
+* Vertico
 
 This is the main completion framework I've chosen, over Ivy or Helm as it is more minimal and uses emacs' built in features.
 
@@ -280,7 +251,22 @@ This is the main completion framework I've chosen, over Ivy or Helm as it is mor
   
 #+end_src
 
-** Corfu
+* Marginalia
+
+Marginalia provides extra information in each completion buffer to the right of selection when using Vertico.
+
+#+begin_src elisp
+  (use-package marginalia
+    :after vertico
+    :ensure t
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+    :init
+    (marginalia-mode))
+  
+#+end_src
+
+* Corfu
 
 Corfu enhances completion at point with a small completion popup. The current candidates are shown in a popup below or above the point. Corfu is the minimalistic completion-in-region counterpart of the Vertico minibuffer UI.
 
@@ -308,22 +294,7 @@ The following code is taken right from Prot's config:
 
 #+end_src
 
-** Marginalia
-
-Marginalia provides extra information in each completion buffer to the right of selection when using Vertico.
-
-#+begin_src elisp
-  (use-package marginalia
-    :after vertico
-    :ensure t
-    :custom
-    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-    :init
-    (marginalia-mode))
-  
-#+end_src
-
-** Embark
+* Embark
 
 Embark is invoked by using =C-.= and allows common operations to be performed to selections from within the completion buffer. For instance, you can delete or rename files without ever opening a =dired= buffer.
 
@@ -383,7 +354,7 @@ Add this package to enable the hiding of dotfiles
 
 #+end_src
 
-** Use xdg-open to open files
+** Use xdg-open To Open Files
 
 Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bound to =v=
 
@@ -399,266 +370,7 @@ Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bo
 
 #+end_src
 
-* Custom Functions
-
-** Open Agenda, Notes, Email in Tabs
-
-Here's a function to open my org-agenda with the daily view for work (Zapier) and then open an org-roam daily note beside it.
-
-#+begin_src elisp
-  (defun my/zapier-day ()
-    "Gets a work day started!"
-    (interactive)
-    (org-agenda nil "z")
-    (tab-rename "Agenda")
-    (tab-new)
-    (org-roam-dailies-goto-today)
-    (tab-rename "Notes")
-    (save-buffer)
-    (tab-next))
-
-#+end_src
-
-Here's a similar function for personal days.
-
-#+begin_src elisp
-  (defun my/home-day ()
-    "Gets a personal day started!"
-    (interactive)
-    (org-agenda nil "h")
-    (tab-rename "Agenda")
-    (tab-new)
-    (org-roam-dailies-goto-today)
-    (tab-rename "Notes")
-    (save-buffer)
-    (tab-new)
-    (mu4e)
-    (sleep-for 3)
-    (tab-rename "Email")
-    (tab-next))
-
-#+end_src
-
-** Open My Time Tracking Node From Org Agenda
-
-While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
-
-#+begin_src elisp
-  (defun my/view-and-update-clocktables ()
-    "Open time_tracking.org in a split buffer and update all clock tables."
-    (interactive)
-    (let ((buffer (find-file-noselect "~/docs/org-roam/time_tracking.org")))
-      (with-current-buffer buffer
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	    (org-ctrl-c-ctrl-c)
-	    (forward-line)))
-	(save-buffer))
-      (display-buffer buffer)))
-
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
-
-#+end_src
-
-** Close Org Agenda and Kill All Agenda Buffers
-
-- Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
-  
-#+begin_src elisp
-  (defun my/kill-all-agenda-files ()
-    "Close all buffers associated with files in `org-agenda-files'."
-    (interactive)
-    (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
-      (dolist (buffer (buffer-list))
-	(let ((buffer-file-name (buffer-file-name buffer)))
-	  (when (and buffer-file-name (member buffer-file-name agenda-files))
-	    (kill-buffer buffer)))))
-    (org-agenda-quit))
-
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
-
-#+end_src
-
-** dropbox-exclude-mode
-
-This is a major mode that will allow you to interract with ~dropbox-cli~ to either add or remove directories from local sync. It works inside of ~dired~
-
-*** Keybindings
-
-From within ~dired~:
-- =C-c d e=: dropbox-exclude-list (Launches major mode so you can see and un-exclude directories)
-- =C-c d x=: dropbox-exclude-directory (from within dired, exclude a directory or set of marked directories)
-
-From within ~dropbox-exclude-mode~:
-- =n=: next-line
-- =p=: previous-line
-- =x=: dropbox-add-directory (remove from exclusion and start to sync locally)
-- =q=: kill-buffer-and-window (exit ~dropbox-exclude-mode~)
-
-*** Code
-
-#+begin_src elisp
-  (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
-    "Major mode for handling dropbox exclude list."
-    (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
-    (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-    (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
-    (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
-    (setq buffer-read-only t))
-
-  (defun my/dropbox-exclude-directory ()
-    (interactive)
-    (if (not (string-equal system-type "gnu/linux"))
-        (message "Sorry, this function only works on Linux.")
-      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-          (message "dropbox-cli does not exist in /usr/bin/.")
-        (let ((directories (dired-get-marked-files)))
-          (dolist (directory directories)
-            (if (not (string-match "Dropbox" directory))
-                (message "Directory %s is not in Dropbox." directory)
-              (let ((command (concat "dropbox-cli exclude add " directory)))
-                (message "Running command: %s" command)
-                (shell-command command)
-                (when (get-buffer "*Dropbox Exclude List*")
-                  (with-current-buffer "*Dropbox Exclude List*"
-                    (let ((buffer-read-only nil))
-                      (erase-buffer)
-                      (insert (shell-command-to-string "dropbox-cli exclude"))
-                      (goto-char (point-min))
-                      (setq buffer-read-only t)))))))))))
-
-  (defun my/dropbox-add-directory ()
-    (interactive)
-    (let* ((current-line (thing-at-point 'line t))
-           (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
-      (message "Running command: %s" command)
-      (shell-command command)
-      (with-current-buffer "*Dropbox Exclude List*"
-        (let ((buffer-read-only nil))
-          (erase-buffer)
-          (insert (shell-command-to-string "dropbox-cli exclude"))
-          (goto-char (point-min)))
-        (setq buffer-read-only t))))
-
-  (defun my/dropbox-exclude-list ()
-    (interactive)
-    (if (not (string-equal system-type "gnu/linux"))
-        (message "Sorry, this function only works on Linux.")
-      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-          (message "dropbox-cli does not exist in /usr/bin/.")
-        (if (not (string-match "Dropbox" default-directory))
-            (message "Current directory is not in Dropbox.")
-          (let* ((buffer-name "*Dropbox Exclude List*")
-                 (buffer (get-buffer-create buffer-name)))
-            (split-window-right)
-            (other-window 1)
-            (switch-to-buffer buffer)
-            (let ((buffer-read-only nil))
-              (erase-buffer)
-              (insert (shell-command-to-string "dropbox-cli exclude"))
-              (goto-char (point-min))
-              (setq buffer-read-only t))
-            (dropbox-exclude-mode))))))
-
-  (with-eval-after-load 'dired
-    (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
-    (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
-
-#+end_src
-
-** Zapier Friday Update Generator
-
-This function, meant to be run on Friday, will look through the last 7 days of org-roam daily org files, take all content from the Zapier top level heading, and create a new org file with everything from this week in =~/Dropbox/docs/zapier/friday_update_gen/=.
-
-A Zap is then triggered which generates my Friday Update using ChatGPT and the content is sent to me in Slack.
-
-#+begin_src elisp
-  (defun my/zapier-friday-update-generator ()
-      "Migrate entries under the 'Zapier' heading from past 7 days into new org file to trigger a Zap."
-      (interactive)
-      (require 'org)
-      (let* ((base-dir "~/Dropbox/docs/org-roam/daily")
-             (target-dir "~/Dropbox/docs/zapier/friday_update_gen")
-             (date-format "%Y-%m-%d")
-             (today (format-time-string date-format))
-             (files-to-process
-              (cl-loop for i from 0 to 6
-                       for date-str = (format-time-string date-format (time-subtract (current-time) (days-to-time i)))
-                       for filename = (expand-file-name (concat date-str ".org") base-dir)
-                       if (file-exists-p filename)
-                       collect filename))
-             (target-file (expand-file-name (concat today ".org") target-dir))
-             (zapier-heading "Zapier"))
-        (with-current-buffer (find-file-noselect target-file)
-          (goto-char (point-max))
-          (dolist (file files-to-process)
-            (with-temp-buffer
-              (insert-file-contents file)
-              (goto-char (point-min))
-              (while (re-search-forward (format "^\\* %s" zapier-heading) nil t)
-                (let ((element (org-element-at-point)))
-                  (when (eq (org-element-type element) 'headline)
-                    (let ((content (buffer-substring-no-properties (org-element-property :contents-begin element)
-                                                                  (org-element-property :contents-end element))))
-                      (with-current-buffer (find-file-noselect target-file)
-                        (goto-char (point-max))
-                        (insert (format "* %s\n%s" (file-name-base file) content))))))))
-            (save-buffer)))))
-  
-#+end_src
-
-** Add and Remove File Paths from org-agenda-files
-
-*** Add files
-
-#+begin_src elisp
-  (defun my/add-to-agenda-files ()
-    (interactive)
-    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-          (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
-      (with-temp-buffer
-        (insert-file-contents agenda-file)
-        (unless (search-backward current-file nil t)
-          (goto-char (point-max))
-          (unless (bolp)
-            (insert "\n"))
-          (insert current-file)
-          (write-region (point-min) (point-max) agenda-file))
-        (setq org-agenda-files (with-temp-buffer
-                                 (insert-file-contents agenda-file)
-                                 (split-string (buffer-string) "\n" t))))))
-
-#+end_src
-
-*** Remove files
-
-#+begin_src elisp
-  (defun my/remove-from-agenda-files ()
-    (interactive)
-    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-          (agenda-file (expand-file-name "~/docs/agenda.txt" org-directory)))
-      (with-temp-buffer
-        (insert-file-contents agenda-file)
-        (goto-char (point-min))
-        (when (search-forward current-file nil t) ; search for current file
-          (beginning-of-line)
-          (let ((begin (point)))
-            (forward-line 1)
-            (if (eobp)  ; if it's end of buffer, don't include newline
-                (delete-region begin (point))
-              (delete-region begin (1+ (point))))  ; else, include newline
-          (write-region (point-min) (point-max) agenda-file))
-        (setq org-agenda-files (with-temp-buffer
-                                 (insert-file-contents agenda-file)
-                                 (split-string (buffer-string) "\n" t)))))))
-  
-#+end_src
-
-* Misc Packages
-** Rainbow Delimiters
+* Rainbow Delimiters
 
 The =rainbow-delimiters= package makes each new set of parenthesis a different color so it's easy to see when they match!
 
@@ -668,7 +380,7 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
   
 #+end_src
 
-** Magit
+* Magit
 
 Magit is the most common git interface for Emacs and doesn't require any additional configuration out of the box. It can be invoked by =C-x g=
 
@@ -679,11 +391,9 @@ Magit is the most common git interface for Emacs and doesn't require any additio
   
 #+end_src
 
-** Ledger
+* Pulsar
 
-I use this to manage my finances
-
-** Pulsar
+Pulsar highlights the current line when changing buffers.
 
 #+begin_src elisp
   (use-package pulsar
@@ -702,7 +412,11 @@ I use this to manage my finances
 
 #+end_src
 
-*** ledger-mode
+* Ledger
+
+I use this to manage my finances
+
+** ledger-mode
 
 #+begin_src elisp
   (use-package ledger-mode
@@ -715,7 +429,7 @@ I use this to manage my finances
 
 #+end_src
 
-*** Open My Ledger With F4
+** Open My Ledger With F4
 
 #+begin_src elisp
   (defun my/my-ledger ()
@@ -729,7 +443,7 @@ I use this to manage my finances
 
 #+end_src
 
-*** Auto Backup my Ledger
+** Auto Backup my Ledger
 
 Whenever I save my ledger file, a daily backup is created in the backup subdirectory.
 
@@ -748,24 +462,7 @@ Whenever I save my ledger file, a daily backup is created in the backup subdirec
 
 #+end_src
 
-*** ledger-remove-extra-blank-lines
-
-A bespoke function to remove extra blank lines only in ledger-mode.
-
-#+begin_src elisp
-  (defun my/ledger-remove-extra-blank-lines ()
-    "Remove consecutive blank lines in ledger-mode buffers, leaving only a single blank line between text."
-    (interactive)
-    (if (eq major-mode 'ledger-mode)
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "\\(^[[:space:]]*\n\\)[[:space:]]*\n+" nil t)
-	    (replace-match "\\1")))
-      (message "Warning: This function can only be used in ledger-mode.")))
-
-#+end_src
-
-** Ripgrep (rg.el)
+* Ripgrep (rg.el)
 
 rg.el adds to Emacs' grep mode functionality with editing/etc.
 
@@ -776,7 +473,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
   
 #+end_src
 
-** Tab Bar Mode
+* Tab Bar Mode
 
 #+begin_src elisp
   ;; Settings for tab-bar-mode
@@ -818,7 +515,7 @@ RSS reader!
     :ensure t
     :config
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/org-roam/rss_feeds.org")))
+    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/org/rss_feeds.org")))
 
 #+end_src
 
@@ -861,13 +558,13 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   (setq org-startup-folded nil)
 
   ;; Set org directory
-  (setq org-directory "~/docs/org-roam")
+  (setq org-directory "~/docs/org")
 
   ;; Use org-indent-mode by default
   (setq org-startup-indented t)
 
   ;; Set org-agenda files
-  (setq org-agenda-files (expand-file-name "~/docs/agenda.txt" org-directory))
+  (setq org-agenda-files (expand-file-name "~/docs/org/agenda.txt" org-directory))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -925,36 +622,36 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
             (todo "ONG|ACT"
                   ((org-agenda-overriding-header "Ongoing/Active Tasks")))
             (todo "WAIT"
-                  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Waiting Tasks")))
+                  ((org-agenda-overriding-header "Waiting Tasks")))
             (todo "NEXT"
-                  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
           ("h" "Home Day Dashboard"
            ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
             (todo "ONG|ACT"
                   ((org-agenda-overriding-header "Ongoing/Active Tasks")))
             (todo "WAIT"
-                  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Waiting Tasks")))
+                  ((org-agenda-overriding-header "Waiting Tasks")))
             (todo "NEXT"
-                  ((org-agenda-tag-filter-preset '("-zapier"))(org-agenda-overriding-header "Next Tasks")))))
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
           ("Z" "Zapier Week Dashboard"
            ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
             (todo "ONG|ACT"
                   ((org-agenda-overriding-header "Ongoing/Active Tasks")))
             (todo "WAIT"
-                  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Waiting Tasks")))
+                  ((org-agenda-overriding-header "Waiting Tasks")))
             (todo "NEXT"
-                  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
           ("z" "Zapier Day Dashboard"
            ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
             (todo "ONG|ACT"
                   ((org-agenda-overriding-header "Ongoing/Active Tasks")))
             (todo "WAIT"
-                  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Waiting Tasks")))
+                  ((org-agenda-overriding-header "Waiting Tasks")))
             (todo "NEXT"
-                  ((org-agenda-tag-filter-preset '("+zapier"))(org-agenda-overriding-header "Next Tasks")))))))
+                  ((org-agenda-overriding-header "Next Tasks")))))))
 
 
   ;; Configure org tags (C-c C-q)
@@ -999,19 +696,7 @@ Simple contact management for org. Contacts can be captured via a template by us
   (use-package org-contacts
     :ensure t
     :after org
-    :custom (org-contacts-files '("~/docs/org-roam/contacts.org")))
-  
-#+end_src
-
-** org-vcard
-
-Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in new contacts to your contacts.org file.
-
-#+begin_src elisp
-  ;; Org Contacts
-  (use-package org-vcard
-    :ensure t
-    :after org)
+    :custom (org-contacts-files '("~/docs/org/contacts.org")))
   
 #+end_src
 
@@ -1023,7 +708,7 @@ Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in
   ;; Org capture
   (use-package org-capture
     :ensure nil
-    :after ORG)
+    :after org)
 
   (defvar my/org-contacts-template "* %(org-contacts-template-name)
       :PROPERTIES:
@@ -1034,65 +719,65 @@ Add-on for org-contacts but unmaintained. Can use =org-vcard-import= to bring in
       :END:" "Template for org-contacts.")
 
   (setq org-capture-templates
-        `(("c" "Contact" entry (file+headline "~/docs/org-roam/contacts.org" "Misc"),
+        `(("c" "Contact" entry (file+headline "~/docs/org/contacts.org" "Misc"),
            my/org-contacts-template :empty-lines 1)
 
           ("t" "Task")
-          ("tt" "Task" entry (file+olp "~/docs/org-roam/todos.org" "Inbox")
+          ("tt" "Task" entry (file+olp "~/docs/org/todos.org" "Inbox")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tc" "Check Out" entry (file+headline "~/docs/org-roam/todos.org" "Check Out")
+          ("tc" "Check Out" entry (file+headline "~/docs/org/todos.org" "Check Out")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("th" "Home" entry (file+headline "~/docs/org-roam/todos.org" "Home")
+          ("th" "Home" entry (file+headline "~/docs/org/todos.org" "Home")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tT" "Tech" entry (file+headline "~/docs/org-roam/todos.org" "Tech")
+          ("tT" "Tech" entry (file+headline "~/docs/org/todos.org" "Tech")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tf" "Financial" entry (file+headline "~/docs/org-roam/todos.org" "Financial")
+          ("tf" "Financial" entry (file+headline "~/docs/org/todos.org" "Financial")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tC" "Connections" entry (file+headline "~/docs/org-roam/todos.org" "Connections")
+          ("tC" "Connections" entry (file+headline "~/docs/org/todos.org" "Connections")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("ts" "Shopping" entry (file+headline "~/docs/org-roam/todos.org" "Shopping")
+          ("ts" "Shopping" entry (file+headline "~/docs/org/todos.org" "Shopping")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tp" "Parents" entry (file+headline "~/docs/org-roam/todos.org" "Parents")
+          ("tp" "Parents" entry (file+headline "~/docs/org/todos.org" "Parents")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tg" "Gigs" entry (file+headline "~/docs/org-roam/todos.org" "Gigs")
+          ("tg" "Gigs" entry (file+headline "~/docs/org/todos.org" "Gigs")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("to" "OzoStudio" entry (file+headline "~/docs/org-roam/todos.org" "OzoStudio")
+          ("to" "OzoStudio" entry (file+headline "~/docs/org/todos.org" "OzoStudio")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tz" "Zapier" entry (file+headline "~/docs/org-roam/todos.org" "Zapier")
+          ("tz" "Zapier" entry (file+headline "~/docs/org/todos.org" "Zapier")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tS" "Someday" entry (file+headline "~/docs/org-roam/todos.org" "Someday")
+          ("tS" "Someday" entry (file+headline "~/docs/org/todos.org" "Someday")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
           ("m" "Metrics")
-          ("mw" "Weight" table-line (file "~/docs/org-roam/weight.org")
+          ("mw" "Weight" table-line (file "~/docs/org/weight.org")
            "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
           ("o" "Mouthpiece")
-          ("o1" "One-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+          ("o1" "One-Piece" table-line (file "~/docs/org/my_mouthpieces.org")
            "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
 
-          ("o2" "Two-Piece" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+          ("o2" "Two-Piece" table-line (file "~/docs/org/my_mouthpieces.org")
            "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-          ("or" "Rim" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+          ("or" "Rim" table-line (file "~/docs/org/my_mouthpieces.org")
            "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-          ("oc" "Cup" table-line (file "~/docs/org-roam/my_mouthpieces.org")
+          ("oc" "Cup" table-line (file "~/docs/org/my_mouthpieces.org")
            "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
   ;; Default org capture file
-  (setq org-default-notes-file (concat org-directory "~/docs/inbox.txt"))
+  (setq org-default-notes-file (concat org-directory "~/docs/org/inbox.txt"))
 
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmarks-names-plist '())
@@ -1140,81 +825,134 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
 #+end_src
 
-** Org Roam
+* Denote
 
-Org Roam is the package that allows us to use an SQLite database to manage our org files to form a "second brain"
-
-*** Keybindings
-
-- ~C-c n f~ - Find an existing node **or** make a new node
-- ~C-c n i~ - Insert a link to an existing node or make a new node
-- ~C-c n I~ - Insert a link to an existing node or make a new node without opening a new buffer
-- ~C-c n l~ - Open the Roam bugger to show backlinks
-- ~C-M-i~ - Completion at point for inserting a partially typed link
-- ~C-c n d n~ - Create a daily node for today
-- ~C-c n d T~ - Create a daily node for tomorrow
-- ~C-c n d t~ - Goto a daily node for tomorrow
-- ~C-c n d Y~ - Create a daily node for yesterday
-- ~C-c n d y~ - Goto a daily node for yesterday
-- ~C-c n d v~ - Create a daily node for a specific date
-- ~C-c n d c~ - Goto a daily node for a specific date
-- ~C-c n d f~ - Goto the next existing daily node (forward)
-- ~C-c n d b~ - Goto the last existing daily node (back)
-
-*** Other functions
-
-- ~org-roam-alias-add~ Add aliases to the properties of the current node (say for duplicate names)
-- ~org-id-get-create~ Creates a node within an existing node from a **top level heading** only
-
-*** Main Config
+Testing this package out right now as an alternative to org-roam. It is manually installed so use-package is not a factor yet. Note that we're just starting from Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].
 
 #+begin_src elisp
-  (use-package org-roam
+  (use-package denote
     :ensure t
-    :custom
-    (org-roam-directory "~/docs/org-roam")
-    (org-roam-completion-everywhere t)
-    (org-roam-capture-templates
-     '(("d" "default" plain
-	"%?"
-	:target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n")
-	:unnarrowed t)
-       ("p" "project" plain
-	"%?"
-	:target (file+head "${slug}.org" "#+title: ${title}\n#+date: %U\n#+category: ${title}\n#+filetags: project\n")
-	:unnarrowed t)))
-    (org-roam-dailies-capture-templates
-     '(("d" "default" entry "* %<%I:%M %p>: %?"
-	:target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-	   ("C-c n f" . org-roam-node-find)
-	   ("C-c n i" . org-roam-node-insert)
-	   ("C-c n I" . org-roam-node-insert-immediate)
-	   :map org-mode-map
-	   ("C-M-i"    . completion-at-point)
-	   :map org-roam-dailies-map
-	   ("Y" . org-roam-dailies-capture-yesterday)
-	   ("T" . org-roam-dailies-capture-tomorrow))
-    :bind-keymap
-    ("C-c n d" . org-roam-dailies-map)
-    :config
-    (setq org-roam-node-display-template ;; Add filetag view to vertico when finding nodes
-      (concat "${title:*} "
-	      (propertize "${tags:30}" 'face 'org-tag)))
-    (require 'org-roam-dailies) ;; Ensure the keymap is available
-    (org-roam-db-autosync-mode))
+    )
+  (require 'denote)
 
-#+end_src
+  ;; Remember to check the doc strings of those variables.
+  (setq denote-directory (expand-file-name "~/docs/denote/"))
+  (setq denote-known-keywords '("emacs" "journal" "zapier"))
+  (setq denote-infer-keywords t)
+  (setq denote-sort-keywords t)
+  (setq denote-file-type nil) ; Org is the default, set others here
+  (setq denote-prompts '(subdirectory title keywords))
+  (setq denote-excluded-directories-regexp nil)
+  (setq denote-excluded-keywords-regexp nil)
 
-*** Insert a Node Without Opening Buffer
+  ;; Pick dates, where relevant, with Org's advanced interface:
+  (setq denote-date-prompt-use-org-read-date t)
 
-#+begin_src elisp
-  (defun org-roam-node-insert-immediate (arg &rest args)
-    (interactive "P")
-    (let ((args (cons arg args))
-	  (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-						    '(:immediate-finish t)))))
-      (apply #'org-roam-node-insert args)))
+
+  ;; Read this manual for how to specify `denote-templates'.  We do not
+  ;; include an example here to avoid potential confusion.
+
+
+  ;; We do not allow multi-word keywords by default.  The author's
+  ;; personal preference is for single-word keywords for a more rigid
+  ;; workflow.
+  (setq denote-allow-multi-word-keywords nil)
+
+  (setq denote-date-format nil) ; read doc string
+
+  ;; By default, we do not show the context of links.  We just display
+  ;; file names.  This provides a more informative view.
+  (setq denote-backlinks-show-context t)
+
+  ;; Also see `denote-link-backlinks-display-buffer-action' which is a bit
+  ;; advanced.
+
+  ;; If you use Markdown or plain text files (Org renders links as buttons
+  ;; right away)
+  (add-hook 'find-file-hook #'denote-link-buttonize-buffer)
+
+  ;; We use different ways to specify a path for demo purposes.
+  (setq denote-dired-directories
+        (list denote-directory
+              (thread-last denote-directory (expand-file-name "attachments"))))
+
+  ;; Generic (great if you rename files Denote-style in lots of places):
+  ;; (add-hook 'dired-mode-hook #'denote-dired-mode)
+  ;;
+  ;; OR if only want it in `denote-dired-directories':
+  (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
+
+  ;; Here is a custom, user-level command from one of the examples we
+  ;; showed in this manual.  We define it here and add it to a key binding
+  ;; below.
+  (defun my-denote-journal ()
+    "Create an entry tagged 'journal' with the date as its title.
+  If a journal for the current day exists, visit it.  If multiple
+  entries exist, prompt with completion for a choice between them.
+  Else create a new file."
+    (interactive)
+    (let* ((today (format-time-string "%A %e %B %Y"))
+           (string (denote-sluggify today))
+           (files (denote-directory-files-matching-regexp string)))
+      (cond
+       ((> (length files) 1)
+        (find-file (completing-read "Select file: " files nil :require-match)))
+       (files
+        (find-file (car files)))
+       (t
+        (denote
+         today
+         '("journal"))))))
+
+  ;; Denote DOES NOT define any key bindings.  This is for the user to
+  ;; decide.  For example:
+  (let ((map global-map))
+    (define-key map (kbd "C-c d j") #'my-denote-journal) ; our custom command
+    (define-key map (kbd "C-c d n") #'denote)
+    (define-key map (kbd "C-c d N") #'denote-type)
+    (define-key map (kbd "C-c d d") #'denote-date)
+    (define-key map (kbd "C-c d z") #'denote-signature) ; "zettelkasten" mnemonic
+    (define-key map (kbd "C-c d s") #'denote-subdirectory)
+    (define-key map (kbd "C-c d t") #'denote-template)
+    ;; If you intend to use Denote with a variety of file types, it is
+    ;; easier to bind the link-related commands to the `global-map', as
+    ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
+    ;; `markdown-mode-map', and/or `text-mode-map'.
+    (define-key map (kbd "C-c d i") #'denote-link) ; "insert" mnemonic
+    (define-key map (kbd "C-c d I") #'denote-add-links)
+    (define-key map (kbd "C-c d b") #'denote-backlinks)
+    (define-key map (kbd "C-c d f f") #'denote-find-link)
+    (define-key map (kbd "C-c d f b") #'denote-find-backlink)
+    ;; Note that `denote-rename-file' can work from any context, not just
+    ;; Dired bufffers.  That is why we bind it here to the `global-map'.
+    (define-key map (kbd "C-c d r") #'denote-rename-file)
+    (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter))
+
+  ;; Key bindings specifically for Dired.
+  (let ((map dired-mode-map))
+    (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
+    (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-marked-files)
+    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+
+  (with-eval-after-load 'org-capture
+    (setq denote-org-capture-specifiers "%l\n%i\n%?")
+    (add-to-list 'org-capture-templates
+                 '("n" "New note (with denote.el)" plain
+                   (file denote-last-path)
+                   #'denote-org-capture
+                   :no-save t
+                   :immediate-finish nil
+                   :kill-buffer t
+                   :jump-to-captured t)))
+
+  ;; Also check the commands `denote-link-after-creating',
+  ;; `denote-link-or-create'.  You may want to bind them to keys as well.
+
+
+  ;; If you want to have Denote commands available via a right click
+  ;; context menu, use the following and then enable
+  ;; `context-menu-mode'.
+  (add-hook 'context-menu-functions #'denote-context-menu)
 
 #+end_src
 
@@ -1465,6 +1203,185 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
     :mode "\\.ts\\'"
     :config
     (setq typescript-indent-level 2))
+  
+#+end_src
+
+* Custom Functions
+
+** Open My Time Tracking Node From Org Agenda
+
+While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
+
+#+begin_src elisp
+  (defun my/view-and-update-clocktables ()
+    "Open time_tracking.org in a split buffer and update all clock tables."
+    (interactive)
+    (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
+      (with-current-buffer buffer
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	    (org-ctrl-c-ctrl-c)
+	    (forward-line)))
+	(save-buffer))
+      (display-buffer buffer)))
+
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
+
+#+end_src
+
+** Close Org Agenda and Kill All Agenda Buffers
+
+- Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
+  
+#+begin_src elisp
+  (defun my/kill-all-agenda-files ()
+    "Close all buffers associated with files in `org-agenda-files'."
+    (interactive)
+    (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
+      (dolist (buffer (buffer-list))
+	(let ((buffer-file-name (buffer-file-name buffer)))
+	  (when (and buffer-file-name (member buffer-file-name agenda-files))
+	    (kill-buffer buffer)))))
+    (org-agenda-quit))
+
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
+
+#+end_src
+
+** dropbox-exclude-mode
+
+This is a major mode that will allow you to interract with ~dropbox-cli~ to either add or remove directories from local sync. It works inside of ~dired~
+
+*** Keybindings
+
+From within ~dired~:
+- =C-c d e=: dropbox-exclude-list (Launches major mode so you can see and un-exclude directories)
+- =C-c d x=: dropbox-exclude-directory (from within dired, exclude a directory or set of marked directories)
+
+From within ~dropbox-exclude-mode~:
+- =n=: next-line
+- =p=: previous-line
+- =x=: dropbox-add-directory (remove from exclusion and start to sync locally)
+- =q=: kill-buffer-and-window (exit ~dropbox-exclude-mode~)
+
+*** Code
+
+#+begin_src elisp
+  (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
+    "Major mode for handling dropbox exclude list."
+    (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
+    (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
+    (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
+    (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
+    (setq buffer-read-only t))
+
+  (defun my/dropbox-exclude-directory ()
+    (interactive)
+    (if (not (string-equal system-type "gnu/linux"))
+        (message "Sorry, this function only works on Linux.")
+      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+          (message "dropbox-cli does not exist in /usr/bin/.")
+        (let ((directories (dired-get-marked-files)))
+          (dolist (directory directories)
+            (if (not (string-match "Dropbox" directory))
+                (message "Directory %s is not in Dropbox." directory)
+              (let ((command (concat "dropbox-cli exclude add " directory)))
+                (message "Running command: %s" command)
+                (shell-command command)
+                (when (get-buffer "*Dropbox Exclude List*")
+                  (with-current-buffer "*Dropbox Exclude List*"
+                    (let ((buffer-read-only nil))
+                      (erase-buffer)
+                      (insert (shell-command-to-string "dropbox-cli exclude"))
+                      (goto-char (point-min))
+                      (setq buffer-read-only t)))))))))))
+
+  (defun my/dropbox-add-directory ()
+    (interactive)
+    (let* ((current-line (thing-at-point 'line t))
+           (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
+      (message "Running command: %s" command)
+      (shell-command command)
+      (with-current-buffer "*Dropbox Exclude List*"
+        (let ((buffer-read-only nil))
+          (erase-buffer)
+          (insert (shell-command-to-string "dropbox-cli exclude"))
+          (goto-char (point-min)))
+        (setq buffer-read-only t))))
+
+  (defun my/dropbox-exclude-list ()
+    (interactive)
+    (if (not (string-equal system-type "gnu/linux"))
+        (message "Sorry, this function only works on Linux.")
+      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+          (message "dropbox-cli does not exist in /usr/bin/.")
+        (if (not (string-match "Dropbox" default-directory))
+            (message "Current directory is not in Dropbox.")
+          (let* ((buffer-name "*Dropbox Exclude List*")
+                 (buffer (get-buffer-create buffer-name)))
+            (split-window-right)
+            (other-window 1)
+            (switch-to-buffer buffer)
+            (let ((buffer-read-only nil))
+              (erase-buffer)
+              (insert (shell-command-to-string "dropbox-cli exclude"))
+              (goto-char (point-min))
+              (setq buffer-read-only t))
+            (dropbox-exclude-mode))))))
+
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
+    (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
+
+#+end_src
+
+** Add and Remove File Paths From org-agenda-files
+
+*** Add files
+
+#+begin_src elisp
+  (defun my/add-to-agenda-files ()
+    (interactive)
+    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
+          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
+      (with-temp-buffer
+        (insert-file-contents agenda-file)
+        (unless (search-backward current-file nil t)
+          (goto-char (point-max))
+          (unless (bolp)
+            (insert "\n"))
+          (insert current-file)
+          (write-region (point-min) (point-max) agenda-file))
+        (setq org-agenda-files (with-temp-buffer
+                                 (insert-file-contents agenda-file)
+                                 (split-string (buffer-string) "\n" t))))))
+
+#+end_src
+
+*** Remove files
+
+#+begin_src elisp
+  (defun my/remove-from-agenda-files ()
+    (interactive)
+    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
+          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
+      (with-temp-buffer
+        (insert-file-contents agenda-file)
+        (goto-char (point-min))
+        (when (search-forward current-file nil t) ; search for current file
+          (beginning-of-line)
+          (let ((begin (point)))
+            (forward-line 1)
+            (if (eobp)  ; if it's end of buffer, don't include newline
+                (delete-region begin (point))
+              (delete-region begin (1+ (point))))  ; else, include newline
+          (write-region (point-min) (point-max) agenda-file))
+        (setq org-agenda-files (with-temp-buffer
+                                 (insert-file-contents agenda-file)
+                                 (split-string (buffer-string) "\n" t)))))))
   
 #+end_src
 
