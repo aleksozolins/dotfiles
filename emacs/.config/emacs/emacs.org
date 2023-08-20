@@ -3,7 +3,7 @@
 #+EMAIL: aleks@ozolins.xyz
 #+OPTIONS: toc:2
 #+STARTUP: show2levels
-#+PROPERTY: header-args:elisp :tangle ~/.dotfiles/emacs/.config/emacs/init.el
+#+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
 + Updated: 2023-08-19
@@ -96,8 +96,8 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
 #+begin_src elisp
 
-  (setq vc-follow-symlinks nil) ; Stop Emacs from asking about following symlinks when opening files
-  (recentf-mode 1) ; Have Emacs remember recently opened files when using fild file
+  (setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
+  (recentf-mode 1) ; Have Emacs remember recently opened files when using find file
 
   ;; Save what you enter into minibuffer prompts
   (setq history-length 25)

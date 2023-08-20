@@ -25,8 +25,8 @@
 (defun display-startup-echo-area-message ()
   (message "Welcome back Aleks!"))
 
-(setq vc-follow-symlinks nil) ; Stop Emacs from asking about following symlinks when opening files
-(recentf-mode 1) ; Have Emacs remember recently opened files when using fild file
+(setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
+(recentf-mode 1) ; Have Emacs remember recently opened files when using find file
 
 ;; Save what you enter into minibuffer prompts
 (setq history-length 25)
