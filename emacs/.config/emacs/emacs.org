@@ -40,7 +40,12 @@ CLOSED: [2023-08-19 Sat 23:19]
 ** TODO Set up Denote for new workflows
 ** TODO Migrate org-roam data to Denote
 ** TODO Move to orderless for completion framework
-** TODO Move some custom functions to their own packages
+** DONE Move some custom functions to their own packages
+CLOSED: [2023-08-21 Mon 22:56]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-21 Mon 22:56]
+:END:
+
 ** TODO Figure out better archiving for todos.org
 ** TODO Consider trashing org-contacts
 ** TODO Clean up mu4e config
@@ -357,6 +362,8 @@ This basic config was generated with the help of GPT4
 
 #+end_src
 
+** Hide Dotfiles
+
 Add this package to enable the hiding of dotfiles
 
 #+begin_src elisp
@@ -374,7 +381,9 @@ Add this package to enable the hiding of dotfiles
 
 #+end_src
 
-** Use xdg-open To Open Files
+** Custom Functions
+
+*** Use xdg-open To Open Files
 
 Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bound to =v=
 
@@ -387,6 +396,93 @@ Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bo
       (call-process "xdg-open" nil 0 nil file)))
 
   (define-key dired-mode-map (kbd "V") 'dired-xdg-open-file)
+
+#+end_src
+
+*** dropbox-exclude-mode
+
+This is a major mode that will allow you to interract with ~dropbox-cli~ to either add or remove directories from local sync. It works inside of ~dired~
+
+**** Keybindings
+
+From within ~dired~:
+- =C-c d e=: dropbox-exclude-list (Launches major mode so you can see and un-exclude directories)
+- =C-c d x=: dropbox-exclude-directory (from within dired, exclude a directory or set of marked directories)
+
+From within ~dropbox-exclude-mode~:
+- =n=: next-line
+- =p=: previous-line
+- =x=: dropbox-add-directory (remove from exclusion and start to sync locally)
+- =q=: kill-buffer-and-window (exit ~dropbox-exclude-mode~)
+
+**** Code
+
+#+begin_src elisp
+  (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
+    "Major mode for handling dropbox exclude list."
+    (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
+    (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
+    (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
+    (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
+    (setq buffer-read-only t))
+
+  (defun my/dropbox-exclude-directory ()
+    (interactive)
+    (if (not (string-equal system-type "gnu/linux"))
+        (message "Sorry, this function only works on Linux.")
+      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+          (message "dropbox-cli does not exist in /usr/bin/.")
+        (let ((directories (dired-get-marked-files)))
+          (dolist (directory directories)
+            (if (not (string-match "Dropbox" directory))
+                (message "Directory %s is not in Dropbox." directory)
+              (let ((command (concat "dropbox-cli exclude add " directory)))
+                (message "Running command: %s" command)
+                (shell-command command)
+                (when (get-buffer "*Dropbox Exclude List*")
+                  (with-current-buffer "*Dropbox Exclude List*"
+                    (let ((buffer-read-only nil))
+                      (erase-buffer)
+                      (insert (shell-command-to-string "dropbox-cli exclude"))
+                      (goto-char (point-min))
+                      (setq buffer-read-only t)))))))))))
+
+  (defun my/dropbox-add-directory ()
+    (interactive)
+    (let* ((current-line (thing-at-point 'line t))
+           (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
+      (message "Running command: %s" command)
+      (shell-command command)
+      (with-current-buffer "*Dropbox Exclude List*"
+        (let ((buffer-read-only nil))
+          (erase-buffer)
+          (insert (shell-command-to-string "dropbox-cli exclude"))
+          (goto-char (point-min)))
+        (setq buffer-read-only t))))
+
+  (defun my/dropbox-exclude-list ()
+    (interactive)
+    (if (not (string-equal system-type "gnu/linux"))
+        (message "Sorry, this function only works on Linux.")
+      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+          (message "dropbox-cli does not exist in /usr/bin/.")
+        (if (not (string-match "Dropbox" default-directory))
+            (message "Current directory is not in Dropbox.")
+          (let* ((buffer-name "*Dropbox Exclude List*")
+                 (buffer (get-buffer-create buffer-name)))
+            (split-window-right)
+            (other-window 1)
+            (switch-to-buffer buffer)
+            (let ((buffer-read-only nil))
+              (erase-buffer)
+              (insert (shell-command-to-string "dropbox-cli exclude"))
+              (goto-char (point-min))
+              (setq buffer-read-only t))
+            (dropbox-exclude-mode))))))
+
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
+    (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
 
 #+end_src
 
@@ -845,6 +941,98 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
 #+end_src
 
+** Custom Functions
+
+*** Open My Time Tracking Node From Org Agenda
+
+While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
+
+#+begin_src elisp
+  (defun my/view-and-update-clocktables ()
+    "Open time_tracking.org in a split buffer and update all clock tables."
+    (interactive)
+    (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
+      (with-current-buffer buffer
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	    (org-ctrl-c-ctrl-c)
+	    (forward-line)))
+	(save-buffer))
+      (display-buffer buffer)))
+
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
+
+#+end_src
+
+*** Close Org Agenda and Kill All Agenda Buffers
+
+- Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
+  
+#+begin_src elisp
+  (defun my/kill-all-agenda-files ()
+    "Close all buffers associated with files in `org-agenda-files'."
+    (interactive)
+    (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
+      (dolist (buffer (buffer-list))
+	(let ((buffer-file-name (buffer-file-name buffer)))
+	  (when (and buffer-file-name (member buffer-file-name agenda-files))
+	    (kill-buffer buffer)))))
+    (org-agenda-quit))
+
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
+
+#+end_src
+
+*** Add and Remove File Paths From org-agenda-files
+
+**** Add files
+
+#+begin_src elisp
+  (defun my/add-to-agenda-files ()
+    (interactive)
+    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
+          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
+      (with-temp-buffer
+        (insert-file-contents agenda-file)
+        (unless (search-backward current-file nil t)
+          (goto-char (point-max))
+          (unless (bolp)
+            (insert "\n"))
+          (insert current-file)
+          (write-region (point-min) (point-max) agenda-file))
+        (setq org-agenda-files (with-temp-buffer
+                                 (insert-file-contents agenda-file)
+                                 (split-string (buffer-string) "\n" t))))))
+
+#+end_src
+
+**** Remove files
+
+#+begin_src elisp
+  (defun my/remove-from-agenda-files ()
+    (interactive)
+    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
+          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
+      (with-temp-buffer
+        (insert-file-contents agenda-file)
+        (goto-char (point-min))
+        (when (search-forward current-file nil t) ; search for current file
+          (beginning-of-line)
+          (let ((begin (point)))
+            (forward-line 1)
+            (if (eobp)  ; if it's end of buffer, don't include newline
+                (delete-region begin (point))
+              (delete-region begin (1+ (point))))  ; else, include newline
+          (write-region (point-min) (point-max) agenda-file))
+        (setq org-agenda-files (with-temp-buffer
+                                 (insert-file-contents agenda-file)
+                                 (split-string (buffer-string) "\n" t)))))))
+  
+#+end_src
+
 * Denote
 
 Testing this package out right now as an alternative to org-roam. It is manually installed so use-package is not a factor yet. Note that we're just starting from Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].
@@ -1223,185 +1411,6 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
     :mode "\\.ts\\'"
     :config
     (setq typescript-indent-level 2))
-  
-#+end_src
-
-* Custom Functions
-
-** Open My Time Tracking Node From Org Agenda
-
-While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
-
-#+begin_src elisp
-  (defun my/view-and-update-clocktables ()
-    "Open time_tracking.org in a split buffer and update all clock tables."
-    (interactive)
-    (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
-      (with-current-buffer buffer
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	    (org-ctrl-c-ctrl-c)
-	    (forward-line)))
-	(save-buffer))
-      (display-buffer buffer)))
-
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
-
-#+end_src
-
-** Close Org Agenda and Kill All Agenda Buffers
-
-- Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
-  
-#+begin_src elisp
-  (defun my/kill-all-agenda-files ()
-    "Close all buffers associated with files in `org-agenda-files'."
-    (interactive)
-    (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
-      (dolist (buffer (buffer-list))
-	(let ((buffer-file-name (buffer-file-name buffer)))
-	  (when (and buffer-file-name (member buffer-file-name agenda-files))
-	    (kill-buffer buffer)))))
-    (org-agenda-quit))
-
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
-
-#+end_src
-
-** dropbox-exclude-mode
-
-This is a major mode that will allow you to interract with ~dropbox-cli~ to either add or remove directories from local sync. It works inside of ~dired~
-
-*** Keybindings
-
-From within ~dired~:
-- =C-c d e=: dropbox-exclude-list (Launches major mode so you can see and un-exclude directories)
-- =C-c d x=: dropbox-exclude-directory (from within dired, exclude a directory or set of marked directories)
-
-From within ~dropbox-exclude-mode~:
-- =n=: next-line
-- =p=: previous-line
-- =x=: dropbox-add-directory (remove from exclusion and start to sync locally)
-- =q=: kill-buffer-and-window (exit ~dropbox-exclude-mode~)
-
-*** Code
-
-#+begin_src elisp
-  (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
-    "Major mode for handling dropbox exclude list."
-    (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
-    (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-    (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
-    (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
-    (setq buffer-read-only t))
-
-  (defun my/dropbox-exclude-directory ()
-    (interactive)
-    (if (not (string-equal system-type "gnu/linux"))
-        (message "Sorry, this function only works on Linux.")
-      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-          (message "dropbox-cli does not exist in /usr/bin/.")
-        (let ((directories (dired-get-marked-files)))
-          (dolist (directory directories)
-            (if (not (string-match "Dropbox" directory))
-                (message "Directory %s is not in Dropbox." directory)
-              (let ((command (concat "dropbox-cli exclude add " directory)))
-                (message "Running command: %s" command)
-                (shell-command command)
-                (when (get-buffer "*Dropbox Exclude List*")
-                  (with-current-buffer "*Dropbox Exclude List*"
-                    (let ((buffer-read-only nil))
-                      (erase-buffer)
-                      (insert (shell-command-to-string "dropbox-cli exclude"))
-                      (goto-char (point-min))
-                      (setq buffer-read-only t)))))))))))
-
-  (defun my/dropbox-add-directory ()
-    (interactive)
-    (let* ((current-line (thing-at-point 'line t))
-           (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
-      (message "Running command: %s" command)
-      (shell-command command)
-      (with-current-buffer "*Dropbox Exclude List*"
-        (let ((buffer-read-only nil))
-          (erase-buffer)
-          (insert (shell-command-to-string "dropbox-cli exclude"))
-          (goto-char (point-min)))
-        (setq buffer-read-only t))))
-
-  (defun my/dropbox-exclude-list ()
-    (interactive)
-    (if (not (string-equal system-type "gnu/linux"))
-        (message "Sorry, this function only works on Linux.")
-      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-          (message "dropbox-cli does not exist in /usr/bin/.")
-        (if (not (string-match "Dropbox" default-directory))
-            (message "Current directory is not in Dropbox.")
-          (let* ((buffer-name "*Dropbox Exclude List*")
-                 (buffer (get-buffer-create buffer-name)))
-            (split-window-right)
-            (other-window 1)
-            (switch-to-buffer buffer)
-            (let ((buffer-read-only nil))
-              (erase-buffer)
-              (insert (shell-command-to-string "dropbox-cli exclude"))
-              (goto-char (point-min))
-              (setq buffer-read-only t))
-            (dropbox-exclude-mode))))))
-
-  (with-eval-after-load 'dired
-    (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
-    (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
-
-#+end_src
-
-** Add and Remove File Paths From org-agenda-files
-
-*** Add files
-
-#+begin_src elisp
-  (defun my/add-to-agenda-files ()
-    (interactive)
-    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
-      (with-temp-buffer
-        (insert-file-contents agenda-file)
-        (unless (search-backward current-file nil t)
-          (goto-char (point-max))
-          (unless (bolp)
-            (insert "\n"))
-          (insert current-file)
-          (write-region (point-min) (point-max) agenda-file))
-        (setq org-agenda-files (with-temp-buffer
-                                 (insert-file-contents agenda-file)
-                                 (split-string (buffer-string) "\n" t))))))
-
-#+end_src
-
-*** Remove files
-
-#+begin_src elisp
-  (defun my/remove-from-agenda-files ()
-    (interactive)
-    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
-      (with-temp-buffer
-        (insert-file-contents agenda-file)
-        (goto-char (point-min))
-        (when (search-forward current-file nil t) ; search for current file
-          (beginning-of-line)
-          (let ((begin (point)))
-            (forward-line 1)
-            (if (eobp)  ; if it's end of buffer, don't include newline
-                (delete-region begin (point))
-              (delete-region begin (1+ (point))))  ; else, include newline
-          (write-region (point-min) (point-max) agenda-file))
-        (setq org-agenda-files (with-temp-buffer
-                                 (insert-file-contents agenda-file)
-                                 (split-string (buffer-string) "\n" t)))))))
   
 #+end_src
 

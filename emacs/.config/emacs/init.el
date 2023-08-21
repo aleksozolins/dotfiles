@@ -203,6 +203,72 @@
 
 (define-key dired-mode-map (kbd "V") 'dired-xdg-open-file)
 
+(define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
+  "Major mode for handling dropbox exclude list."
+  (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
+  (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
+  (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
+  (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
+  (setq buffer-read-only t))
+
+(defun my/dropbox-exclude-directory ()
+  (interactive)
+  (if (not (string-equal system-type "gnu/linux"))
+      (message "Sorry, this function only works on Linux.")
+    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+        (message "dropbox-cli does not exist in /usr/bin/.")
+      (let ((directories (dired-get-marked-files)))
+        (dolist (directory directories)
+          (if (not (string-match "Dropbox" directory))
+              (message "Directory %s is not in Dropbox." directory)
+            (let ((command (concat "dropbox-cli exclude add " directory)))
+              (message "Running command: %s" command)
+              (shell-command command)
+              (when (get-buffer "*Dropbox Exclude List*")
+                (with-current-buffer "*Dropbox Exclude List*"
+                  (let ((buffer-read-only nil))
+                    (erase-buffer)
+                    (insert (shell-command-to-string "dropbox-cli exclude"))
+                    (goto-char (point-min))
+                    (setq buffer-read-only t)))))))))))
+
+(defun my/dropbox-add-directory ()
+  (interactive)
+  (let* ((current-line (thing-at-point 'line t))
+         (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
+    (message "Running command: %s" command)
+    (shell-command command)
+    (with-current-buffer "*Dropbox Exclude List*"
+      (let ((buffer-read-only nil))
+        (erase-buffer)
+        (insert (shell-command-to-string "dropbox-cli exclude"))
+        (goto-char (point-min)))
+      (setq buffer-read-only t))))
+
+(defun my/dropbox-exclude-list ()
+  (interactive)
+  (if (not (string-equal system-type "gnu/linux"))
+      (message "Sorry, this function only works on Linux.")
+    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
+        (message "dropbox-cli does not exist in /usr/bin/.")
+      (if (not (string-match "Dropbox" default-directory))
+          (message "Current directory is not in Dropbox.")
+        (let* ((buffer-name "*Dropbox Exclude List*")
+               (buffer (get-buffer-create buffer-name)))
+          (split-window-right)
+          (other-window 1)
+          (switch-to-buffer buffer)
+          (let ((buffer-read-only nil))
+            (erase-buffer)
+            (insert (shell-command-to-string "dropbox-cli exclude"))
+            (goto-char (point-min))
+            (setq buffer-read-only t))
+          (dropbox-exclude-mode))))))
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
+  (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -546,6 +612,70 @@
 (add-to-list 'org-structure-template-alist '("html" . "src html"))
 (add-to-list 'org-structure-template-alist '("css" . "src css"))
 
+(defun my/view-and-update-clocktables ()
+  "Open time_tracking.org in a split buffer and update all clock tables."
+  (interactive)
+  (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
+    (with-current-buffer buffer
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	  (org-ctrl-c-ctrl-c)
+	  (forward-line)))
+      (save-buffer))
+    (display-buffer buffer)))
+
+(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
+
+(defun my/kill-all-agenda-files ()
+  "Close all buffers associated with files in `org-agenda-files'."
+  (interactive)
+  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
+    (dolist (buffer (buffer-list))
+      (let ((buffer-file-name (buffer-file-name buffer)))
+	(when (and buffer-file-name (member buffer-file-name agenda-files))
+	  (kill-buffer buffer)))))
+  (org-agenda-quit))
+
+(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
+
+(defun my/add-to-agenda-files ()
+  (interactive)
+  (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
+        (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
+    (with-temp-buffer
+      (insert-file-contents agenda-file)
+      (unless (search-backward current-file nil t)
+        (goto-char (point-max))
+        (unless (bolp)
+          (insert "\n"))
+        (insert current-file)
+        (write-region (point-min) (point-max) agenda-file))
+      (setq org-agenda-files (with-temp-buffer
+                               (insert-file-contents agenda-file)
+                               (split-string (buffer-string) "\n" t))))))
+
+(defun my/remove-from-agenda-files ()
+  (interactive)
+  (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
+        (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
+    (with-temp-buffer
+      (insert-file-contents agenda-file)
+      (goto-char (point-min))
+      (when (search-forward current-file nil t) ; search for current file
+        (beginning-of-line)
+        (let ((begin (point)))
+          (forward-line 1)
+          (if (eobp)  ; if it's end of buffer, don't include newline
+              (delete-region begin (point))
+            (delete-region begin (1+ (point))))  ; else, include newline
+        (write-region (point-min) (point-max) agenda-file))
+      (setq org-agenda-files (with-temp-buffer
+                               (insert-file-contents agenda-file)
+                               (split-string (buffer-string) "\n" t)))))))
+
 (use-package denote
   :ensure t
   )
@@ -853,136 +983,6 @@ Else create a new file."
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))
-
-(defun my/view-and-update-clocktables ()
-  "Open time_tracking.org in a split buffer and update all clock tables."
-  (interactive)
-  (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
-    (with-current-buffer buffer
-      (save-excursion
-	(goto-char (point-min))
-	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	  (org-ctrl-c-ctrl-c)
-	  (forward-line)))
-      (save-buffer))
-    (display-buffer buffer)))
-
-(with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
-
-(defun my/kill-all-agenda-files ()
-  "Close all buffers associated with files in `org-agenda-files'."
-  (interactive)
-  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
-    (dolist (buffer (buffer-list))
-      (let ((buffer-file-name (buffer-file-name buffer)))
-	(when (and buffer-file-name (member buffer-file-name agenda-files))
-	  (kill-buffer buffer)))))
-  (org-agenda-quit))
-
-(with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
-
-(define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
-  "Major mode for handling dropbox exclude list."
-  (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
-  (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-  (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
-  (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
-  (setq buffer-read-only t))
-
-(defun my/dropbox-exclude-directory ()
-  (interactive)
-  (if (not (string-equal system-type "gnu/linux"))
-      (message "Sorry, this function only works on Linux.")
-    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-        (message "dropbox-cli does not exist in /usr/bin/.")
-      (let ((directories (dired-get-marked-files)))
-        (dolist (directory directories)
-          (if (not (string-match "Dropbox" directory))
-              (message "Directory %s is not in Dropbox." directory)
-            (let ((command (concat "dropbox-cli exclude add " directory)))
-              (message "Running command: %s" command)
-              (shell-command command)
-              (when (get-buffer "*Dropbox Exclude List*")
-                (with-current-buffer "*Dropbox Exclude List*"
-                  (let ((buffer-read-only nil))
-                    (erase-buffer)
-                    (insert (shell-command-to-string "dropbox-cli exclude"))
-                    (goto-char (point-min))
-                    (setq buffer-read-only t)))))))))))
-
-(defun my/dropbox-add-directory ()
-  (interactive)
-  (let* ((current-line (thing-at-point 'line t))
-         (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
-    (message "Running command: %s" command)
-    (shell-command command)
-    (with-current-buffer "*Dropbox Exclude List*"
-      (let ((buffer-read-only nil))
-        (erase-buffer)
-        (insert (shell-command-to-string "dropbox-cli exclude"))
-        (goto-char (point-min)))
-      (setq buffer-read-only t))))
-
-(defun my/dropbox-exclude-list ()
-  (interactive)
-  (if (not (string-equal system-type "gnu/linux"))
-      (message "Sorry, this function only works on Linux.")
-    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-        (message "dropbox-cli does not exist in /usr/bin/.")
-      (if (not (string-match "Dropbox" default-directory))
-          (message "Current directory is not in Dropbox.")
-        (let* ((buffer-name "*Dropbox Exclude List*")
-               (buffer (get-buffer-create buffer-name)))
-          (split-window-right)
-          (other-window 1)
-          (switch-to-buffer buffer)
-          (let ((buffer-read-only nil))
-            (erase-buffer)
-            (insert (shell-command-to-string "dropbox-cli exclude"))
-            (goto-char (point-min))
-            (setq buffer-read-only t))
-          (dropbox-exclude-mode))))))
-
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
-  (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
-
-(defun my/add-to-agenda-files ()
-  (interactive)
-  (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-        (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
-    (with-temp-buffer
-      (insert-file-contents agenda-file)
-      (unless (search-backward current-file nil t)
-        (goto-char (point-max))
-        (unless (bolp)
-          (insert "\n"))
-        (insert current-file)
-        (write-region (point-min) (point-max) agenda-file))
-      (setq org-agenda-files (with-temp-buffer
-                               (insert-file-contents agenda-file)
-                               (split-string (buffer-string) "\n" t))))))
-
-(defun my/remove-from-agenda-files ()
-  (interactive)
-  (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-        (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
-    (with-temp-buffer
-      (insert-file-contents agenda-file)
-      (goto-char (point-min))
-      (when (search-forward current-file nil t) ; search for current file
-        (beginning-of-line)
-        (let ((begin (point)))
-          (forward-line 1)
-          (if (eobp)  ; if it's end of buffer, don't include newline
-              (delete-region begin (point))
-            (delete-region begin (1+ (point))))  ; else, include newline
-        (write-region (point-min) (point-max) agenda-file))
-      (setq org-agenda-files (with-temp-buffer
-                               (insert-file-contents agenda-file)
-                               (split-string (buffer-string) "\n" t)))))))
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
