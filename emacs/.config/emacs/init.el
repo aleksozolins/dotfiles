@@ -687,7 +687,7 @@
 (setq denote-infer-keywords t)
 (setq denote-sort-keywords t)
 (setq denote-file-type nil) ; Org is the default, set others here
-(setq denote-prompts '(subdirectory title keywords))
+(setq denote-prompts '(subdirectory file-type date title keywords))
 (setq denote-excluded-directories-regexp nil)
 (setq denote-excluded-keywords-regexp nil)
 
