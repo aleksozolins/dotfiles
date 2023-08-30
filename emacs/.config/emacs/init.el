@@ -683,11 +683,11 @@
 
 ;; Remember to check the doc strings of those variables.
 (setq denote-directory (expand-file-name "~/docs/denote/"))
-(setq denote-known-keywords '("emacs" "journal" "zapier"))
+(setq denote-known-keywords '("emacs" "journal" "meta" "zapier" "daily" "weekly"))
 (setq denote-infer-keywords t)
 (setq denote-sort-keywords t)
 (setq denote-file-type nil) ; Org is the default, set others here
-(setq denote-prompts '(subdirectory file-type date title keywords))
+(setq denote-prompts '(file-type date title keywords))
 (setq denote-excluded-directories-regexp nil)
 (setq denote-excluded-keywords-regexp nil)
 
@@ -731,7 +731,7 @@
 ;; Here is a custom, user-level command from one of the examples we
 ;; showed in this manual.  We define it here and add it to a key binding
 ;; below.
-(defun my-denote-journal ()
+(defun my-denote-daily ()
   "Create an entry tagged 'journal' with the date as its title.
 If a journal for the current day exists, visit it.  If multiple
 entries exist, prompt with completion for a choice between them.
@@ -748,12 +748,12 @@ Else create a new file."
      (t
       (denote
        today
-       '("journal"))))))
+       '("daily"))))))
 
 ;; Denote DOES NOT define any key bindings.  This is for the user to
 ;; decide.  For example:
 (let ((map global-map))
-  (define-key map (kbd "C-c d j") #'my-denote-journal) ; our custom command
+  (define-key map (kbd "C-c d D") #'my-denote-daily) ; our custom command
   (define-key map (kbd "C-c d n") #'denote)
   (define-key map (kbd "C-c d N") #'denote-type)
   (define-key map (kbd "C-c d d") #'denote-date)
@@ -790,10 +790,6 @@ Else create a new file."
                  :immediate-finish nil
                  :kill-buffer t
                  :jump-to-captured t)))
-
-;; Also check the commands `denote-link-after-creating',
-;; `denote-link-or-create'.  You may want to bind them to keys as well.
-
 
 ;; If you want to have Denote commands available via a right click
 ;; context menu, use the following and then enable
