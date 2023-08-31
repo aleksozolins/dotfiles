@@ -426,7 +426,7 @@
 
 ;; Configure custom agenda views
 (setq org-agenda-custom-commands
-      '(("D" "Week Dashboard"
+      '(("w" "Week Dashboard"
          ((agenda "" ((org-deadline-warning-days 7)))
           (todo "ONG|ACT"
                 ((org-agenda-overriding-header "Ongoing/Active Tasks")))
@@ -442,44 +442,7 @@
           (todo "WAIT"
                 ((org-agenda-overriding-header "Waiting Tasks")))
           (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ("H" "Home Week Dashboard"
-         ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ("h" "Home Day Dashboard"
-         ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ("Z" "Zapier Week Dashboard"
-         ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ("z" "Zapier Day Dashboard"
-         ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))
-          (todo "NEXT"
                 ((org-agenda-overriding-header "Next Tasks")))))))
-
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist

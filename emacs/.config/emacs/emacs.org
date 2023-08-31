@@ -36,10 +36,20 @@ CLOSED: [2023-08-19 Sat 23:19]
 - State "DONE"       from "TODO"       [2023-08-19 Sat 23:19]
 :END:
 
-** TODO Fix org-agenda-tag-filter-preset issue
-** TODO Set up Denote for new workflows
-** TODO Migrate org-roam data to Denote
+** DONE Fix org-agenda-tag-filter-preset issue
+CLOSED: [2023-08-31 Thu 18:27]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-31 Thu 18:27]
+:END:
+
+** DONE Set up Denote for new workflows
+CLOSED: [2023-08-31 Thu 18:27]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-31 Thu 18:27]
+:END:
+
 ** TODO Move to orderless for completion framework
+** TODO Migrate org-roam data to Denote
 ** DONE Move some custom functions to their own packages
 CLOSED: [2023-08-21 Mon 22:56]
 :LOGBOOK:
@@ -715,7 +725,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   ;; Configure custom agenda views
   (setq org-agenda-custom-commands
-        '(("D" "Week Dashboard"
+        '(("w" "Week Dashboard"
            ((agenda "" ((org-deadline-warning-days 7)))
             (todo "ONG|ACT"
                   ((org-agenda-overriding-header "Ongoing/Active Tasks")))
@@ -731,45 +741,8 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
             (todo "WAIT"
                   ((org-agenda-overriding-header "Waiting Tasks")))
             (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
-
-          ("H" "Home Week Dashboard"
-           ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)))
-            (todo "ONG|ACT"
-                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting Tasks")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
-
-          ("h" "Home Day Dashboard"
-           ((agenda "" ((org-agenda-tag-filter-preset '("-zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
-            (todo "ONG|ACT"
-                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting Tasks")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
-
-          ("Z" "Zapier Week Dashboard"
-           ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)))
-            (todo "ONG|ACT"
-                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting Tasks")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
-
-          ("z" "Zapier Day Dashboard"
-           ((agenda "" ((org-agenda-tag-filter-preset '("+zapier"))(org-deadline-warning-days 7)(org-agenda-span 1)))
-            (todo "ONG|ACT"
-                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting Tasks")))
-            (todo "NEXT"
                   ((org-agenda-overriding-header "Next Tasks")))))))
-
-
+          
   ;; Configure org tags (C-c C-q)
   (setq org-tag-alist
         '((:startgroup)
