@@ -744,7 +744,8 @@ Else create a new file."
 (let ((map dired-mode-map))
   (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
   (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-marked-files)
-  (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+  (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
+  (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
 
 (with-eval-after-load 'org-capture
   (setq denote-org-capture-specifiers "%l\n%i\n%?")
@@ -761,6 +762,31 @@ Else create a new file."
 ;; context menu, use the following and then enable
 ;; `context-menu-mode'.
 (add-hook 'context-menu-functions #'denote-context-menu)
+
+(defun my-denote-aggregate-notes ()
+  "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
+  (interactive)
+  (if (not (eq major-mode 'dired-mode))
+      (message "You're not in a Dired buffer!")
+    (let ((files (dired-get-marked-files))
+          (target-buffer (generate-new-buffer "*Denote Aggregated Notes*"))
+          content)
+      (with-current-buffer target-buffer
+        (org-mode))
+      (dolist (file files)
+        (when (string-match-p "\\(txt\\|md\\|org\\)$" file)
+          (with-temp-buffer
+            (insert-file-contents file)
+            (setq content (buffer-string)))
+          (with-current-buffer target-buffer
+            (goto-char (point-max))
+            (insert (format "* %s\n" (file-name-nondirectory file)))
+            (if (not (string-match-p "org$" file))
+                (insert content)
+              ;; If it's an org file, shift all headings down by one level.
+              (insert (replace-regexp-in-string "^\\*" "**" content)))))
+        )
+      (switch-to-buffer target-buffer))))
 
 ;; Install the package
 (pcase system-type

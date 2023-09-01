@@ -1116,7 +1116,8 @@ Testing this package out right now as an alternative to org-roam. It is manually
   (let ((map dired-mode-map))
     (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
     (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-marked-files)
-    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
+    (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
 
   (with-eval-after-load 'org-capture
     (setq denote-org-capture-specifiers "%l\n%i\n%?")
@@ -1134,6 +1135,40 @@ Testing this package out right now as an alternative to org-roam. It is manually
   ;; `context-menu-mode'.
   (add-hook 'context-menu-functions #'denote-context-menu)
 
+#+end_src
+
+** Custom Functions
+
+*** Function to Aggregate Notes
+
+This is useful for generating AI summaries - for instance, you can mark several files that represent a week in dired, then aggregate the contents into a new org buffer. That buffer can be saved into a directory that triggers a Zap that will action on the aggregated contents of those notes. The aggregated buffer inserts the contents of each note under an org heading with the file name. With the Denote file naming scheme, this automatically acts as a date tree as well.
+
+#+begin_src elisp
+  (defun my-denote-aggregate-notes ()
+    "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
+    (interactive)
+    (if (not (eq major-mode 'dired-mode))
+        (message "You're not in a Dired buffer!")
+      (let ((files (dired-get-marked-files))
+            (target-buffer (generate-new-buffer "*Denote Aggregated Notes*"))
+            content)
+        (with-current-buffer target-buffer
+          (org-mode))
+        (dolist (file files)
+          (when (string-match-p "\\(txt\\|md\\|org\\)$" file)
+            (with-temp-buffer
+              (insert-file-contents file)
+              (setq content (buffer-string)))
+            (with-current-buffer target-buffer
+              (goto-char (point-max))
+              (insert (format "* %s\n" (file-name-nondirectory file)))
+              (if (not (string-match-p "org$" file))
+                  (insert content)
+                ;; If it's an org file, shift all headings down by one level.
+                (insert (replace-regexp-in-string "^\\*" "**" content)))))
+          )
+        (switch-to-buffer target-buffer))))
+  
 #+end_src
 
 * Mu4e
