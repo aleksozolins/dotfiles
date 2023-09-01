@@ -716,10 +716,10 @@ Else create a new file."
 ;; Denote DOES NOT define any key bindings.  This is for the user to
 ;; decide.  For example:
 (let ((map global-map))
-  (define-key map (kbd "C-c d D") #'my-denote-daily) ; our custom command
+  (define-key map (kbd "C-c d d") #'my-denote-daily) ; our custom command
   (define-key map (kbd "C-c d n") #'denote)
   (define-key map (kbd "C-c d N") #'denote-type)
-  (define-key map (kbd "C-c d d") #'denote-date)
+  (define-key map (kbd "C-c d D") #'denote-date)
   (define-key map (kbd "C-c d z") #'denote-signature) ; "zettelkasten" mnemonic
   (define-key map (kbd "C-c d s") #'denote-subdirectory)
   (define-key map (kbd "C-c d t") #'denote-template)
