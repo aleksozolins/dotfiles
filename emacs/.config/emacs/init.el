@@ -735,7 +735,10 @@ Else create a new file."
   ;; Note that `denote-rename-file' can work from any context, not just
   ;; Dired bufffers.  That is why we bind it here to the `global-map'.
   (define-key map (kbd "C-c d r") #'denote-rename-file)
-  (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter))
+  (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
+  ;; Added by Aleks
+  (define-key map (kbd "C-c d k") #'denote-keywords-add)
+  (define-key map (kbd "C-c d K") #'denote-keywords-remove))
 
 ;; Key bindings specifically for Dired.
 (let ((map dired-mode-map))
