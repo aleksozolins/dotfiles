@@ -39,6 +39,10 @@
 
 (windmove-default-keybindings 'super) ; Navigate between windows with s-<arrow keys>
 
+; Enable visual-line-mode for txt and md files
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'markdown-mode-hook 'turn-on-visual-line-mode)
+
 ;; Line numbers
 (column-number-mode)
 (global-display-line-numbers-mode -1) ; Right now they are disabled

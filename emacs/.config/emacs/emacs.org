@@ -134,7 +134,11 @@ Below are any settings where I'm not quite sure where to put in this file just y
   (setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
 
   (windmove-default-keybindings 'super) ; Navigate between windows with s-<arrow keys>
-  
+
+  ; Enable visual-line-mode for txt and md files
+  (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-visual-line-mode)
+
 #+end_src
 
 * Line Numbers
