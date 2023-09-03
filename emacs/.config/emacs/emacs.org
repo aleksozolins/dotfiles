@@ -48,7 +48,12 @@ CLOSED: [2023-08-31 Thu 18:27]
 - State "DONE"       from "TODO"       [2023-08-31 Thu 18:27]
 :END:
 
-** TODO Move to orderless for completion framework
+** DONE Move to orderless for completion framework
+CLOSED: [2023-09-03 Sun 21:03]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-09-03 Sun 21:03]
+:END:
+
 ** TODO Migrate org-roam data to Denote
 ** DONE Move some custom functions to their own packages
 CLOSED: [2023-08-21 Mon 22:56]
@@ -56,7 +61,12 @@ CLOSED: [2023-08-21 Mon 22:56]
 - State "DONE"       from "TODO"       [2023-08-21 Mon 22:56]
 :END:
 
-** TODO Figure out better archiving for todos.org
+** DONE Figure out better archiving for todos.org
+CLOSED: [2023-09-03 Sun 21:03]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-09-03 Sun 21:03]
+:END:
+
 ** TODO Consider trashing org-contacts
 ** TODO Clean up mu4e config
 
@@ -251,12 +261,17 @@ Bind =bookmark-bmenu-list= to =F8=
 
 * Completion Framework
 
-We'll define the default completion style(s) here before adding features:
+Using orderless now, case insensitive!
 
 #+begin_src elisp
-  (setq completion-styles '(substring))  ;; define the completion style
-  (setq completion-ignore-case  t)  ;; ignore case
-  
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion))))
+    :config
+    (setq completion-ignore-case t))
+
 #+end_src
 
 * Which-Key

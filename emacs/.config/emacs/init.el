@@ -109,8 +109,13 @@
 
 (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
 
-(setq completion-styles '(substring))  ;; define the completion style
-(setq completion-ignore-case  t)  ;; ignore case
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  :config
+  (setq completion-ignore-case t))
 
 ;; which-key
 (use-package which-key
