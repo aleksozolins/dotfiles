@@ -397,7 +397,7 @@
 (setq org-agenda-files 
     (cl-remove-if
      (lambda (file) (string-match-p "/\\.#" file))
-     (directory-files-recursively (concat denote-directory "/agenda") "\\(\\.org\\'\\|\\.txt\\'\\)")))
+     (directory-files-recursively (concat denote-directory "agenda") "\\(\\.org\\'\\|\\.txt\\'\\)")))
 
 ;; org-agenda window settings
 (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -839,7 +839,7 @@ Else create a new file."
         (setq org-agenda-files 
               (cl-remove-if
                (lambda (file) (string-match-p "/\\.#" file))
-               (directory-files-recursively (concat denote-directory "/agenda") "\\(\\.org\\'\\|\\.txt\\'\\)"))))
+               (directory-files-recursively (concat denote-directory "agenda") "\\(\\.org\\'\\|\\.txt\\'\\)"))))
     (message "The current file is not in %s or is not an org file." (concat denote-directory "agenda/"))))
 
 ;; Install the package
