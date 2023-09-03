@@ -396,15 +396,16 @@
 ;; Set org-agenda files to all files in denote-directory with an "_agenda" tag
 ;; First define a function and then run it
 (defun my-set-org-agenda-files-from-denote()
-"Set `org-agenda-files` to any file within `denote-directory` that contains \"_agenda\" in its name."
-(interactive)
-(setq org-agenda-files
-      (directory-files denote-directory t "_agenda.*\.org$")))
+  "Set `org-agenda-files` to any file within `denote-directory` that contains \"_agenda\" in its name."
+  (interactive)
+  (setq org-agenda-files
+        (directory-files denote-directory t "_agenda.*\\(\\.org\\|\\.txt\\)$")))
 (my-set-org-agenda-files-from-denote)
 
 ;; org-agenda window settings
 (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
 (setq org-agenda-restore-windows-after-quit t) ; restore the previous window arrangement after quitting
+(setq org-agenda-hide-tags-regexp "agenda") ; hide the "agenda" tag when viewing the agenda
 
 ;; Include archived trees in the agenda view
 ;; Used to have this to nil. Now it's recommended to use "v" in the agenda view to include archived items.
@@ -428,7 +429,7 @@
 
 ;; Set todo sequence
 (setq org-todo-keywords
-    '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
+      '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
 ;; Configure custom agenda views
 (setq org-agenda-custom-commands
