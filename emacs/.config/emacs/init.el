@@ -409,9 +409,6 @@
 ;; Used to have this to nil. Now it's recommended to use "v" in the agenda view to include archived items.
 (setq org-agenda-skip-archived-trees t)
 
-;; When using (C-c C-x C-a), archive to the sibling instead of a separate file.
-(setq org-archive-default-command 'org-archive-to-archive-sibling)
-
 ;; Allow refiling to other agenda files 1 level deep
 (setq org-refile-targets '((nil :maxlevel . 1)
                            (org-agenda-files :maxlevel . 1)))
