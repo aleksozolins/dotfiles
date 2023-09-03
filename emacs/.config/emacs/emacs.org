@@ -641,7 +641,7 @@ RSS reader!
     :ensure t
     :config
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/org/rss_feeds.org")))
+    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__rss.org")))
 
 #+end_src
 
@@ -684,13 +684,19 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   (setq org-startup-folded nil)
 
   ;; Set org directory
-  (setq org-directory "~/docs/org")
+  (setq org-directory "~/docs/denote")
 
   ;; Use org-indent-mode by default
   (setq org-startup-indented t)
 
+  ;; Set denote-directory so we can set org-agenda files. Note that we do this again later.
+  (setq denote-directory (expand-file-name "~/docs/denote/"))
+  
   ;; Set org-agenda files
-  (setq org-agenda-files (expand-file-name "~/docs/org/agenda.txt" org-directory))
+  (setq org-agenda-files 
+      (cl-remove-if
+       (lambda (file) (string-match-p "/\\.#" file))
+       (directory-files-recursively (concat denote-directory "/agenda") "\\(\\.org\\'\\|\\.txt\\'\\)")))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -742,7 +748,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
                   ((org-agenda-overriding-header "Waiting Tasks")))
             (todo "NEXT"
                   ((org-agenda-overriding-header "Next Tasks")))))))
-          
+
   ;; Configure org tags (C-c C-q)
   (setq org-tag-alist
         '((:startgroup)
@@ -785,7 +791,7 @@ Simple contact management for org. Contacts can be captured via a template by us
   (use-package org-contacts
     :ensure t
     :after org
-    :custom (org-contacts-files '("~/docs/org/contacts.org")))
+    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
   
 #+end_src
 
@@ -808,65 +814,65 @@ Simple contact management for org. Contacts can be captured via a template by us
       :END:" "Template for org-contacts.")
 
   (setq org-capture-templates
-        `(("c" "Contact" entry (file+headline "~/docs/org/contacts.org" "Misc"),
+        `(("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc"),
            my-org-contacts-template :empty-lines 1)
 
           ("t" "Task")
-          ("tt" "Task" entry (file+olp "~/docs/org/todos.org" "Inbox")
+          ("tt" "Task" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tc" "Check Out" entry (file+headline "~/docs/org/todos.org" "Check Out")
+          ("tc" "Check Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Check Out")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("th" "Home" entry (file+headline "~/docs/org/todos.org" "Home")
+          ("th" "Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Home")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tT" "Tech" entry (file+headline "~/docs/org/todos.org" "Tech")
+          ("tT" "Tech" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Tech")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tf" "Financial" entry (file+headline "~/docs/org/todos.org" "Financial")
+          ("tf" "Financial" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Financial")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tC" "Connections" entry (file+headline "~/docs/org/todos.org" "Connections")
+          ("tC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("ts" "Shopping" entry (file+headline "~/docs/org/todos.org" "Shopping")
+          ("ts" "Shopping" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Shopping")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tp" "Parents" entry (file+headline "~/docs/org/todos.org" "Parents")
+          ("tp" "Parents" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Parents")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tg" "Gigs" entry (file+headline "~/docs/org/todos.org" "Gigs")
+          ("tg" "Gigs" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Gigs")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("to" "OzoStudio" entry (file+headline "~/docs/org/todos.org" "OzoStudio")
+          ("to" "OzoStudio" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "OzoStudio")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tz" "Zapier" entry (file+headline "~/docs/org/todos.org" "Zapier")
+          ("tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Zapier")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tS" "Someday" entry (file+headline "~/docs/org/todos.org" "Someday")
+          ("tS" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
           ("m" "Metrics")
-          ("mw" "Weight" table-line (file "~/docs/org/weight.org")
+          ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
            "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
           ("o" "Mouthpiece")
-          ("o1" "One-Piece" table-line (file "~/docs/org/my_mouthpieces.org")
+          ("o1" "One-Piece" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
            "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
 
-          ("o2" "Two-Piece" table-line (file "~/docs/org/my_mouthpieces.org")
+          ("o2" "Two-Piece" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
            "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-          ("or" "Rim" table-line (file "~/docs/org/my_mouthpieces.org")
+          ("or" "Rim" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
            "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-          ("oc" "Cup" table-line (file "~/docs/org/my_mouthpieces.org")
+          ("oc" "Cup" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
            "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
   ;; Default org capture file
-  (setq org-default-notes-file (concat org-directory "~/docs/org/inbox.txt"))
+  (setq org-default-notes-file (concat org-directory "~/docs/denote/agenda/inbox.txt"))
 
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmarks-names-plist '())
@@ -924,7 +930,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
   (defun my-view-and-update-clocktables ()
     "Open time_tracking.org in a split buffer and update all clock tables."
     (interactive)
-    (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
+    (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
       (with-current-buffer buffer
 	(save-excursion
 	  (goto-char (point-min))
@@ -957,53 +963,6 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
   (with-eval-after-load 'org-agenda
     (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
-#+end_src
-
-*** Add and Remove File Paths From org-agenda-files
-
-**** Add files
-
-#+begin_src elisp
-  (defun my-add-to-agenda-files ()
-    (interactive)
-    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
-      (with-temp-buffer
-        (insert-file-contents agenda-file)
-        (unless (search-backward current-file nil t)
-          (goto-char (point-max))
-          (unless (bolp)
-            (insert "\n"))
-          (insert current-file)
-          (write-region (point-min) (point-max) agenda-file))
-        (setq org-agenda-files (with-temp-buffer
-                                 (insert-file-contents agenda-file)
-                                 (split-string (buffer-string) "\n" t))))))
-
-#+end_src
-
-**** Remove files
-
-#+begin_src elisp
-  (defun my-remove-from-agenda-files ()
-    (interactive)
-    (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
-          (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
-      (with-temp-buffer
-        (insert-file-contents agenda-file)
-        (goto-char (point-min))
-        (when (search-forward current-file nil t) ; search for current file
-          (beginning-of-line)
-          (let ((begin (point)))
-            (forward-line 1)
-            (if (eobp)  ; if it's end of buffer, don't include newline
-                (delete-region begin (point))
-              (delete-region begin (1+ (point))))  ; else, include newline
-          (write-region (point-min) (point-max) agenda-file))
-        (setq org-agenda-files (with-temp-buffer
-                                 (insert-file-contents agenda-file)
-                                 (split-string (buffer-string) "\n" t)))))))
-  
 #+end_src
 
 * Denote
@@ -1111,7 +1070,9 @@ Testing this package out right now as an alternative to org-roam. It is manually
     ;; Added by Aleks
     (define-key map (kbd "C-c d k") #'denote-keywords-add)
     (define-key map (kbd "C-c d K") #'denote-keywords-remove)
-    (define-key map (kbd "C-c d f") #'my-find-file-in-denote))
+    (define-key map (kbd "C-c d f") #'my-denote-find-file)
+    (define-key map (kbd "C-c d a") #'my-denote-add-to-agenda)
+    (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda))
 
   ;; Key bindings specifically for Dired.
   (let ((map dired-mode-map))
@@ -1144,16 +1105,18 @@ Testing this package out right now as an alternative to org-roam. It is manually
 *** Find Notes Recursively (including subdirs)
 
 #+begin_src elisp
-  (defun my-find-file-in-denote ()
+  (defun my-denote-find-file ()
     "Find a file in denote-directory recursively using completion."
     (interactive)
-    (let* ((dir denote-directory)
+    (let* ((dir (directory-file-name denote-directory)) ; Ensure no trailing slash
            (cmd-output (shell-command-to-string
                         (format "find '%s' -type f 2>&1" dir)))
-           (all-files (split-string cmd-output "\n" t)))
+           (all-files (split-string cmd-output "\n" t))
+           (file-display-names (mapcar (lambda (f) (string-remove-prefix dir f)) all-files)))
       (if (string-match-p "No such file or directory" cmd-output)
           (message "Directory not found: %s" dir)
-        (let ((selected-file (completing-read "Choose file: " all-files nil t)))
+        (let* ((selected-display-name (completing-read "Choose file: " file-display-names nil t))
+               (selected-file (concat dir selected-display-name)))
           (when selected-file
             (find-file selected-file))))))
   
@@ -1189,6 +1152,74 @@ This is useful for generating AI summaries - for instance, you can mark several 
           )
         (switch-to-buffer target-buffer))))
   
+#+end_src
+
+*** Add File to org-agenda
+
+#+begin_src elisp
+  (defun my-denote-add-to-agenda ()
+    "Move current org file from denote-directory to denote-directory/agenda and set category."
+    (interactive)
+    ;; 1. Check if the current file is in denote-directory
+    (if (and (buffer-file-name)
+             (string-prefix-p denote-directory (buffer-file-name))
+             (string-suffix-p ".org" (buffer-file-name)))
+        (progn
+          ;; 2. Add #+category: project if not present
+          (goto-char (point-min))
+          (unless (re-search-forward "^#\\+category:" nil t)
+            (if (re-search-forward "^#\\+date:" nil t)
+                (progn
+                  (end-of-line)
+                  (newline)
+                  (insert "#+category:   project")
+                  (save-buffer))))
+          ;; 3. Move the file
+          (let* ((current-path (buffer-file-name))
+                 (new-path (concat denote-directory "agenda/" (file-name-nondirectory current-path))))
+            (rename-file current-path new-path 1) ; 1 means OK-IF-ALREADY-EXISTS
+            (set-visited-file-name new-path) ; update the buffer's associated file
+            (set-buffer-modified-p nil))  ; mark the buffer as not modified
+          ;; 4. Set org-agenda-files
+          (setq org-agenda-files 
+                (cl-remove-if
+                 (lambda (file) (string-match-p "/\\.#" file))
+                 (directory-files-recursively (concat denote-directory "agenda") "\\(\\.org\\'\\|\\.txt\\'\\)"))))
+      (message "The current file is not in denote-directory or is not an org file.")))
+
+#+end_src
+
+*** Remove File from org-agenda
+
+#+begin_src elisp
+  (defun my-denote-remove-from-agenda ()
+    "Move current org file from denote-directory/agenda back to denote-directory and remove category."
+    (interactive)
+    ;; 1. Check if the current file is in denote-directory/agenda
+    (if (and (buffer-file-name)
+             (string-prefix-p (concat denote-directory "agenda/") (buffer-file-name))
+             (string-suffix-p ".org" (buffer-file-name)))
+        (progn
+          ;; 2. Remove any #+category: line
+          (goto-char (point-min))
+          (when (re-search-forward "^#\\+category:.*$" nil t)
+            (kill-whole-line)
+            (save-buffer))
+
+          ;; 3. Move the file
+          (let* ((current-path (buffer-file-name))
+                 (new-path (concat denote-directory "/" (file-name-nondirectory current-path))))
+            (rename-file current-path new-path 1) ; 1 means OK-IF-ALREADY-EXISTS
+            (set-visited-file-name new-path) ; update the buffer's associated file
+            (set-buffer-modified-p nil))  ; mark the buffer as not modified
+
+          ;; 4. Set org-agenda-files
+          (setq org-agenda-files 
+                (cl-remove-if
+                 (lambda (file) (string-match-p "/\\.#" file))
+                 (directory-files-recursively (concat denote-directory "/agenda") "\\(\\.org\\'\\|\\.txt\\'\\)"))))
+      (message "The current file is not in %s or is not an org file." (concat denote-directory "agenda/"))))
+
 #+end_src
 
 * Mu4e
@@ -1296,7 +1327,7 @@ Settings of note:
   (setq mu4e-headers-include-related nil)
 
   ;; Use org-contacts
-  (setq mu4e-org-contacts-file  "~/docs/org-roam/contacts.org")
+  (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org")
   ;; BELOW DISABLED AS I THINK IT'S BETTER TO JUST USE ORG CAPTURE FOR REFILING
   ;;(add-to-list 'mu4e-headers-actions
   ;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
