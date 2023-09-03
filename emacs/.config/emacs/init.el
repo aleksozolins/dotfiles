@@ -393,7 +393,7 @@
 ;; Set denote-directory so we can set org-agenda files. Note that we do this again later.
 (setq denote-directory (expand-file-name "~/docs/denote/"))
 
-;; Set org-agenda files to all files in denote-subdirectory with an "_agenda" tag
+;; Set org-agenda files to all files in denote-directory with an "_agenda" tag
 ;; First define a function and then run it
 (defun my-set-org-agenda-files-from-denote()
 "Set `org-agenda-files` to any file within `denote-directory` that contains \"_agenda\" in its name."
