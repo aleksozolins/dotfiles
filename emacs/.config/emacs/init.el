@@ -207,11 +207,11 @@
   "Major mode for handling dropbox exclude list."
   (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
   (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-  (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
+  (define-key dropbox-exclude-mode-map (kbd "x") 'my-dropbox-add-directory)
   (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
   (setq buffer-read-only t))
 
-(defun my/dropbox-exclude-directory ()
+(defun my-dropbox-exclude-directory ()
   (interactive)
   (if (not (string-equal system-type "gnu/linux"))
       (message "Sorry, this function only works on Linux.")
@@ -232,7 +232,7 @@
                     (goto-char (point-min))
                     (setq buffer-read-only t)))))))))))
 
-(defun my/dropbox-add-directory ()
+(defun my-dropbox-add-directory ()
   (interactive)
   (let* ((current-line (thing-at-point 'line t))
          (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
@@ -245,7 +245,7 @@
         (goto-char (point-min)))
       (setq buffer-read-only t))))
 
-(defun my/dropbox-exclude-list ()
+(defun my-dropbox-exclude-list ()
   (interactive)
   (if (not (string-equal system-type "gnu/linux"))
       (message "Sorry, this function only works on Linux.")
@@ -266,8 +266,8 @@
           (dropbox-exclude-mode))))))
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
-  (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
+  (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
+  (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -298,16 +298,16 @@
 ;; Any file ending in _ledger.txt opens in ledger mode
 (add-to-list 'auto-mode-alist '("_ledger\\.txt\\'" . ledger-mode))
 
-(defun my/my-ledger ()
+(defun my-ledger ()
   "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
   (interactive)
   (find-file "~/docs/finances/ledger/my_ledger.txt")
   (goto-char (point-max)))
 
 ;; Bind the function to F4
-(global-set-key (kbd "<f4>") 'my/my-ledger)
+(global-set-key (kbd "<f4>") 'my-ledger)
 
-(defun my/backup-my-ledger-file ()
+(defun my-backup-my-ledger-file ()
   (when (string= (buffer-file-name)
 		 (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
     (let* ((current-date (format-time-string "%Y-%m-%d"))
@@ -317,7 +317,7 @@
 	(make-directory backup-dir))
       (write-region (point-min) (point-max) backup-file))))
 
-(add-hook 'after-save-hook 'my/backup-my-ledger-file)
+(add-hook 'after-save-hook 'my-backup-my-ledger-file)
 
 (use-package rg
 :config
@@ -479,7 +479,7 @@
   :ensure nil
   :after org)
 
-(defvar my/org-contacts-template "* %(org-contacts-template-name)
+(defvar my-org-contacts-template "* %(org-contacts-template-name)
     :PROPERTIES:
     :ADDRESS: %^{9 Birch Lane, Verona, NJ 07044}
     :EMAIL: %(org-contacts-template-email)
@@ -489,7 +489,7 @@
 
 (setq org-capture-templates
       `(("c" "Contact" entry (file+headline "~/docs/org/contacts.org" "Misc"),
-         my/org-contacts-template :empty-lines 1)
+         my-org-contacts-template :empty-lines 1)
 
         ("t" "Task")
         ("tt" "Task" entry (file+olp "~/docs/org/todos.org" "Inbox")
@@ -575,7 +575,7 @@
 (add-to-list 'org-structure-template-alist '("html" . "src html"))
 (add-to-list 'org-structure-template-alist '("css" . "src css"))
 
-(defun my/view-and-update-clocktables ()
+(defun my-view-and-update-clocktables ()
   "Open time_tracking.org in a split buffer and update all clock tables."
   (interactive)
   (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
@@ -589,9 +589,9 @@
     (display-buffer buffer)))
 
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
+  (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables))
 
-(defun my/kill-all-agenda-files ()
+(defun my-kill-all-agenda-files ()
   "Close all buffers associated with files in `org-agenda-files'."
   (interactive)
   (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
@@ -602,9 +602,9 @@
   (org-agenda-quit))
 
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
+  (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
-(defun my/add-to-agenda-files ()
+(defun my-add-to-agenda-files ()
   (interactive)
   (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
         (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
@@ -620,7 +620,7 @@
                                (insert-file-contents agenda-file)
                                (split-string (buffer-string) "\n" t))))))
 
-(defun my/remove-from-agenda-files ()
+(defun my-remove-from-agenda-files ()
   (interactive)
   (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
         (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
@@ -730,21 +730,23 @@ Else create a new file."
   (define-key map (kbd "C-c d i") #'denote-link) ; "insert" mnemonic
   (define-key map (kbd "C-c d I") #'denote-add-links)
   (define-key map (kbd "C-c d b") #'denote-backlinks)
-  (define-key map (kbd "C-c d f f") #'denote-find-link)
-  (define-key map (kbd "C-c d f b") #'denote-find-backlink)
+  (define-key map (kbd "C-c d l f") #'denote-find-link)
+  (define-key map (kbd "C-c d l b") #'denote-find-backlink)
   ;; Note that `denote-rename-file' can work from any context, not just
   ;; Dired bufffers.  That is why we bind it here to the `global-map'.
   (define-key map (kbd "C-c d r") #'denote-rename-file)
   (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
   ;; Added by Aleks
   (define-key map (kbd "C-c d k") #'denote-keywords-add)
-  (define-key map (kbd "C-c d K") #'denote-keywords-remove))
+  (define-key map (kbd "C-c d K") #'denote-keywords-remove)
+  (define-key map (kbd "C-c d f") #'my-find-file-in-denote))
 
 ;; Key bindings specifically for Dired.
 (let ((map dired-mode-map))
   (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
   (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-marked-files)
   (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
+  ;; Added by Aleks
   (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
 
 (with-eval-after-load 'org-capture
@@ -762,6 +764,19 @@ Else create a new file."
 ;; context menu, use the following and then enable
 ;; `context-menu-mode'.
 (add-hook 'context-menu-functions #'denote-context-menu)
+
+(defun my-find-file-in-denote ()
+  "Find a file in denote-directory recursively using completion."
+  (interactive)
+  (let* ((dir denote-directory)
+         (cmd-output (shell-command-to-string
+                      (format "find '%s' -type f 2>&1" dir)))
+         (all-files (split-string cmd-output "\n" t)))
+    (if (string-match-p "No such file or directory" cmd-output)
+        (message "Directory not found: %s" dir)
+      (let ((selected-file (completing-read "Choose file: " all-files nil t)))
+        (when selected-file
+          (find-file selected-file))))))
 
 (defun my-denote-aggregate-notes ()
   "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."

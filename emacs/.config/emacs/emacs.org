@@ -432,11 +432,11 @@ From within ~dropbox-exclude-mode~:
     "Major mode for handling dropbox exclude list."
     (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
     (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-    (define-key dropbox-exclude-mode-map (kbd "x") 'my/dropbox-add-directory)
+    (define-key dropbox-exclude-mode-map (kbd "x") 'my-dropbox-add-directory)
     (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
     (setq buffer-read-only t))
 
-  (defun my/dropbox-exclude-directory ()
+  (defun my-dropbox-exclude-directory ()
     (interactive)
     (if (not (string-equal system-type "gnu/linux"))
         (message "Sorry, this function only works on Linux.")
@@ -457,7 +457,7 @@ From within ~dropbox-exclude-mode~:
                       (goto-char (point-min))
                       (setq buffer-read-only t)))))))))))
 
-  (defun my/dropbox-add-directory ()
+  (defun my-dropbox-add-directory ()
     (interactive)
     (let* ((current-line (thing-at-point 'line t))
            (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
@@ -470,7 +470,7 @@ From within ~dropbox-exclude-mode~:
           (goto-char (point-min)))
         (setq buffer-read-only t))))
 
-  (defun my/dropbox-exclude-list ()
+  (defun my-dropbox-exclude-list ()
     (interactive)
     (if (not (string-equal system-type "gnu/linux"))
         (message "Sorry, this function only works on Linux.")
@@ -491,8 +491,8 @@ From within ~dropbox-exclude-mode~:
             (dropbox-exclude-mode))))))
 
   (with-eval-after-load 'dired
-    (define-key dired-mode-map (kbd "C-c d e") 'my/dropbox-exclude-list)
-    (define-key dired-mode-map (kbd "C-c d x") 'my/dropbox-exclude-directory))
+    (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
+    (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
 
 #+end_src
 
@@ -558,14 +558,14 @@ I use this to manage my finances
 ** Open My Ledger With F4
 
 #+begin_src elisp
-  (defun my/my-ledger ()
+  (defun my-ledger ()
     "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
     (interactive)
     (find-file "~/docs/finances/ledger/my_ledger.txt")
     (goto-char (point-max)))
 
   ;; Bind the function to F4
-  (global-set-key (kbd "<f4>") 'my/my-ledger)
+  (global-set-key (kbd "<f4>") 'my-ledger)
 
 #+end_src
 
@@ -574,7 +574,7 @@ I use this to manage my finances
 Whenever I save my ledger file, a daily backup is created in the backup subdirectory.
 
 #+begin_src elisp
-  (defun my/backup-my-ledger-file ()
+  (defun my-backup-my-ledger-file ()
     (when (string= (buffer-file-name)
 		   (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
       (let* ((current-date (format-time-string "%Y-%m-%d"))
@@ -584,7 +584,7 @@ Whenever I save my ledger file, a daily backup is created in the backup subdirec
 	  (make-directory backup-dir))
 	(write-region (point-min) (point-max) backup-file))))
 
-  (add-hook 'after-save-hook 'my/backup-my-ledger-file)
+  (add-hook 'after-save-hook 'my-backup-my-ledger-file)
 
 #+end_src
 
@@ -799,7 +799,7 @@ Simple contact management for org. Contacts can be captured via a template by us
     :ensure nil
     :after org)
 
-  (defvar my/org-contacts-template "* %(org-contacts-template-name)
+  (defvar my-org-contacts-template "* %(org-contacts-template-name)
       :PROPERTIES:
       :ADDRESS: %^{9 Birch Lane, Verona, NJ 07044}
       :EMAIL: %(org-contacts-template-email)
@@ -809,7 +809,7 @@ Simple contact management for org. Contacts can be captured via a template by us
 
   (setq org-capture-templates
         `(("c" "Contact" entry (file+headline "~/docs/org/contacts.org" "Misc"),
-           my/org-contacts-template :empty-lines 1)
+           my-org-contacts-template :empty-lines 1)
 
           ("t" "Task")
           ("tt" "Task" entry (file+olp "~/docs/org/todos.org" "Inbox")
@@ -921,7 +921,7 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
 
 #+begin_src elisp
-  (defun my/view-and-update-clocktables ()
+  (defun my-view-and-update-clocktables ()
     "Open time_tracking.org in a split buffer and update all clock tables."
     (interactive)
     (let ((buffer (find-file-noselect "~/docs/org/time_tracking.org")))
@@ -935,7 +935,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
       (display-buffer buffer)))
 
   (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "C-c t") 'my/view-and-update-clocktables))
+    (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables))
 
 #+end_src
 
@@ -944,7 +944,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 - Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
 #+begin_src elisp
-  (defun my/kill-all-agenda-files ()
+  (defun my-kill-all-agenda-files ()
     "Close all buffers associated with files in `org-agenda-files'."
     (interactive)
     (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
@@ -955,7 +955,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
     (org-agenda-quit))
 
   (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "Q") 'my/kill-all-agenda-files))
+    (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
 #+end_src
 
@@ -964,7 +964,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 **** Add files
 
 #+begin_src elisp
-  (defun my/add-to-agenda-files ()
+  (defun my-add-to-agenda-files ()
     (interactive)
     (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
           (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
@@ -985,7 +985,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 **** Remove files
 
 #+begin_src elisp
-  (defun my/remove-from-agenda-files ()
+  (defun my-remove-from-agenda-files ()
     (interactive)
     (let ((current-file (abbreviate-file-name (buffer-file-name (current-buffer))))
           (agenda-file (expand-file-name "~/docs/org/agenda.txt" org-directory)))
@@ -1102,21 +1102,23 @@ Testing this package out right now as an alternative to org-roam. It is manually
     (define-key map (kbd "C-c d i") #'denote-link) ; "insert" mnemonic
     (define-key map (kbd "C-c d I") #'denote-add-links)
     (define-key map (kbd "C-c d b") #'denote-backlinks)
-    (define-key map (kbd "C-c d f f") #'denote-find-link)
-    (define-key map (kbd "C-c d f b") #'denote-find-backlink)
+    (define-key map (kbd "C-c d l f") #'denote-find-link)
+    (define-key map (kbd "C-c d l b") #'denote-find-backlink)
     ;; Note that `denote-rename-file' can work from any context, not just
     ;; Dired bufffers.  That is why we bind it here to the `global-map'.
     (define-key map (kbd "C-c d r") #'denote-rename-file)
     (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
     ;; Added by Aleks
     (define-key map (kbd "C-c d k") #'denote-keywords-add)
-    (define-key map (kbd "C-c d K") #'denote-keywords-remove))
+    (define-key map (kbd "C-c d K") #'denote-keywords-remove)
+    (define-key map (kbd "C-c d f") #'my-find-file-in-denote))
 
   ;; Key bindings specifically for Dired.
   (let ((map dired-mode-map))
     (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
     (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-marked-files)
     (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
+    ;; Added by Aleks
     (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
 
   (with-eval-after-load 'org-capture
@@ -1138,6 +1140,24 @@ Testing this package out right now as an alternative to org-roam. It is manually
 #+end_src
 
 ** Custom Functions
+
+*** Find Notes Recursively (including subdirs)
+
+#+begin_src elisp
+  (defun my-find-file-in-denote ()
+    "Find a file in denote-directory recursively using completion."
+    (interactive)
+    (let* ((dir denote-directory)
+           (cmd-output (shell-command-to-string
+                        (format "find '%s' -type f 2>&1" dir)))
+           (all-files (split-string cmd-output "\n" t)))
+      (if (string-match-p "No such file or directory" cmd-output)
+          (message "Directory not found: %s" dir)
+        (let ((selected-file (completing-read "Choose file: " all-files nil t)))
+          (when selected-file
+            (find-file selected-file))))))
+  
+#+end_src
 
 *** Function to Aggregate Notes
 
