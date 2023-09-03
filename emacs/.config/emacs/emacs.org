@@ -1071,6 +1071,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
     (define-key map (kbd "C-c d k") #'denote-keywords-add)
     (define-key map (kbd "C-c d K") #'denote-keywords-remove)
     (define-key map (kbd "C-c d f") #'my-denote-find-file)
+    (define-key map (kbd "C-c d F") #'my-denote-open-dired)
     (define-key map (kbd "C-c d a") #'my-denote-add-to-agenda)
     (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda))
 
@@ -1120,6 +1121,16 @@ Testing this package out right now as an alternative to org-roam. It is manually
           (when selected-file
             (find-file selected-file))))))
   
+#+end_src
+
+*** Open Dired to Denote Directory
+
+#+begin_src elisp
+  (defun my-denote-open-dired ()
+    "Open dired to denote-directory"
+    (interactive)
+    (dired denote-directory))
+
 #+end_src
 
 *** Function to Aggregate Notes

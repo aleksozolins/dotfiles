@@ -711,6 +711,7 @@ Else create a new file."
   (define-key map (kbd "C-c d k") #'denote-keywords-add)
   (define-key map (kbd "C-c d K") #'denote-keywords-remove)
   (define-key map (kbd "C-c d f") #'my-denote-find-file)
+  (define-key map (kbd "C-c d F") #'my-denote-open-dired)
   (define-key map (kbd "C-c d a") #'my-denote-add-to-agenda)
   (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda))
 
@@ -752,6 +753,11 @@ Else create a new file."
              (selected-file (concat dir selected-display-name)))
         (when selected-file
           (find-file selected-file))))))
+
+(defun my-denote-open-dired ()
+  "Open dired to denote-directory"
+  (interactive)
+  (dired denote-directory))
 
 (defun my-denote-aggregate-notes ()
   "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
