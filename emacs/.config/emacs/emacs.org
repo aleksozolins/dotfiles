@@ -691,8 +691,10 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   ;; Set denote-directory so we can set org-agenda files. Note that we do this again later.
   (setq denote-directory (expand-file-name "~/docs/denote/"))
-  
-  ;; Set org-agenda files
+
+  ;; Set org-agenda files to all files in the denote/agenda dir
+  ;; It might be better in the future to create a simple function to set this value to all files in
+  ;; denote-subdirectory that have the "_agenda" keyword instead
   (setq org-agenda-files 
       (cl-remove-if
        (lambda (file) (string-match-p "/\\.#" file))
