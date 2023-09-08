@@ -240,7 +240,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 I'd like emacs to default to using authinfo.gpg to store passwords
 
 #+begin_src elisp
-  (setq auth-sources '("~/.authinfo.gpg"))
+  (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
 #+end_src
 
