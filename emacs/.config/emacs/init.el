@@ -177,7 +177,8 @@
   (setq insert-directory-program "gls"))
 
 ;; Use human readable sizes and group directories first
-(setq dired-listing-switches "-alh --group-directories-first")
+;; Note that the "A" switch, as opposed to "a" leaves out . and ..
+(setq dired-listing-switches "-Alh --group-directories-first")
 
 (setq dired-dwim-target t)            ;; When copying/moving, suggest other dired buffer as target
 (setq dired-recursive-copies 'always) ;; Always copy/delete recursively
@@ -185,8 +186,8 @@
 
 ;; Hide details by default
 (add-hook 'dired-mode-hook
-	  (lambda ()
-	    (dired-hide-details-mode 1)))
+          (lambda ()
+            (dired-hide-details-mode 1)))
 
 ;; Do not disable using 'a' to visit a new directory without killing the buffer
 (put 'dired-find-alternate-file 'disabled nil)
