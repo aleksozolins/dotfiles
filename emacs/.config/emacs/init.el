@@ -204,14 +204,18 @@
 (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
 (add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
-(defun dired-xdg-open-file ()
-  "Use xdg-open command on a file from dired."
+(defun dired-open-file ()
+  "Open the file at point in dired with the appropriate system application."
   (interactive)
-  (let ((file (dired-get-file-for-visit)))
+  (let ((file (dired-get-file-for-visit))
+        (open-cmd (pcase system-type
+                    ('darwin "open")
+                    ('gnu/linux "xdg-open")
+                    (_ "xdg-open"))))
     (message "Opening %s..." file)
-    (call-process "xdg-open" nil 0 nil file)))
+    (call-process open-cmd nil 0 nil file)))
 
-(define-key dired-mode-map (kbd "V") 'dired-xdg-open-file)
+(define-key dired-mode-map (kbd "V") 'dired-open-file)
 
 (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
   "Major mode for handling dropbox exclude list."
