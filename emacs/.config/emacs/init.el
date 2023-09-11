@@ -800,7 +800,7 @@ Else create a new file."
       (switch-to-buffer target-buffer))))
 
 (defun my-denote-add-to-agenda ()
-  "Move current org file from denote-directory to denote-directory/agenda and set category."
+  "Add agenda keyword to file, and add a project category. Then reeval org-agenda-files"
   (interactive)
   (save-excursion
     (goto-char (point-min))
@@ -814,7 +814,7 @@ Else create a new file."
   (my-set-org-agenda-files-from-denote))
 
 (defun my-denote-remove-from-agenda ()
-  "Move current org file from denote-directory/agenda back to denote-directory and remove category."
+  "Remove agenda keyword from file, and remove category. Then reeval org-agenda-files"
   (interactive)
   (save-excursion
     (goto-char (point-min))

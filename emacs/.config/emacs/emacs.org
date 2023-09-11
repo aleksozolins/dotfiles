@@ -1194,7 +1194,7 @@ This is useful for generating AI summaries - for instance, you can mark several 
 
 #+begin_src elisp
   (defun my-denote-add-to-agenda ()
-    "Move current org file from denote-directory to denote-directory/agenda and set category."
+    "Add agenda keyword to file, and add a project category. Then reeval org-agenda-files"
     (interactive)
     (save-excursion
       (goto-char (point-min))
@@ -1215,7 +1215,7 @@ This is useful for generating AI summaries - for instance, you can mark several 
 
 #+begin_src elisp
   (defun my-denote-remove-from-agenda ()
-    "Move current org file from denote-directory/agenda back to denote-directory and remove category."
+    "Remove agenda keyword from file, and remove category. Then reeval org-agenda-files"
     (interactive)
     (save-excursion
       (goto-char (point-min))
