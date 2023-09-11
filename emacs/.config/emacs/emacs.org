@@ -990,6 +990,27 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 
 #+end_src
 
+*** Zapier TicketBar Check In and Out
+
+First, we define two functions that trigger AppleScripts when clocking into the event matching =Zapier Tickets=. Then, we add hooks to org clocking in and out so that the function is called at the right time.
+
+#+begin_src elisp
+  (when (eq system-type 'darwin)
+    (defun my-zapier-ticketbar-check-in ()
+      "Run the Check In AppleScript when the task has a specific heading."
+      (when (string-equal (nth 4 (org-heading-components)) "Zapier Tickets")
+        (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt")))
+
+    (defun my-zapier-ticketbar-check-out ()
+      "Run the Check Out AppleScript when the task has a specific heading."
+      (when (string-equal (nth 4 (org-heading-components)) "Zapier Tickets")
+        (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt")))
+
+    (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
+    (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out))
+
+#+end_src
+
 * Denote
 
 Testing this package out right now as an alternative to org-roam. It is manually installed so use-package is not a factor yet. Note that we're just starting from Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].

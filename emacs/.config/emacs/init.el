@@ -625,6 +625,20 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
+(when (eq system-type 'darwin)
+  (defun my-zapier-ticketbar-check-in ()
+    "Run the Check In AppleScript when the task has a specific heading."
+    (when (string-equal (nth 4 (org-heading-components)) "Zapier Tickets")
+      (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt")))
+
+  (defun my-zapier-ticketbar-check-out ()
+    "Run the Check Out AppleScript when the task has a specific heading."
+    (when (string-equal (nth 4 (org-heading-components)) "Zapier Tickets")
+      (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt")))
+
+  (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
+  (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out))
+
 (use-package denote
   :ensure t
   )
