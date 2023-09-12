@@ -470,6 +470,7 @@
       '((:startgroup)
         ; Put mutually exclusive tags here
         (:endgroup)
+        ("inbox" . ?i)
         ("home" . ?h)
         ("habit" . ?H)
         ("tech" . ?t)

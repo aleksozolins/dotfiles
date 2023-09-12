@@ -779,6 +779,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
         '((:startgroup)
           ; Put mutually exclusive tags here
           (:endgroup)
+          ("inbox" . ?i)
           ("home" . ?h)
           ("habit" . ?H)
           ("tech" . ?t)
