@@ -514,8 +514,8 @@
          my-org-contacts-template :empty-lines 1)
 
         ("t" "Task")
-        ("tt" "Task" entry (file+olp "~/docs/denote/20210804T113317--todos__agenda.org" "Inbox")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("tt" "Task (Quick Capture)" entry (file+olp "~/docs/denote/20210804T113317--todos__agenda.org" "Inbox")
+         "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("tc" "Check Out" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Check Out")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
