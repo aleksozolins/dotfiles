@@ -756,23 +756,28 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   ;; Configure custom agenda views
   (setq org-agenda-custom-commands
-        '(("w" "Week Dashboard"
-           ((agenda "" ((org-deadline-warning-days 7)))
-            (todo "ONG|ACT"
-                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting Tasks")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
+      '(("w" "Week Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "ONG|ACT"
+                ((org-agenda-overriding-header "Ongoing/Active Tasks")))))
 
-          ("d" "Day Dashboard"
-           ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
-            (todo "ONG|ACT"
-                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-            (todo "WAIT"
-                  ((org-agenda-overriding-header "Waiting Tasks")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))))
+        ("d" "Day Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
+          (todo "ONG|ACT"
+                ((org-agenda-overriding-header "Ongoing/Active Tasks")))))
+
+        ("W" "Tasks in WAIT state"
+         ((todo "WAIT"
+                ((org-agenda-overriding-header "Waiting Tasks")))))
+
+        ("n" "Tasks in NEXT state"
+         ((todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
+
+        ("i" "Tasks with inbox tag"
+         ((tags "inbox"
+                ((org-agenda-overriding-header "Task Inbox")))))))
+
 
   ;; Configure org tags (C-c C-q)
   (setq org-tag-alist
