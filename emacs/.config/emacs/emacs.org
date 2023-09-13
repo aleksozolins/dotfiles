@@ -113,6 +113,9 @@ The following settings make the interface a bit more minimal and clean.
   (defun display-startup-echo-area-message ()
     (message "Welcome back Aleks!"))
 
+  ;; Make sure all Emacs frames start fullscreen
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 #+end_src
 
 * Other Settings

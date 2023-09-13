@@ -25,6 +25,9 @@
 (defun display-startup-echo-area-message ()
   (message "Welcome back Aleks!"))
 
+;; Make sure all Emacs frames start fullscreen
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 (setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
 (recentf-mode 1) ; Have Emacs remember recently opened files when using find file
 
