@@ -467,7 +467,7 @@
               ((org-agenda-overriding-header "Next Tasks")))))
 
       ("i" "Tasks with inbox tag"
-       ((tags "inbox"
+       ((tags-todo "inbox"
               ((org-agenda-overriding-header "Task Inbox")))))))
 
 
