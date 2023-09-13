@@ -846,65 +846,66 @@ Simple contact management for org. Contacts can be captured via a template by us
       :END:" "Template for org-contacts.")
 
   (setq org-capture-templates
-        `(("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc"),
-           my-org-contacts-template :empty-lines 1)
+      `(("t" "Task (Quick Capture)" entry (file+olp "~/docs/denote/20210804T113317--todos__agenda.org" "Inbox")
+         "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        
+        ("T" "Task (Detailed)")
+        
+        ("Tc" "Check Out" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Check Out")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("t" "Task")
-          ("tt" "Task (Quick Capture)" entry (file+olp "~/docs/denote/20210804T113317--todos__agenda.org" "Inbox")
-           "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Th" "Home" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Home")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tc" "Check Out" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Check Out")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tt" "Tech" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Tech")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("th" "Home" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Home")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tf" "Financial" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Financial")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tT" "Tech" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Tech")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("TC" "Connections" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Connections")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tf" "Financial" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Financial")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Ts" "Shopping" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Shopping")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tC" "Connections" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Connections")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tp" "Parents" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Parents")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("ts" "Shopping" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Shopping")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tg" "Gigs" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Gigs")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tp" "Parents" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Parents")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("To" "OzoStudio" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "OzoStudio")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tg" "Gigs" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Gigs")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tz" "Zapier" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("to" "OzoStudio" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "OzoStudio")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("TS" "Someday" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Someday")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("tz" "Zapier" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
+         my-org-contacts-template :empty-lines 1)
 
-          ("tS" "Someday" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Someday")
-           "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("m" "Metrics")
+        ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
+         "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
 
-          ("m" "Metrics")
-          ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
-           "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
+        ("o" "Mouthpiece")
+        ("o1" "One-Piece" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
+         "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
 
-          ("o" "Mouthpiece")
-          ("o1" "One-Piece" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
-           "| %^{Make} | %^{Model} | one-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | | %^{Notes} | |" :kill-buffer t)
+        ("o2" "Two-Piece" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
+         "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-          ("o2" "Two-Piece" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
-           "| %^{Make} | %^{Model} | two-piece | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
+        ("or" "Rim" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
+         "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
 
-          ("or" "Rim" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
-           "| %^{Make} | %^{Model} | rim | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)
-
-          ("oc" "Cup" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
-           "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
+        ("oc" "Cup" table-line (file "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org")
+         "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
   ;; Default org capture file
-  (setq org-default-notes-file (concat org-directory "~/docs/denote/20230903T141829--mobile-inbox__agenda_org.txt"))
+  (setq org-default-notes-file (concat org-directory "~/docs/denote/20230903T141829--mobile-inbox__agenda_inbox.txt"))
 
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmarks-names-plist '())
