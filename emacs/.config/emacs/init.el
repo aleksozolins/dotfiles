@@ -754,7 +754,8 @@ Else create a new file."
   (define-key map (kbd "C-c d f") #'my-denote-find-file)
   (define-key map (kbd "C-c d F") #'my-denote-open-dired)
   (define-key map (kbd "C-c d a") #'my-denote-add-to-agenda)
-  (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda))
+  (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda)
+  (define-key map (kbd "C-c d p") #'my-denote-create-project-entry))
 
 ;; Key bindings specifically for Dired.
 (let ((map dired-mode-map))
@@ -824,6 +825,30 @@ Else create a new file."
               (insert (replace-regexp-in-string "^\\*" "**" content)))))
         )
       (switch-to-buffer target-buffer))))
+
+(defun my-denote-create-project-entry ()
+  "Create a project entry in the projects Org file based on the current Org buffer."
+  (interactive)
+  ;; Ensure we're in an Org buffer
+  (if (eq major-mode 'org-mode)
+      (let ((current-file (buffer-file-name))
+            (current-title nil)
+            (projects-file (concat denote-directory "20220720T114139--projects__agenda_project.org")))
+        ;; Search for the #+TITLE: property in the current buffer
+        (save-excursion
+          (goto-char (point-min))
+          (when (re-search-forward "^#\\+TITLE:[ \t]*\\(.*\\S-\\)[ \t]*$" nil t)
+            (setq current-title (match-string 1))))
+        ;; If title is found, proceed to create the entry
+        (if current-title
+            (with-current-buffer (find-file-noselect projects-file)
+              (goto-char (point-max))
+              (insert "\n* " current-title "\n")
+              (insert "Context: ")
+              (denote-link current-file)
+              (save-buffer))
+          (message "No #+TITLE: found in the current Org buffer.")))
+    (message "This function should be run from an Org buffer.")))
 
 ;; Install the package
 (pcase system-type
