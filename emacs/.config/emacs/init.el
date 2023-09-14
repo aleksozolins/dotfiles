@@ -410,15 +410,16 @@
 ;; Set denote-directory so we can set org-agenda files. Note that we do this again later.
 (setq denote-directory (expand-file-name "~/docs/denote/"))
 
-;; Set org-agenda files to all files in denote-directory with an "_agenda" tag
-;; First define a function and then run it
-;; Note that we run the function with an idle timer as it misses files without it
-(defun my-set-org-agenda-files-from-denote()
-  "Set `org-agenda-files` to any file within `denote-directory` that contains \"_agenda\" in its name."
-  (interactive)
-  (setq org-agenda-files
-        (directory-files denote-directory t "_agenda.*\\(\\.org\\|\\.txt\\)$")))
-(run-with-idle-timer 2 nil 'my-set-org-agenda-files-from-denote)
+;; Set org-agenda files to list of files. Note they all have the agenda tag.
+(setq org-agenda-files
+    (list (concat denote-directory "20210804T113317--todos__agenda.org")
+          (concat denote-directory "20220720T114139--projects__agenda_project.org")
+          (concat denote-directory "20220727T113610--calendar__agenda.org")
+          (concat denote-directory "20220727T114811--recurring-charges__agenda_finances.org")
+          (concat denote-directory "20221030T114854--recurring-deposits-and-credits__agenda_finances.org")
+          (concat denote-directory "20221030T114954--recurring-transfers__agenda_finances.org")
+          (concat denote-directory "20230903T141829--mobile-inbox__agenda_inbox.txt")
+          (concat denote-directory "20230903T151425--beorg-inbox__agenda_inbox.org")))
 
 ;; org-agenda window settings
 (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -823,30 +824,6 @@ Else create a new file."
               (insert (replace-regexp-in-string "^\\*" "**" content)))))
         )
       (switch-to-buffer target-buffer))))
-
-(defun my-denote-add-to-agenda ()
-  "Add agenda keyword to file, and add a project category. Then reeval org-agenda-files"
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (unless (re-search-forward "^#\\+category:" nil t)
-      (if (re-search-forward "^#\\+date:" nil t)
-          (progn
-            (end-of-line)
-            (newline)
-            (insert "#+category:   project")))))
-  (denote-keywords-add '("agenda"))
-  (my-set-org-agenda-files-from-denote))
-
-(defun my-denote-remove-from-agenda ()
-  "Remove agenda keyword from file, and remove category. Then reeval org-agenda-files"
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (when (re-search-forward "^#\\+category:.*$" nil t)
-      (kill-whole-line))
-    (execute-kbd-macro (kbd "M-x denote-keywords-remove RET agenda RET")))
-  (my-set-org-agenda-files-from-denote))
 
 ;; Install the package
 (pcase system-type
