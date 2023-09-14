@@ -450,20 +450,19 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
-;; Configure custom agenda views
 (setq org-agenda-custom-commands
     '(("w" "Week Dashboard"
        ((agenda "" ((org-deadline-warning-days 7)))
         (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))))
+              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+        (todo "WAIT"
+              ((org-agenda-overriding-header "Waiting Tasks")))))
 
       ("d" "Day Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7)(org-agenda-span 1)))
+       ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
         (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))))
-
-      ("W" "Tasks in WAIT state"
-       ((todo "WAIT"
+              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+        (todo "WAIT"
               ((org-agenda-overriding-header "Waiting Tasks")))))
 
       ("n" "Tasks in NEXT state"
@@ -472,8 +471,7 @@
 
       ("i" "Tasks with inbox tag"
        ((tags-todo "inbox"
-              ((org-agenda-overriding-header "Task Inbox")))))))
-
+                   ((org-agenda-overriding-header "Task Inbox")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
