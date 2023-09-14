@@ -832,6 +832,8 @@ Else create a new file."
       (let ((current-file (buffer-file-name))
             (current-title nil)
             (projects-file (concat denote-directory "20220720T114139--projects__agenda_project.org")))
+        ;; Add 'project' keyword to the current file
+        (denote-keywords-add '("project"))
         ;; Search for the #+TITLE: property in the current buffer
         (save-excursion
           (goto-char (point-min))
