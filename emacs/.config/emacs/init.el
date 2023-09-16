@@ -583,7 +583,7 @@
 (setq org-default-notes-file (concat org-directory "~/docs/denote/20230903T141829--mobile-inbox__agenda_inbox.txt"))
 
 ;; Prevent org-capture from saving bookmarks
-(setq org-bookmarks-names-plist '())
+(setq org-bookmark-names-plist '())
 (setq org-capture-bookmark nil)
 
 ;;Enable certain languages
