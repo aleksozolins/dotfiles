@@ -735,6 +735,9 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   (setq org-agenda-restore-windows-after-quit t) ; restore the previous window arrangement after quitting
   (setq org-agenda-hide-tags-regexp "agenda") ; hide the "agenda" tag when viewing the agenda
 
+  ;; Set the org-archive-location
+  (setq org-archive-location "~/docs/denote_archive/%s_archive::")
+
   ;; Include archived trees in the agenda view
   ;; Used to have this to nil. Now it's recommended to use "v" in the agenda view to include archived items.
   (setq org-agenda-skip-archived-trees t)
