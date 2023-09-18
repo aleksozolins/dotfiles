@@ -721,14 +721,15 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   ;; Set org-agenda files to list of files. Note they all have the agenda tag.
   (setq org-agenda-files
-      (list (concat denote-directory "20210804T113317--todos__agenda.org")
-            (concat denote-directory "20220720T114139--projects__agenda_project.org")
-            (concat denote-directory "20220727T113610--calendar__agenda.org")
-            (concat denote-directory "20220727T114811--recurring-charges__agenda_finances.org")
-            (concat denote-directory "20221030T114854--recurring-deposits-and-credits__agenda_finances.org")
-            (concat denote-directory "20221030T114954--recurring-transfers__agenda_finances.org")
-            (concat denote-directory "20230903T141829--mobile-inbox__agenda_inbox.txt")
-            (concat denote-directory "20230903T151425--beorg-inbox__agenda_inbox.org")))
+      (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
+            (concat denote-directory "agenda/20230917T210607--recurring-todos__agenda_recurring.org")
+            (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
+            (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
+            (concat denote-directory "agenda/20220727T114811--recurring-charges__agenda_finances.org")
+            (concat denote-directory "agenda/20221030T114854--recurring-deposits-and-credits__agenda_finances.org")
+            (concat denote-directory "agenda/20221030T114954--recurring-transfers__agenda_finances.org")
+            (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
+            (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -851,42 +852,42 @@ Simple contact management for org. Contacts can be captured via a template by us
       :END:" "Template for org-contacts.")
 
   (setq org-capture-templates
-      `(("t" "Task (Quick Capture)" entry (file+olp "~/docs/denote/20210804T113317--todos__agenda.org" "Inbox")
+      `(("t" "Task (Quick Capture)" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
          "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
         
         ("T" "Task (Detailed)")
         
-        ("Tc" "Check Out" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Check Out")
+        ("Tc" "Check Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Check Out")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Th" "Home" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Home")
+        ("Th" "Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Home")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tt" "Tech" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Tech")
+        ("Tt" "Tech" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Tech")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tf" "Financial" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Financial")
+        ("Tf" "Financial" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Financial")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("TC" "Connections" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Connections")
+        ("TC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Ts" "Shopping" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Shopping")
+        ("Ts" "Shopping" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Shopping")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tp" "Parents" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Parents")
+        ("Tp" "Parents" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Parents")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tg" "Gigs" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Gigs")
+        ("Tg" "Gigs" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Gigs")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("To" "OzoStudio" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "OzoStudio")
+        ("To" "OzoStudio" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "OzoStudio")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tz" "Zapier" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
+        ("Tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Zapier")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("TS" "Someday" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Someday")
+        ("TS" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
@@ -910,7 +911,7 @@ Simple contact management for org. Contacts can be captured via a template by us
          "| %^{Make} | %^{Model} | cup | %^{Finish||silver plated|gold plated|brass|nickel|stainless|bronze|plastic} | %^{Threads||standard|metric|other} | %^{Notes} | |" :kill-buffer t)))
 
   ;; Default org capture file
-  (setq org-default-notes-file (concat org-directory "~/docs/denote/20230903T141829--mobile-inbox__agenda_inbox.txt"))
+  (setq org-default-notes-file (concat org-directory "~/docs/denote/agenda/20230903T141829--email-inbox__agenda_inbox.txt"))
 
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmark-names-plist '())
@@ -1073,7 +1074,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
   ;; We use different ways to specify a path for demo purposes.
   (setq denote-dired-directories
         (list denote-directory
-              (thread-last denote-directory (expand-file-name "attachments"))))
+              (thread-last denote-directory (expand-file-name "data"))))
 
   ;; Generic (great if you rename files Denote-style in lots of places):
   ;; (add-hook 'dired-mode-hook #'denote-dired-mode)
