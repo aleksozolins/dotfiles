@@ -697,7 +697,7 @@
 ;; We use different ways to specify a path for demo purposes.
 (setq denote-dired-directories
       (list denote-directory
-            (thread-last denote-directory (expand-file-name "attachments"))))
+            (thread-last denote-directory (expand-file-name "data"))))
 
 ;; Generic (great if you rename files Denote-style in lots of places):
 ;; (add-hook 'dired-mode-hook #'denote-dired-mode)
@@ -835,7 +835,7 @@ Else create a new file."
   (if (eq major-mode 'org-mode)
       (let ((current-file (buffer-file-name))
             (current-title nil)
-            (projects-file (concat denote-directory "20220720T114139--projects__agenda_project.org")))
+            (projects-file (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")))
         ;; Add 'project' keyword to the current file
         (denote-keywords-add '("project"))
         ;; Search for the #+TITLE: property in the current buffer
