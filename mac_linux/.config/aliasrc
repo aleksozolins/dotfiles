@@ -40,4 +40,4 @@ alias db='dropbox-cli'
 alias stow='stow --no-folding'
 
 # zapier
-alias zmonolith='aws-vault exec monolith-production-developer'
+alias zawsmonolith='aws-vault exec monolith-production-developer'
