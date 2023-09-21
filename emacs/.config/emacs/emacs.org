@@ -195,7 +195,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
       modus-themes-headings
       '((0 . (1.6))
         (1 . (rainbow overline background 1.2))
-        (2 . (rainbow background 1.1))
+        (2 . (rainbow background 1.2))
         (3 . (rainbow bold 1))
         (t . (semilight 1))))
 
