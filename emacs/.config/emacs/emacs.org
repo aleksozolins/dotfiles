@@ -858,7 +858,7 @@ Simple contact management for org. Contacts can be captured via a template by us
           ("T" "Task (Detailed)")
           ("Tc" "Check Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Check Out")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+          
           ("Th" "Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Home")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
@@ -915,7 +915,7 @@ Simple contact management for org. Contacts can be captured via a template by us
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmark-names-plist '())
   (setq org-capture-bookmark nil)
-  
+
 #+end_src
 
 ** Org Babel
