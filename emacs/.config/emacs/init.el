@@ -568,16 +568,16 @@
 
         ("M" "Mouthpiece")
         ("M1" "One-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
-         "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: one-piece\n:Finish: %^{Finish|silver-plated|gold-plated|nickel|stainless|bronze|plastic}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
+         "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: one-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
 
         ("M2" "Two-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
-         "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: two-piece\n:Finish: %^{Finish|silver-plated|gold-plated|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
+         "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: two-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
 
         ("Mc" "Mouthpiece Cup" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
-         "* %^{Make} %^{Model} Cup\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: cup\n:Finish: %^{Finish|silver-plated|gold-plated|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
+         "* %^{Make} %^{Model} Cup\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: cup\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
 
         ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
-         "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)))
+         "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)))
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "~/docs/denote/agenda/20230903T141829--email-inbox__agenda_inbox.txt"))
