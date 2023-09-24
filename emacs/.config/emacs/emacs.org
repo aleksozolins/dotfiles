@@ -1165,13 +1165,15 @@ Testing this package out right now as an alternative to org-roam. It is manually
 
 *** Find Notes Recursively (including subdirs)
 
+Note that in the =find= command, we're pruning the data dir, so attachments are not included, and also the =.git= directory.
+
 #+begin_src elisp
   (defun my-denote-find-file ()
     "Find a file in denote-directory recursively using completion."
     (interactive)
     (let* ((dir (directory-file-name denote-directory)) ; Ensure no trailing slash
            (cmd-output (shell-command-to-string
-                        (format "find '%s' -type f 2>&1" dir)))
+                        (format "find '%s' -type d \\( -name '.git' -o -name 'data' \\) -prune -o -type f -print 2>&1" dir)))
            (all-files (split-string cmd-output "\n" t))
            (file-display-names (mapcar (lambda (f) (string-remove-prefix dir f)) all-files)))
       (if (string-match-p "No such file or directory" cmd-output)
@@ -1180,7 +1182,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
                (selected-file (concat dir selected-display-name)))
           (when selected-file
             (find-file selected-file))))))
-  
+
 #+end_src
 
 *** Open Dired to Denote Directory

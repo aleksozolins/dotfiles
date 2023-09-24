@@ -787,7 +787,7 @@ Else create a new file."
   (interactive)
   (let* ((dir (directory-file-name denote-directory)) ; Ensure no trailing slash
          (cmd-output (shell-command-to-string
-                      (format "find '%s' -type f 2>&1" dir)))
+                      (format "find '%s' -type d \\( -name '.git' -o -name 'data' \\) -prune -o -type f -print 2>&1" dir)))
          (all-files (split-string cmd-output "\n" t))
          (file-display-names (mapcar (lambda (f) (string-remove-prefix dir f)) all-files)))
     (if (string-match-p "No such file or directory" cmd-output)
