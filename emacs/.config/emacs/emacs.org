@@ -683,9 +683,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
       (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
             (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
             (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
-            (concat denote-directory "agenda/20220727T114811--recurring-charges__agenda_finances.org")
-            (concat denote-directory "agenda/20221030T114854--recurring-deposits-and-credits__agenda_finances.org")
-            (concat denote-directory "agenda/20221030T114954--recurring-transfers__agenda_finances.org")
+            (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
             (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
             (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
 
