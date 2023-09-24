@@ -322,7 +322,7 @@
   (goto-char (point-max)))
 
 ;; Bind the function to F4
-(global-set-key (kbd "<f4>") 'my-ledger)
+;; (global-set-key (kbd "<f6>") 'my-ledger)
 
 (defun my-backup-my-ledger-file ()
   (when (string= (buffer-file-name)

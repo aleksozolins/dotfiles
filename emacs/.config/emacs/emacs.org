@@ -582,7 +582,7 @@ I use this to manage my finances
 
 #+end_src
 
-** Open My Ledger With F4
+** Open My Ledger With F6
 
 #+begin_src elisp
   (defun my-ledger ()
@@ -592,7 +592,7 @@ I use this to manage my finances
     (goto-char (point-max)))
 
   ;; Bind the function to F4
-  (global-set-key (kbd "<f4>") 'my-ledger)
+  ;; (global-set-key (kbd "<f6>") 'my-ledger)
 
 #+end_src
 
