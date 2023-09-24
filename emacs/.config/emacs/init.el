@@ -482,7 +482,7 @@
         ("home" . ?h)
         ("habit" . ?H)
         ("tech" . ?t)
-        ("financial" . ?f)
+        ("finances" . ?f)
         ("zapier" . ?z)
         ("gigs" . ?g)
         ("ozostudio" . ?o)
@@ -531,7 +531,7 @@
         ("Tt" "Tech" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Tech")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tf" "Financial" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Financial")
+        ("Tf" "Finances" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Finances")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("TC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
