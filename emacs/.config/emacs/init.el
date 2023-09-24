@@ -413,7 +413,6 @@
 ;; Set org-agenda files to list of files. Note they all have the agenda tag.
 (setq org-agenda-files
     (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
-          (concat denote-directory "agenda/20230917T210607--recurring-todos__agenda_recurring.org")
           (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
           (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
           (concat denote-directory "agenda/20220727T114811--recurring-charges__agenda_finances.org")
