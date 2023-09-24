@@ -551,7 +551,7 @@ I use this to manage my finances
     (goto-char (point-max)))
 
   ;; Bind the function to F4
-  ;; (global-set-key (kbd "<f6>") 'my-ledger)
+  (global-set-key (kbd "<f6>") 'my-ledger)
 
 #+end_src
 
