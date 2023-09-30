@@ -379,7 +379,7 @@
   (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
   (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__rss.org")))
 
-(defun download-youtube-video (arg)
+(defun my-elfeed-download-youtube-video (arg)
   "Download the YouTube video of the current entry in elfeed using youtube-dlp.
 With a prefix argument, download the audio only in the best available format."
   (interactive "P")
