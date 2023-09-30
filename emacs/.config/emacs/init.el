@@ -372,6 +372,7 @@
   :ensure t
   :config
   (elfeed-org)
+  (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
   (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__rss.org")))
 
 (use-package perspective
