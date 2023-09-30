@@ -97,9 +97,13 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
   (windmove-default-keybindings 'super) ; Navigate between windows with s-<arrow keys>
 
-  ; Enable visual-line-mode for txt and md files
+  ;; Enable visual-line-mode for txt and md files
   (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
   (add-hook 'markdown-mode-hook 'turn-on-visual-line-mode)
+
+  ;; When Emacs runs 2 async commands at once, it will just rename the async buffers instead of ask.
+  ;; This is useful in elfeed when I'm downloading YT videos.
+  (setq async-shell-command-buffer 'rename-buffer)
 
 #+end_src
 
@@ -611,7 +615,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 #+end_src
 
 * Elfeed
-
+** Config
 RSS reader!
 
 #+begin_src elisp
@@ -629,6 +633,32 @@ RSS reader!
     (elfeed-org)
     (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
     (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__rss.org")))
+
+#+end_src
+
+** Custom Functions
+
+Here's a function that downloads a YouTube video to my "consume" dir. Run with universal argument, it will download just the audio.
+- [ ] Modify the yt-dlp command to name the file more smartly
+- [ ] For the audio version, build in changing from =.webm= to =flac=
+
+#+begin_src elisp
+  (defun download-youtube-video (arg)
+    "Download the YouTube video of the current entry in elfeed using youtube-dlp.
+  With a prefix argument, download the audio only in the best available format."
+    (interactive "P")
+    (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
+      (elfeed-show-yank)  ; Copy the URL to the clipboard
+      (let ((url (current-kill 0)))  ; Get the URL from the clipboard
+        (if arg
+            (async-shell-command
+             (format "yt-dlp -f 'bestaudio' -P '~/Dropbox/consume/' '%s'" url))
+          (async-shell-command
+           (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/Dropbox/consume/' '%s'" url))))))
+
+  (add-hook 'elfeed-show-mode-hook
+          (lambda ()
+            (define-key elfeed-show-mode-map (kbd "D") 'download-youtube-video)))
 
 #+end_src
 
