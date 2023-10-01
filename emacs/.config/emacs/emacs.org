@@ -199,6 +199,13 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
   (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
+  ;; Unbind C-z (Can still use C-x C-z to suspend the frame
+  (global-unset-key (kbd "C-z"))
+
+  ;; App launchers
+  (global-set-key (kbd "C-z m") 'mu4e)
+  (global-set-key (kbd "C-z e") 'elfeed)
+
 #+end_src
 
 * Set authinfo Source
@@ -555,7 +562,7 @@ I use this to manage my finances
     (goto-char (point-max)))
 
   ;; Bind the function to F4
-  (global-set-key (kbd "<f6>") 'my-ledger)
+  (global-set-key (kbd "C-z l") 'my-ledger)
 
 #+end_src
 
@@ -643,6 +650,7 @@ RSS reader!
 Here's a function that downloads a YouTube video to my "consume" dir. Run with universal argument, it will download just the audio.
 - [ ] Modify the yt-dlp command to name the file more smartly
 - [ ] For the audio version, build in changing from =.webm= to =flac=
+- [ ] Maybe build in options do download in different qualities/bitrates
 
 #+begin_src elisp
   (defun my-elfeed-download-youtube-video (arg)

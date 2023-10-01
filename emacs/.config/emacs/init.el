@@ -111,6 +111,13 @@
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
+;; Unbind C-z (Can still use C-x C-z to suspend the frame
+(global-unset-key (kbd "C-z"))
+
+;; App launchers
+(global-set-key (kbd "C-z m") 'mu4e)
+(global-set-key (kbd "C-z e") 'elfeed)
+
 (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
 (setq bookmark-default-file
@@ -326,7 +333,7 @@
   (goto-char (point-max)))
 
 ;; Bind the function to F4
-(global-set-key (kbd "<f6>") 'my-ledger)
+(global-set-key (kbd "C-z l") 'my-ledger)
 
 (defun my-backup-my-ledger-file ()
   (when (string= (buffer-file-name)
