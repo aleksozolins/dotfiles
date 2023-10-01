@@ -364,20 +364,22 @@
 (global-set-key (kbd "s-[") 'tab-bar-history-back)
 (global-set-key (kbd "s-]") 'tab-bar-history-forward)
 
-;; Put the elfeed DB on my Dropbox so the state syncs accross machines
-(setq elfeed-db-directory "~/Dropbox/apps/elfeed")
-
-;; Install the package
+;; Install the elfeed package
 (use-package elfeed
-  :ensure t)
-
-;; Install another package to allow us to use an org file as the source for feeds
-(use-package elfeed-org
   :ensure t
   :config
-  (elfeed-org)
+  ;; Put the elfeed DB on my Dropbox so the state syncs across machines
+  (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
   (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
-  (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__rss.org")))
+
+  ;; Ensure elfeed-org is installed
+  (use-package elfeed-org
+    :ensure t)
+
+  ;; Load elfeed-org to use an Org file as the source for feeds
+  (with-eval-after-load 'elfeed-org
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org"))))
 
 (defun my-elfeed-download-youtube-video (arg)
   "Download the YouTube video of the current entry in elfeed using youtube-dlp.
@@ -394,7 +396,7 @@ With a prefix argument, download the audio only in the best available format."
 
 (add-hook 'elfeed-show-mode-hook
         (lambda ()
-          (define-key elfeed-show-mode-map (kbd "D") 'download-youtube-video)))
+          (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)))
 
 (use-package perspective
   :ensure t
