@@ -377,7 +377,7 @@
   :config
   ;; Put the elfeed DB on my Dropbox so the state syncs across machines
   (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
-  (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
+  (setq elfeed-enclosure-default-dir "~/consume/")
 
   ;; Ensure elfeed-org is installed
   (use-package elfeed-org
@@ -397,9 +397,9 @@ With a prefix argument, download the audio only in the best available format."
     (let ((url (current-kill 0)))  ; Get the URL from the clipboard
       (if arg
           (async-shell-command
-           (format "yt-dlp -f 'bestaudio' -P '~/Dropbox/consume/' '%s'" url))
+           (format "yt-dlp -f 'bestaudio' -P '~/consume/' '%s'" url))
         (async-shell-command
-         (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/Dropbox/consume/' '%s'" url))))))
+         (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/consume/' '%s'" url))))))
 
 (add-hook 'elfeed-show-mode-hook
         (lambda ()
