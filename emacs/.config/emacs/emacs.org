@@ -105,6 +105,9 @@ Below are any settings where I'm not quite sure where to put in this file just y
   ;; This is useful in elfeed when I'm downloading YT videos.
   (setq async-shell-command-buffer 'rename-buffer)
 
+  ;; Enable delete selection mode
+  (delete-selection-mode 1)
+
 #+end_src
 
 * Line Numbers

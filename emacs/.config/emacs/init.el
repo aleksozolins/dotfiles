@@ -50,6 +50,9 @@
 ;; This is useful in elfeed when I'm downloading YT videos.
 (setq async-shell-command-buffer 'rename-buffer)
 
+;; Enable delete selection mode
+(delete-selection-mode 1)
+
 ;; Line numbers
 (column-number-mode)
 (global-display-line-numbers-mode -1) ; Right now they are disabled
