@@ -1050,19 +1050,6 @@ Else create a new file."
 (when (eq system-type 'gnu/linux)
   (mu4e t))
 
-;; Initial configuration
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "s-L")         ;; Note: The original binding was supposed to be "s-l" but for the moment, that's take up with DWM
-  :config
-  (lsp-enable-which-key-integration t))
-
-;; Config for Python Mode -- It comes with Emacs so it doesn't have to be installed
-(use-package python-mode
-  :ensure t
-  :hook (python-mode . lsp-deferred))
-
 (use-package typescript-mode
   :ensure t
   :mode "\\.ts\\'"

@@ -1479,7 +1479,9 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
 
 ** LSP Mode
 
-#+begin_src elisp
+Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
+
+#+begin_src elisp :tangle no
   ;; Initial configuration
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
@@ -1492,7 +1494,9 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
 
 ** Python
 
-#+begin_src elisp
+Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
+
+#+begin_src elisp :tangle no
   ;; Config for Python Mode -- It comes with Emacs so it doesn't have to be installed
   (use-package python-mode
     :ensure t
