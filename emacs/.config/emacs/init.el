@@ -335,8 +335,17 @@
   (find-file "~/docs/finances/ledger/my_ledger.txt")
   (goto-char (point-max)))
 
-;; Bind the function to F4
+;; Bind the function to "C-z l"
 (global-set-key (kbd "C-z l") 'my-ledger)
+
+(defun my-recurring-ledger ()
+  "Open the ledger file located at ~/docs/finances/ledger/my_recurring_ledger.txt."
+  (interactive)
+  (find-file "~/docs/finances/ledger/my_recurring_ledger.txt")
+  (goto-char (point-max)))
+
+;; Bind the function to "C-z L"
+(global-set-key (kbd "C-z L") 'my-recurring-ledger)
 
 (use-package rg
 :config
