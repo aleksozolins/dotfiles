@@ -1035,6 +1035,25 @@ First, we define two functions that trigger AppleScripts when clocking into the 
 
 #+end_src
 
+** Custom Link Types
+
+*** Link type for magit-status buffers so I can link directly there from any commit todos I have on org-agenda
+
+#+begin_src elisp
+  (org-link-set-parameters
+   "magit-status"
+   :follow (lambda (path)
+             (magit-status (expand-file-name path)))
+   :export (lambda (path desc format)
+             (cond
+              ((eq format 'html)
+               (format "<a href=\"magit-status:%s\">%s</a>" path desc))
+              ((eq format 'latex)
+               (format "\\href{magit-status:%s}{%s}" path desc))
+              (t (format "magit-status:%s" path)))))
+  
+#+end_src
+
 * Denote
 
 Testing this package out right now as an alternative to org-roam. It is manually installed so use-package is not a factor yet. Note that we're just starting from Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].

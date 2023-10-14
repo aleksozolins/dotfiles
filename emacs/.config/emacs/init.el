@@ -681,6 +681,18 @@ With a prefix argument, download the audio only in the best available format."
   (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
   (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out))
 
+(org-link-set-parameters
+ "magit-status"
+ :follow (lambda (path)
+           (magit-status (expand-file-name path)))
+ :export (lambda (path desc format)
+           (cond
+            ((eq format 'html)
+             (format "<a href=\"magit-status:%s\">%s</a>" path desc))
+            ((eq format 'latex)
+             (format "\\href{magit-status:%s}{%s}" path desc))
+            (t (format "magit-status:%s" path)))))
+
 (use-package denote
   :ensure t
   )
