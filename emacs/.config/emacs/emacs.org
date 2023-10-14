@@ -571,9 +571,10 @@ I use this to manage my finances
 
 ** Auto Backup my Ledger
 
+**NOTE:** This is now disabled as my ledger is now version controlled
 Whenever I save my ledger file, a daily backup is created in the backup subdirectory.
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
   (defun my-backup-my-ledger-file ()
     (when (string= (buffer-file-name)
 		   (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
