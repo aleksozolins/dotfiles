@@ -18,9 +18,10 @@ source ~/.npm_token
 eval "$(pyenv init -)"
 
 # direnv hook (Needed by monorepo)
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
-eval "$(direnv hook zsh)"
-eval "$(direnv hook zsh)"
+# disabled this to with with the Zapier CLI
+# . /opt/homebrew/opt/asdf/libexec/asdf.sh
+# eval "$(direnv hook zsh)"
+# eval "$(direnv hook zsh)"
 
 # Start tat script (tmux) if it isn't running
 _not_inside_tmux() { [[ -z "$TMUX" ]] }
