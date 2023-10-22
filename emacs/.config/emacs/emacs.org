@@ -1509,6 +1509,17 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
 
 * Development
 
+** JavaScript
+
+Just setting the default indent level here to match the code I see in the Zapier Developer Platform CLI templates.
+
+#+begin_src elisp
+  (add-hook 'js-mode-hook
+           (lambda ()
+             (setq js-indent-level 2)))
+  
+#+end_src
+
 ** LSP Mode
 
 Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.

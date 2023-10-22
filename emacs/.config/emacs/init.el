@@ -1062,6 +1062,10 @@ Else create a new file."
 (when (eq system-type 'gnu/linux)
   (mu4e t))
 
+(add-hook 'js-mode-hook
+         (lambda ()
+           (setq js-indent-level 2)))
+
 (use-package typescript-mode
   :ensure t
   :mode "\\.ts\\'"
