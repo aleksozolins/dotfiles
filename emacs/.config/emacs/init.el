@@ -405,6 +405,24 @@ With a prefix argument, download the audio only in the best available format."
         (lambda ()
           (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)))
 
+(defvar my-firefox-executable
+  (if (eq system-type 'darwin)
+      "/Applications/Firefox.app/Contents/MacOS/firefox-bin"
+    "firefox")
+  "Path to the Firefox executable.")
+
+(defun my-elfeed-show-visit-reader ()
+  "Visit the current entry in Firefox using reader view."
+  (interactive)
+  (let ((link (elfeed-entry-link elfeed-show-entry)))
+    (when link
+      (setq link (concat "about:reader?url=" link))
+      (start-process "firefox" nil my-firefox-executable link))))
+
+(add-hook 'elfeed-show-mode-hook
+          (lambda ()
+            (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
+
 (use-package perspective
   :ensure t
   :bind

@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2023-09-24
++ Updated: 2023-10-28
 
 *Note:* the following two code blocks were last evaluated on Mac - I do also use a Linux system.
 
@@ -660,6 +660,8 @@ RSS reader!
 
 ** Custom Functions
 
+*** Download YouTube Vids to consume
+
 Here's a function that downloads a YouTube video to my "consume" dir. Run with universal argument, it will download just the audio.
 - [ ] Modify the yt-dlp command to name the file more smartly
 - [ ] For the audio version, build in changing from =.webm= to =flac=
@@ -682,6 +684,31 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
   (add-hook 'elfeed-show-mode-hook
           (lambda ()
             (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)))
+
+#+end_src
+
+*** Open Links in Reader View in Firefox
+
+A makeshift solution because for some reason, just duplicating and modifying =elfeed-show-visit= didn't work, I think because of Choosy. So this one defines the Firefox executable path based on the OS, yanks the URL, and prepends the reader string, then launches Firefox to that link.
+
+#+begin_src elisp
+  (defvar my-firefox-executable
+    (if (eq system-type 'darwin)
+        "/Applications/Firefox.app/Contents/MacOS/firefox-bin"
+      "firefox")
+    "Path to the Firefox executable.")
+
+  (defun my-elfeed-show-visit-reader ()
+    "Visit the current entry in Firefox using reader view."
+    (interactive)
+    (let ((link (elfeed-entry-link elfeed-show-entry)))
+      (when link
+        (setq link (concat "about:reader?url=" link))
+        (start-process "firefox" nil my-firefox-executable link))))
+
+  (add-hook 'elfeed-show-mode-hook
+            (lambda ()
+              (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
 
 #+end_src
 
