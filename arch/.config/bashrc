@@ -13,17 +13,3 @@ alias sudo='sudo '
 if [ -f ~/.config/aliasrc ]; then
     source ~/.config/aliasrc
 fi
-
-# Start tat script (tmux) if it isn't running
-_not_inside_tmux() {
-  [ -z "$TMUX" ]
-}
-
-ensure_tmux_is_running() {
-  if _not_inside_tmux && [ -n "$DISPLAY" ]; then
-    tat
-  fi
-}
-
-ensure_tmux_is_running
-

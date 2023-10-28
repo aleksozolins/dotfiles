@@ -1,3 +1,6 @@
+(when (eq system-type 'darwin)
+  (server-start))
+
 ;; Initialize package sources
 (require 'package)
 
@@ -120,6 +123,8 @@
 ;; App launchers
 (global-set-key (kbd "C-z m") 'mu4e)
 (global-set-key (kbd "C-z e") 'elfeed)
+(global-set-key (kbd "C-z v") 'vterm)
+(global-set-key (kbd "C-z V") 'vterm-other-window)
 
 (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
@@ -299,6 +304,12 @@
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
   (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
+
+(use-package vterm
+    :ensure t
+    :config
+    (setq vterm-kill-buffer-on-exit t)
+    (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))

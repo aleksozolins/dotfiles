@@ -25,7 +25,7 @@ alias lowed='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %owed'
 alias lreview='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %review'
 
 # misc aliases
-alias e="emacsclient -t"
+alias e="emacsclient -n"
 alias tvim='nvim -c "colorscheme default"'
 alias trans="transmission-remote"
 alias hdc="ls -a ~ | wc -l"

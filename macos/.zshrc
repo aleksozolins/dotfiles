@@ -22,15 +22,3 @@ eval "$(pyenv init -)"
 # . /opt/homebrew/opt/asdf/libexec/asdf.sh
 # eval "$(direnv hook zsh)"
 # eval "$(direnv hook zsh)"
-
-# Start tat script (tmux) if it isn't running
-_not_inside_tmux() { [[ -z "$TMUX" ]] }
-
-ensure_tmux_is_running() {
-  if _not_inside_tmux; then
-    tat
-  fi
-}
-
-ensure_tmux_is_running
-

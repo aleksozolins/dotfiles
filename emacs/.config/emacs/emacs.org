@@ -29,6 +29,16 @@ System configuration options:
 #+RESULTS:
 : --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
 
+* Start the Server if macOS
+
+The server should already be started if running on Linux, but we'll start it here if on macOS to be able to use =emacsclient= in vterm.
+
+#+begin_src elisp
+  (when (eq system-type 'darwin)
+    (server-start))
+
+#+end_src
+
 * Packages
 ** Package Sources
 
@@ -208,7 +218,9 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   ;; App launchers
   (global-set-key (kbd "C-z m") 'mu4e)
   (global-set-key (kbd "C-z e") 'elfeed)
-
+  (global-set-key (kbd "C-z v") 'vterm)
+  (global-set-key (kbd "C-z V") 'vterm-other-window)
+  
 #+end_src
 
 * Set authinfo Source
@@ -493,6 +505,28 @@ From within ~dropbox-exclude-mode~:
   (with-eval-after-load 'dired
     (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
     (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
+
+#+end_src
+
+* vterm
+
+** Keybindings
+
+| key     | effect                                                            |
+|---------+-------------------------------------------------------------------|
+| C-z v   | vterm                                                             |
+| C-z V   | vterm-other-window                                                |
+| C-c C-t | Enter vterm-copy-mode which can be exited with RET                |
+| C-q     | Send the next key to vterm in case there is a conflict with emacs |
+
+** Config
+
+#+begin_src elisp
+  (use-package vterm
+      :ensure t
+      :config
+      (setq vterm-kill-buffer-on-exit t)
+      (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
 #+end_src
 
