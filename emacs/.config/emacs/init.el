@@ -1,3 +1,5 @@
+(setq load-path (cons "~/.config/emacs/functions/" load-path))
+
 (when (eq system-type 'darwin)
   (server-start))
 
@@ -226,19 +228,6 @@
 (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
 (add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
-(defun dired-open-file ()
-  "Open the file at point in dired with the appropriate system application."
-  (interactive)
-  (let ((file (dired-get-file-for-visit))
-        (open-cmd (pcase system-type
-                    ('darwin "open")
-                    ('gnu/linux "xdg-open")
-                    (_ "xdg-open"))))
-    (message "Opening %s..." file)
-    (call-process open-cmd nil 0 nil file)))
-
-(define-key dired-mode-map (kbd "V") 'dired-open-file)
-
 (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
   "Major mode for handling dropbox exclude list."
   (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
@@ -247,61 +236,17 @@
   (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
   (setq buffer-read-only t))
 
-(defun my-dropbox-exclude-directory ()
-  (interactive)
-  (if (not (string-equal system-type "gnu/linux"))
-      (message "Sorry, this function only works on Linux.")
-    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-        (message "dropbox-cli does not exist in /usr/bin/.")
-      (let ((directories (dired-get-marked-files)))
-        (dolist (directory directories)
-          (if (not (string-match "Dropbox" directory))
-              (message "Directory %s is not in Dropbox." directory)
-            (let ((command (concat "dropbox-cli exclude add " directory)))
-              (message "Running command: %s" command)
-              (shell-command command)
-              (when (get-buffer "*Dropbox Exclude List*")
-                (with-current-buffer "*Dropbox Exclude List*"
-                  (let ((buffer-read-only nil))
-                    (erase-buffer)
-                    (insert (shell-command-to-string "dropbox-cli exclude"))
-                    (goto-char (point-min))
-                    (setq buffer-read-only t)))))))))))
+(autoload 'dired-open-file "dired-functions")
 
-(defun my-dropbox-add-directory ()
-  (interactive)
-  (let* ((current-line (thing-at-point 'line t))
-         (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
-    (message "Running command: %s" command)
-    (shell-command command)
-    (with-current-buffer "*Dropbox Exclude List*"
-      (let ((buffer-read-only nil))
-        (erase-buffer)
-        (insert (shell-command-to-string "dropbox-cli exclude"))
-        (goto-char (point-min)))
-      (setq buffer-read-only t))))
-
-(defun my-dropbox-exclude-list ()
-  (interactive)
-  (if (not (string-equal system-type "gnu/linux"))
-      (message "Sorry, this function only works on Linux.")
-    (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-        (message "dropbox-cli does not exist in /usr/bin/.")
-      (if (not (string-match "Dropbox" default-directory))
-          (message "Current directory is not in Dropbox.")
-        (let* ((buffer-name "*Dropbox Exclude List*")
-               (buffer (get-buffer-create buffer-name)))
-          (split-window-right)
-          (other-window 1)
-          (switch-to-buffer buffer)
-          (let ((buffer-read-only nil))
-            (erase-buffer)
-            (insert (shell-command-to-string "dropbox-cli exclude"))
-            (goto-char (point-min))
-            (setq buffer-read-only t))
-          (dropbox-exclude-mode))))))
+(when (eq system-type 'gnu/linux)
+  (autoload 'my-dropbox-exclude-directory "dired-functions")
+  (autoload 'my-dropbox-add-directory "dired-functions")
+  (autoload 'my-dropbox-exclude-list "dired-functions"))
 
 (with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "V") 'dired-open-file))
+
+(when (eq system-type 'gnu/linux)
   (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
   (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
 
@@ -340,22 +285,10 @@
 ;; Any file ending in _ledger.txt opens in ledger mode
 (add-to-list 'auto-mode-alist '("_ledger\\.txt\\'" . ledger-mode))
 
-(defun my-ledger ()
-  "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
-  (interactive)
-  (find-file "~/docs/finances/ledger/my_ledger.txt")
-  (goto-char (point-max)))
+(autoload 'my-ledger "ledger-functions")
+(autoload 'my-recurring-ledger "ledger-functions")
 
-;; Bind the function to "C-z l"
 (global-set-key (kbd "C-z l") 'my-ledger)
-
-(defun my-recurring-ledger ()
-  "Open the ledger file located at ~/docs/finances/ledger/my_recurring_ledger.txt."
-  (interactive)
-  (find-file "~/docs/finances/ledger/my_recurring_ledger.txt")
-  (goto-char (point-max)))
-
-;; Bind the function to "C-z L"
 (global-set-key (kbd "C-z L") 'my-recurring-ledger)
 
 (use-package rg
@@ -399,39 +332,17 @@
     (elfeed-org)
     (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org"))))
 
-(defun my-elfeed-download-youtube-video (arg)
-  "Download the YouTube video of the current entry in elfeed using youtube-dlp.
-With a prefix argument, download the audio only in the best available format."
-  (interactive "P")
-  (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
-    (elfeed-show-yank)  ; Copy the URL to the clipboard
-    (let ((url (current-kill 0)))  ; Get the URL from the clipboard
-      (if arg
-          (async-shell-command
-           (format "yt-dlp -f 'bestaudio' -P '~/Dropbox/consume/' '%s'" url))
-        (async-shell-command
-         (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/Dropbox/consume/' '%s'" url))))))
-
-(add-hook 'elfeed-show-mode-hook
-        (lambda ()
-          (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)))
-
 (defvar my-firefox-executable
   (if (eq system-type 'darwin)
       "/Applications/Firefox.app/Contents/MacOS/firefox-bin"
     "firefox")
   "Path to the Firefox executable.")
 
-(defun my-elfeed-show-visit-reader ()
-  "Visit the current entry in Firefox using reader view."
-  (interactive)
-  (let ((link (elfeed-entry-link elfeed-show-entry)))
-    (when link
-      (setq link (concat "about:reader?url=" link))
-      (start-process "firefox" nil my-firefox-executable link))))
+(autoload 'my-elfeed-show-visit-reader "elfeed-functions")
 
 (add-hook 'elfeed-show-mode-hook
           (lambda ()
+            (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)
             (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
 
 (use-package perspective
@@ -552,6 +463,18 @@ With a prefix argument, download the audio only in the best available format."
         ("emacs" . ?e)
         ("recurring" . ?r)))
 
+(org-link-set-parameters
+ "magit-status"
+ :follow (lambda (path)
+           (magit-status (expand-file-name path)))
+ :export (lambda (path desc format)
+           (cond
+            ((eq format 'html)
+             (format "<a href=\"magit-status:%s\">%s</a>" path desc))
+            ((eq format 'latex)
+             (format "\\href{magit-status:%s}{%s}" path desc))
+            (t (format "magit-status:%s" path)))))
+
 ;; Add some modules
 (with-eval-after-load 'org
   (add-to-list 'org-modules 'org-habit t))
@@ -666,64 +589,17 @@ With a prefix argument, download the audio only in the best available format."
 (add-to-list 'org-structure-template-alist '("html" . "src html"))
 (add-to-list 'org-structure-template-alist '("css" . "src css"))
 
-(defun my-view-and-update-clocktables ()
-  "Open time_tracking.org in a split buffer and update all clock tables."
-  (interactive)
-  (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
-    (with-current-buffer buffer
-      (save-excursion
-	(goto-char (point-min))
-	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	  (org-ctrl-c-ctrl-c)
-	  (forward-line)))
-      (save-buffer))
-    (display-buffer buffer)))
+(autoload 'my-view-and-update-clocktables "org-mode-functions")
+(autoload 'my-kill-all-agenda-files "org-mode-functions")
+
+(require 'org-mode-non-interactive-functions)
+
+(add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
+(add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out)
 
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables))
-
-(defun my-kill-all-agenda-files ()
-  "Close all buffers associated with files in `org-agenda-files'."
-  (interactive)
-  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
-    (dolist (buffer (buffer-list))
-      (let ((buffer-file-name (buffer-file-name buffer)))
-	(when (and buffer-file-name (member buffer-file-name agenda-files))
-	  (kill-buffer buffer)))))
-  (org-agenda-quit))
-
-(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
   (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
-
-(when (eq system-type 'darwin)
-  (defun my-zapier-ticketbar-check-in ()
-    "Run the Check In AppleScript when the task has a specific heading."
-    (let ((heading (nth 4 (org-heading-components))))
-      (when (or (string-equal heading "Zapier Tickets")
-                (string-equal heading "Zapier Chat"))
-        (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt"))))
-
-  (defun my-zapier-ticketbar-check-out ()
-    "Run the Check Out AppleScript when the task has a specific heading."
-    (let ((heading (nth 4 (org-heading-components))))
-      (when (or (string-equal heading "Zapier Tickets")
-                (string-equal heading "Zapier Chat"))
-        (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt"))))
-
-  (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
-  (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out))
-
-(org-link-set-parameters
- "magit-status"
- :follow (lambda (path)
-           (magit-status (expand-file-name path)))
- :export (lambda (path desc format)
-           (cond
-            ((eq format 'html)
-             (format "<a href=\"magit-status:%s\">%s</a>" path desc))
-            ((eq format 'latex)
-             (format "\\href{magit-status:%s}{%s}" path desc))
-            (t (format "magit-status:%s" path)))))
 
 (use-package denote
   :ensure t

@@ -29,6 +29,13 @@ System configuration options:
 #+RESULTS:
 : --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
 
+* Add Functions Dir to load-path
+
+#+begin_src elisp
+  (setq load-path (cons "~/.config/emacs/functions/" load-path))
+
+#+end_src
+
 * Start the Server if macOS
 
 The server should already be started if running on Linux, but we'll start it here if on macOS to be able to use =emacsclient= in vterm.
@@ -353,7 +360,8 @@ Embark is invoked by using =C-.= and allows common operations to be performed to
 #+end_src
 
 * Dired
-** New Config
+
+** Config
 
 This basic config was generated with the help of GPT4
 
@@ -401,11 +409,13 @@ Add this package to enable the hiding of dotfiles
 
 ** Custom Functions
 
+These are byte compiled in dired-functions.el
+
 *** Use =xdg-open= or =open= To Open Files
 
 Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bound to =v=
 
-#+begin_src elisp
+#+begin_src elisp :tangle functions/dired-functions.el
   (defun dired-open-file ()
     "Open the file at point in dired with the appropriate system application."
     (interactive)
@@ -416,8 +426,6 @@ Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bo
                       (_ "xdg-open"))))
       (message "Opening %s..." file)
       (call-process open-cmd nil 0 nil file)))
-
-  (define-key dired-mode-map (kbd "V") 'dired-open-file)
 
 #+end_src
 
@@ -439,6 +447,8 @@ From within ~dropbox-exclude-mode~:
 
 **** Code
 
+We define the major mode in =init.el=
+
 #+begin_src elisp
   (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
     "Major mode for handling dropbox exclude list."
@@ -447,6 +457,12 @@ From within ~dropbox-exclude-mode~:
     (define-key dropbox-exclude-mode-map (kbd "x") 'my-dropbox-add-directory)
     (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
     (setq buffer-read-only t))
+
+#+end_src
+
+Then we define the function in =dired-functions.el=
+
+#+begin_src elisp :tangle functions/dired-functions.el
 
   (defun my-dropbox-exclude-directory ()
     (interactive)
@@ -502,7 +518,34 @@ From within ~dropbox-exclude-mode~:
               (setq buffer-read-only t))
             (dropbox-exclude-mode))))))
 
+#+end_src
+
+*** Provide The Functions
+
+#+begin_src elisp :tangle functions/dired-functions.el
+  (provide 'dired-functions)
+  
+#+end_src
+
+** Autoloads
+
+#+begin_src elisp
+  (autoload 'dired-open-file "dired-functions")
+
+  (when (eq system-type 'gnu/linux)
+    (autoload 'my-dropbox-exclude-directory "dired-functions")
+    (autoload 'my-dropbox-add-directory "dired-functions")
+    (autoload 'my-dropbox-exclude-list "dired-functions"))
+
+#+end_src
+
+** Keybindings
+
+#+begin_src elisp
   (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "V") 'dired-open-file))
+
+  (when (eq system-type 'gnu/linux)
     (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
     (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
 
@@ -572,11 +615,11 @@ Pulsar highlights the current line when changing buffers.
 
 #+end_src
 
-* Ledger
+* ledger-mode
 
 I use this to manage my finances
 
-** ledger-mode
+** Config
 
 #+begin_src elisp
   (use-package ledger-mode
@@ -589,17 +632,16 @@ I use this to manage my finances
 
 #+end_src
 
-** Open ledger keybindings
+** Custom Functions
 
-#+begin_src elisp
+Here are functions to open my ledger and recurring ledger.
+
+#+begin_src elisp :tangle functions/ledger-functions.el
   (defun my-ledger ()
     "Open the ledger file located at ~/docs/finances/ledger/my_ledger.txt."
     (interactive)
     (find-file "~/docs/finances/ledger/my_ledger.txt")
     (goto-char (point-max)))
-
-  ;; Bind the function to "C-z l"
-  (global-set-key (kbd "C-z l") 'my-ledger)
 
   (defun my-recurring-ledger ()
     "Open the ledger file located at ~/docs/finances/ledger/my_recurring_ledger.txt."
@@ -607,29 +649,23 @@ I use this to manage my finances
     (find-file "~/docs/finances/ledger/my_recurring_ledger.txt")
     (goto-char (point-max)))
 
-  ;; Bind the function to "C-z L"
-  (global-set-key (kbd "C-z L") 'my-recurring-ledger)
+  (provide 'ledger-functions)
+#+end_src
+
+** Autoloads
+
+#+begin_src elisp
+  (autoload 'my-ledger "ledger-functions")
+  (autoload 'my-recurring-ledger "ledger-functions")
 
 #+end_src
 
-** Auto Backup my Ledger
+** Keybindings
 
-**NOTE:** This is now disabled as my ledger is now version controlled
-Whenever I save my ledger file, a daily backup is created in the backup subdirectory.
-
-#+begin_src elisp :tangle no
-  (defun my-backup-my-ledger-file ()
-    (when (string= (buffer-file-name)
-		   (expand-file-name "~/docs/finances/ledger/my_ledger.txt"))
-      (let* ((current-date (format-time-string "%Y-%m-%d"))
-	     (backup-dir (expand-file-name "~/docs/finances/ledger/backup/"))
-	     (backup-file (concat backup-dir current-date "_my_ledger.txt")))
-	(unless (file-exists-p backup-dir)
-	  (make-directory backup-dir))
-	(write-region (point-min) (point-max) backup-file))))
-
-  (add-hook 'after-save-hook 'my-backup-my-ledger-file)
-
+#+begin_src elisp
+  (global-set-key (kbd "C-z l") 'my-ledger)
+  (global-set-key (kbd "C-z L") 'my-recurring-ledger)
+  
 #+end_src
 
 * Ripgrep (rg.el)
@@ -669,6 +705,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 #+end_src
 
 * Elfeed
+
 ** Config
 RSS reader!
 
@@ -701,7 +738,7 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
 - [ ] For the audio version, build in changing from =.webm= to =flac=
 - [ ] Maybe build in options do download in different qualities/bitrates
 
-#+begin_src elisp
+#+begin_src elisp :tangle functions/elfeed-functions.el
   (defun my-elfeed-download-youtube-video (arg)
     "Download the YouTube video of the current entry in elfeed using youtube-dlp.
   With a prefix argument, download the audio only in the best available format."
@@ -715,15 +752,13 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
           (async-shell-command
            (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/Dropbox/consume/' '%s'" url))))))
 
-  (add-hook 'elfeed-show-mode-hook
-          (lambda ()
-            (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)))
-
 #+end_src
 
 *** Open Links in Reader View in Firefox
 
 A makeshift solution because for some reason, just duplicating and modifying =elfeed-show-visit= didn't work, I think because of Choosy. So this one defines the Firefox executable path based on the OS, yanks the URL, and prepends the reader string, then launches Firefox to that link.
+
+We define the variable in =init.el=
 
 #+begin_src elisp
   (defvar my-firefox-executable
@@ -732,6 +767,11 @@ A makeshift solution because for some reason, just duplicating and modifying =el
       "firefox")
     "Path to the Firefox executable.")
 
+#+end_src
+
+Then we define the function in =elfeed-functions.el=
+
+#+begin_src elisp :tangle functions/elfeed-functions.el
   (defun my-elfeed-show-visit-reader ()
     "Visit the current entry in Firefox using reader view."
     (interactive)
@@ -739,9 +779,29 @@ A makeshift solution because for some reason, just duplicating and modifying =el
       (when link
         (setq link (concat "about:reader?url=" link))
         (start-process "firefox" nil my-firefox-executable link))))
+  
+#+end_src
 
+*** Provide The Functions
+
+#+begin_src elisp :tangle functions/elfeed-functions.el
+  (provide 'elfeed-functions)
+  
+#+end_src
+
+** Autoloads
+
+#+begin_src elisp
+  (autoload 'my-elfeed-show-visit-reader "elfeed-functions")
+
+#+end_src
+
+** Keybindings
+
+#+begin_src elisp
   (add-hook 'elfeed-show-mode-hook
             (lambda ()
+              (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)
               (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
 
 #+end_src
@@ -875,6 +935,25 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
           ("emacs" . ?e)
           ("recurring" . ?r)))
 
+#+end_src
+
+** Custom Link Types
+
+*** Link type for magit-status buffers so I can link directly there from any commit todos I have on org-agenda
+
+#+begin_src elisp
+  (org-link-set-parameters
+   "magit-status"
+   :follow (lambda (path)
+             (magit-status (expand-file-name path)))
+   :export (lambda (path desc format)
+             (cond
+              ((eq format 'html)
+               (format "<a href=\"magit-status:%s\">%s</a>" path desc))
+              ((eq format 'latex)
+               (format "\\href{magit-status:%s}{%s}" path desc))
+              (t (format "magit-status:%s" path)))))
+  
 #+end_src
 
 ** Modules
@@ -1035,7 +1114,7 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
 While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
 
-#+begin_src elisp
+#+begin_src elisp :tangle functions/org-mode-functions.el
   (defun my-view-and-update-clocktables ()
     "Open time_tracking.org in a split buffer and update all clock tables."
     (interactive)
@@ -1049,16 +1128,13 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 	(save-buffer))
       (display-buffer buffer)))
 
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables))
-
 #+end_src
 
 *** Close Org Agenda and Kill All Agenda Buffers
 
 - Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
-#+begin_src elisp
+#+begin_src elisp :tangle functions/org-mode-functions.el
   (defun my-kill-all-agenda-files ()
     "Close all buffers associated with files in `org-agenda-files'."
     (interactive)
@@ -1069,53 +1145,77 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 	    (kill-buffer buffer)))))
     (org-agenda-quit))
 
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
+#+end_src
 
+*** Provide Functions
+
+#+begin_src elisp :tangle functions/org-mode-functions.el
+  (provide 'org-mode-functions)
+  
 #+end_src
 
 *** Zapier TicketBar Check In and Out
 
 First, we define two functions that trigger AppleScripts when clocking into the event matching =Zapier Tickets=. Then, we add hooks to org clocking in and out so that the function is called at the right time.
 
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (defun my-zapier-ticketbar-check-in ()
-      "Run the Check In AppleScript when the task has a specific heading."
-      (let ((heading (nth 4 (org-heading-components))))
-        (when (or (string-equal heading "Zapier Tickets")
-                  (string-equal heading "Zapier Chat"))
-          (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt"))))
+We define the functions in =org-mode-non-interactive-functions.el=
 
-    (defun my-zapier-ticketbar-check-out ()
-      "Run the Check Out AppleScript when the task has a specific heading."
-      (let ((heading (nth 4 (org-heading-components))))
-        (when (or (string-equal heading "Zapier Tickets")
-                  (string-equal heading "Zapier Chat"))
-          (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt"))))
+#+begin_src elisp :tangle functions/org-mode-non-interactive-functions.el
+  (defun my-zapier-ticketbar-check-in ()
+    "Run the Check In AppleScript when the task has a specific heading."
+    (let ((heading (nth 4 (org-heading-components))))
+      (when (or (string-equal heading "Zapier Tickets")
+                (string-equal heading "Zapier Chat"))
+        (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt"))))
 
-    (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
-    (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out))
+  (defun my-zapier-ticketbar-check-out ()
+    "Run the Check Out AppleScript when the task has a specific heading."
+    (let ((heading (nth 4 (org-heading-components))))
+      (when (or (string-equal heading "Zapier Tickets")
+                (string-equal heading "Zapier Chat"))
+        (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt"))))
 
 #+end_src
 
-** Custom Link Types
+*** Provide Function
 
-*** Link type for magit-status buffers so I can link directly there from any commit todos I have on org-agenda
+#+begin_src elisp :tangle functions/org-mode-non-interactive-functions.el
+  (provide 'org-mode-non-interactive-functions)
+  
+#+end_src
+
+** Autoloads
 
 #+begin_src elisp
-  (org-link-set-parameters
-   "magit-status"
-   :follow (lambda (path)
-             (magit-status (expand-file-name path)))
-   :export (lambda (path desc format)
-             (cond
-              ((eq format 'html)
-               (format "<a href=\"magit-status:%s\">%s</a>" path desc))
-              ((eq format 'latex)
-               (format "\\href{magit-status:%s}{%s}" path desc))
-              (t (format "magit-status:%s" path)))))
+  (autoload 'my-view-and-update-clocktables "org-mode-functions")
+  (autoload 'my-kill-all-agenda-files "org-mode-functions")
+
+#+end_src
+
+** Requires
+
+#+begin_src elisp
+  (require 'org-mode-non-interactive-functions)
   
+#+end_src
+
+** Add Hooks
+
+Add hook to call functions at the right time.
+
+#+begin_src elisp
+  (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
+  (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out)
+  
+#+end_src
+
+** Keybindings
+
+#+begin_src elisp
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
+    (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
+
 #+end_src
 
 * Denote
