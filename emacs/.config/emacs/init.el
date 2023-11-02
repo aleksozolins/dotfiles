@@ -189,6 +189,7 @@
 
 (use-package embark
   :ensure t
+  :defer t
   :bind
   (("C-." . embark-act)
    ("M-." . embark-dwim)
@@ -217,7 +218,8 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package dired-hide-dotfiles
-  :ensure t)
+  :ensure t
+  )
 
 (defun my-dired-mode-hook ()
   "My `dired' mode hook."
@@ -257,11 +259,13 @@
     (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
 (use-package rainbow-delimiters
+  :defer t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Magit
 (use-package magit
-  :ensure t)
+  :ensure t
+  )
 
 (use-package pulsar
   :ensure t
@@ -278,6 +282,7 @@
     (define-key map (kbd "C-x L") #'pulsar-highlight-dwim)))
 
 (use-package ledger-mode
+  :defer t
   :config
   (setq ledger-clear-whole-transactions 1)
   (setq ledger-default-date-format "%Y-%m-%d"))
@@ -292,8 +297,9 @@
 (global-set-key (kbd "C-z L") 'my-recurring-ledger)
 
 (use-package rg
-:config
-(rg-enable-default-bindings))
+  :defer t
+  :config
+  (rg-enable-default-bindings))
 
 ;; Settings for tab-bar-mode
 (tab-bar-mode t)                                                 ; Enable tab-bar-mode
@@ -318,6 +324,7 @@
 ;; Install the elfeed package
 (use-package elfeed
   :ensure t
+  :defer t
   :config
   ;; Put the elfeed DB on my Dropbox so the state syncs across machines
   (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
@@ -345,16 +352,7 @@
             (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)
             (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
 
-(use-package perspective
-  :ensure t
-  :bind
-  ("C-x k" . persp-kill-buffer*)
-  ("C-x C-b" . persp-list-buffers)
-  :custom
-  (persp-mode-prefix-key (kbd "C-x x"))
-  :init
-  (setq persp-initial-frame-name "master")
-  (persp-mode))
+(require 'org)
 
 ;; Org keybindings
 (global-set-key (kbd "C-c l") 'org-store-link)
@@ -383,12 +381,12 @@
 
 ;; Set org-agenda files to list of files. Note they all have the agenda tag.
 (setq org-agenda-files
-    (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
-          (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
-          (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
-          (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
-          (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
-          (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
+      (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
+            (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
+            (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
+            (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
+            (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
+            (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
 
 ;; org-agenda window settings
 (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -420,32 +418,32 @@
       '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
 (setq org-agenda-custom-commands
-    '(("w" "Week Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7)))
-        (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-        (todo "WAIT"
-              ((org-agenda-overriding-header "Waiting Tasks")))))
+      '(("w" "Week Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "ONG|ACT"
+                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+          (todo "WAIT"
+                ((org-agenda-overriding-header "Waiting Tasks")))))
 
-      ("d" "Day Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
-        (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-        (todo "WAIT"
-              ((org-agenda-overriding-header "Waiting Tasks")))))
+        ("d" "Day Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
+          (todo "ONG|ACT"
+                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+          (todo "WAIT"
+                ((org-agenda-overriding-header "Waiting Tasks")))))
 
-      ("n" "Tasks in NEXT state"
-       ((todo "NEXT"
-              ((org-agenda-overriding-header "Next Tasks")))))
+        ("n" "Tasks in NEXT state"
+         ((todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
 
-      ("i" "Tasks with inbox tag"
-       ((tags-todo "inbox"
-                   ((org-agenda-overriding-header "Task Inbox")))))))
+        ("i" "Tasks with inbox tag"
+         ((tags-todo "inbox"
+                     ((org-agenda-overriding-header "Task Inbox")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
       '((:startgroup)
-        ; Put mutually exclusive tags here
+       ; Put mutually exclusive tags here
         (:endgroup)
         ("inbox" . ?i)
         ("home" . ?h)
@@ -973,6 +971,7 @@ Else create a new file."
 
 (use-package typescript-mode
   :ensure t
+  :defer t
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))

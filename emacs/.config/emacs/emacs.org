@@ -312,7 +312,7 @@ Marginalia provides extra information in each completion buffer to the right of 
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
     (marginalia-mode))
-  
+
 #+end_src
 
 * Corfu
@@ -350,13 +350,14 @@ Embark is invoked by using =C-.= and allows common operations to be performed to
 #+begin_src elisp
   (use-package embark
     :ensure t
+    :defer t
     :bind
     (("C-." . embark-act)
      ("M-." . embark-dwim)
      ("C-h B" . embark-bindings))
     :init
     (setq prefix-help-command #'embark-prefix-help-command))
-  
+
 #+end_src
 
 * Dired
@@ -394,7 +395,8 @@ Add this package to enable the hiding of dotfiles
 
 #+begin_src elisp
   (use-package dired-hide-dotfiles
-    :ensure t)
+    :ensure t
+    )
 
   (defun my-dired-mode-hook ()
     "My `dired' mode hook."
@@ -579,8 +581,9 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
 
 #+begin_src elisp
   (use-package rainbow-delimiters
+    :defer t
     :hook (prog-mode . rainbow-delimiters-mode))
-  
+
 #+end_src
 
 * Magit
@@ -590,8 +593,9 @@ Magit is the most common git interface for Emacs and doesn't require any additio
 #+begin_src elisp
   ;; Magit
   (use-package magit
-    :ensure t)
-  
+    :ensure t
+    )
+
 #+end_src
 
 * Pulsar
@@ -623,6 +627,7 @@ I use this to manage my finances
 
 #+begin_src elisp
   (use-package ledger-mode
+    :defer t
     :config
     (setq ledger-clear-whole-transactions 1)
     (setq ledger-default-date-format "%Y-%m-%d"))
@@ -674,9 +679,10 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 
 #+begin_src elisp
   (use-package rg
-  :config
-  (rg-enable-default-bindings))
-  
+    :defer t
+    :config
+    (rg-enable-default-bindings))
+
 #+end_src
 
 * Tab Bar Mode
@@ -713,15 +719,16 @@ RSS reader!
   ;; Install the elfeed package
   (use-package elfeed
     :ensure t
+    :defer t
     :config
     ;; Put the elfeed DB on my Dropbox so the state syncs across machines
     (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
     (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
-  
+
     ;; Ensure elfeed-org is installed
     (use-package elfeed-org
       :ensure t)
-  
+
     ;; Load elfeed-org to use an Org file as the source for feeds
     (with-eval-after-load 'elfeed-org
       (elfeed-org)
@@ -810,7 +817,9 @@ Then we define the function in =elfeed-functions.el=
 
 Perspective.el allows multiple workspaces with compartmentalized buffers and windows. Almost like a window manager.
 
-#+begin_src elisp
+*NOTE:* Disabled for now. I don't really use this.
+
+#+begin_src elisp :tangle no
   (use-package perspective
     :ensure t
     :bind
@@ -828,6 +837,8 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
 ** Settings
 #+begin_src elisp
+  (require 'org)
+
   ;; Org keybindings
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -855,12 +866,12 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   ;; Set org-agenda files to list of files. Note they all have the agenda tag.
   (setq org-agenda-files
-      (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
-            (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
-            (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
-            (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
-            (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
-            (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
+        (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
+              (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
+              (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
+              (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
+              (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
+              (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -892,32 +903,32 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
         '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
   (setq org-agenda-custom-commands
-      '(("w" "Week Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))))
+        '(("w" "Week Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "ONG|ACT"
+                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting Tasks")))))
 
-        ("d" "Day Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))))
+          ("d" "Day Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
+            (todo "ONG|ACT"
+                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting Tasks")))))
 
-        ("n" "Tasks in NEXT state"
-         ((todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
+          ("n" "Tasks in NEXT state"
+           ((todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
-        ("i" "Tasks with inbox tag"
-         ((tags-todo "inbox"
-                     ((org-agenda-overriding-header "Task Inbox")))))))
+          ("i" "Tasks with inbox tag"
+           ((tags-todo "inbox"
+                       ((org-agenda-overriding-header "Task Inbox")))))))
 
   ;; Configure org tags (C-c C-q)
   (setq org-tag-alist
         '((:startgroup)
-          ; Put mutually exclusive tags here
+         ; Put mutually exclusive tags here
           (:endgroup)
           ("inbox" . ?i)
           ("home" . ?h)
@@ -1713,10 +1724,11 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
 #+begin_src elisp
   (use-package typescript-mode
     :ensure t
+    :defer t
     :mode "\\.ts\\'"
     :config
     (setq typescript-indent-level 2))
-  
+
 #+end_src
 
 * Custom Set Variables
