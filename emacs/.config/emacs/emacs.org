@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2023-10-28
++ Updated: 2023-11-04
 
 *Note:* the following two code blocks were last evaluated on Mac - I do also use a Linux system.
 
@@ -29,14 +29,16 @@ System configuration options:
 #+RESULTS:
 : --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
 
-* Add Functions Dir to load-path
+* Emacs Settings
+
+** Add Functions Dir to load-path
 
 #+begin_src elisp
   (setq load-path (cons "~/.config/emacs/functions/" load-path))
 
 #+end_src
 
-* Start the Server if macOS
+** Start the Server if macOS
 
 The server should already be started if running on Linux, but we'll start it here if on macOS to be able to use =emacsclient= in vterm.
 
@@ -46,7 +48,6 @@ The server should already be started if running on Linux, but we'll start it her
 
 #+end_src
 
-* Packages
 ** Package Sources
 
 #+begin_src elisp
@@ -62,7 +63,7 @@ The server should already be started if running on Linux, but we'll start it her
 
 #+end_src
 
-** use-package
+** Set up use-package
 
 #+begin_src elisp
   (require 'use-package)
@@ -70,7 +71,7 @@ The server should already be started if running on Linux, but we'll start it her
 
 #+end_src
 
-* Clean Up The Interface
+** Clean Up The Interface
 
 The following settings make the interface a bit more minimal and clean.
 
@@ -94,7 +95,27 @@ The following settings make the interface a bit more minimal and clean.
 
 #+end_src
 
-* Other Settings
+** Line Numbers
+
+#+begin_src elisp
+  ;; Line numbers
+  (column-number-mode)
+  (global-display-line-numbers-mode -1) ; Right now they are disabled
+
+  ;; Disable line numbers for some modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook
+                  mu4e-headers-mode-hook
+                  mu4e-main-mode-hook
+                  mu4e-view-mode-hook
+                  org-agenda-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  
+#+end_src
+
+** Misc Emacs Settings
 
 Below are any settings where I'm not quite sure where to put in this file just yet.
 
@@ -127,27 +148,7 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
 #+end_src
 
-* Line Numbers
-
-#+begin_src elisp
-  ;; Line numbers
-  (column-number-mode)
-  (global-display-line-numbers-mode -1) ; Right now they are disabled
-
-  ;; Disable line numbers for some modes
-  (dolist (mode '(org-mode-hook
-                  term-mode-hook
-                  shell-mode-hook
-                  eshell-mode-hook
-                  mu4e-headers-mode-hook
-                  mu4e-main-mode-hook
-                  mu4e-view-mode-hook
-                  org-agenda-mode-hook))
-    (add-hook mode (lambda () (display-line-numbers-mode 0))))
-  
-#+end_src
-
-* Set Fonts
+** Set Fonts
 
 Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac.
 
@@ -160,7 +161,7 @@ Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac
 
 #+end_src
 
-* Set a Theme
+** Set a Theme
 
 I'm using the Modus themes which are supplied out of the box. They were built by Protesilaos Stavrou.
 
@@ -190,7 +191,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
 #+end_src
 
-* Backup Settings
+** Backup Settings
 
 #+begin_src elisp
   ;; Backup options
@@ -210,7 +211,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
   
 #+end_src
 
-* Key Re-bindings
+** Key Re-bindings
 
 Here's where I'm deviating from Emacs' built in key-bindings or adding my own bespoke bindings.
 
@@ -230,7 +231,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   
 #+end_src
 
-* Set authinfo Source
+** Set authinfo Source
 
 I'd like emacs to default to using authinfo.gpg to store passwords
 
@@ -239,7 +240,7 @@ I'd like emacs to default to using authinfo.gpg to store passwords
 
 #+end_src
 
-* Bookmarks
+** Bookmarks
 
 Set the bookmarks file to synchronize via Dropbox. The same file will be in slightly different locations depending on whether we're on Linux or macOS.
 
@@ -258,7 +259,86 @@ Bind =bookmark-bmenu-list= to =F8=
 
 #+end_src
 
-* Completion Framework
+** Tab Bar Mode
+
+#+begin_src elisp
+  ;; Settings for tab-bar-mode
+  (tab-bar-mode t)                                                 ; Enable tab-bar-mode
+  (setq tab-bar-new-tab-choice "*scratch*")                        ; Automatically switch to the scratch buffer for new tabs
+  (setq tab-bar-new-tab-to 'rightmost)                             ; Make new tabs all the way to the right automatically
+  (setq tab-bar-new-button-show nil)                               ; Hide the new tab button - use the keyboard
+  (setq tab-bar-close-button-show nil)                             ; Hide the close tab button - use the keyboard
+  (setq tab-bar-tab-hints nil)                                     ; Hide the tab numbers
+  (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
+
+  ;; Keybindings
+  (global-set-key (kbd "s-{") 'tab-bar-switch-to-prev-tab)
+  (global-set-key (kbd "s-}") 'tab-bar-switch-to-next-tab)
+  (global-set-key (kbd "s-t") 'tab-bar-new-tab)
+  (global-set-key (kbd "s-w") 'tab-bar-close-tab)
+
+  ;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
+  (tab-bar-history-mode t)
+  (global-set-key (kbd "s-[") 'tab-bar-history-back)
+  (global-set-key (kbd "s-]") 'tab-bar-history-forward)
+
+#+end_src
+
+* Development Settings
+
+** JavaScript
+
+Just setting the default indent level here to match the code I see in the Zapier Developer Platform CLI templates.
+
+#+begin_src elisp
+  (add-hook 'js-mode-hook
+           (lambda ()
+             (setq js-indent-level 2)))
+  
+#+end_src
+
+** LSP Mode
+
+Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
+
+#+begin_src elisp :tangle no
+  ;; Initial configuration
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :init
+    (setq lsp-keymap-prefix "s-L")         ;; Note: The original binding was supposed to be "s-l" but for the moment, that's take up with DWM
+    :config
+    (lsp-enable-which-key-integration t))
+
+#+end_src
+
+** Python
+
+Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
+
+#+begin_src elisp :tangle no
+  ;; Config for Python Mode -- It comes with Emacs so it doesn't have to be installed
+  (use-package python-mode
+    :ensure t
+    :hook (python-mode . lsp-deferred))
+
+#+end_src
+
+** TypeScript
+
+#+begin_src elisp
+  (use-package typescript-mode
+    :ensure t
+    :defer t
+    :mode "\\.ts\\'"
+    :config
+    (setq typescript-indent-level 2))
+
+#+end_src
+
+* Emacs Packages
+
+** Completion Framework (orderless)
 
 Using orderless now, case insensitive!
 
@@ -273,7 +353,7 @@ Using orderless now, case insensitive!
 
 #+end_src
 
-* Which-Key
+** Which-Key
 
 #+begin_src elisp
   ;; which-key
@@ -285,7 +365,7 @@ Using orderless now, case insensitive!
   
 #+end_src
 
-* Vertico
+** Vertico
 
 This is the main completion framework I've chosen, over Ivy or Helm as it is more minimal and uses emacs' built in features.
 
@@ -300,7 +380,7 @@ This is the main completion framework I've chosen, over Ivy or Helm as it is mor
   
 #+end_src
 
-* Marginalia
+** Marginalia
 
 Marginalia provides extra information in each completion buffer to the right of selection when using Vertico.
 
@@ -315,7 +395,24 @@ Marginalia provides extra information in each completion buffer to the right of 
 
 #+end_src
 
-* Corfu
+** Embark
+
+Embark is invoked by using =C-.= and allows common operations to be performed to selections from within the completion buffer. For instance, you can delete or rename files without ever opening a =dired= buffer.
+
+#+begin_src elisp
+  (use-package embark
+    :ensure t
+    :defer t
+    :bind
+    (("C-." . embark-act)
+     ("M-." . embark-dwim)
+     ("C-h B" . embark-bindings))
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command))
+
+#+end_src
+
+** Corfu
 
 Corfu enhances completion at point with a small completion popup. The current candidates are shown in a popup below or above the point. Corfu is the minimalistic completion-in-region counterpart of the Vertico minibuffer UI.
 
@@ -343,26 +440,9 @@ The following code is taken right from Prot's config:
 
 #+end_src
 
-* Embark
+** Dired
 
-Embark is invoked by using =C-.= and allows common operations to be performed to selections from within the completion buffer. For instance, you can delete or rename files without ever opening a =dired= buffer.
-
-#+begin_src elisp
-  (use-package embark
-    :ensure t
-    :defer t
-    :bind
-    (("C-." . embark-act)
-     ("M-." . embark-dwim)
-     ("C-h B" . embark-bindings))
-    :init
-    (setq prefix-help-command #'embark-prefix-help-command))
-
-#+end_src
-
-* Dired
-
-** Config
+*** Config
 
 This basic config was generated with the help of GPT4
 
@@ -389,7 +469,7 @@ This basic config was generated with the help of GPT4
 
 #+end_src
 
-** Hide Dotfiles
+*** Hide Dotfiles
 
 Add this package to enable the hiding of dotfiles
 
@@ -409,7 +489,7 @@ Add this package to enable the hiding of dotfiles
 
 #+end_src
 
-** Custom Functions
+*** Custom Functions
 
 These are byte compiled in dired-functions.el
 
@@ -529,7 +609,7 @@ Then we define the function in =dired-functions.el=
   
 #+end_src
 
-** Autoloads
+*** Autoloads
 
 #+begin_src elisp
   (autoload 'dired-open-file "dired-functions")
@@ -541,7 +621,7 @@ Then we define the function in =dired-functions.el=
 
 #+end_src
 
-** Keybindings
+*** Keybindings
 
 #+begin_src elisp
   (with-eval-after-load 'dired
@@ -553,9 +633,9 @@ Then we define the function in =dired-functions.el=
 
 #+end_src
 
-* vterm
+** vterm
 
-** Keybindings
+*** Keybindings
 
 | key     | effect                                                            |
 |---------+-------------------------------------------------------------------|
@@ -564,7 +644,7 @@ Then we define the function in =dired-functions.el=
 | C-c C-t | Enter vterm-copy-mode which can be exited with RET                |
 | C-q     | Send the next key to vterm in case there is a conflict with emacs |
 
-** Config
+*** Config
 
 #+begin_src elisp
   (use-package vterm
@@ -575,7 +655,7 @@ Then we define the function in =dired-functions.el=
 
 #+end_src
 
-* Rainbow Delimiters
+** Rainbow Delimiters
 
 The =rainbow-delimiters= package makes each new set of parenthesis a different color so it's easy to see when they match!
 
@@ -586,19 +666,18 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
 
 #+end_src
 
-* Magit
+** Magit
 
 Magit is the most common git interface for Emacs and doesn't require any additional configuration out of the box. It can be invoked by =C-x g=
 
 #+begin_src elisp
   ;; Magit
   (use-package magit
-    :ensure t
-    )
+    :ensure t)
 
 #+end_src
 
-* Pulsar
+** Pulsar
 
 Pulsar highlights the current line when changing buffers.
 
@@ -619,11 +698,11 @@ Pulsar highlights the current line when changing buffers.
 
 #+end_src
 
-* ledger-mode
+** ledger-mode
 
 I use this to manage my finances
 
-** Config
+*** Config
 
 #+begin_src elisp
   (use-package ledger-mode
@@ -637,7 +716,7 @@ I use this to manage my finances
 
 #+end_src
 
-** Custom Functions
+*** Custom Functions
 
 Here are functions to open my ledger and recurring ledger.
 
@@ -657,7 +736,7 @@ Here are functions to open my ledger and recurring ledger.
   (provide 'ledger-functions)
 #+end_src
 
-** Autoloads
+*** Autoloads
 
 #+begin_src elisp
   (autoload 'my-ledger "ledger-functions")
@@ -665,7 +744,7 @@ Here are functions to open my ledger and recurring ledger.
 
 #+end_src
 
-** Keybindings
+*** Keybindings
 
 #+begin_src elisp
   (global-set-key (kbd "C-z l") 'my-ledger)
@@ -673,7 +752,7 @@ Here are functions to open my ledger and recurring ledger.
   
 #+end_src
 
-* Ripgrep (rg.el)
+** Ripgrep (rg.el)
 
 rg.el adds to Emacs' grep mode functionality with editing/etc.
 
@@ -685,34 +764,9 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 
 #+end_src
 
-* Tab Bar Mode
+** Elfeed
 
-#+begin_src elisp
-  ;; Settings for tab-bar-mode
-  (tab-bar-mode t)                                                 ; Enable tab-bar-mode
-  (setq tab-bar-new-tab-choice "*scratch*")                        ; Automatically switch to the scratch buffer for new tabs
-  (setq tab-bar-new-tab-to 'rightmost)                             ; Make new tabs all the way to the right automatically
-  (setq tab-bar-new-button-show nil)                               ; Hide the new tab button - use the keyboard
-  (setq tab-bar-close-button-show nil)                             ; Hide the close tab button - use the keyboard
-  (setq tab-bar-tab-hints nil)                                     ; Hide the tab numbers
-  (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
-
-  ;; Keybindings
-  (global-set-key (kbd "s-{") 'tab-bar-switch-to-prev-tab)
-  (global-set-key (kbd "s-}") 'tab-bar-switch-to-next-tab)
-  (global-set-key (kbd "s-t") 'tab-bar-new-tab)
-  (global-set-key (kbd "s-w") 'tab-bar-close-tab)
-
-  ;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
-  (tab-bar-history-mode t)
-  (global-set-key (kbd "s-[") 'tab-bar-history-back)
-  (global-set-key (kbd "s-]") 'tab-bar-history-forward)
-
-#+end_src
-
-* Elfeed
-
-** Config
+*** Config
 RSS reader!
 
 #+begin_src elisp
@@ -736,9 +790,9 @@ RSS reader!
 
 #+end_src
 
-** Custom Functions
+*** Custom Functions
 
-*** Download YouTube Vids to consume
+**** Download YouTube Vids to consume
 
 Here's a function that downloads a YouTube video to my "consume" dir. Run with universal argument, it will download just the audio.
 - [ ] Modify the yt-dlp command to name the file more smartly
@@ -761,7 +815,7 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
 
 #+end_src
 
-*** Open Links in Reader View in Firefox
+**** Open Links in Reader View in Firefox
 
 A makeshift solution because for some reason, just duplicating and modifying =elfeed-show-visit= didn't work, I think because of Choosy. So this one defines the Firefox executable path based on the OS, yanks the URL, and prepends the reader string, then launches Firefox to that link.
 
@@ -789,21 +843,21 @@ Then we define the function in =elfeed-functions.el=
   
 #+end_src
 
-*** Provide The Functions
+**** Provide The Functions
 
 #+begin_src elisp :tangle functions/elfeed-functions.el
   (provide 'elfeed-functions)
   
 #+end_src
 
-** Autoloads
+*** Autoloads
 
 #+begin_src elisp
   (autoload 'my-elfeed-show-visit-reader "elfeed-functions")
 
 #+end_src
 
-** Keybindings
+*** Keybindings
 
 #+begin_src elisp
   (add-hook 'elfeed-show-mode-hook
@@ -813,7 +867,7 @@ Then we define the function in =elfeed-functions.el=
 
 #+end_src
 
-* Perspective
+** Perspective
 
 Perspective.el allows multiple workspaces with compartmentalized buffers and windows. Almost like a window manager.
 
@@ -833,9 +887,10 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
 #+end_src
 
-* Org Mode
+** Org Mode
 
-** Settings
+*** Settings
+
 #+begin_src elisp
   (require 'org)
 
@@ -948,9 +1003,20 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
 #+end_src
 
-** Custom Link Types
+*** Modules
 
-*** Link type for magit-status buffers so I can link directly there from any commit todos I have on org-agenda
+Additional modules are included with the =org-mode= package but need to be loaded explicitly for use. Below, we're enabling th =org-habit= module to allow habit tracking in the agenda view.
+
+#+begin_src elisp
+  ;; Add some modules
+  (with-eval-after-load 'org
+    (add-to-list 'org-modules 'org-habit t))
+  
+#+end_src
+
+*** Custom Link Types
+
+**** Link type for magit-status buffers so I can link directly there from any commit todos I have on org-agenda
 
 #+begin_src elisp
   (org-link-set-parameters
@@ -967,18 +1033,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   
 #+end_src
 
-** Modules
-
-Additional modules are included with the =org-mode= package but need to be loaded explicitly for use. Below, we're enabling th =org-habit= module to allow habit tracking in the agenda view.
-
-#+begin_src elisp
-  ;; Add some modules
-  (with-eval-after-load 'org
-    (add-to-list 'org-modules 'org-habit t))
-  
-#+end_src
-
-** Org Contacts
+*** Org Contacts
 
 Simple contact management for org. Contacts can be captured via a template by using =C-c c=, =c=
 
@@ -991,7 +1046,7 @@ Simple contact management for org. Contacts can be captured via a template by us
   
 #+end_src
 
-** Org Capture
+*** Org Capture
 
 =org-capture= allows quick capture using templates into your existing org files. So far, we have templates in place for contacts, tasks, next tasks, entries to check out (like links or articles), and a metrics capture that can currently quickly take my weight and add it to a table.
 
@@ -1079,16 +1134,16 @@ Simple contact management for org. Contacts can be captured via a template by us
 
 #+end_src
 
-** Org Babel
+*** Org Babel
 
 Org Babel allows org files to "tangle" source blocks into external files. It's what makes this configuration possible in this form. The text and source blocks are all contained in a single org file and each source block is tangled into emacs' config file, =init.el=. Luckily, GitHub can render org files completely, so this file acts as both the documentation, /and/ the source code for my Emacs config.
 
-*** Keybindings
+**** Keybindings
 
 - =C-c C-c= Evaluate source block
 - =C-c C-v t= org-babel-tangle
 
-*** Settings
+**** Settings
 #+begin_src elisp
   ;;Enable certain languages
   (org-babel-do-load-languages
@@ -1103,7 +1158,7 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
 #+end_src
 
-*** Structure Templates
+**** Structure Templates
 #+begin_src elisp
   ;; This is needed as of Org 9.2
   (require 'org-tempo)
@@ -1119,9 +1174,9 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
 #+end_src
 
-** Custom Functions
+*** Custom Functions
 
-*** Open My Time Tracking Node From Org Agenda
+**** Open My Time Tracking Node From Org Agenda
 
 While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
 
@@ -1141,7 +1196,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 
 #+end_src
 
-*** Close Org Agenda and Kill All Agenda Buffers
+**** Close Org Agenda and Kill All Agenda Buffers
 
 - Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
@@ -1158,14 +1213,14 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 
 #+end_src
 
-*** Provide Functions
+**** Provide Functions
 
 #+begin_src elisp :tangle functions/org-mode-functions.el
   (provide 'org-mode-functions)
   
 #+end_src
 
-*** Zapier TicketBar Check In and Out
+**** Zapier TicketBar Check In and Out
 
 First, we define two functions that trigger AppleScripts when clocking into the event matching =Zapier Tickets=. Then, we add hooks to org clocking in and out so that the function is called at the right time.
 
@@ -1188,14 +1243,14 @@ We define the functions in =org-mode-non-interactive-functions.el=
 
 #+end_src
 
-*** Provide Function
+**** Provide Function
 
 #+begin_src elisp :tangle functions/org-mode-non-interactive-functions.el
   (provide 'org-mode-non-interactive-functions)
   
 #+end_src
 
-** Autoloads
+*** Autoloads
 
 #+begin_src elisp
   (autoload 'my-view-and-update-clocktables "org-mode-functions")
@@ -1203,14 +1258,14 @@ We define the functions in =org-mode-non-interactive-functions.el=
 
 #+end_src
 
-** Requires
+*** Requires
 
 #+begin_src elisp
   (require 'org-mode-non-interactive-functions)
   
 #+end_src
 
-** Add Hooks
+*** Add Hooks
 
 Add hook to call functions at the right time.
 
@@ -1220,7 +1275,7 @@ Add hook to call functions at the right time.
   
 #+end_src
 
-** Keybindings
+*** Keybindings
 
 #+begin_src elisp
   (with-eval-after-load 'org-agenda
@@ -1229,7 +1284,7 @@ Add hook to call functions at the right time.
 
 #+end_src
 
-* Denote
+** Denote
 
 Testing this package out right now as an alternative to org-roam. It is manually installed so use-package is not a factor yet. Note that we're just starting from Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].
 
@@ -1366,9 +1421,9 @@ Testing this package out right now as an alternative to org-roam. It is manually
 
 #+end_src
 
-** Custom Functions
+*** Custom Functions
 
-*** Find Notes Recursively (including subdirs)
+**** Find Notes Recursively (including subdirs)
 
 Note that in the =find= command, we're pruning the data dir, so attachments are not included, and also the =.git= directory.
 
@@ -1390,7 +1445,7 @@ Note that in the =find= command, we're pruning the data dir, so attachments are 
 
 #+end_src
 
-*** Open Dired to Denote Directory
+**** Open Dired to Denote Directory
 
 #+begin_src elisp
   (defun my-denote-open-dired ()
@@ -1400,7 +1455,7 @@ Note that in the =find= command, we're pruning the data dir, so attachments are 
 
 #+end_src
 
-*** Function to Aggregate Notes
+**** Function to Aggregate Notes
 
 This is useful for generating AI summaries - for instance, you can mark several files that represent a week in dired, then aggregate the contents into a new org buffer. That buffer can be saved into a directory that triggers a Zap that will action on the aggregated contents of those notes. The aggregated buffer inserts the contents of each note under an org heading with the file name. With the Denote file naming scheme, this automatically acts as a date tree as well.
 
@@ -1432,7 +1487,7 @@ This is useful for generating AI summaries - for instance, you can mark several 
   
 #+end_src
 
-*** Create Heading in Projects File
+**** Create Heading in Projects File
 
 This will, from the current denote org file, create a heading in my projects agenda file with a backlink to the project doc for context.
 
@@ -1465,11 +1520,11 @@ This will, from the current denote org file, create a heading in my projects age
 
 #+end_src
 
-* Mu4e
+** Mu4e
 
 Email is managed via =mu4e= in plain text when possible, altough it's always quick to send any existing message over to a browser using =A v= for a full html render.
 
-** Init
+*** Init
 
 Several settings below need to differ for Linux and macOS systems, so I've used the =pcase= function with the =system-type= variable, so different code is evaluated for each OS.
 
@@ -1494,7 +1549,7 @@ Several settings below need to differ for Linux and macOS systems, so I've used 
   
 #+end_src
 
-** Settings
+*** Settings
 
 Settings of note:
 
@@ -1592,7 +1647,7 @@ Settings of note:
 
 #+end_src
 
-** Contexts
+*** Contexts
 
 Two contexts here:
 
@@ -1642,7 +1697,7 @@ Note that the @me context is used for reference only.
 
 #+end_src
 
-** Dired Integration
+*** Dired Integration
 
 The code below adds a keybinding (=C-c RET C-a=) so I can attach files to emails from directly within a =dired= buffer.
 
@@ -1668,7 +1723,7 @@ The code below adds a keybinding (=C-c RET C-a=) so I can attach files to emails
   
 #+end_src
 
-** Run mu4e
+*** Run mu4e
 
 Finally, let's run mu4e to make sure it starts and checks mail periodically.
 
@@ -1677,58 +1732,6 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
   (when (eq system-type 'gnu/linux)
     (mu4e t))
   
-#+end_src
-
-* Development
-
-** JavaScript
-
-Just setting the default indent level here to match the code I see in the Zapier Developer Platform CLI templates.
-
-#+begin_src elisp
-  (add-hook 'js-mode-hook
-           (lambda ()
-             (setq js-indent-level 2)))
-  
-#+end_src
-
-** LSP Mode
-
-Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
-
-#+begin_src elisp :tangle no
-  ;; Initial configuration
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :init
-    (setq lsp-keymap-prefix "s-L")         ;; Note: The original binding was supposed to be "s-l" but for the moment, that's take up with DWM
-    :config
-    (lsp-enable-which-key-integration t))
-
-#+end_src
-
-** Python
-
-Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
-
-#+begin_src elisp :tangle no
-  ;; Config for Python Mode -- It comes with Emacs so it doesn't have to be installed
-  (use-package python-mode
-    :ensure t
-    :hook (python-mode . lsp-deferred))
-
-#+end_src
-
-** TypeScript
-
-#+begin_src elisp
-  (use-package typescript-mode
-    :ensure t
-    :defer t
-    :mode "\\.ts\\'"
-    :config
-    (setq typescript-indent-level 2))
-
 #+end_src
 
 * Custom Set Variables
