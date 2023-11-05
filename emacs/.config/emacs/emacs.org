@@ -854,6 +854,7 @@ Then we define the function in =elfeed-functions.el=
 
 #+begin_src elisp
   (autoload 'my-elfeed-show-visit-reader "elfeed-functions")
+  (autoload 'my-elfeed-download-youtube-video "elfeed-functions")
 
 #+end_src
 

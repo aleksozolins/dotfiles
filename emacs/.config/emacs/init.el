@@ -356,6 +356,7 @@
   "Path to the Firefox executable.")
 
 (autoload 'my-elfeed-show-visit-reader "elfeed-functions")
+(autoload 'my-elfeed-download-youtube-video "elfeed-functions")
 
 (add-hook 'elfeed-show-mode-hook
           (lambda ()
