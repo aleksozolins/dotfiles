@@ -13,16 +13,28 @@ alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
 
 # ledger
+# 2023
 # Ledger with all transactions
-alias l='ledger -f ~/docs/finances/ledger/my_ledger.txt'
+alias l23='ledger -f ~/docs/finances/ledger/2023--my-ledger.txt'
 # Ledger with only cleared transactions
-alias lc='ledger -C -f ~/docs/finances/ledger/my_ledger.txt'
+alias lc23='ledger -C -f ~/docs/finances/ledger/2023--my-ledger.txt'
 # Show register of transactions with the 'todo' tag
-alias ltodo='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %todo'
+alias ltodo23='ledger -f ~/docs/finances/ledger/2023-my-ledger.txt reg %todo'
 # Show register of transactions with the 'owed' tag
-alias lowed='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %owed'
+alias lowed23='ledger -f ~/docs/finances/ledger/2023-my-ledger.txt reg %owed'
 # Show register of transactions with the 'review' tag
-alias lreview='ledger -f ~/docs/finances/ledger/my_ledger.txt reg %review'
+alias lreview23='ledger -f ~/docs/finances/ledger/2023-my-ledger.txt reg %review'
+# 2024
+# Ledger with all transactions
+alias l='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt'
+# Ledger with only cleared transactions
+alias lc='ledger -C -f ~/docs/finances/ledger/2024--my-ledger.txt'
+# Show register of transactions with the 'todo' tag
+alias ltodo='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %todo'
+# Show register of transactions with the 'owed' tag
+alias lowed='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %owed'
+# Show register of transactions with the 'review' tag
+alias lreview='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %review'
 
 # misc aliases
 alias e="emacsclient -n"
