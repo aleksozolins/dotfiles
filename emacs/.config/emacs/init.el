@@ -318,7 +318,7 @@
   (setq ledger-default-date-format "%Y-%m-%d"))
 
 ;; Any file ending in _ledger.txt opens in ledger mode
-(add-to-list 'auto-mode-alist '("_ledger\\.txt\\'" . ledger-mode))
+(add-to-list 'auto-mode-alist '("-ledger\\.txt\\'" . ledger-mode))
 
 (autoload 'my-ledger "ledger-functions")
 (autoload 'my-recurring-ledger "ledger-functions")
