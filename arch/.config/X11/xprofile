@@ -18,3 +18,8 @@ picom &
 transmission-daemon &
 dunst &
 flameshot &
+
+# Start emacs in daemon mode if not already running
+if ! pgrep -u "$USER" -x "emacs" > /dev/null; then
+    emacs --daemon
+fi
