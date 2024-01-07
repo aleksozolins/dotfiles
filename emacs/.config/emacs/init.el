@@ -895,7 +895,7 @@ Else create a new file."
 (add-hook 'mu4e-compose-mode-hook (lambda () (use-hard-newlines -1)))
 
 ;; Compose a signature
-(setq mu4e-compose-signature "Aleks Ozolins\naleks@ozolins.xyz\nm:973.464.5242")
+(setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
 
 ;; Do not include related messages
 (setq mu4e-headers-include-related nil)
