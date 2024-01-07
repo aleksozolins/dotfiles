@@ -429,12 +429,9 @@
       '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
 
 (setq org-agenda-custom-commands
-    '(("w" "Week Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7)))
-        (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-        (todo "WAIT"
-              ((org-agenda-overriding-header "Waiting Tasks")))))
+      '(("i" "Tasks with inbox tag"
+       ((tags-todo "inbox"
+                   ((org-agenda-overriding-header "Task Inbox")))))
 
       ("d" "Day Dashboard"
        ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
@@ -445,13 +442,20 @@
         (todo "NEXT"
               ((org-agenda-overriding-header "Next Tasks")))))
 
+      ("w" "Week Dashboard"
+       ((agenda "" ((org-deadline-warning-days 7)))
+        (todo "ONG|ACT"
+              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+        (todo "WAIT"
+              ((org-agenda-overriding-header "Waiting Tasks")))))
+
       ("n" "Tasks in NEXT state"
        ((todo "NEXT"
               ((org-agenda-overriding-header "Next Tasks")))))
 
-      ("i" "Tasks with inbox tag"
-       ((tags-todo "inbox"
-                   ((org-agenda-overriding-header "Task Inbox")))))))
+      ("b" "Tasks with BACKLOG keyword"
+       ((todo "BACKLOG"
+              ((org-agenda-overriding-header "Task Backlog")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
