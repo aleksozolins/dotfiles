@@ -524,6 +524,9 @@
         ("Th" "Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Home")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
+        ("TH" "Health" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Health")
+         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
         ("Tt" "Tech" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Tech")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
