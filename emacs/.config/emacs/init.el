@@ -437,6 +437,8 @@
        ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
         (todo "ONG|ACT"
               ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+        (tags-todo "inbox"
+              ((org-agenda-overriding-header "Inbox")))
         (todo "WAIT"
               ((org-agenda-overriding-header "Waiting Tasks")))
         (todo "NEXT"
