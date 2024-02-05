@@ -4,12 +4,14 @@ With a prefix argument, download the audio only in the best available format."
   (interactive "P")
   (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
     (elfeed-show-yank)  ; Copy the URL to the clipboard
-    (let ((url (current-kill 0)))  ; Get the URL from the clipboard
-      (if arg
-          (async-shell-command
-           (format "yt-dlp -f 'bestaudio' -P '~/Dropbox/consume/' '%s'" url))
-        (async-shell-command
-         (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/Dropbox/consume/' '%s'" url))))))
+    (let* ((url (current-kill 0))  ; Get the URL from the clipboard
+           (download-dir (pcase system-type
+                           ('darwin "~/Downloads/")
+                           ('gnu/linux "~/dls/")))  ; Set download directory based on system
+           (command (if arg
+                        (format "yt-dlp -f 'bestaudio' -P '%s' '%s'" download-dir url)
+                      (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '%s' '%s'" download-dir url))))
+      (async-shell-command command))))
 
 (defun my-elfeed-show-visit-reader ()
   "Visit the current entry in Firefox using reader view."

@@ -336,9 +336,11 @@
   :ensure t
   :defer t
   :config
-  ;; Put the elfeed DB on my Dropbox so the state syncs across machines
   (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
-  (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
+  (pcase system-type
+    ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
+    ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/")))
+
 
   ;; Ensure elfeed-org is installed
   (use-package elfeed-org

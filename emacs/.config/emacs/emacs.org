@@ -775,9 +775,11 @@ RSS reader!
     :ensure t
     :defer t
     :config
-    ;; Put the elfeed DB on my Dropbox so the state syncs across machines
     (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
-    (setq elfeed-enclosure-default-dir "~/Dropbox/consume/")
+    (pcase system-type
+      ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
+      ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/")))
+
 
     ;; Ensure elfeed-org is installed
     (use-package elfeed-org
@@ -806,12 +808,14 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
     (interactive "P")
     (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
       (elfeed-show-yank)  ; Copy the URL to the clipboard
-      (let ((url (current-kill 0)))  ; Get the URL from the clipboard
-        (if arg
-            (async-shell-command
-             (format "yt-dlp -f 'bestaudio' -P '~/Dropbox/consume/' '%s'" url))
-          (async-shell-command
-           (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '~/Dropbox/consume/' '%s'" url))))))
+      (let* ((url (current-kill 0))  ; Get the URL from the clipboard
+             (download-dir (pcase system-type
+                             ('darwin "~/Downloads/")
+                             ('gnu/linux "~/dls/")))  ; Set download directory based on system
+             (command (if arg
+                          (format "yt-dlp -f 'bestaudio' -P '%s' '%s'" download-dir url)
+                        (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '%s' '%s'" download-dir url))))
+        (async-shell-command command))))
 
 #+end_src
 
