@@ -609,6 +609,7 @@
 (add-to-list 'org-structure-template-alist '("pyo" . "src python :results output"))
 (add-to-list 'org-structure-template-alist '("js" . "src js"))
 (add-to-list 'org-structure-template-alist '("jso" . "src js :results output"))
+(add-to-list 'org-structure-template-alist '("jst" . "src js :tangle ~/temp.js"))
 (add-to-list 'org-structure-template-alist '("html" . "src html"))
 (add-to-list 'org-structure-template-alist '("css" . "src css"))
 
