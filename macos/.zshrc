@@ -17,8 +17,13 @@ source ~/.npm_token
 # make sure npm token is set before call to initialize pyenv:
 eval "$(pyenv init -)"
 
-# direnv hook (Needed by monorepo)
+# Initialize pyenv here
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
 # disabled this to with with the Zapier CLI
 # . /opt/homebrew/opt/asdf/libexec/asdf.sh
-# eval "$(direnv hook zsh)"
-# eval "$(direnv hook zsh)"
+
+# direnv hook (Needed by monorepo)
+eval "$(direnv hook zsh)"
