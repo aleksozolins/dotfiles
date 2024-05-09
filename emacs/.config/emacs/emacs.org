@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2023-11-04
++ Updated: 2024-05-09
 
 *Note:* the following two code blocks were last evaluated on Mac - I do also use a Linux system.
 
@@ -18,7 +18,7 @@ Information pertaining to my current build of Emacs:
 
 #+RESULTS:
 : GNU Emacs 29.1 (build 1, aarch64-apple-darwin21.6.0, NS appkit-2113.60 Version 12.6.6 (Build 21G646))
-:  of 2023-08-17
+:  of 2023-08-16
 
 System configuration options:
 
@@ -30,23 +30,6 @@ System configuration options:
 : --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
 
 * Emacs Settings
-
-** Add Functions Dir to load-path
-
-#+begin_src elisp
-  (setq load-path (cons "~/.config/emacs/functions/" load-path))
-
-#+end_src
-
-** Start the Server if macOS
-
-The server should already be started if running on Linux, but we'll start it here if on macOS to be able to use =emacsclient= in vterm.
-
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (server-start))
-
-#+end_src
 
 ** Package Sources
 
@@ -60,7 +43,6 @@ The server should already be started if running on Linux, but we'll start it her
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
-
 #+end_src
 
 ** Set up use-package
@@ -68,7 +50,6 @@ The server should already be started if running on Linux, but we'll start it her
 #+begin_src elisp
   (require 'use-package)
   (setq use-package-always-ensure t)
-
 #+end_src
 
 ** Clean Up The Interface
@@ -92,7 +73,6 @@ The following settings make the interface a bit more minimal and clean.
 
   ;; Make sure all Emacs frames start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 #+end_src
 
 ** Line Numbers
@@ -111,8 +91,7 @@ The following settings make the interface a bit more minimal and clean.
                   mu4e-main-mode-hook
                   mu4e-view-mode-hook
                   org-agenda-mode-hook))
-    (add-hook mode (lambda () (display-line-numbers-mode 0))))
-  
+    (add-hook mode (lambda () (display-line-numbers-mode 0)))) 
 #+end_src
 
 ** Misc Emacs Settings
@@ -145,7 +124,6 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
   ;; Enable delete selection mode
   (delete-selection-mode 1)
-
 #+end_src
 
 ** Set Fonts
@@ -158,7 +136,6 @@ Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac
      (set-face-attribute 'default nil :font "Liberation Mono" :height 140))
     ('darwin
      (set-face-attribute 'default nil :font "Monaco" :height 170)))
-
 #+end_src
 
 ** Set a Theme
@@ -188,7 +165,6 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
   ;; Set a hot-key for switching between light and dark theme
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
-
 #+end_src
 
 ** Backup Settings
@@ -207,8 +183,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
   (setq auto-save-file-name-transforms
 	`((".*" ,temporary-file-directory t)))
 
-  (setq kill-buffer-delete-auto-save-files t)
-  
+  (setq kill-buffer-delete-auto-save-files t) 
 #+end_src
 
 ** Key Re-bindings
@@ -227,8 +202,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   (global-set-key (kbd "C-z m") 'mu4e)
   (global-set-key (kbd "C-z e") 'elfeed)
   (global-set-key (kbd "C-z v") 'vterm)
-  (global-set-key (kbd "C-z V") 'vterm-other-window)
-  
+  (global-set-key (kbd "C-z V") 'vterm-other-window) 
 #+end_src
 
 ** Set authinfo Source
@@ -237,7 +211,6 @@ I'd like emacs to default to using authinfo.gpg to store passwords
 
 #+begin_src elisp
   (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
-
 #+end_src
 
 ** Bookmarks
@@ -249,14 +222,12 @@ Set the bookmarks file to synchronize via Dropbox. The same file will be in slig
 	(pcase system-type
 	  ('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
 	  ('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
-
 #+end_src
 
 Bind =bookmark-bmenu-list= to =F8=
 
 #+begin_src elisp
   (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
-
 #+end_src
 
 ** Tab Bar Mode
@@ -281,7 +252,6 @@ Bind =bookmark-bmenu-list= to =F8=
   (tab-bar-history-mode t)
   (global-set-key (kbd "s-[") 'tab-bar-history-back)
   (global-set-key (kbd "s-]") 'tab-bar-history-forward)
-
 #+end_src
 
 * Development Settings
@@ -293,8 +263,7 @@ Just setting the default indent level here to match the code I see in the Zapier
 #+begin_src elisp
   (add-hook 'js-mode-hook
            (lambda ()
-             (setq js-indent-level 2)))
-  
+             (setq js-indent-level 2))) 
 #+end_src
 
 ** LSP Mode
@@ -309,7 +278,6 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
     (setq lsp-keymap-prefix "s-L")         ;; Note: The original binding was supposed to be "s-l" but for the moment, that's take up with DWM
     :config
     (lsp-enable-which-key-integration t))
-
 #+end_src
 
 ** Python
@@ -321,7 +289,6 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
   (use-package python-mode
     :ensure t
     :hook (python-mode . lsp-deferred))
-
 #+end_src
 
 ** TypeScript
@@ -333,7 +300,6 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
     :mode "\\.ts\\'"
     :config
     (setq typescript-indent-level 2))
-
 #+end_src
 
 * Emacs Packages
@@ -350,7 +316,6 @@ Using orderless now, case insensitive!
     (completion-category-overrides '((file (styles basic partial-completion))))
     :config
     (setq completion-ignore-case t))
-
 #+end_src
 
 ** Which-Key
@@ -361,8 +326,7 @@ Using orderless now, case insensitive!
     :init (which-key-mode)
     :diminish which-key-mode
     :config
-    (setq which-key-idle-delay 0.3))
-  
+    (setq which-key-idle-delay 0.3)) 
 #+end_src
 
 ** Vertico
@@ -376,8 +340,7 @@ This is the main completion framework I've chosen, over Ivy or Helm as it is mor
     :custom
     (vertico-cycle t)
     :init
-    (vertico-mode))
-  
+    (vertico-mode))  
 #+end_src
 
 ** Marginalia
@@ -392,7 +355,6 @@ Marginalia provides extra information in each completion buffer to the right of 
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
     (marginalia-mode))
-
 #+end_src
 
 ** Embark
@@ -409,7 +371,6 @@ Embark is invoked by using =C-.= and allows common operations to be performed to
      ("C-h B" . embark-bindings))
     :init
     (setq prefix-help-command #'embark-prefix-help-command))
-
 #+end_src
 
 ** Corfu
@@ -437,7 +398,6 @@ The following code is taken right from Prot's config:
       (corfu-mode 1)))
 
   (add-hook 'minibuffer-setup-hook #'contrib/corfu-enable-always-in-minibuffer 1)
-
 #+end_src
 
 ** Dired
@@ -466,7 +426,6 @@ This basic config was generated with the help of GPT4
 
   ;; Do not disable using 'a' to visit a new directory without killing the buffer
   (put 'dired-find-alternate-file 'disabled nil)
-
 #+end_src
 
 *** Hide Dotfiles
@@ -486,18 +445,15 @@ Add this package to enable the hiding of dotfiles
   ;; To toggle hiding
   (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
   (add-hook 'dired-mode-hook #'my-dired-mode-hook)
-
 #+end_src
 
 *** Custom Functions
 
-These are byte compiled in dired-functions.el
-
-*** Use =xdg-open= or =open= To Open Files
+**** Use =xdg-open= or =open= To Open Files
 
 Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bound to =v=
 
-#+begin_src elisp :tangle functions/dired-functions.el
+#+begin_src elisp
   (defun dired-open-file ()
     "Open the file at point in dired with the appropriate system application."
     (interactive)
@@ -508,117 +464,6 @@ Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bo
                       (_ "xdg-open"))))
       (message "Opening %s..." file)
       (call-process open-cmd nil 0 nil file)))
-
-#+end_src
-
-*** dropbox-exclude-mode
-
-This is a major mode that will allow you to interract with ~dropbox-cli~ to either add or remove directories from local sync. It works inside of ~dired~
-
-**** Keybindings
-
-From within ~dired~:
-- =C-c d e=: dropbox-exclude-list (Launches major mode so you can see and un-exclude directories)
-- =C-c d x=: dropbox-exclude-directory (from within dired, exclude a directory or set of marked directories)
-
-From within ~dropbox-exclude-mode~:
-- =n=: next-line
-- =p=: previous-line
-- =x=: dropbox-add-directory (remove from exclusion and start to sync locally)
-- =q=: kill-buffer-and-window (exit ~dropbox-exclude-mode~)
-
-**** Code
-
-We define the major mode in =init.el=
-
-#+begin_src elisp
-  (define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
-    "Major mode for handling dropbox exclude list."
-    (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
-    (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-    (define-key dropbox-exclude-mode-map (kbd "x") 'my-dropbox-add-directory)
-    (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
-    (setq buffer-read-only t))
-
-#+end_src
-
-Then we define the function in =dired-functions.el=
-
-#+begin_src elisp :tangle functions/dired-functions.el
-
-  (defun my-dropbox-exclude-directory ()
-    (interactive)
-    (if (not (string-equal system-type "gnu/linux"))
-        (message "Sorry, this function only works on Linux.")
-      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-          (message "dropbox-cli does not exist in /usr/bin/.")
-        (let ((directories (dired-get-marked-files)))
-          (dolist (directory directories)
-            (if (not (string-match "Dropbox" directory))
-                (message "Directory %s is not in Dropbox." directory)
-              (let ((command (concat "dropbox-cli exclude add " directory)))
-                (message "Running command: %s" command)
-                (shell-command command)
-                (when (get-buffer "*Dropbox Exclude List*")
-                  (with-current-buffer "*Dropbox Exclude List*"
-                    (let ((buffer-read-only nil))
-                      (erase-buffer)
-                      (insert (shell-command-to-string "dropbox-cli exclude"))
-                      (goto-char (point-min))
-                      (setq buffer-read-only t)))))))))))
-
-  (defun my-dropbox-add-directory ()
-    (interactive)
-    (let* ((current-line (thing-at-point 'line t))
-           (command (concat "dropbox-cli exclude remove " default-directory (string-trim current-line))))
-      (message "Running command: %s" command)
-      (shell-command command)
-      (with-current-buffer "*Dropbox Exclude List*"
-        (let ((buffer-read-only nil))
-          (erase-buffer)
-          (insert (shell-command-to-string "dropbox-cli exclude"))
-          (goto-char (point-min)))
-        (setq buffer-read-only t))))
-
-  (defun my-dropbox-exclude-list ()
-    (interactive)
-    (if (not (string-equal system-type "gnu/linux"))
-        (message "Sorry, this function only works on Linux.")
-      (if (not (file-exists-p "/usr/bin/dropbox-cli"))
-          (message "dropbox-cli does not exist in /usr/bin/.")
-        (if (not (string-match "Dropbox" default-directory))
-            (message "Current directory is not in Dropbox.")
-          (let* ((buffer-name "*Dropbox Exclude List*")
-                 (buffer (get-buffer-create buffer-name)))
-            (split-window-right)
-            (other-window 1)
-            (switch-to-buffer buffer)
-            (let ((buffer-read-only nil))
-              (erase-buffer)
-              (insert (shell-command-to-string "dropbox-cli exclude"))
-              (goto-char (point-min))
-              (setq buffer-read-only t))
-            (dropbox-exclude-mode))))))
-
-#+end_src
-
-*** Provide The Functions
-
-#+begin_src elisp :tangle functions/dired-functions.el
-  (provide 'dired-functions)
-  
-#+end_src
-
-*** Autoloads
-
-#+begin_src elisp
-  (autoload 'dired-open-file "dired-functions")
-
-  (when (eq system-type 'gnu/linux)
-    (autoload 'my-dropbox-exclude-directory "dired-functions")
-    (autoload 'my-dropbox-add-directory "dired-functions")
-    (autoload 'my-dropbox-exclude-list "dired-functions"))
-
 #+end_src
 
 *** Keybindings
@@ -630,7 +475,6 @@ Then we define the function in =dired-functions.el=
   (when (eq system-type 'gnu/linux)
     (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
     (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
-
 #+end_src
 
 ** vterm
@@ -652,7 +496,6 @@ Then we define the function in =dired-functions.el=
       :config
       (setq vterm-kill-buffer-on-exit t)
       (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
-
 #+end_src
 
 ** Rainbow Delimiters
@@ -663,7 +506,6 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
   (use-package rainbow-delimiters
     :defer t
     :hook (prog-mode . rainbow-delimiters-mode))
-
 #+end_src
 
 ** Magit
@@ -674,7 +516,6 @@ Magit is the most common git interface for Emacs and doesn't require any additio
   ;; Magit
   (use-package magit
     :ensure t)
-
 #+end_src
 
 ** Pulsar
@@ -695,7 +536,6 @@ Pulsar highlights the current line when changing buffers.
     (let ((map global-map))
       (define-key map (kbd "C-x l") #'pulsar-pulse-line)
       (define-key map (kbd "C-x L") #'pulsar-highlight-dwim)))
-
 #+end_src
 
 ** ledger-mode
@@ -713,14 +553,13 @@ I use this to manage my finances
 
   ;; Any file ending in _ledger.txt opens in ledger mode
   (add-to-list 'auto-mode-alist '("-ledger\\.txt\\'" . ledger-mode))
-
 #+end_src
 
 *** Custom Functions
 
 Here are functions to open my ledger and recurring ledger.
 
-#+begin_src elisp :tangle functions/ledger-functions.el
+#+begin_src elisp
   (defun my-ledger ()
     "Open the ledger file located at ~/docs/finances/ledger/2024--my-ledger.txt."
     (interactive)
@@ -732,24 +571,13 @@ Here are functions to open my ledger and recurring ledger.
     (interactive)
     (find-file "~/docs/finances/ledger/2024--my-recurring-ledger.txt")
     (goto-char (point-max)))
-
-  (provide 'ledger-functions)
-#+end_src
-
-*** Autoloads
-
-#+begin_src elisp
-  (autoload 'my-ledger "ledger-functions")
-  (autoload 'my-recurring-ledger "ledger-functions")
-
 #+end_src
 
 *** Keybindings
 
 #+begin_src elisp
   (global-set-key (kbd "C-z l") 'my-ledger)
-  (global-set-key (kbd "C-z L") 'my-recurring-ledger)
-  
+  (global-set-key (kbd "C-z L") 'my-recurring-ledger) 
 #+end_src
 
 ** Ripgrep (rg.el)
@@ -761,7 +589,6 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
     :defer t
     :config
     (rg-enable-default-bindings))
-
 #+end_src
 
 ** Elfeed
@@ -780,7 +607,6 @@ RSS reader!
       ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
       ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/")))
 
-
     ;; Ensure elfeed-org is installed
     (use-package elfeed-org
       :ensure t)
@@ -789,7 +615,6 @@ RSS reader!
     (with-eval-after-load 'elfeed-org
       (elfeed-org)
       (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org"))))
-
 #+end_src
 
 *** Custom Functions
@@ -801,7 +626,7 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
 - [ ] For the audio version, build in changing from =.webm= to =flac=
 - [ ] Maybe build in options do download in different qualities/bitrates
 
-#+begin_src elisp :tangle functions/elfeed-functions.el
+#+begin_src elisp
   (defun my-elfeed-download-youtube-video (arg)
     "Download the YouTube video of the current entry in elfeed using youtube-dlp.
   With a prefix argument, download the audio only in the best available format."
@@ -816,50 +641,6 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
                           (format "yt-dlp -f 'bestaudio' -P '%s' '%s'" download-dir url)
                         (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '%s' '%s'" download-dir url))))
         (async-shell-command command))))
-
-#+end_src
-
-**** Open Links in Reader View in Firefox
-
-A makeshift solution because for some reason, just duplicating and modifying =elfeed-show-visit= didn't work, I think because of Choosy. So this one defines the Firefox executable path based on the OS, yanks the URL, and prepends the reader string, then launches Firefox to that link.
-
-We define the variable in =init.el=
-
-#+begin_src elisp
-  (defvar my-firefox-executable
-    (if (eq system-type 'darwin)
-        "/Applications/Firefox.app/Contents/MacOS/firefox-bin"
-      "firefox")
-    "Path to the Firefox executable.")
-
-#+end_src
-
-Then we define the function in =elfeed-functions.el=
-
-#+begin_src elisp :tangle functions/elfeed-functions.el
-  (defun my-elfeed-show-visit-reader ()
-    "Visit the current entry in Firefox using reader view."
-    (interactive)
-    (let ((link (elfeed-entry-link elfeed-show-entry)))
-      (when link
-        (setq link (concat "about:reader?url=" link))
-        (start-process "firefox" nil my-firefox-executable link))))
-  
-#+end_src
-
-**** Provide The Functions
-
-#+begin_src elisp :tangle functions/elfeed-functions.el
-  (provide 'elfeed-functions)
-  
-#+end_src
-
-*** Autoloads
-
-#+begin_src elisp
-  (autoload 'my-elfeed-show-visit-reader "elfeed-functions")
-  (autoload 'my-elfeed-download-youtube-video "elfeed-functions")
-
 #+end_src
 
 *** Keybindings
@@ -869,7 +650,6 @@ Then we define the function in =elfeed-functions.el=
             (lambda ()
               (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)
               (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
-
 #+end_src
 
 ** Perspective
@@ -889,7 +669,6 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
     :init
     (setq persp-initial-frame-name "master")
     (persp-mode))
-
 #+end_src
 
 ** Org Mode
@@ -931,7 +710,7 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
               (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
               (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
               (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
-              (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
+              (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -943,8 +722,10 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
   (setq org-agenda-skip-archived-trees t)
 
   ;; Allow refiling to other agenda files 1 level deep
-  (setq org-refile-targets '((nil :maxlevel . 1)
+  (setq org-refile-targets `((nil :maxlevel . 1)
+                             ((, (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")) :maxlevel . 2)
                              (org-agenda-files :maxlevel . 1)))
+
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -964,39 +745,39 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
 
   (setq org-agenda-custom-commands
         '(("i" "Tasks with inbox tag"
-         ((tags-todo "inbox"
-                     ((org-agenda-overriding-header "Task Inbox")))))
+           ((tags-todo "inbox"
+                       ((org-agenda-overriding-header "Task Inbox")))))
 
-        ("d" "Day Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (tags-todo "inbox"
-                ((org-agenda-overriding-header "Inbox")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
+          ("d" "Day Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
+            (todo "ONG|ACT"
+                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+            (tags-todo "inbox"
+                       ((org-agenda-overriding-header "Inbox")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting Tasks")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
-        ("w" "Week Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))))
+          ("w" "Week Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "ONG|ACT"
+                  ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting Tasks")))))
 
-        ("n" "Tasks in NEXT state"
-         ((todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
+          ("n" "Tasks in NEXT state"
+           ((todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
 
-        ("b" "Tasks with BACKLOG keyword"
-         ((todo "BACKLOG"
-                ((org-agenda-overriding-header "Task Backlog")))))))
+          ("b" "Tasks with BACKLOG keyword"
+           ((todo "BACKLOG"
+                  ((org-agenda-overriding-header "Task Backlog")))))))
 
   ;; Configure org tags (C-c C-q)
   (setq org-tag-alist
         '((:startgroup)
-         ; Put mutually exclusive tags here
+          ; Put mutually exclusive tags here
           (:endgroup)
           ("inbox" . ?i)
           ("home" . ?h)
@@ -1014,7 +795,6 @@ Perspective.el allows multiple workspaces with compartmentalized buffers and win
           ("someday" . ?S)
           ("emacs" . ?e)
           ("recurring" . ?r)))
-
 #+end_src
 
 *** Modules
@@ -1025,7 +805,6 @@ Additional modules are included with the =org-mode= package but need to be loade
   ;; Add some modules
   (with-eval-after-load 'org
     (add-to-list 'org-modules 'org-habit t))
-  
 #+end_src
 
 *** Custom Link Types
@@ -1044,7 +823,6 @@ Additional modules are included with the =org-mode= package but need to be loade
               ((eq format 'latex)
                (format "\\href{magit-status:%s}{%s}" path desc))
               (t (format "magit-status:%s" path)))))
-  
 #+end_src
 
 *** Org Contacts
@@ -1056,8 +834,7 @@ Simple contact management for org. Contacts can be captured via a template by us
   (use-package org-contacts
     :ensure t
     :after org
-    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
-  
+    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org"))) 
 #+end_src
 
 *** Org Capture
@@ -1113,7 +890,7 @@ Simple contact management for org. Contacts can be captured via a template by us
           ("To" "OzoStudio" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "OzoStudio")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("Tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Zapier")
+          ("Tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20240509T094502--zapier-todos__agenda_zapier.org" "Inbox")
            "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
           ("TS" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
@@ -1148,7 +925,6 @@ Simple contact management for org. Contacts can be captured via a template by us
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmark-names-plist '())
   (setq org-capture-bookmark nil)
-
 #+end_src
 
 *** Org Babel
@@ -1172,7 +948,6 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
   ;; Skip confirming when evaluating source blocks
   (setq org-confirm-babel-evaluate nil)
-
 #+end_src
 
 **** Structure Templates
@@ -1189,7 +964,6 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
   (add-to-list 'org-structure-template-alist '("jst" . "src js :tangle ~/temp.js"))
   (add-to-list 'org-structure-template-alist '("html" . "src html"))
   (add-to-list 'org-structure-template-alist '("css" . "src css"))
-
 #+end_src
 
 *** Custom Functions
@@ -1198,7 +972,7 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
 While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
 
-#+begin_src elisp :tangle functions/org-mode-functions.el
+#+begin_src elisp
   (defun my-view-and-update-clocktables ()
     "Open time_tracking.org in a split buffer and update all clock tables."
     (interactive)
@@ -1211,14 +985,13 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 	    (forward-line)))
 	(save-buffer))
       (display-buffer buffer)))
-
 #+end_src
 
 **** Close Org Agenda and Kill All Agenda Buffers
 
 - Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
-#+begin_src elisp :tangle functions/org-mode-functions.el
+#+begin_src elisp
   (defun my-kill-all-agenda-files ()
     "Close all buffers associated with files in `org-agenda-files'."
     (interactive)
@@ -1228,14 +1001,6 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
 	  (when (and buffer-file-name (member buffer-file-name agenda-files))
 	    (kill-buffer buffer)))))
     (org-agenda-quit))
-
-#+end_src
-
-**** Provide Functions
-
-#+begin_src elisp :tangle functions/org-mode-functions.el
-  (provide 'org-mode-functions)
-  
 #+end_src
 
 **** Zapier TicketBar Check In and Out
@@ -1244,7 +1009,7 @@ First, we define two functions that trigger AppleScripts when clocking into the 
 
 We define the functions in =org-mode-non-interactive-functions.el=
 
-#+begin_src elisp :tangle functions/org-mode-non-interactive-functions.el
+#+begin_src elisp
   (defun my-zapier-ticketbar-check-in ()
     "Run the Check In AppleScript when the task has a specific heading."
     (let ((heading (nth 4 (org-heading-components))))
@@ -1258,29 +1023,6 @@ We define the functions in =org-mode-non-interactive-functions.el=
       (when (or (string-equal heading "Zapier Tickets")
                 (string-equal heading "Zapier Chat"))
         (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt"))))
-
-#+end_src
-
-**** Provide Function
-
-#+begin_src elisp :tangle functions/org-mode-non-interactive-functions.el
-  (provide 'org-mode-non-interactive-functions)
-  
-#+end_src
-
-*** Autoloads
-
-#+begin_src elisp
-  (autoload 'my-view-and-update-clocktables "org-mode-functions")
-  (autoload 'my-kill-all-agenda-files "org-mode-functions")
-
-#+end_src
-
-*** Requires
-
-#+begin_src elisp
-  (require 'org-mode-non-interactive-functions)
-  
 #+end_src
 
 *** Add Hooks
@@ -1290,7 +1032,6 @@ Add hook to call functions at the right time.
 #+begin_src elisp
   (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
   (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out)
-  
 #+end_src
 
 *** Keybindings
@@ -1299,7 +1040,6 @@ Add hook to call functions at the right time.
   (with-eval-after-load 'org-agenda
     (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
     (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
-
 #+end_src
 
 ** Denote
@@ -1325,10 +1065,8 @@ Testing this package out right now as an alternative to org-roam. It is manually
   ;; Pick dates, where relevant, with Org's advanced interface:
   (setq denote-date-prompt-use-org-read-date t)
 
-
   ;; Read this manual for how to specify `denote-templates'.  We do not
   ;; include an example here to avoid potential confusion.
-
 
   ;; We do not allow multi-word keywords by default.  The author's
   ;; personal preference is for single-word keywords for a more rigid
@@ -1408,10 +1146,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
     (define-key map (kbd "C-c d k") #'denote-keywords-add)
     (define-key map (kbd "C-c d K") #'denote-keywords-remove)
     (define-key map (kbd "C-c d f") #'my-denote-find-file)
-    (define-key map (kbd "C-c d F") #'my-denote-open-dired)
-    (define-key map (kbd "C-c d a") #'my-denote-add-to-agenda)
-    (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda)
-    (define-key map (kbd "C-c d p") #'my-denote-create-project-entry))
+    (define-key map (kbd "C-c d F") #'my-denote-open-dired))
 
   ;; Key bindings specifically for Dired.
   (let ((map dired-mode-map))
@@ -1436,7 +1171,6 @@ Testing this package out right now as an alternative to org-roam. It is manually
   ;; context menu, use the following and then enable
   ;; `context-menu-mode'.
   (add-hook 'context-menu-functions #'denote-context-menu)
-
 #+end_src
 
 *** Custom Functions
@@ -1460,7 +1194,6 @@ Note that in the =find= command, we're pruning the data dir, so attachments are 
                (selected-file (concat dir selected-display-name)))
           (when selected-file
             (find-file selected-file))))))
-
 #+end_src
 
 **** Open Dired to Denote Directory
@@ -1470,7 +1203,6 @@ Note that in the =find= command, we're pruning the data dir, so attachments are 
     "Open dired to denote-directory"
     (interactive)
     (dired denote-directory))
-
 #+end_src
 
 **** Function to Aggregate Notes
@@ -1502,40 +1234,6 @@ This is useful for generating AI summaries - for instance, you can mark several 
                 (insert (replace-regexp-in-string "^\\*" "**" content)))))
           )
         (switch-to-buffer target-buffer))))
-  
-#+end_src
-
-**** Create Heading in Projects File
-
-This will, from the current denote org file, create a heading in my projects agenda file with a backlink to the project doc for context.
-
-#+begin_src elisp
-  (defun my-denote-create-project-entry ()
-    "Create a project entry in the projects Org file based on the current Org buffer."
-    (interactive)
-    ;; Ensure we're in an Org buffer
-    (if (eq major-mode 'org-mode)
-        (let ((current-file (buffer-file-name))
-              (current-title nil)
-              (projects-file (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")))
-          ;; Add 'project' keyword to the current file
-          (denote-keywords-add '("project"))
-          ;; Search for the #+TITLE: property in the current buffer
-          (save-excursion
-            (goto-char (point-min))
-            (when (re-search-forward "^#\\+TITLE:[ \t]*\\(.*\\S-\\)[ \t]*$" nil t)
-              (setq current-title (match-string 1))))
-          ;; If title is found, proceed to create the entry
-          (if current-title
-              (with-current-buffer (find-file-noselect projects-file)
-                (goto-char (point-max))
-                (insert "\n* " current-title "\n")
-                (insert "Context: ")
-                (denote-link current-file)
-                (save-buffer))
-            (message "No #+TITLE: found in the current Org buffer.")))
-      (message "This function should be run from an Org buffer.")))
-
 #+end_src
 
 ** Mu4e
@@ -1564,7 +1262,6 @@ Several settings below need to differ for Linux and macOS systems, so I've used 
     ('darwin (require 'epa-file)
              (setq epg-gpg-program "/opt/homebrew/bin/gpg")
              (epa-file-enable)))
-  
 #+end_src
 
 *** Settings
@@ -1662,7 +1359,6 @@ Settings of note:
 	  ("/aleks@ozolins.xyz/Parents"         . ?p)
 	  ("/aleks@ozolins.xyz/Sus"             . ?u)
 	  ("/aleks@ozolins.xyz/Spam?"           . ?S)))
-
 #+end_src
 
 *** Contexts
@@ -1712,7 +1408,6 @@ Note that the @me context is used for reference only.
 
   ;; Set the compose context policy
   (setq mu4e-compose-context-policy 'pick-first)
-
 #+end_src
 
 *** Dired Integration
@@ -1738,8 +1433,7 @@ The code below adds a keybinding (=C-c RET C-a=) so I can attach files to emails
 
   (setq gnus-dired-mail-mode 'mu4e-user-agent)
   (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-  
-#+end_src
+  #+end_src
 
 *** Run mu4e
 
@@ -1749,8 +1443,7 @@ Finally, let's run mu4e to make sure it starts and checks mail periodically.
   ;; Run mu4e in the background to sync mail periodically - only in Linux
   (when (eq system-type 'gnu/linux)
     (mu4e t))
-  
-#+end_src
+  #+end_src
 
 * Custom Set Variables
 
@@ -1759,5 +1452,4 @@ Move customization variables to a separate file and load it
 #+begin_src elisp
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
-
 #+end_src

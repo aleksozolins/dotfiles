@@ -1,8 +1,3 @@
-(setq load-path (cons "~/.config/emacs/functions/" load-path))
-
-(when (eq system-type 'darwin)
-  (server-start))
-
 ;; Initialize package sources
 (require 'package)
 
@@ -261,20 +256,16 @@
 (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
 (add-hook 'dired-mode-hook #'my-dired-mode-hook)
 
-(define-derived-mode dropbox-exclude-mode fundamental-mode "Dropbox-Exclude"
-  "Major mode for handling dropbox exclude list."
-  (define-key dropbox-exclude-mode-map (kbd "n") 'next-line)
-  (define-key dropbox-exclude-mode-map (kbd "p") 'previous-line)
-  (define-key dropbox-exclude-mode-map (kbd "x") 'my-dropbox-add-directory)
-  (define-key dropbox-exclude-mode-map (kbd "q") 'kill-buffer-and-window)
-  (setq buffer-read-only t))
-
-(autoload 'dired-open-file "dired-functions")
-
-(when (eq system-type 'gnu/linux)
-  (autoload 'my-dropbox-exclude-directory "dired-functions")
-  (autoload 'my-dropbox-add-directory "dired-functions")
-  (autoload 'my-dropbox-exclude-list "dired-functions"))
+(defun dired-open-file ()
+  "Open the file at point in dired with the appropriate system application."
+  (interactive)
+  (let ((file (dired-get-file-for-visit))
+        (open-cmd (pcase system-type
+                    ('darwin "open")
+                    ('gnu/linux "xdg-open")
+                    (_ "xdg-open"))))
+    (message "Opening %s..." file)
+    (call-process open-cmd nil 0 nil file)))
 
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "V") 'dired-open-file))
@@ -320,8 +311,17 @@
 ;; Any file ending in _ledger.txt opens in ledger mode
 (add-to-list 'auto-mode-alist '("-ledger\\.txt\\'" . ledger-mode))
 
-(autoload 'my-ledger "ledger-functions")
-(autoload 'my-recurring-ledger "ledger-functions")
+(defun my-ledger ()
+  "Open the ledger file located at ~/docs/finances/ledger/2024--my-ledger.txt."
+  (interactive)
+  (find-file "~/docs/finances/ledger/2024--my-ledger.txt")
+  (goto-char (point-max)))
+
+(defun my-recurring-ledger ()
+  "Open the ledger file located at ~/docs/finances/ledger/2024--my-recurring-ledger.txt."
+  (interactive)
+  (find-file "~/docs/finances/ledger/2024--my-recurring-ledger.txt")
+  (goto-char (point-max)))
 
 (global-set-key (kbd "C-z l") 'my-ledger)
 (global-set-key (kbd "C-z L") 'my-recurring-ledger)
@@ -341,7 +341,6 @@
     ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
     ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/")))
 
-
   ;; Ensure elfeed-org is installed
   (use-package elfeed-org
     :ensure t)
@@ -351,14 +350,20 @@
     (elfeed-org)
     (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org"))))
 
-(defvar my-firefox-executable
-  (if (eq system-type 'darwin)
-      "/Applications/Firefox.app/Contents/MacOS/firefox-bin"
-    "firefox")
-  "Path to the Firefox executable.")
-
-(autoload 'my-elfeed-show-visit-reader "elfeed-functions")
-(autoload 'my-elfeed-download-youtube-video "elfeed-functions")
+(defun my-elfeed-download-youtube-video (arg)
+  "Download the YouTube video of the current entry in elfeed using youtube-dlp.
+With a prefix argument, download the audio only in the best available format."
+  (interactive "P")
+  (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
+    (elfeed-show-yank)  ; Copy the URL to the clipboard
+    (let* ((url (current-kill 0))  ; Get the URL from the clipboard
+           (download-dir (pcase system-type
+                           ('darwin "~/Downloads/")
+                           ('gnu/linux "~/dls/")))  ; Set download directory based on system
+           (command (if arg
+                        (format "yt-dlp -f 'bestaudio' -P '%s' '%s'" download-dir url)
+                      (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '%s' '%s'" download-dir url))))
+      (async-shell-command command))))
 
 (add-hook 'elfeed-show-mode-hook
           (lambda ()
@@ -399,7 +404,7 @@
             (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
             (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
             (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
-            (concat denote-directory "agenda/20230903T151425--beorg-inbox__agenda_inbox.org")))
+            (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")))
 
 ;; org-agenda window settings
 (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -411,8 +416,10 @@
 (setq org-agenda-skip-archived-trees t)
 
 ;; Allow refiling to other agenda files 1 level deep
-(setq org-refile-targets '((nil :maxlevel . 1)
+(setq org-refile-targets `((nil :maxlevel . 1)
+                           ((, (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")) :maxlevel . 2)
                            (org-agenda-files :maxlevel . 1)))
+
 
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -432,39 +439,39 @@
 
 (setq org-agenda-custom-commands
       '(("i" "Tasks with inbox tag"
-       ((tags-todo "inbox"
-                   ((org-agenda-overriding-header "Task Inbox")))))
+         ((tags-todo "inbox"
+                     ((org-agenda-overriding-header "Task Inbox")))))
 
-      ("d" "Day Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
-        (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-        (tags-todo "inbox"
-              ((org-agenda-overriding-header "Inbox")))
-        (todo "WAIT"
-              ((org-agenda-overriding-header "Waiting Tasks")))
-        (todo "NEXT"
-              ((org-agenda-overriding-header "Next Tasks")))))
+        ("d" "Day Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
+          (todo "ONG|ACT"
+                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+          (tags-todo "inbox"
+                     ((org-agenda-overriding-header "Inbox")))
+          (todo "WAIT"
+                ((org-agenda-overriding-header "Waiting Tasks")))
+          (todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
 
-      ("w" "Week Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7)))
-        (todo "ONG|ACT"
-              ((org-agenda-overriding-header "Ongoing/Active Tasks")))
-        (todo "WAIT"
-              ((org-agenda-overriding-header "Waiting Tasks")))))
+        ("w" "Week Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "ONG|ACT"
+                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
+          (todo "WAIT"
+                ((org-agenda-overriding-header "Waiting Tasks")))))
 
-      ("n" "Tasks in NEXT state"
-       ((todo "NEXT"
-              ((org-agenda-overriding-header "Next Tasks")))))
+        ("n" "Tasks in NEXT state"
+         ((todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
 
-      ("b" "Tasks with BACKLOG keyword"
-       ((todo "BACKLOG"
-              ((org-agenda-overriding-header "Task Backlog")))))))
+        ("b" "Tasks with BACKLOG keyword"
+         ((todo "BACKLOG"
+                ((org-agenda-overriding-header "Task Backlog")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
       '((:startgroup)
-       ; Put mutually exclusive tags here
+        ; Put mutually exclusive tags here
         (:endgroup)
         ("inbox" . ?i)
         ("home" . ?h)
@@ -553,7 +560,7 @@
         ("To" "OzoStudio" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "OzoStudio")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Zapier")
+        ("Tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20240509T094502--zapier-todos__agenda_zapier.org" "Inbox")
          "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("TS" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
@@ -613,10 +620,42 @@
 (add-to-list 'org-structure-template-alist '("html" . "src html"))
 (add-to-list 'org-structure-template-alist '("css" . "src css"))
 
-(autoload 'my-view-and-update-clocktables "org-mode-functions")
-(autoload 'my-kill-all-agenda-files "org-mode-functions")
+(defun my-view-and-update-clocktables ()
+  "Open time_tracking.org in a split buffer and update all clock tables."
+  (interactive)
+  (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
+    (with-current-buffer buffer
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	  (org-ctrl-c-ctrl-c)
+	  (forward-line)))
+      (save-buffer))
+    (display-buffer buffer)))
 
-(require 'org-mode-non-interactive-functions)
+(defun my-kill-all-agenda-files ()
+  "Close all buffers associated with files in `org-agenda-files'."
+  (interactive)
+  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
+    (dolist (buffer (buffer-list))
+      (let ((buffer-file-name (buffer-file-name buffer)))
+	(when (and buffer-file-name (member buffer-file-name agenda-files))
+	  (kill-buffer buffer)))))
+  (org-agenda-quit))
+
+(defun my-zapier-ticketbar-check-in ()
+  "Run the Check In AppleScript when the task has a specific heading."
+  (let ((heading (nth 4 (org-heading-components))))
+    (when (or (string-equal heading "Zapier Tickets")
+              (string-equal heading "Zapier Chat"))
+      (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt"))))
+
+(defun my-zapier-ticketbar-check-out ()
+  "Run the Check Out AppleScript when the task has a specific heading."
+  (let ((heading (nth 4 (org-heading-components))))
+    (when (or (string-equal heading "Zapier Tickets")
+              (string-equal heading "Zapier Chat"))
+      (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt"))))
 
 (add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
 (add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out)
@@ -643,10 +682,8 @@
 ;; Pick dates, where relevant, with Org's advanced interface:
 (setq denote-date-prompt-use-org-read-date t)
 
-
 ;; Read this manual for how to specify `denote-templates'.  We do not
 ;; include an example here to avoid potential confusion.
-
 
 ;; We do not allow multi-word keywords by default.  The author's
 ;; personal preference is for single-word keywords for a more rigid
@@ -726,10 +763,7 @@ Else create a new file."
   (define-key map (kbd "C-c d k") #'denote-keywords-add)
   (define-key map (kbd "C-c d K") #'denote-keywords-remove)
   (define-key map (kbd "C-c d f") #'my-denote-find-file)
-  (define-key map (kbd "C-c d F") #'my-denote-open-dired)
-  (define-key map (kbd "C-c d a") #'my-denote-add-to-agenda)
-  (define-key map (kbd "C-c d A") #'my-denote-remove-from-agenda)
-  (define-key map (kbd "C-c d p") #'my-denote-create-project-entry))
+  (define-key map (kbd "C-c d F") #'my-denote-open-dired))
 
 ;; Key bindings specifically for Dired.
 (let ((map dired-mode-map))
@@ -799,32 +833,6 @@ Else create a new file."
               (insert (replace-regexp-in-string "^\\*" "**" content)))))
         )
       (switch-to-buffer target-buffer))))
-
-(defun my-denote-create-project-entry ()
-  "Create a project entry in the projects Org file based on the current Org buffer."
-  (interactive)
-  ;; Ensure we're in an Org buffer
-  (if (eq major-mode 'org-mode)
-      (let ((current-file (buffer-file-name))
-            (current-title nil)
-            (projects-file (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")))
-        ;; Add 'project' keyword to the current file
-        (denote-keywords-add '("project"))
-        ;; Search for the #+TITLE: property in the current buffer
-        (save-excursion
-          (goto-char (point-min))
-          (when (re-search-forward "^#\\+TITLE:[ \t]*\\(.*\\S-\\)[ \t]*$" nil t)
-            (setq current-title (match-string 1))))
-        ;; If title is found, proceed to create the entry
-        (if current-title
-            (with-current-buffer (find-file-noselect projects-file)
-              (goto-char (point-max))
-              (insert "\n* " current-title "\n")
-              (insert "Context: ")
-              (denote-link current-file)
-              (save-buffer))
-          (message "No #+TITLE: found in the current Org buffer.")))
-    (message "This function should be run from an Org buffer.")))
 
 ;; Install the package
 (pcase system-type
