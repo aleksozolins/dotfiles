@@ -1107,7 +1107,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
   Else create a new file."
     (interactive)
     (let* ((today (format-time-string "%A %e %B %Y"))
-           (string (denote-sluggify today))
+           (string (denote-sluggify 'title today))
            (files (denote-directory-files-matching-regexp string)))
       (cond
        ((> (length files) 1)
