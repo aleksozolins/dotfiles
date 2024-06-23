@@ -1,4 +1,0 @@
-#!/bin/sh
-
-rsync -rvh ~/.local/share/mail/aleks@aleksozolins.com/ ~/Dropbox/archive/mail/aleks@aleksozolins.com/ --delete
-rsync -rvh ~/.local/share/mail/aleksozolins@me.com/ ~/Dropbox/archive/mail/aleksozolins@me.com/ --delete

@@ -1,4 +1,4 @@
 #!/bin/bash
 export RESTIC_REPOSITORY=/mnt/samsung/restic
 export RESTIC_PASSWORD=PlugraButter55^
-restic backup ~/Dropbox
+restic backup ~/Dropbox ~/.local/share/mail
