@@ -117,7 +117,7 @@
 ;; Unbind C-z (Can still use C-x C-z to suspend the frame
 (global-unset-key (kbd "C-z"))
 
-;; App launchers
+;; Quick launch
 (global-set-key (kbd "C-z m") 'mu4e)
 (global-set-key (kbd "C-z e") 'elfeed)
 (global-set-key (kbd "C-z v") 'vterm)
@@ -400,11 +400,14 @@ With a prefix argument, download the audio only in the best available format."
 ;; Set org-agenda files to list of files. Note they all have the agenda tag.
 (setq org-agenda-files
       (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
+            (concat denote-directory "agenda/20240629T132837--journal__agenda.org")
             (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
             (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
             (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
             (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
-            (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")))
+            (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")
+            (concat denote-directory "agenda/20240629T132516--zapier-journal__agenda_zapier.org")
+            (concat denote-directory "agenda/20240629T132605--zapier-projects__agenda_project_zapier.org")))
 
 ;; org-agenda window settings
 (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -415,11 +418,12 @@ With a prefix argument, download the audio only in the best available format."
 ;; Used to have this to nil. Now it's recommended to use "v" in the agenda view to include archived items.
 (setq org-agenda-skip-archived-trees t)
 
-;; Allow refiling to other agenda files 1 level deep
+;; Allow refiling to other files
 (setq org-refile-targets `((nil :maxlevel . 1)
-                           ((, (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")) :maxlevel . 2)
-                           (org-agenda-files :maxlevel . 1)))
-
+                           (,(list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")) :maxlevel . 1)
+                           (,(list (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")) :maxlevel . 2)
+                           (,(list (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")) :maxlevel . 1)
+                           (,(list (concat denote-directory "agenda/20240629T132605--zapier-projects__agenda_project_zapier.org")) :maxlevel . 2)))
 
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -427,7 +431,7 @@ With a prefix argument, download the audio only in the best available format."
 ;; Logging
 (setq org-log-done 'time)
 (setq org-log-into-drawer t)
-(setq org-clock-into-drawer "CLOCKING")
+(setq org-clock-into-drawer t) ; As opposed to 'CLOCKING'. t goes to 'LOGGING' by default. 
 (setq org-log-note-clock-out nil)
 (setq org-log-redeadline 'time)
 (setq org-log-reschedule 'time)
@@ -435,7 +439,7 @@ With a prefix argument, download the audio only in the best available format."
 
 ;; Set todo sequence
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "ACT(a)" "NEXT(n)" "BACKLOG(b)" "WAIT(w@/!)" "ONG(o)" "|" "DONE(d!)" "SKIP(k!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k!)")))
 
 (setq org-agenda-custom-commands
       '(("i" "Tasks with inbox tag"
@@ -444,8 +448,6 @@ With a prefix argument, download the audio only in the best available format."
 
         ("d" "Day Dashboard"
          ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
           (tags-todo "inbox"
                      ((org-agenda-overriding-header "Inbox")))
           (todo "WAIT"
@@ -455,39 +457,31 @@ With a prefix argument, download the audio only in the best available format."
 
         ("w" "Week Dashboard"
          ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "ONG|ACT"
-                ((org-agenda-overriding-header "Ongoing/Active Tasks")))
           (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting Tasks")))))
+                ((org-agenda-overriding-header "Waiting Tasks")))
+          (todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
 
         ("n" "Tasks in NEXT state"
          ((todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ("b" "Tasks with BACKLOG keyword"
-         ((todo "BACKLOG"
-                ((org-agenda-overriding-header "Task Backlog")))))))
+                ((org-agenda-overriding-header "Next Tasks")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
-      '((:startgroup)
-        ; Put mutually exclusive tags here
+      '((:startgroup) ; list mutually exclusive tags below
+        ("@home" . ?h)
+        ("@computer" . ?c)
+        ("@zapier" . ?z)
+        ("@phone" . ?p)
+        ("@out" . ?o)
         (:endgroup)
-        ("inbox" . ?i)
-        ("home" . ?h)
-        ("health" . ?H)
-        ("habit" . ?a)
-        ("tech" . ?t)
         ("finances" . ?f)
-        ("zapier" . ?z)
-        ("gigs" . ?g)
-        ("ozostudio" . ?o)
-        ("parents" . ?p)
-        ("checkout" . ?c)
-        ("shopping" . ?s)
+        ("parents" . ?P)
+        ("buy" . ?b)
         ("connections" . ?C)
-        ("someday" . ?S)
-        ("emacs" . ?e)
+        ("someday" . ?s)
+        ("edge" . ?e)
+        ("emacs" . ?E)
         ("recurring" . ?r)))
 
 ;; Add some modules
@@ -526,45 +520,38 @@ With a prefix argument, download the audio only in the best available format."
       :END:" "Template for org-contacts.")
 
 (setq org-capture-templates
-      `(("t" "Task (Quick Capture)" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
+      `(("t" "Personal Task (Quick Capture)" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
          "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("T" "Task (Detailed)")
-        ("Tc" "Check Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Check Out")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Check Out %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("T" "Personal Task (Detailed)")
+        ("Th" "@Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Home")
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Th" "Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Home")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tc" "@Computer" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Computer")
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("TH" "Health" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Health")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Tp" "@Phone" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Phone")
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tt" "Tech" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Tech")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("Tf" "Finances" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Finances")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("To" "@Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Out")
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("TC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Ts" "Shopping" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Shopping")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} Buy %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("Ts" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("Tp" "Parents" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Parents")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("Tg" "Gigs" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Gigs")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("To" "OzoStudio" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "OzoStudio")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("Tz" "Zapier" entry (file+headline "~/docs/denote/agenda/20240509T094502--zapier-todos__agenda_zapier.org" "Inbox")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("TS" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
-         "* %^{State|TODO|ACT|NEXT|BACKLOG|WAIT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+        ("d" "Daily Journal Template" entry
+         (file "~/docs/denote/agenda/20240629T132837--journal__agenda.org")
+         , (concat "* %<%Y-%m-%d %A>\n\n"
+                   "** Tasks\n\n"
+                   "** Notes\n\n"
+                   "** Fitness\n\n"
+                   "** Horn Playing\n\n"
+                   "** Time Tracking\n\n"
+                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t :maxlevel 3 :block today :match \"-@zapier\"\n"
+                   "#+END:\n") :empty-lines 1)
 
         ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
          my-org-contacts-template :empty-lines 1 :kill-buffer t)
@@ -587,7 +574,48 @@ With a prefix argument, download the audio only in the best available format."
          "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
 
         ("e" "Event" entry (file+headline "~/docs/denote/agenda/20220727T113610--calendar__agenda.org" "Events")
-               "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)))
+               "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)
+
+        ("z" "Zapier")
+        ("zt" "@Zapier Task" entry (file+headline "~/docs/denote/agenda/20240509T094502--zapier-todos__agenda_zapier.org" "Inbox")
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+        ("zd" "Zapier Daily Journal Template" entry
+         (file "~/docs/denote/agenda/20240629T132516--zapier-journal__agenda_zapier.org")
+         , (concat "* %<%Y-%m-%d %A>\n\n"
+                   "** Slack\n\n"
+                   "** Email Support\n\n"
+                   "** Chat Support\n\n"
+                   "** Meetings\n\n"
+                   "** Incident Handling\n\n"
+                   "** Team Edge     :edge:\n\n"
+                   "** Tasks\n\n"
+                   "** Notes\n\n"
+                   "** Time Tracking\n\n"
+                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t :maxlevel 3 :block today :match \"+@zapier\"\n"
+                   "#+END:\n") :empty-lines 1)
+
+        ("zf" "Zapier Daily Journal Template (Expanded Clocktables)" entry
+         (file "~/docs/denote/agenda/20240629T132516--zapier-journal__agenda_zapier.org")
+         , (concat "* %<%Y-%m-%d %A>\n\n"
+                   "** Slack\n\n"
+                   "** Email Support\n\n"
+                   "** Chat Support\n\n"
+                   "** Meetings\n\n"
+                   "** Incident Handling\n\n"
+                   "** Team Edge     :edge:\n\n"
+                   "** Tasks\n\n"
+                   "** Notes\n\n"
+                   "** Time Tracking\n\n"
+                   "*** Today\n\n"
+                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t :maxlevel 3 :block today :match \"+@zapier\"\n"
+                   "#+END:\n\n"
+                   "*** This Week\n\n"
+                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t: :maxlevel 3 :block thisweek :match \"+@zapier\"\n"
+                   "#+END:\n\n"
+                   "*** This Week (Team Edge)\n\n"
+                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t: :maxlevel 3 :block thisweek :match \"+@zapier+edge\"\n"
+                   "#+END:\n\n") :empty-lines 1)))
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "~/docs/denote/agenda/20230903T141829--email-inbox__agenda_inbox.txt"))
@@ -642,23 +670,6 @@ With a prefix argument, download the audio only in the best available format."
 	(when (and buffer-file-name (member buffer-file-name agenda-files))
 	  (kill-buffer buffer)))))
   (org-agenda-quit))
-
-(defun my-zapier-ticketbar-check-in ()
-  "Run the Check In AppleScript when the task has a specific heading."
-  (let ((heading (nth 4 (org-heading-components))))
-    (when (or (string-equal heading "Zapier Tickets")
-              (string-equal heading "Zapier Chat"))
-      (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-in.scpt"))))
-
-(defun my-zapier-ticketbar-check-out ()
-  "Run the Check Out AppleScript when the task has a specific heading."
-  (let ((heading (nth 4 (org-heading-components))))
-    (when (or (string-equal heading "Zapier Tickets")
-              (string-equal heading "Zapier Chat"))
-      (shell-command "osascript ~/Dropbox/apps/applescript/ticketbar-check-out.scpt"))))
-
-(add-hook 'org-clock-in-hook 'my-zapier-ticketbar-check-in)
-(add-hook 'org-clock-out-hook 'my-zapier-ticketbar-check-out)
 
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
@@ -790,11 +801,11 @@ Else create a new file."
 (add-hook 'context-menu-functions #'denote-context-menu)
 
 (defun my-denote-find-file ()
-  "Find a file in denote-directory recursively using completion."
+  "Find a file in denote-directory recursively using completion, excluding files with 'archive' in the name."
   (interactive)
   (let* ((dir (directory-file-name denote-directory)) ; Ensure no trailing slash
          (cmd-output (shell-command-to-string
-                      (format "find '%s' -type d \\( -name '.git' -o -name 'data' \\) -prune -o -type f -print 2>&1" dir)))
+                      (format "find '%s' -type d \\( -name '.git' -o -name 'data' \\) -prune -o -type f ! -iname '*archive*' -print 2>&1" dir)))
          (all-files (split-string cmd-output "\n" t))
          (file-display-names (mapcar (lambda (f) (string-remove-prefix dir f)) all-files)))
     (if (string-match-p "No such file or directory" cmd-output)
@@ -974,25 +985,6 @@ Else create a new file."
 
 ;; Set the compose context policy
 (setq mu4e-compose-context-policy 'pick-first)
-
-;; Allow attaching files from within dired with C-c RET C-a
-(require 'gnus-dired)
-
-;; make the `gnus-dired-mail-buffers' function also work on
-;; message-mode derived modes, such as mu4e-compose-mode
-(defun gnus-dired-mail-buffers ()
-  "Return a list of active message buffers."
-  (let (buffers)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-        (set-buffer buffer)
-        (when (and (derived-mode-p 'message-mode)
-                   (null message-sent-message-via))
-          (push (buffer-name buffer) buffers))))
-    (nreverse buffers)))
-
-(setq gnus-dired-mail-mode 'mu4e-user-agent)
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
 ;; Run mu4e in the background to sync mail periodically - only in Linux
 (when (eq system-type 'gnu/linux)
