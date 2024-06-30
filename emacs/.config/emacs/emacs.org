@@ -751,7 +751,11 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
 
           ("n" "Tasks in NEXT state"
            ((todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))))
+                  ((org-agenda-overriding-header "Next Tasks")))))
+
+          ("u" "Unscheduled TODOs without Deadline"
+           ((tags-todo "TODO=\"TODO\"-DEADLINE={.+}-SCHEDULED={.+}"
+                       ((org-agenda-overriding-header "Unscheduled Tasks without Deadline")))))))
 
   ;; Configure org tags (C-c C-q)
   (setq org-tag-alist

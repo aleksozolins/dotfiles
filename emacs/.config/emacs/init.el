@@ -464,7 +464,11 @@ With a prefix argument, download the audio only in the best available format."
 
         ("n" "Tasks in NEXT state"
          ((todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))))
+                ((org-agenda-overriding-header "Next Tasks")))))
+
+        ("u" "Unscheduled TODOs without Deadline"
+         ((tags-todo "TODO=\"TODO\"-DEADLINE={.+}-SCHEDULED={.+}"
+                     ((org-agenda-overriding-header "Unscheduled Tasks without Deadline")))))))
 
 ;; Configure org tags (C-c C-q)
 (setq org-tag-alist
