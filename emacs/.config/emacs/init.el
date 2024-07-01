@@ -70,9 +70,9 @@
 
 (pcase system-type
   ('gnu/linux
-   (set-face-attribute 'default nil :font "Liberation Mono" :height 140))
+   (set-face-attribute 'default nil :font "Iosevka" :height 140))
   ('darwin
-   (set-face-attribute 'default nil :font "Monaco" :height 170)))
+   (set-face-attribute 'default nil :font "Iosevka" :height 190)))
 
 (setq modus-themes-mode-line '(accented)
     modus-themes-bold-constructs t
