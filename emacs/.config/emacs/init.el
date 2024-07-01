@@ -70,7 +70,7 @@
 
 (pcase system-type
   ('gnu/linux
-   (set-face-attribute 'default nil :font "Iosevka" :height 140))
+   (setq default-frame-alist '((font . "Iosevka-14"))))
   ('darwin
    (set-face-attribute 'default nil :font "Iosevka" :height 190)))
 

@@ -128,12 +128,12 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
 ** Set Fonts
 
-Very basic setting for now. Using Liberation Mono in Linux and Monaco on the Mac.
+Very basic setting for now. Using Iosevka. Note we set it a bit differently in Mac vs Linux since we're running in daemon mode in Linux.
 
 #+begin_src elisp
   (pcase system-type
     ('gnu/linux
-     (set-face-attribute 'default nil :font "Iosevka" :height 140))
+     (setq default-frame-alist '((font . "Iosevka-14"))))
     ('darwin
      (set-face-attribute 'default nil :font "Iosevka" :height 190)))
 #+end_src
