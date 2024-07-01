@@ -587,7 +587,7 @@ With a prefix argument, download the audio only in the best available format."
         ("zd" "Zapier Daily Journal Template" entry
          (file "~/docs/denote/agenda/20240629T132516--zapier-journal__agenda_zapier.org")
          , (concat "* %<%Y-%m-%d %A>\n\n"
-                   "** Slack\n\n"
+                   "** Slack and Admin\n\n"
                    "** Email Support\n\n"
                    "** Chat Support\n\n"
                    "** Meetings\n\n"
