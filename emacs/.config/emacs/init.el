@@ -439,7 +439,7 @@ With a prefix argument, download the audio only in the best available format."
 
 ;; Set todo sequence
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
 
 (setq org-agenda-custom-commands
       '(("i" "Tasks with inbox tag"

@@ -726,7 +726,7 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
 
   ;; Set todo sequence
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k!)")))
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
 
   (setq org-agenda-custom-commands
         '(("i" "Tasks with inbox tag"
