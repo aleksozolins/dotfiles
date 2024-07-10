@@ -2,7 +2,7 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+			   ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -97,16 +97,16 @@
 
 ;; Backup options
 (setq backup-directory-alist '(("." . "~/.config/emacs/backup/"))
-      backup-by-copying t    ; Don't delink hardlinks
-      version-control t      ; Use version numbers on backups
-      delete-old-versions t  ; Automatically delete excess backups
-      kept-new-versions 20   ; how many of the newest versions to keep
-      kept-old-versions 5    ; and how many of the old
-      )
+	backup-by-copying t    ; Don't delink hardlinks
+	version-control t      ; Use version numbers on backups
+	delete-old-versions t  ; Automatically delete excess backups
+	kept-new-versions 20   ; how many of the newest versions to keep
+	kept-old-versions 5    ; and how many of the old
+	)
 
 ;; auto-save
 (setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+	`((".*" ,temporary-file-directory t)))
 
 (setq kill-buffer-delete-auto-save-files t)
 
@@ -126,9 +126,9 @@
 (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
 (setq bookmark-default-file
-      (pcase system-type
-	('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
-	('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
+	(pcase system-type
+	  ('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
+	  ('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
 
 (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
 
@@ -292,10 +292,10 @@
   :ensure t
   :init
   (setq pulsar-pulse t
-	pulsar-delay 0.055
-	pulsar-iterations 10
-	pulsar-face 'pulsar-magenta
-	pulsar-highlight-face 'pulsar-blue)
+	  pulsar-delay 0.055
+	  pulsar-iterations 10
+	  pulsar-face 'pulsar-magenta
+	  pulsar-highlight-face 'pulsar-blue)
   :config
   (pulsar-global-mode 1)
   (let ((map global-map))
@@ -657,12 +657,12 @@ With a prefix argument, download the audio only in the best available format."
   (interactive)
   (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
     (with-current-buffer buffer
-      (save-excursion
-	(goto-char (point-min))
-	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	  (org-ctrl-c-ctrl-c)
-	  (forward-line)))
-      (save-buffer))
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	    (org-ctrl-c-ctrl-c)
+	    (forward-line)))
+	(save-buffer))
     (display-buffer buffer)))
 
 (defun my-kill-all-agenda-files ()
@@ -670,9 +670,9 @@ With a prefix argument, download the audio only in the best available format."
   (interactive)
   (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
     (dolist (buffer (buffer-list))
-      (let ((buffer-file-name (buffer-file-name buffer)))
-	(when (and buffer-file-name (member buffer-file-name agenda-files))
-	  (kill-buffer buffer)))))
+	(let ((buffer-file-name (buffer-file-name buffer)))
+	  (when (and buffer-file-name (member buffer-file-name agenda-files))
+	    (kill-buffer buffer)))))
   (org-agenda-quit))
 
 (with-eval-after-load 'org-agenda
@@ -681,128 +681,88 @@ With a prefix argument, download the audio only in the best available format."
 
 (use-package denote
   :ensure t
+  :after org
+  :config
+  (require 'denote)
+  (setq denote-directory (expand-file-name "~/docs/denote/"))
+  (setq denote-save-buffers nil)
+  (setq denote-known-keywords '("emacs" "meta" "zapier" "daily"))
+  (setq denote-infer-keywords t)
+  (setq denote-sort-keywords t)
+  (setq denote-file-type nil) ; Org is the default, set others here
+  (setq denote-prompts '(file-type date title keywords))
+  (setq denote-excluded-directories-regexp nil)
+  (setq denote-excluded-keywords-regexp nil)
+  (setq denote-rename-confirmations '(rewrite-front-matter modify-file-name))
+  (setq denote-date-prompt-use-org-read-date t)
+  (setq denote-date-format nil)
+  (setq denote-backlinks-show-context t)
+
+  ;; If you use Markdown or plain text files (Org renders links as buttons
+  ;; right away)
+  (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
+
+  ;; I should probably add ~/docs to the list below too no?
+  (setq denote-dired-directories
+        (list denote-directory
+              (thread-last denote-directory (expand-file-name "data"))))
+
+  ;; Generic (great if you rename files Denote-style in lots of places):
+  ;; (add-hook 'dired-mode-hook #'denote-dired-mode)
+  ;;
+  ;; OR if only want it in `denote-dired-directories':
+  (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
+
+  ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
+  (denote-rename-buffer-mode 1)
+
+  ;; Denote DOES NOT define any key bindings. Se we define them here.
+  (let ((map global-map))
+    ;; placeholder for my-denote-daily custom command (C-c d D)
+    (define-key map (kbd "C-c d n") #'denote)
+    (define-key map (kbd "C-c d N") #'denote-type)
+    (define-key map (kbd "C-c d d") #'denote-date)
+    (define-key map (kbd "C-c d z") #'denote-signature) ; "zettelkasten" mnemonic
+    (define-key map (kbd "C-c d s") #'denote-subdirectory)
+    (define-key map (kbd "C-c d t") #'denote-template)
+    (define-key map (kbd "C-c d i") #'denote-link) ; "insert" mnemonic
+    (define-key map (kbd "C-c d I") #'denote-add-links)
+    (define-key map (kbd "C-c d b") #'denote-backlinks)
+    (define-key map (kbd "C-c d f f") #'denote-find-link)
+    (define-key map (kbd "C-c d f b") #'denote-find-backlink)
+    (define-key map (kbd "C-c d r") #'denote-rename-file)
+    (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
+    ;; Also check the commands `denote-link-after-creating',
+    ;; `denote-link-or-create'.  You may want to bind them to keys as well.
+    ;; Added by Aleks
+    (define-key map (kbd "C-c d k") #'denote-rename-file-keywords)
+    (define-key map (kbd "C-c d f") #'my-denote-find-file))
+
+  ;; Key bindings specifically for Dired.
+  (let ((map dired-mode-map))
+    (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
+    (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
+    (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
+    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
+    ;; Added by Aleks
+    (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
+
+  (with-eval-after-load 'org-capture
+    (setq denote-org-capture-specifiers "%l\n%i\n%?")
+    (add-to-list 'org-capture-templates
+		 '("n" "New note (with denote.el)" plain
+		   (file denote-last-path)
+		   #'denote-org-capture
+		   :no-save t
+		   :immediate-finish nil
+		   :kill-buffer t
+		   :jump-to-captured t)))
+
+  ;; Journaling
+  (require 'denote-journal-extras)
+  ;; need to fill in the rest
+
   )
-(require 'denote)
-
-;; Remember to check the doc strings of those variables.
-(setq denote-directory (expand-file-name "~/docs/denote/"))
-(setq denote-known-keywords '("emacs" "journal" "meta" "zapier" "daily" "weekly"))
-(setq denote-infer-keywords t)
-(setq denote-sort-keywords t)
-(setq denote-file-type nil) ; Org is the default, set others here
-(setq denote-prompts '(file-type date title keywords))
-(setq denote-excluded-directories-regexp nil)
-(setq denote-excluded-keywords-regexp nil)
-
-;; Pick dates, where relevant, with Org's advanced interface:
-(setq denote-date-prompt-use-org-read-date t)
-
-;; Read this manual for how to specify `denote-templates'.  We do not
-;; include an example here to avoid potential confusion.
-
-;; We do not allow multi-word keywords by default.  The author's
-;; personal preference is for single-word keywords for a more rigid
-;; workflow.
-(setq denote-allow-multi-word-keywords nil)
-
-(setq denote-date-format nil) ; read doc string
-
-;; By default, we do not show the context of links.  We just display
-;; file names.  This provides a more informative view.
-(setq denote-backlinks-show-context t)
-
-;; Also see `denote-link-backlinks-display-buffer-action' which is a bit
-;; advanced.
-
-;; If you use Markdown or plain text files (Org renders links as buttons
-;; right away)
-(add-hook 'find-file-hook #'denote-link-buttonize-buffer)
-
-;; We use different ways to specify a path for demo purposes.
-(setq denote-dired-directories
-      (list denote-directory
-            (thread-last denote-directory (expand-file-name "data"))))
-
-;; Generic (great if you rename files Denote-style in lots of places):
-;; (add-hook 'dired-mode-hook #'denote-dired-mode)
-;;
-;; OR if only want it in `denote-dired-directories':
-(add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
-
-;; Here is a custom, user-level command from one of the examples we
-;; showed in this manual.  We define it here and add it to a key binding
-;; below.
-(defun my-denote-daily ()
-  "Create an entry tagged 'journal' with the date as its title.
-If a journal for the current day exists, visit it.  If multiple
-entries exist, prompt with completion for a choice between them.
-Else create a new file."
-  (interactive)
-  (let* ((today (format-time-string "%A %e %B %Y"))
-         (string (denote-sluggify 'title today))
-         (files (denote-directory-files-matching-regexp string)))
-    (cond
-     ((> (length files) 1)
-      (find-file (completing-read "Select file: " files nil :require-match)))
-     (files
-      (find-file (car files)))
-     (t
-      (denote
-       today
-       '("daily"))))))
-
-;; Denote DOES NOT define any key bindings.  This is for the user to
-;; decide.  For example:
-(let ((map global-map))
-  (define-key map (kbd "C-c d d") #'my-denote-daily) ; our custom command
-  (define-key map (kbd "C-c d n") #'denote)
-  (define-key map (kbd "C-c d N") #'denote-type)
-  (define-key map (kbd "C-c d D") #'denote-date)
-  (define-key map (kbd "C-c d z") #'denote-signature) ; "zettelkasten" mnemonic
-  (define-key map (kbd "C-c d s") #'denote-subdirectory)
-  (define-key map (kbd "C-c d t") #'denote-template)
-  ;; If you intend to use Denote with a variety of file types, it is
-  ;; easier to bind the link-related commands to the `global-map', as
-  ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
-  ;; `markdown-mode-map', and/or `text-mode-map'.
-  (define-key map (kbd "C-c d i") #'denote-link) ; "insert" mnemonic
-  (define-key map (kbd "C-c d I") #'denote-add-links)
-  (define-key map (kbd "C-c d b") #'denote-backlinks)
-  (define-key map (kbd "C-c d l f") #'denote-find-link)
-  (define-key map (kbd "C-c d l b") #'denote-find-backlink)
-  ;; Note that `denote-rename-file' can work from any context, not just
-  ;; Dired bufffers.  That is why we bind it here to the `global-map'.
-  (define-key map (kbd "C-c d r") #'denote-rename-file)
-  (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
-  ;; Added by Aleks
-  (define-key map (kbd "C-c d k") #'denote-keywords-add)
-  (define-key map (kbd "C-c d K") #'denote-keywords-remove)
-  (define-key map (kbd "C-c d f") #'my-denote-find-file)
-  (define-key map (kbd "C-c d F") #'my-denote-open-dired))
-
-;; Key bindings specifically for Dired.
-(let ((map dired-mode-map))
-  (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
-  (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-marked-files)
-  (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
-  ;; Added by Aleks
-  (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
-
-(with-eval-after-load 'org-capture
-  (setq denote-org-capture-specifiers "%l\n%i\n%?")
-  (add-to-list 'org-capture-templates
-               '("n" "New note (with denote.el)" plain
-                 (file denote-last-path)
-                 #'denote-org-capture
-                 :no-save t
-                 :immediate-finish nil
-                 :kill-buffer t
-                 :jump-to-captured t)))
-
-;; If you want to have Denote commands available via a right click
-;; context menu, use the following and then enable
-;; `context-menu-mode'.
-(add-hook 'context-menu-functions #'denote-context-menu)
 
 (defun my-denote-find-file ()
   "Find a file in denote-directory recursively using completion, excluding files with 'archive' in the name."
@@ -818,11 +778,6 @@ Else create a new file."
              (selected-file (concat dir selected-display-name)))
         (when selected-file
           (find-file selected-file))))))
-
-(defun my-denote-open-dired ()
-  "Open dired to denote-directory"
-  (interactive)
-  (dired denote-directory))
 
 (defun my-denote-aggregate-notes ()
   "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
@@ -941,51 +896,51 @@ Else create a new file."
 ;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
 
 (setq mu4e-maildir-shortcuts
-      '(("/aleks@ozolins.xyz/Inbox"           . ?i)
-	("/aleks@ozolins.xyz/Sent Items"      . ?s)
-	("/aleks@ozolins.xyz/Drafts"          . ?d)
-	("/aleks@ozolins.xyz/Archive"         . ?A)
-	("/aleks@ozolins.xyz/Trash"           . ?t)
-	("/aleks@ozolins.xyz/Admin"           . ?a)
-	("/aleks@ozolins.xyz/Receipts"        . ?r)
-	("/aleks@ozolins.xyz/Parents"         . ?p)
-	("/aleks@ozolins.xyz/Sus"             . ?u)
-	("/aleks@ozolins.xyz/Spam?"           . ?S)))
+	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
+	  ("/aleks@ozolins.xyz/Sent Items"      . ?s)
+	  ("/aleks@ozolins.xyz/Drafts"          . ?d)
+	  ("/aleks@ozolins.xyz/Archive"         . ?A)
+	  ("/aleks@ozolins.xyz/Trash"           . ?t)
+	  ("/aleks@ozolins.xyz/Admin"           . ?a)
+	  ("/aleks@ozolins.xyz/Receipts"        . ?r)
+	  ("/aleks@ozolins.xyz/Parents"         . ?p)
+	  ("/aleks@ozolins.xyz/Sus"             . ?u)
+	  ("/aleks@ozolins.xyz/Spam?"           . ?S)))
 
 (setq mu4e-contexts
-      (list
-       ;; aleks@ozolins.xyz account
-       (make-mu4e-context
-	:name "1-aleks@ozolins.xyz"
-	:match-func
-	(lambda (msg)
-	  (when msg
-	    (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
-	:vars '((user-mail-address     . "aleks@ozolins.xyz")
-		(user-full-name        . "Aleks Ozolins")
-		(smtpmail-smtp-server  . "smtp.mailfence.com")
-		(smtpmail-smtp-service . 465)
-		(smtpmail-stream-type  . ssl)
-		(mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
-		(mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
-		(mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-		(mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
-       ;; aleks.admin@ozolins.xyz account
-       (make-mu4e-context
-	:name "2-aleks.admin@ozolins.xyz"
-	:match-func
-	(lambda (msg)
-	  (when msg
-	    (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
-	:vars '((user-mail-address     . "aleks.admin@ozolins.xyz")
-		(user-full-name        . "Aleks Ozolins")
-		(smtpmail-smtp-server  . "smtp.mailfence.com")
-		(smtpmail-smtp-service . 465)
-		(smtpmail-stream-type  . ssl)
-		(mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
-		(mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
-		(mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-		(mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
+	(list
+	 ;; aleks@ozolins.xyz account
+	 (make-mu4e-context
+	  :name "1-aleks@ozolins.xyz"
+	  :match-func
+	  (lambda (msg)
+	    (when msg
+	      (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
+	  :vars '((user-mail-address     . "aleks@ozolins.xyz")
+		  (user-full-name        . "Aleks Ozolins")
+		  (smtpmail-smtp-server  . "smtp.mailfence.com")
+		  (smtpmail-smtp-service . 465)
+		  (smtpmail-stream-type  . ssl)
+		  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
+		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
+		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
+		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
+	 ;; aleks.admin@ozolins.xyz account
+	 (make-mu4e-context
+	  :name "2-aleks.admin@ozolins.xyz"
+	  :match-func
+	  (lambda (msg)
+	    (when msg
+	      (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
+	  :vars '((user-mail-address     . "aleks.admin@ozolins.xyz")
+		  (user-full-name        . "Aleks Ozolins")
+		  (smtpmail-smtp-server  . "smtp.mailfence.com")
+		  (smtpmail-smtp-service . 465)
+		  (smtpmail-stream-type  . ssl)
+		  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
+		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
+		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
+		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
 
 ;; Set the compose context policy
 (setq mu4e-compose-context-policy 'pick-first)
