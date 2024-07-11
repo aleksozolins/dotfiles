@@ -400,13 +400,11 @@ With a prefix argument, download the audio only in the best available format."
 ;; Set org-agenda files to list of files. Note they all have the agenda tag.
 (setq org-agenda-files
       (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
-            (concat denote-directory "agenda/20240629T132837--journal__agenda.org")
             (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
             (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
             (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
             (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
             (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")
-            (concat denote-directory "agenda/20240629T132516--zapier-journal__agenda_zapier.org")
             (concat denote-directory "agenda/20240629T132605--zapier-projects__agenda_project_zapier.org")))
 
 ;; org-agenda window settings
@@ -439,7 +437,7 @@ With a prefix argument, download the audio only in the best available format."
 
 ;; Set todo sequence
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "ONG(o)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
 
 (setq org-agenda-custom-commands
       '(("i" "Tasks with inbox tag"
@@ -452,6 +450,8 @@ With a prefix argument, download the audio only in the best available format."
                      ((org-agenda-overriding-header "Inbox")))
           (todo "WAIT"
                 ((org-agenda-overriding-header "Waiting Tasks")))
+	  (todo "ONG"
+                ((org-agenda-overriding-header "Ongoing Tasks")))
           (todo "NEXT"
                 ((org-agenda-overriding-header "Next Tasks")))))
 
@@ -546,17 +546,6 @@ With a prefix argument, download the audio only in the best available format."
         ("Ts" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("d" "Daily Journal Template" entry
-         (file "~/docs/denote/agenda/20240629T132837--journal__agenda.org")
-         , (concat "* %<%Y-%m-%d %A>\n\n"
-                   "** Tasks\n\n"
-                   "** Notes\n\n"
-                   "** Fitness\n\n"
-                   "** Horn Playing\n\n"
-                   "** Time Tracking\n\n"
-                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t :maxlevel 3 :block today :match \"-@zapier\"\n"
-                   "#+END:\n") :empty-lines 1)
-
         ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
          my-org-contacts-template :empty-lines 1 :kill-buffer t)
 
@@ -582,44 +571,7 @@ With a prefix argument, download the audio only in the best available format."
 
         ("z" "Zapier")
         ("zt" "@Zapier Task" entry (file+headline "~/docs/denote/agenda/20240509T094502--zapier-todos__agenda_zapier.org" "Inbox")
-         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("zd" "Zapier Daily Journal Template" entry
-         (file "~/docs/denote/agenda/20240629T132516--zapier-journal__agenda_zapier.org")
-         , (concat "* %<%Y-%m-%d %A>\n\n"
-                   "** Slack and Admin\n\n"
-                   "** Email Support\n\n"
-                   "** Chat Support\n\n"
-                   "** Meetings\n\n"
-                   "** Incident Handling\n\n"
-                   "** Team Edge     :edge:\n\n"
-                   "** Tasks\n\n"
-                   "** Notes\n\n"
-                   "** Time Tracking\n\n"
-                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t :maxlevel 3 :block today :match \"+@zapier\"\n"
-                   "#+END:\n") :empty-lines 1)
-
-        ("zf" "Zapier Daily Journal Template (Expanded Clocktables)" entry
-         (file "~/docs/denote/agenda/20240629T132516--zapier-journal__agenda_zapier.org")
-         , (concat "* %<%Y-%m-%d %A>\n\n"
-                   "** Slack and Admin\n\n"
-                   "** Email Support\n\n"
-                   "** Chat Support\n\n"
-                   "** Meetings\n\n"
-                   "** Incident Handling\n\n"
-                   "** Team Edge     :edge:\n\n"
-                   "** Tasks\n\n"
-                   "** Notes\n\n"
-                   "** Time Tracking\n\n"
-                   "*** Today\n\n"
-                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t :maxlevel 3 :block today :match \"+@zapier\"\n"
-                   "#+END:\n\n"
-                   "*** This Week\n\n"
-                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t: :maxlevel 3 :block thisweek :match \"+@zapier\"\n"
-                   "#+END:\n\n"
-                   "*** This Week (Team Edge)\n\n"
-                   "#+BEGIN: clocktable :scope agenda :filetitle t :fileskip0 t: :maxlevel 3 :block thisweek :match \"+@zapier+edge\"\n"
-                   "#+END:\n\n") :empty-lines 1)))
+         "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)))
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "~/docs/denote/agenda/20230903T141829--email-inbox__agenda_inbox.txt"))
@@ -718,7 +670,6 @@ With a prefix argument, download the audio only in the best available format."
 
   ;; Denote DOES NOT define any key bindings. Se we define them here.
   (let ((map global-map))
-    ;; placeholder for my-denote-daily custom command (C-c d D)
     (define-key map (kbd "C-c d n") #'denote)
     (define-key map (kbd "C-c d N") #'denote-type)
     (define-key map (kbd "C-c d d") #'denote-date)
@@ -732,6 +683,7 @@ With a prefix argument, download the audio only in the best available format."
     (define-key map (kbd "C-c d f b") #'denote-find-backlink)
     (define-key map (kbd "C-c d r") #'denote-rename-file)
     (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
+    (define-key map (kbd "C-c d D") #'denote-journal-extras-new-or-existing-entry) ;; See journaling section below
     ;; Also check the commands `denote-link-after-creating',
     ;; `denote-link-or-create'.  You may want to bind them to keys as well.
     ;; Added by Aleks
@@ -760,7 +712,9 @@ With a prefix argument, download the audio only in the best available format."
 
   ;; Journaling
   (require 'denote-journal-extras)
-  ;; need to fill in the rest
+  (setq denote-journal-extras-keyword "journal")
+  ;; (setq denote-journal-extras-directory "/Users/aleksozolins/docs/denote/journal") ;; this is set by default to a subdir of denote-directory called journal.
+  (setq denote-journal-extras-title-format 'day-date-month-year)
 
   )
 
