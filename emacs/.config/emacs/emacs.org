@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2024-05-09
++ Updated: 2024-07-14
 
 *Note:* the following two code blocks were last evaluated on Mac - I do also use a Linux system.
 
@@ -17,8 +17,8 @@ Information pertaining to my current build of Emacs:
 #+end_src
 
 #+RESULTS:
-: GNU Emacs 29.1 (build 1, aarch64-apple-darwin21.6.0, NS appkit-2113.60 Version 12.6.6 (Build 21G646))
-:  of 2023-08-16
+: GNU Emacs 29.3 (build 1, aarch64-apple-darwin21.6.0, NS appkit-2113.60 Version 12.6.6 (Build 21G646))
+:  of 2024-03-24
 
 System configuration options:
 
@@ -38,7 +38,7 @@ System configuration options:
   (require 'package)
 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("elpa" . "https://elpa.gnu.org/packages/")))
+  			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
   (package-initialize)
   (unless package-archive-contents
@@ -124,6 +124,9 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
   ;; Enable delete selection mode
   (delete-selection-mode 1)
+
+  ;; Set authinfo Source
+  (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 #+end_src
 
 ** Set Fonts
@@ -167,7 +170,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
 #+end_src
 
-** Backup Settings
+** Backup and Auto Save
 
 #+begin_src elisp
   ;; Backup options
@@ -196,21 +199,8 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
   ;; Unbind C-z (Can still use C-x C-z to suspend the frame
+  ;; I use C-z now for my quick launcher!
   (global-unset-key (kbd "C-z"))
-
-  ;; Quick launch
-  (global-set-key (kbd "C-z m") 'mu4e)
-  (global-set-key (kbd "C-z e") 'elfeed)
-  (global-set-key (kbd "C-z v") 'vterm)
-  (global-set-key (kbd "C-z V") 'vterm-other-window)
-#+end_src
-
-** Set authinfo Source
-
-I'd like emacs to default to using authinfo.gpg to store passwords
-
-#+begin_src elisp
-  (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 #+end_src
 
 ** Bookmarks
@@ -254,7 +244,7 @@ Bind =bookmark-bmenu-list= to =F8=
   (global-set-key (kbd "s-]") 'tab-bar-history-forward)
 #+end_src
 
-* Development Settings
+* Development
 
 ** JavaScript
 
@@ -262,8 +252,8 @@ Just setting the default indent level here to match the code I see in the Zapier
 
 #+begin_src elisp
   (add-hook 'js-mode-hook
-           (lambda ()
-             (setq js-indent-level 2))) 
+            (lambda ()
+              (setq js-indent-level 2))) 
 #+end_src
 
 ** LSP Mode
@@ -302,13 +292,39 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
     (setq typescript-indent-level 2))
 #+end_src
 
-* Emacs Packages
+* Packages
 
-** Completion Framework (orderless)
-
-Using orderless now, case insensitive!
+** Which-Key
 
 #+begin_src elisp
+  ;; Which-Key
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :config
+    (setq which-key-idle-delay 0.3))
+#+end_src
+
+** Vertico
+
+This is the main completion UI I've chosen, over Ivy or Helm as it is more minimal and uses emacs' built in features.
+
+#+begin_src elisp
+  ;; Vertico
+  (use-package vertico
+    :ensure t
+    :custom
+    (vertico-cycle t)
+    :init
+    (vertico-mode))
+#+end_src
+
+** Orderless
+
+This is my completion framework and we have it set to be case insensitive.
+
+#+begin_src elisp
+  ;; Orderless
   (use-package orderless
     :ensure t
     :custom
@@ -318,36 +334,12 @@ Using orderless now, case insensitive!
     (setq completion-ignore-case t))
 #+end_src
 
-** Which-Key
-
-#+begin_src elisp
-  ;; which-key
-  (use-package which-key
-    :init (which-key-mode)
-    :diminish which-key-mode
-    :config
-    (setq which-key-idle-delay 0.3)) 
-#+end_src
-
-** Vertico
-
-This is the main completion framework I've chosen, over Ivy or Helm as it is more minimal and uses emacs' built in features.
-
-#+begin_src elisp
-  ;; Vertico
-  (use-package vertico
-    :ensure t
-    :custom
-    (vertico-cycle t)
-    :init
-    (vertico-mode))  
-#+end_src
-
 ** Marginalia
 
 Marginalia provides extra information in each completion buffer to the right of selection when using Vertico.
 
 #+begin_src elisp
+  ;; Marginalia
   (use-package marginalia
     :after vertico
     :ensure t
@@ -362,6 +354,7 @@ Marginalia provides extra information in each completion buffer to the right of 
 Embark is invoked by using =C-.= and allows common operations to be performed to selections from within the completion buffer. For instance, you can delete or rename files without ever opening a =dired= buffer.
 
 #+begin_src elisp
+  ;; Embark
   (use-package embark
     :ensure t
     :defer t
@@ -380,106 +373,90 @@ Corfu enhances completion at point with a small completion popup. The current ca
 The following code is taken right from Prot's config:
 
 #+begin_src elisp
+  ; Corfu
   (use-package corfu
-    :ensure t)
-
-  (global-corfu-mode 1)
-
-  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
-
-  (define-key corfu-map (kbd "<tab>") #'corfu-complete)
-  (setq tab-always-indent 'complete) ;; This we needed for tab to work. Not from Prot's config.
-
-  ;; Adapted from Corfu's manual.
-  (defun contrib/corfu-enable-always-in-minibuffer ()
-    "Enable Corfu in the minibuffer if Vertico is not active.
-    Useful for prompts such as `eval-expression' and `shell-command'."
-    (unless (bound-and-true-p vertico--input)
-      (corfu-mode 1)))
-
-  (add-hook 'minibuffer-setup-hook #'contrib/corfu-enable-always-in-minibuffer 1)
+    :ensure t
+    :init
+    (global-corfu-mode 1)
+    (corfu-popupinfo-mode 1)  ; shows documentation after `corfu-popupinfo-delay'
+    (setq tab-always-indent 'complete)  ; This is needed for tab to work properly
+    
+    :config
+    (define-key corfu-map (kbd "<tab>") #'corfu-complete)
+    
+    ;; Function to enable Corfu in the minibuffer when Vertico is not active,
+    ;; useful for prompts such as `eval-expression' and `shell-command'.
+    (defun contrib/corfu-enable-always-in-minibuffer ()
+      "Enable Corfu in the minibuffer if Vertico is not active."
+      (unless (bound-and-true-p vertico--input)
+        (corfu-mode 1)))
+    
+    :hook
+    (minibuffer-setup . contrib/corfu-enable-always-in-minibuffer))
 #+end_src
 
 ** Dired
 
-*** Config
-
-This basic config was generated with the help of GPT4
+The file manager, already built into Emacs.
 
 #+begin_src elisp
-  ;; Use GNU ls as insert-directory-program in case of macOS
-  (when (eq system-type 'darwin)
-    (setq insert-directory-program "gls"))
-
-  ;; Use human readable sizes and group directories first
-  ;; Note that the "A" switch, as opposed to "a" leaves out . and ..
-  (setq dired-listing-switches "-Alh --group-directories-first")
-
-  (setq dired-dwim-target t)            ;; When copying/moving, suggest other dired buffer as target
-  (setq dired-recursive-copies 'always) ;; Always copy/delete recursively
-  (setq dired-recursive-deletes 'top)   ;; Ask once before performing a recursive delete
-
-  ;; Hide details by default
-  (add-hook 'dired-mode-hook
-            (lambda ()
-              (dired-hide-details-mode 1)))
-
-  ;; Do not disable using 'a' to visit a new directory without killing the buffer
-  (put 'dired-find-alternate-file 'disabled nil)
+  ;; Dired
+  (use-package dired
+    :ensure nil ;; Dired is part of Emacs; no need to install it
+    :bind (:map dired-mode-map
+                ("V" . dired-open-file)) ;; Binding to a function defined in :config
+    :config
+    ;; Use GNU ls as insert-directory-program in case of macOS
+    (when (eq system-type 'darwin)
+      (setq insert-directory-program "gls"))
+    
+    ;; Set listing options
+    (setq dired-listing-switches "-Alh --group-directories-first")
+    (setq dired-dwim-target t)
+    (setq dired-recursive-copies 'always)
+    (setq dired-recursive-deletes 'top)
+    
+    ;; Default to hiding details
+    (add-hook 'dired-mode-hook
+              (lambda ()
+                (dired-hide-details-mode 1)))
+    
+    ;; Enable using 'a' to visit directories
+    (put 'dired-find-alternate-file 'disabled nil)
+    
+    ;; Function to open files using the system's default application
+    (defun dired-open-file ()
+      "Open the file at point in Dired with the appropriate system application."
+      (interactive)
+      (let ((file (dired-get-file-for-visit))
+            (open-cmd (pcase system-type
+                        ('darwin "open")
+                        ('gnu/linux "xdg-open")
+                        (_ "xdg-open"))))
+        (message "Opening %s..." file)
+        (call-process open-cmd nil 0 nil file))))
 #+end_src
 
-*** Hide Dotfiles
+** Dired Hide Dotfiles
 
-Add this package to enable the hiding of dotfiles
+Add this package to enable the hiding of dotfiles.
 
 #+begin_src elisp
+  ;; Dired Hide Dotfiles
   (use-package dired-hide-dotfiles
     :ensure t
-    )
-
-  (defun my-dired-mode-hook ()
-    "My `dired' mode hook."
-    ;; To hide dot-files by default
-    (dired-hide-dotfiles-mode))
-
-  ;; To toggle hiding
-  (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
-  (add-hook 'dired-mode-hook #'my-dired-mode-hook)
+    :hook (dired-mode . my-dired-mode-hook)
+    :bind (:map dired-mode-map
+                ("." . dired-hide-dotfiles-mode))
+    :config
+    (defun my-dired-mode-hook ()
+      "My `dired' mode hook to hide dot-files by default."
+      (dired-hide-dotfiles-mode)))
 #+end_src
 
-*** Custom Functions
+** Vterm
 
-**** Use =xdg-open= or =open= To Open Files
-
-Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bound to =v=
-
-#+begin_src elisp
-  (defun dired-open-file ()
-    "Open the file at point in dired with the appropriate system application."
-    (interactive)
-    (let ((file (dired-get-file-for-visit))
-          (open-cmd (pcase system-type
-                      ('darwin "open")
-                      ('gnu/linux "xdg-open")
-                      (_ "xdg-open"))))
-      (message "Opening %s..." file)
-      (call-process open-cmd nil 0 nil file)))
-#+end_src
-
-*** Keybindings
-
-#+begin_src elisp
-  (with-eval-after-load 'dired
-    (define-key dired-mode-map (kbd "V") 'dired-open-file))
-
-  (when (eq system-type 'gnu/linux)
-    (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
-    (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
-#+end_src
-
-** vterm
-
-*** Keybindings
+We use the following keybindings for vterm:
 
 | key     | effect                                                            |
 |---------+-------------------------------------------------------------------|
@@ -488,14 +465,18 @@ Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bo
 | C-c C-t | Enter vterm-copy-mode which can be exited with RET                |
 | C-q     | Send the next key to vterm in case there is a conflict with emacs |
 
-*** Config
+And the config:
 
 #+begin_src elisp
+  ;; Vterm
   (use-package vterm
-      :ensure t
-      :config
-      (setq vterm-kill-buffer-on-exit t)
-      (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
+    :ensure t
+    :bind
+    (("C-z v" . vterm)
+     ("C-z V" . vterm-other-window))
+    :config
+    (setq vterm-kill-buffer-on-exit t)
+    (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 #+end_src
 
 ** Rainbow Delimiters
@@ -503,6 +484,7 @@ Note: We've bound this to =V= as an alternative to ~dired-view-file~ which is bo
 The =rainbow-delimiters= package makes each new set of parenthesis a different color so it's easy to see when they match!
 
 #+begin_src elisp
+  ;; Rainbow Delimiters
   (use-package rainbow-delimiters
     :defer t
     :hook (prog-mode . rainbow-delimiters-mode))
@@ -523,61 +505,33 @@ Magit is the most common git interface for Emacs and doesn't require any additio
 Pulsar highlights the current line when changing buffers.
 
 #+begin_src elisp
+  ;; Pulsar
   (use-package pulsar
     :ensure t
     :init
     (setq pulsar-pulse t
-	  pulsar-delay 0.055
-	  pulsar-iterations 10
-	  pulsar-face 'pulsar-magenta
-	  pulsar-highlight-face 'pulsar-blue)
+          pulsar-delay 0.055
+          pulsar-iterations 10
+          pulsar-face 'pulsar-magenta
+          pulsar-highlight-face 'pulsar-blue)
     :config
     (pulsar-global-mode 1)
-    (let ((map global-map))
-      (define-key map (kbd "C-x l") #'pulsar-pulse-line)
-      (define-key map (kbd "C-x L") #'pulsar-highlight-dwim)))
+    :bind (("C-x l" . pulsar-pulse-line)
+           ("C-x L" . pulsar-highlight-dwim)))
 #+end_src
 
-** ledger-mode
+** Ledger Mode
 
-I use this to manage my finances
-
-*** Config
+I use this to manage my finances.
 
 #+begin_src elisp
+  ;; Ledger Mode
   (use-package ledger-mode
     :defer t
+    :mode ("-ledger\\.txt\\'" . ledger-mode)  ;; Associate files ending in _ledger.txt with ledger-mode
     :config
     (setq ledger-clear-whole-transactions 1)
     (setq ledger-default-date-format "%Y-%m-%d"))
-
-  ;; Any file ending in _ledger.txt opens in ledger mode
-  (add-to-list 'auto-mode-alist '("-ledger\\.txt\\'" . ledger-mode))
-#+end_src
-
-*** Custom Functions
-
-Here are functions to open my ledger and recurring ledger.
-
-#+begin_src elisp
-  (defun my-ledger ()
-    "Open the ledger file located at ~/docs/finances/ledger/2024--my-ledger.txt."
-    (interactive)
-    (find-file "~/docs/finances/ledger/2024--my-ledger.txt")
-    (goto-char (point-max)))
-
-  (defun my-recurring-ledger ()
-    "Open the ledger file located at ~/docs/finances/ledger/2024--my-recurring-ledger.txt."
-    (interactive)
-    (find-file "~/docs/finances/ledger/2024--my-recurring-ledger.txt")
-    (goto-char (point-max)))
-#+end_src
-
-*** Keybindings
-
-#+begin_src elisp
-  (global-set-key (kbd "C-z l") 'my-ledger)
-  (global-set-key (kbd "C-z L") 'my-recurring-ledger) 
 #+end_src
 
 ** Ripgrep (rg.el)
@@ -585,6 +539,7 @@ Here are functions to open my ledger and recurring ledger.
 rg.el adds to Emacs' grep mode functionality with editing/etc.
 
 #+begin_src elisp
+  ;; Ripgrep
   (use-package rg
     :defer t
     :config
@@ -593,68 +548,33 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 
 ** Elfeed
 
-*** Config
-RSS reader!
-
 #+begin_src elisp
-  ;; Install the elfeed package
+  ;; Elfeed
   (use-package elfeed
     :ensure t
-    :defer t
+    :bind ("C-z e" . elfeed) ;; My quick launcher
     :config
     (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
     (pcase system-type
       ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
-      ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/")))
-
-    ;; Ensure elfeed-org is installed
-    (use-package elfeed-org
-      :ensure t)
-
-    ;; Load elfeed-org to use an Org file as the source for feeds
-    (with-eval-after-load 'elfeed-org
-      (elfeed-org)
-      (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org"))))
+      ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/"))))
 #+end_src
 
-*** Custom Functions
-
-**** Download YouTube Vids to consume
-
-Here's a function that downloads a YouTube video to my "consume" dir. Run with universal argument, it will download just the audio.
-- [ ] Modify the yt-dlp command to name the file more smartly
-- [ ] For the audio version, build in changing from =.webm= to =flac=
-- [ ] Maybe build in options do download in different qualities/bitrates
+** Elfeed-Org
 
 #+begin_src elisp
-  (defun my-elfeed-download-youtube-video (arg)
-    "Download the YouTube video of the current entry in elfeed using youtube-dlp.
-  With a prefix argument, download the audio only in the best available format."
-    (interactive "P")
-    (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
-      (elfeed-show-yank)  ; Copy the URL to the clipboard
-      (let* ((url (current-kill 0))  ; Get the URL from the clipboard
-             (download-dir (pcase system-type
-                             ('darwin "~/Downloads/")
-                             ('gnu/linux "~/dls/")))  ; Set download directory based on system
-             (command (if arg
-                          (format "yt-dlp -f 'bestaudio' -P '%s' '%s'" download-dir url)
-                        (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '%s' '%s'" download-dir url))))
-        (async-shell-command command))))
-#+end_src
-
-*** Keybindings
-
-#+begin_src elisp
-  (add-hook 'elfeed-show-mode-hook
-            (lambda ()
-              (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)
-              (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
+  ;; Elfeed-Org
+  (use-package elfeed-org
+    :ensure t
+    :after elfeed  ;; Ensure elfeed-org loads after elfeed
+    :config
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org")))
 #+end_src
 
 ** Org Mode
 
-*** Settings
+Note we're not using use-package here yet.
 
 #+begin_src elisp
   (require 'org)
@@ -774,23 +694,14 @@ Here's a function that downloads a YouTube video to my "consume" dir. Run with u
           ("edge" . ?e)
           ("emacs" . ?E)
           ("recurring" . ?r)))
-#+end_src
 
-*** Modules
-
-Additional modules are included with the =org-mode= package but need to be loaded explicitly for use. Below, we're enabling th =org-habit= module to allow habit tracking in the agenda view.
-
-#+begin_src elisp
   ;; Add some modules
+  ;; For Habits
   (with-eval-after-load 'org
     (add-to-list 'org-modules 'org-habit t))
-#+end_src
 
-*** Custom Link Types
-
-**** Link type for magit-status buffers so I can link directly there from any commit todos I have on org-agenda
-
-#+begin_src elisp
+  ;; Custom Link Types
+  ;; For magit status buffers
   (org-link-set-parameters
    "magit-status"
    :follow (lambda (path)
@@ -802,25 +713,7 @@ Additional modules are included with the =org-mode= package but need to be loade
               ((eq format 'latex)
                (format "\\href{magit-status:%s}{%s}" path desc))
               (t (format "magit-status:%s" path)))))
-#+end_src
 
-*** Org Contacts
-
-Simple contact management for org. Contacts can be captured via a template by using =C-c c=, =c=
-
-#+begin_src elisp
-  ;; Org Contacts
-  (use-package org-contacts
-    :ensure t
-    :after org
-    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org"))) 
-#+end_src
-
-*** Org Capture
-
-=org-capture= allows quick capture using templates into your existing org files. So far, we have templates in place for contacts, tasks, next tasks, entries to check out (like links or articles), and a metrics capture that can currently quickly take my weight and add it to a table.
-
-#+begin_src elisp
   ;; Org capture
   (use-package org-capture
     :ensure nil
@@ -837,46 +730,46 @@ Simple contact management for org. Contacts can be captured via a template by us
   (setq org-capture-templates
         `(("t" "Personal Task (Quick Capture)" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
            "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("T" "Personal Task (Detailed)")
           ("Th" "@Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Home")
            "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("Tc" "@Computer" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Computer")
            "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("Tp" "@Phone" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Phone")
            "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("To" "@Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Out")
            "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("TC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
            "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("Ts" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
            "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+  	
           ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
            my-org-contacts-template :empty-lines 1 :kill-buffer t)
-
+  	
           ("m" "Metrics")
           ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
            "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
-
+  	
           ("M" "Mouthpiece")
           ("M1" "One-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: one-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+  	
           ("M2" "Two-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: two-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+  	
           ("Mc" "Mouthpiece Cup" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model} Cup\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: cup\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+  	
           ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+  	
           ("e" "Event" entry (file+headline "~/docs/denote/agenda/20220727T113610--calendar__agenda.org" "Events")
                  "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)
 
@@ -890,22 +783,9 @@ Simple contact management for org. Contacts can be captured via a template by us
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmark-names-plist '())
   (setq org-capture-bookmark nil)
-#+end_src
 
-#+RESULTS:
-
-*** Org Babel
-
-Org Babel allows org files to "tangle" source blocks into external files. It's what makes this configuration possible in this form. The text and source blocks are all contained in a single org file and each source block is tangled into emacs' config file, =init.el=. Luckily, GitHub can render org files completely, so this file acts as both the documentation, /and/ the source code for my Emacs config.
-
-**** Keybindings
-
-- =C-c C-c= Evaluate source block
-- =C-c C-v t= org-babel-tangle
-
-**** Settings
-#+begin_src elisp
-  ;;Enable certain languages
+  ;; Org Babel
+  ;; Enable certain languages
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -915,11 +795,8 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
 
   ;; Skip confirming when evaluating source blocks
   (setq org-confirm-babel-evaluate nil)
-#+end_src
 
-**** Structure Templates
-#+begin_src elisp
-  ;; This is needed as of Org 9.2
+  ;; Org Babel Structure Templates
   (require 'org-tempo)
 
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
@@ -931,11 +808,10 @@ Org Babel allows org files to "tangle" source blocks into external files. It's w
   (add-to-list 'org-structure-template-alist '("jst" . "src js :tangle ~/temp.js"))
   (add-to-list 'org-structure-template-alist '("html" . "src html"))
   (add-to-list 'org-structure-template-alist '("css" . "src css"))
+
 #+end_src
 
-*** Custom Functions
-
-**** Open My Time Tracking Node From Org Agenda
+*** Custom Function To Open My Time Tracking Node From Org Agenda
 
 While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
 
@@ -954,7 +830,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
       (display-buffer buffer)))
 #+end_src
 
-**** Close Org Agenda and Kill All Agenda Buffers
+*** Custom Function To Close Org Agenda and Kill All Agenda Buffers
 
 - Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
@@ -970,12 +846,22 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
     (org-agenda-quit))
 #+end_src
 
-*** Keybindings
+*** Keybindings For Custom Functions
 
 #+begin_src elisp
   (with-eval-after-load 'org-agenda
     (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
     (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
+#+end_src
+
+** Org Contacts
+
+#+begin_src elisp
+  ;; Org Contacts
+  (use-package org-contacts
+    :ensure t
+    :after org
+    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org"))) 
 #+end_src
 
 ** Denote
@@ -990,7 +876,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
     (require 'denote)
     (setq denote-directory (expand-file-name "~/docs/denote/"))
     (setq denote-save-buffers nil)
-    (setq denote-known-keywords '("emacs" "meta" "zapier" "daily"))
+    (setq denote-known-keywords '("emacs" "meta" "zapier"))
     (setq denote-infer-keywords t)
     (setq denote-sort-keywords t)
     (setq denote-file-type nil) ; Org is the default, set others here
@@ -1001,9 +887,9 @@ Testing this package out right now as an alternative to org-roam. It is manually
     (setq denote-date-prompt-use-org-read-date t)
     (setq denote-date-format nil)
     (setq denote-backlinks-show-context t)
+    (setq denote-save-files t)
 
-    ;; If you use Markdown or plain text files (Org renders links as buttons
-    ;; right away)
+    ;; If you use Markdown or plain text files (Org renders links as buttons right away)
     (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
 
     ;; I should probably add ~/docs to the list below too no?
@@ -1040,7 +926,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
       ;; `denote-link-or-create'.  You may want to bind them to keys as well.
       ;; Added by Aleks
       (define-key map (kbd "C-c d k") #'denote-rename-file-keywords)
-      (define-key map (kbd "C-c d f") #'my-denote-find-file))
+      (define-key map (kbd "C-c d o") #'denote-open-or-create))
 
     ;; Key bindings specifically for Dired.
     (let ((map dired-mode-map))
@@ -1071,30 +957,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
     )
 #+end_src
 
-*** Custom Functions
-
-**** Find Notes Recursively (including subdirs)
-
-Note that in the =find= command, we're pruning the data dir, so attachments are not included, and also the =.git= directory.
-
-#+begin_src elisp
-  (defun my-denote-find-file ()
-    "Find a file in denote-directory recursively using completion, excluding files with 'archive' in the name."
-    (interactive)
-    (let* ((dir (directory-file-name denote-directory)) ; Ensure no trailing slash
-           (cmd-output (shell-command-to-string
-                        (format "find '%s' -type d \\( -name '.git' -o -name 'data' \\) -prune -o -type f ! -iname '*archive*' -print 2>&1" dir)))
-           (all-files (split-string cmd-output "\n" t))
-           (file-display-names (mapcar (lambda (f) (string-remove-prefix dir f)) all-files)))
-      (if (string-match-p "No such file or directory" cmd-output)
-          (message "Directory not found: %s" dir)
-        (let* ((selected-display-name (completing-read "Choose file: " file-display-names nil t))
-               (selected-file (concat dir selected-display-name)))
-          (when selected-file
-            (find-file selected-file))))))
-#+end_src
-
-**** Function to Aggregate Notes
+*** Function to Aggregate Notes in Dired
 
 This is useful for generating AI summaries - for instance, you can mark several files that represent a week in dired, then aggregate the contents into a new org buffer. That buffer can be saved into a directory that triggers a Zap that will action on the aggregated contents of those notes. The aggregated buffer inserts the contents of each note under an org heading with the file name. With the Denote file naming scheme, this automatically acts as a date tree as well.
 
@@ -1129,184 +992,126 @@ This is useful for generating AI summaries - for instance, you can mark several 
 
 Email is managed via =mu4e= in plain text when possible, altough it's always quick to send any existing message over to a browser using =A v= for a full html render.
 
-*** Init
-
 Several settings below need to differ for Linux and macOS systems, so I've used the =pcase= function with the =system-type= variable, so different code is evaluated for each OS.
 
-#+begin_src elisp
-  ;; Install the package
-  (pcase system-type
-    ('gnu/linux (use-package mu4e
-                  :ensure nil))
-    ('darwin (use-package mu4e
-               :ensure nil
-               :load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/"))) ;; macOS Only
-
-  ;; Because we installed mu with homebrew (macOS Only)
-  (pcase system-type
-    ('darwin (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu"))))
-
-  ;; GPG binary (macOS Only)
-  (pcase system-type
-    ('darwin (require 'epa-file)
-             (setq epg-gpg-program "/opt/homebrew/bin/gpg")
-             (epa-file-enable)))
-#+end_src
-
-*** Settings
-
 Settings of note:
-
 - I prefer no threading by default as email threading tends to confuse me.
 - A different downloads directly for Linux and macOS since macOS is damn stubborn about using their built in =Downloads= dir.
-- A different command to check mail periodically  for Linux and macOS since mbsync installed with =homebrew= doesn't seem to be part of =PATH=.
+- A different command to check mail periodically for Linux and macOS since mbsync installed with =homebrew= doesn't seem to be part of =PATH=.
 - Various settings to both view and compose mail in plain text only. I might add the ability later to compose in org and then render to html at send.
 
 #+begin_src elisp
-  ;; set the default mail user agent
-  (setq mail-user-agent 'mu4e-user-agent)
+  ;; MU4E
+  (use-package mu4e
+    :ensure nil  ;; mu4e is usually installed with mu; ensure should be nil
+    :bind
+    ("C-z m" . mu4e)
+    :hook
+    (mu4e-compose-mode . (lambda () (auto-save-mode -1))) ;; Disable auto-save-mode when composing email to eliminate extra drafts
+    ((mu4e-compose-mode . (lambda () (use-hard-newlines -1))))
+    :init
+    ;; Load path for mu4e installed via Homebrew on macOS
+    (when (eq system-type 'darwin)
+      (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
+      (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
+    :config
+    ;; Set up paths and specific configurations depending on the system
+    (pcase system-type
+      ('gnu/linux
+       ;; Linux-specific settings
+       (setq mu4e-attachment-dir  "~/dls")
+       (setq mu4e-get-mail-command "mbsync -a -c ~/.config/mbsyncrc")
+       (mu4e t)) ;; Run on Linux to check mail in the background
+      ('darwin
+       ;; macOS-specific settings
+       (setq mu4e-attachment-dir  "~/Downloads")
+       (setq mu4e-get-mail-command "/opt/homebrew/bin/mbsync -a -c ~/.config/mbsyncrc")
+       ;; Ensure GPG is configured correctly
+       (require 'epa-file)
+       (setq epg-gpg-program "/opt/homebrew/bin/gpg")
+       (epa-file-enable)))
+          
+    ;; Settings that apply reglardless of system type...
+    (setq mu4e-maildir "~/.local/share/mail")
+    (setq mu4e-context-policy 'pick-first)
+    (setq mu4e-compose-context-policy 'pick-first) ;; Something to do with contexts below?
+    (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
+    (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org") ;; Use org-contacts
+    (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
+    (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
+    (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
+    (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible
+    (setq mu4e-compose-complete-addresses nil) ;; Don't autocomplete emails using mu's built in autocompletion (we'll use org-contacts for this)
+    ;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum) ;; Always show the plaintext version of emails over HTML
 
-  ;; This is set to 't' to avoid mail syncing issues when using mbsync
-  (setq mu4e-change-filenames-when-moving t)
+    ;; Prefer the plain text version of emails
+    (with-eval-after-load "mm-decode"
+      (add-to-list 'mm-discouraged-alternatives "text/html")
+      (add-to-list 'mm-discouraged-alternatives "text/richtext"))
 
-  ;; Prevent space bar from moving to next message
-  (setq mu4e-view-scroll-to-next nil)
+    (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
 
-  ;; Display more messages in each mailbox if possible
-  (setq mu4e-headers-results-limit 5000)
+    (setq gnus-inhibit-images t) ;; Inhibit images from loading
+    (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
+    ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
+    (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
 
-  ;; Disable auto-save-mode when composing email to eliminate extra drafts
-  (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
+    ;; Configure how to send mails
+    ;; Note: .authinfo.gpg is used by default for authentication.
+    ;; You can customize the variable auth-sources
+    (setq message-send-mail-function 'smtpmail-send-it)
 
-  ;; Don't autocomplete email addresses using mu's built in autocompletion (we'll use org-contacts for this)
-  (setq mu4e-compose-complete-addresses nil)
+    (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
 
-  ;; Always show the plaintext version of emails over the HTML version
-  ;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
+    (setq mu4e-maildir-shortcuts
+  	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
+  	  ("/aleks@ozolins.xyz/Sent Items"      . ?s)
+  	  ("/aleks@ozolins.xyz/Drafts"          . ?d)
+  	  ("/aleks@ozolins.xyz/Archive"         . ?A)
+  	  ("/aleks@ozolins.xyz/Trash"           . ?t)
+  	  ("/aleks@ozolins.xyz/Admin"           . ?a)
+  	  ("/aleks@ozolins.xyz/Receipts"        . ?r)
+  	  ("/aleks@ozolins.xyz/Parents"         . ?p)
+  	  ("/aleks@ozolins.xyz/Sus"             . ?u)
+  	  ("/aleks@ozolins.xyz/Spam?"           . ?S)))
+    
+    (setq mu4e-contexts
+  	(list
+  	 ;; aleks@ozolins.xyz
+  	 (make-mu4e-context
+  	  :name "1-aleks@ozolins.xyz"
+  	  :match-func
+  	  (lambda (msg)
+  	    (when msg
+  	      (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
+  	  :vars '((user-mail-address     . "aleks@ozolins.xyz")
+  		  (user-full-name        . "Aleks Ozolins")
+  		  (smtpmail-smtp-server  . "smtp.mailfence.com")
+  		  (smtpmail-smtp-service . 465)
+  		  (smtpmail-stream-type  . ssl)
+  		  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
+  		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
+  		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
+  		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
+  	 ;; aleks.admin@ozolins.xyz
+  	 (make-mu4e-context
+  	  :name "2-aleks.admin@ozolins.xyz"
+  	  :match-func
+  	  (lambda (msg)
+  	    (when msg
+  	      (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
+  	  :vars '((user-mail-address     . "aleks.admin@ozolins.xyz")
+  		  (user-full-name        . "Aleks Ozolins")
+  		  (smtpmail-smtp-server  . "smtp.mailfence.com")
+  		  (smtpmail-smtp-service . 465)
+  		  (smtpmail-stream-type  . ssl)
+  		  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
+  		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
+  		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
+  		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
+  )
 
-  ;; Prefer the plain text version of emails
-  (with-eval-after-load "mm-decode"
-    (add-to-list 'mm-discouraged-alternatives "text/html")
-    (add-to-list 'mm-discouraged-alternatives "text/richtext"))
-
-  ;; Inhibit images from loading
-  (setq gnus-inhibit-images t)
-
-  ;; Turn off threading by default
-  (setq mu4e-headers-show-threads nil)
-
-  ;; Turn off automatic mark as read (use ! instead)
-  ;; (setq mu4e-view-auto-mark-as-read nil)
-
-  ;; Set the download directory for attachments
-  (pcase system-type
-    ('gnu/linux (setq mu4e-attachment-dir  "~/dls")) ;; Linux
-    ('darwin (setq mu4e-attachment-dir  "~/Downloads"))) ;; macOS
-
-  ;; Refresh mail using isync every 10 minutes
-  (setq mu4e-update-interval (* 1 60))
-  (pcase system-type
-    ('gnu/linux (setq mu4e-get-mail-command "mbsync -a -c ~/.config/mbsyncrc")) ;; Linux
-    ('darwin (setq mu4e-get-mail-command "/opt/homebrew/bin/mbsync -a -c ~/.config/mbsyncrc"))) ;; macOS
-  (setq mu4e-maildir "~/.local/share/mail")
-  (setq mu4e-context-policy 'pick-first)
-
-  ;; Configure how to send mails
-  ;; Note: .authinfo.gpg is used by default for authentication.
-  ;; You can customize the variable auth-sources
-  (setq message-send-mail-function 'smtpmail-send-it)
-
-  ;; Make sure plain text emails flow correctly for recipients
-  (setq mu4e-compose-format-flowed t)
-
-  ;; Turn off use-hard-newlines - this helps the flow in certain clients aka Gmail
-  (add-hook 'mu4e-compose-mode-hook (lambda () (use-hard-newlines -1)))
-
-  ;; Compose a signature
-  (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-
-  ;; Do not include related messages
-  (setq mu4e-headers-include-related nil)
-
-  ;; Use org-contacts
-  (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org")
-  ;; BELOW DISABLED AS I THINK IT'S BETTER TO JUST USE ORG CAPTURE FOR REFILING
-  ;;(add-to-list 'mu4e-headers-actions
-  ;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
-  ;;(add-to-list 'mu4e-view-actions
-  ;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
-
-  (setq mu4e-maildir-shortcuts
-	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
-	  ("/aleks@ozolins.xyz/Sent Items"      . ?s)
-	  ("/aleks@ozolins.xyz/Drafts"          . ?d)
-	  ("/aleks@ozolins.xyz/Archive"         . ?A)
-	  ("/aleks@ozolins.xyz/Trash"           . ?t)
-	  ("/aleks@ozolins.xyz/Admin"           . ?a)
-	  ("/aleks@ozolins.xyz/Receipts"        . ?r)
-	  ("/aleks@ozolins.xyz/Parents"         . ?p)
-	  ("/aleks@ozolins.xyz/Sus"             . ?u)
-	  ("/aleks@ozolins.xyz/Spam?"           . ?S)))
 #+end_src
-
-*** Contexts
-
-Two contexts here:
-
-- My main email address: aleks@ozolins.xyz
-- aleks.admin@ozolins.xyz (secondary used for non-personal communication and accounts)
-
-Note that the @me context is used for reference only.
-
-#+begin_src elisp
-  (setq mu4e-contexts
-	(list
-	 ;; aleks@ozolins.xyz account
-	 (make-mu4e-context
-	  :name "1-aleks@ozolins.xyz"
-	  :match-func
-	  (lambda (msg)
-	    (when msg
-	      (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
-	  :vars '((user-mail-address     . "aleks@ozolins.xyz")
-		  (user-full-name        . "Aleks Ozolins")
-		  (smtpmail-smtp-server  . "smtp.mailfence.com")
-		  (smtpmail-smtp-service . 465)
-		  (smtpmail-stream-type  . ssl)
-		  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
-		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
-		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
-	 ;; aleks.admin@ozolins.xyz account
-	 (make-mu4e-context
-	  :name "2-aleks.admin@ozolins.xyz"
-	  :match-func
-	  (lambda (msg)
-	    (when msg
-	      (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
-	  :vars '((user-mail-address     . "aleks.admin@ozolins.xyz")
-		  (user-full-name        . "Aleks Ozolins")
-		  (smtpmail-smtp-server  . "smtp.mailfence.com")
-		  (smtpmail-smtp-service . 465)
-		  (smtpmail-stream-type  . ssl)
-		  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
-		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
-		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
-
-  ;; Set the compose context policy
-  (setq mu4e-compose-context-policy 'pick-first)
-#+end_src
-
-*** Run mu4e
-
-Finally, let's run mu4e to make sure it starts and checks mail periodically.
-
-#+begin_src elisp
-  ;; Run mu4e in the background to sync mail periodically - only in Linux
-  (when (eq system-type 'gnu/linux)
-    (mu4e t))
-  #+end_src
 
 * Custom Set Variables
 

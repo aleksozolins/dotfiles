@@ -2,7 +2,7 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("elpa" . "https://elpa.gnu.org/packages/")))
+			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -68,6 +68,9 @@
 ;; Enable delete selection mode
 (delete-selection-mode 1)
 
+;; Set authinfo Source
+(setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
+
 (pcase system-type
   ('gnu/linux
    (setq default-frame-alist '((font . "Iosevka-14"))))
@@ -115,15 +118,8 @@
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
 ;; Unbind C-z (Can still use C-x C-z to suspend the frame
+;; I use C-z now for my quick launcher!
 (global-unset-key (kbd "C-z"))
-
-;; Quick launch
-(global-set-key (kbd "C-z m") 'mu4e)
-(global-set-key (kbd "C-z e") 'elfeed)
-(global-set-key (kbd "C-z v") 'vterm)
-(global-set-key (kbd "C-z V") 'vterm-other-window)
-
-(setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
 (setq bookmark-default-file
 	(pcase system-type
@@ -153,8 +149,8 @@
 (global-set-key (kbd "s-]") 'tab-bar-history-forward)
 
 (add-hook 'js-mode-hook
-         (lambda ()
-           (setq js-indent-level 2)))
+          (lambda ()
+            (setq js-indent-level 2)))
 
 (use-package typescript-mode
   :ensure t
@@ -163,15 +159,7 @@
   :config
   (setq typescript-indent-level 2))
 
-(use-package orderless
-  :ensure t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion))))
-  :config
-  (setq completion-ignore-case t))
-
-;; which-key
+;; Which-Key
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -186,6 +174,16 @@
   :init
   (vertico-mode))
 
+;; Orderless
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  :config
+  (setq completion-ignore-case t))
+
+;; Marginalia
 (use-package marginalia
   :after vertico
   :ensure t
@@ -194,6 +192,7 @@
   :init
   (marginalia-mode))
 
+;; Embark
 (use-package embark
   :ensure t
   :defer t
@@ -204,82 +203,85 @@
   :init
   (setq prefix-help-command #'embark-prefix-help-command))
 
+; Corfu
 (use-package corfu
-  :ensure t)
+  :ensure t
+  :init
+  (global-corfu-mode 1)
+  (corfu-popupinfo-mode 1)  ; shows documentation after `corfu-popupinfo-delay'
+  (setq tab-always-indent 'complete)  ; This is needed for tab to work properly
+  
+  :config
+  (define-key corfu-map (kbd "<tab>") #'corfu-complete)
+  
+  ;; Function to enable Corfu in the minibuffer when Vertico is not active,
+  ;; useful for prompts such as `eval-expression' and `shell-command'.
+  (defun contrib/corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico is not active."
+    (unless (bound-and-true-p vertico--input)
+      (corfu-mode 1)))
+  
+  :hook
+  (minibuffer-setup . contrib/corfu-enable-always-in-minibuffer))
 
-(global-corfu-mode 1)
+;; Dired
+(use-package dired
+  :ensure nil ;; Dired is part of Emacs; no need to install it
+  :bind (:map dired-mode-map
+              ("V" . dired-open-file)) ;; Binding to a function defined in :config
+  :config
+  ;; Use GNU ls as insert-directory-program in case of macOS
+  (when (eq system-type 'darwin)
+    (setq insert-directory-program "gls"))
+  
+  ;; Set listing options
+  (setq dired-listing-switches "-Alh --group-directories-first")
+  (setq dired-dwim-target t)
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'top)
+  
+  ;; Default to hiding details
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (dired-hide-details-mode 1)))
+  
+  ;; Enable using 'a' to visit directories
+  (put 'dired-find-alternate-file 'disabled nil)
+  
+  ;; Function to open files using the system's default application
+  (defun dired-open-file ()
+    "Open the file at point in Dired with the appropriate system application."
+    (interactive)
+    (let ((file (dired-get-file-for-visit))
+          (open-cmd (pcase system-type
+                      ('darwin "open")
+                      ('gnu/linux "xdg-open")
+                      (_ "xdg-open"))))
+      (message "Opening %s..." file)
+      (call-process open-cmd nil 0 nil file))))
 
-(corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
-
-(define-key corfu-map (kbd "<tab>") #'corfu-complete)
-(setq tab-always-indent 'complete) ;; This we needed for tab to work. Not from Prot's config.
-
-;; Adapted from Corfu's manual.
-(defun contrib/corfu-enable-always-in-minibuffer ()
-  "Enable Corfu in the minibuffer if Vertico is not active.
-  Useful for prompts such as `eval-expression' and `shell-command'."
-  (unless (bound-and-true-p vertico--input)
-    (corfu-mode 1)))
-
-(add-hook 'minibuffer-setup-hook #'contrib/corfu-enable-always-in-minibuffer 1)
-
-;; Use GNU ls as insert-directory-program in case of macOS
-(when (eq system-type 'darwin)
-  (setq insert-directory-program "gls"))
-
-;; Use human readable sizes and group directories first
-;; Note that the "A" switch, as opposed to "a" leaves out . and ..
-(setq dired-listing-switches "-Alh --group-directories-first")
-
-(setq dired-dwim-target t)            ;; When copying/moving, suggest other dired buffer as target
-(setq dired-recursive-copies 'always) ;; Always copy/delete recursively
-(setq dired-recursive-deletes 'top)   ;; Ask once before performing a recursive delete
-
-;; Hide details by default
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (dired-hide-details-mode 1)))
-
-;; Do not disable using 'a' to visit a new directory without killing the buffer
-(put 'dired-find-alternate-file 'disabled nil)
-
+;; Dired Hide Dotfiles
 (use-package dired-hide-dotfiles
   :ensure t
-  )
+  :hook (dired-mode . my-dired-mode-hook)
+  :bind (:map dired-mode-map
+              ("." . dired-hide-dotfiles-mode))
+  :config
+  (defun my-dired-mode-hook ()
+    "My `dired' mode hook to hide dot-files by default."
+    (dired-hide-dotfiles-mode)))
 
-(defun my-dired-mode-hook ()
-  "My `dired' mode hook."
-  ;; To hide dot-files by default
-  (dired-hide-dotfiles-mode))
-
-;; To toggle hiding
-(define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
-(add-hook 'dired-mode-hook #'my-dired-mode-hook)
-
-(defun dired-open-file ()
-  "Open the file at point in dired with the appropriate system application."
-  (interactive)
-  (let ((file (dired-get-file-for-visit))
-        (open-cmd (pcase system-type
-                    ('darwin "open")
-                    ('gnu/linux "xdg-open")
-                    (_ "xdg-open"))))
-    (message "Opening %s..." file)
-    (call-process open-cmd nil 0 nil file)))
-
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "V") 'dired-open-file))
-
-(when (eq system-type 'gnu/linux)
-  (define-key dired-mode-map (kbd "C-c d e") 'my-dropbox-exclude-list)
-  (define-key dired-mode-map (kbd "C-c d x") 'my-dropbox-exclude-directory))
-
+;; Vterm
 (use-package vterm
-    :ensure t
-    :config
-    (setq vterm-kill-buffer-on-exit t)
-    (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
+  :ensure t
+  :bind
+  (("C-z v" . vterm)
+   ("C-z V" . vterm-other-window))
+  :config
+  (setq vterm-kill-buffer-on-exit t)
+  (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
+;; Rainbow Delimiters
 (use-package rainbow-delimiters
   :defer t
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -288,87 +290,51 @@
 (use-package magit
   :ensure t)
 
+;; Pulsar
 (use-package pulsar
   :ensure t
   :init
   (setq pulsar-pulse t
-	  pulsar-delay 0.055
-	  pulsar-iterations 10
-	  pulsar-face 'pulsar-magenta
-	  pulsar-highlight-face 'pulsar-blue)
+        pulsar-delay 0.055
+        pulsar-iterations 10
+        pulsar-face 'pulsar-magenta
+        pulsar-highlight-face 'pulsar-blue)
   :config
   (pulsar-global-mode 1)
-  (let ((map global-map))
-    (define-key map (kbd "C-x l") #'pulsar-pulse-line)
-    (define-key map (kbd "C-x L") #'pulsar-highlight-dwim)))
+  :bind (("C-x l" . pulsar-pulse-line)
+         ("C-x L" . pulsar-highlight-dwim)))
 
+;; Ledger Mode
 (use-package ledger-mode
   :defer t
+  :mode ("-ledger\\.txt\\'" . ledger-mode)  ;; Associate files ending in _ledger.txt with ledger-mode
   :config
   (setq ledger-clear-whole-transactions 1)
   (setq ledger-default-date-format "%Y-%m-%d"))
 
-;; Any file ending in _ledger.txt opens in ledger mode
-(add-to-list 'auto-mode-alist '("-ledger\\.txt\\'" . ledger-mode))
-
-(defun my-ledger ()
-  "Open the ledger file located at ~/docs/finances/ledger/2024--my-ledger.txt."
-  (interactive)
-  (find-file "~/docs/finances/ledger/2024--my-ledger.txt")
-  (goto-char (point-max)))
-
-(defun my-recurring-ledger ()
-  "Open the ledger file located at ~/docs/finances/ledger/2024--my-recurring-ledger.txt."
-  (interactive)
-  (find-file "~/docs/finances/ledger/2024--my-recurring-ledger.txt")
-  (goto-char (point-max)))
-
-(global-set-key (kbd "C-z l") 'my-ledger)
-(global-set-key (kbd "C-z L") 'my-recurring-ledger)
-
+;; Ripgrep
 (use-package rg
   :defer t
   :config
   (rg-enable-default-bindings))
 
-;; Install the elfeed package
+;; Elfeed
 (use-package elfeed
   :ensure t
-  :defer t
+  :bind ("C-z e" . elfeed) ;; My quick launcher
   :config
   (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
   (pcase system-type
     ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
-    ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/")))
+    ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/"))))
 
-  ;; Ensure elfeed-org is installed
-  (use-package elfeed-org
-    :ensure t)
-
-  ;; Load elfeed-org to use an Org file as the source for feeds
-  (with-eval-after-load 'elfeed-org
-    (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org"))))
-
-(defun my-elfeed-download-youtube-video (arg)
-  "Download the YouTube video of the current entry in elfeed using youtube-dlp.
-With a prefix argument, download the audio only in the best available format."
-  (interactive "P")
-  (when (eq major-mode 'elfeed-show-mode)  ; Ensure the function is called in elfeed-show-mode
-    (elfeed-show-yank)  ; Copy the URL to the clipboard
-    (let* ((url (current-kill 0))  ; Get the URL from the clipboard
-           (download-dir (pcase system-type
-                           ('darwin "~/Downloads/")
-                           ('gnu/linux "~/dls/")))  ; Set download directory based on system
-           (command (if arg
-                        (format "yt-dlp -f 'bestaudio' -P '%s' '%s'" download-dir url)
-                      (format "yt-dlp -f 'bestvideo+bestaudio' --merge-output-format mkv -P '%s' '%s'" download-dir url))))
-      (async-shell-command command))))
-
-(add-hook 'elfeed-show-mode-hook
-          (lambda ()
-            (define-key elfeed-show-mode-map (kbd "D") 'my-elfeed-download-youtube-video)
-            (define-key elfeed-show-mode-map (kbd "B") 'my-elfeed-show-visit-reader)))
+;; Elfeed-Org
+(use-package elfeed-org
+  :ensure t
+  :after elfeed  ;; Ensure elfeed-org loads after elfeed
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org")))
 
 (require 'org)
 
@@ -489,9 +455,12 @@ With a prefix argument, download the audio only in the best available format."
         ("recurring" . ?r)))
 
 ;; Add some modules
+;; For Habits
 (with-eval-after-load 'org
   (add-to-list 'org-modules 'org-habit t))
 
+;; Custom Link Types
+;; For magit status buffers
 (org-link-set-parameters
  "magit-status"
  :follow (lambda (path)
@@ -503,12 +472,6 @@ With a prefix argument, download the audio only in the best available format."
             ((eq format 'latex)
              (format "\\href{magit-status:%s}{%s}" path desc))
             (t (format "magit-status:%s" path)))))
-
-;; Org Contacts
-(use-package org-contacts
-  :ensure t
-  :after org
-  :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 
 ;; Org capture
 (use-package org-capture
@@ -526,46 +489,46 @@ With a prefix argument, download the audio only in the best available format."
 (setq org-capture-templates
       `(("t" "Personal Task (Quick Capture)" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
          "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("T" "Personal Task (Detailed)")
         ("Th" "@Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Home")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("Tc" "@Computer" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Computer")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("Tp" "@Phone" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Phone")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("To" "@Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Out")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("TC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("Ts" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
          "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
+	
         ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
          my-org-contacts-template :empty-lines 1 :kill-buffer t)
-
+	
         ("m" "Metrics")
         ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
          "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
-
+	
         ("M" "Mouthpiece")
         ("M1" "One-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: one-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+	
         ("M2" "Two-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: two-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+	
         ("Mc" "Mouthpiece Cup" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model} Cup\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: cup\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+	
         ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-
+	
         ("e" "Event" entry (file+headline "~/docs/denote/agenda/20220727T113610--calendar__agenda.org" "Events")
                "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)
 
@@ -580,7 +543,8 @@ With a prefix argument, download the audio only in the best available format."
 (setq org-bookmark-names-plist '())
 (setq org-capture-bookmark nil)
 
-;;Enable certain languages
+;; Org Babel
+;; Enable certain languages
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
@@ -591,7 +555,7 @@ With a prefix argument, download the audio only in the best available format."
 ;; Skip confirming when evaluating source blocks
 (setq org-confirm-babel-evaluate nil)
 
-;; This is needed as of Org 9.2
+;; Org Babel Structure Templates
 (require 'org-tempo)
 
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
@@ -631,6 +595,12 @@ With a prefix argument, download the audio only in the best available format."
   (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
   (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
+;; Org Contacts
+(use-package org-contacts
+  :ensure t
+  :after org
+  :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
+
 (use-package denote
   :ensure t
   :after org
@@ -638,7 +608,7 @@ With a prefix argument, download the audio only in the best available format."
   (require 'denote)
   (setq denote-directory (expand-file-name "~/docs/denote/"))
   (setq denote-save-buffers nil)
-  (setq denote-known-keywords '("emacs" "meta" "zapier" "daily"))
+  (setq denote-known-keywords '("emacs" "meta" "zapier"))
   (setq denote-infer-keywords t)
   (setq denote-sort-keywords t)
   (setq denote-file-type nil) ; Org is the default, set others here
@@ -649,9 +619,9 @@ With a prefix argument, download the audio only in the best available format."
   (setq denote-date-prompt-use-org-read-date t)
   (setq denote-date-format nil)
   (setq denote-backlinks-show-context t)
+  (setq denote-save-files t)
 
-  ;; If you use Markdown or plain text files (Org renders links as buttons
-  ;; right away)
+  ;; If you use Markdown or plain text files (Org renders links as buttons right away)
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
 
   ;; I should probably add ~/docs to the list below too no?
@@ -688,7 +658,7 @@ With a prefix argument, download the audio only in the best available format."
     ;; `denote-link-or-create'.  You may want to bind them to keys as well.
     ;; Added by Aleks
     (define-key map (kbd "C-c d k") #'denote-rename-file-keywords)
-    (define-key map (kbd "C-c d f") #'my-denote-find-file))
+    (define-key map (kbd "C-c d o") #'denote-open-or-create))
 
   ;; Key bindings specifically for Dired.
   (let ((map dired-mode-map))
@@ -718,21 +688,6 @@ With a prefix argument, download the audio only in the best available format."
 
   )
 
-(defun my-denote-find-file ()
-  "Find a file in denote-directory recursively using completion, excluding files with 'archive' in the name."
-  (interactive)
-  (let* ((dir (directory-file-name denote-directory)) ; Ensure no trailing slash
-         (cmd-output (shell-command-to-string
-                      (format "find '%s' -type d \\( -name '.git' -o -name 'data' \\) -prune -o -type f ! -iname '*archive*' -print 2>&1" dir)))
-         (all-files (split-string cmd-output "\n" t))
-         (file-display-names (mapcar (lambda (f) (string-remove-prefix dir f)) all-files)))
-    (if (string-match-p "No such file or directory" cmd-output)
-        (message "Directory not found: %s" dir)
-      (let* ((selected-display-name (completing-read "Choose file: " file-display-names nil t))
-             (selected-file (concat dir selected-display-name)))
-        (when selected-file
-          (find-file selected-file))))))
-
 (defun my-denote-aggregate-notes ()
   "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
   (interactive)
@@ -758,98 +713,69 @@ With a prefix argument, download the audio only in the best available format."
         )
       (switch-to-buffer target-buffer))))
 
-;; Install the package
-(pcase system-type
-  ('gnu/linux (use-package mu4e
-                :ensure nil))
-  ('darwin (use-package mu4e
-             :ensure nil
-             :load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/"))) ;; macOS Only
+;; MU4E
+(use-package mu4e
+  :ensure nil  ;; mu4e is usually installed with mu; ensure should be nil
+  :bind
+  ("C-z m" . mu4e)
+  :hook
+  (mu4e-compose-mode . (lambda () (auto-save-mode -1))) ;; Disable auto-save-mode when composing email to eliminate extra drafts
+  ((mu4e-compose-mode . (lambda () (use-hard-newlines -1))))
+  :init
+  ;; Load path for mu4e installed via Homebrew on macOS
+  (when (eq system-type 'darwin)
+    (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
+    (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
+  :config
+  ;; Set up paths and specific configurations depending on the system
+  (pcase system-type
+    ('gnu/linux
+     ;; Linux-specific settings
+     (setq mu4e-attachment-dir  "~/dls")
+     (setq mu4e-get-mail-command "mbsync -a -c ~/.config/mbsyncrc")
+     (mu4e t)) ;; Run on Linux to check mail in the background
+    ('darwin
+     ;; macOS-specific settings
+     (setq mu4e-attachment-dir  "~/Downloads")
+     (setq mu4e-get-mail-command "/opt/homebrew/bin/mbsync -a -c ~/.config/mbsyncrc")
+     ;; Ensure GPG is configured correctly
+     (require 'epa-file)
+     (setq epg-gpg-program "/opt/homebrew/bin/gpg")
+     (epa-file-enable)))
+        
+  ;; Settings that apply reglardless of system type...
+  (setq mu4e-maildir "~/.local/share/mail")
+  (setq mu4e-context-policy 'pick-first)
+  (setq mu4e-compose-context-policy 'pick-first) ;; Something to do with contexts below?
+  (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
+  (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org") ;; Use org-contacts
+  (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
+  (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
+  (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
+  (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible
+  (setq mu4e-compose-complete-addresses nil) ;; Don't autocomplete emails using mu's built in autocompletion (we'll use org-contacts for this)
+  ;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum) ;; Always show the plaintext version of emails over HTML
 
-;; Because we installed mu with homebrew (macOS Only)
-(pcase system-type
-  ('darwin (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu"))))
+  ;; Prefer the plain text version of emails
+  (with-eval-after-load "mm-decode"
+    (add-to-list 'mm-discouraged-alternatives "text/html")
+    (add-to-list 'mm-discouraged-alternatives "text/richtext"))
 
-;; GPG binary (macOS Only)
-(pcase system-type
-  ('darwin (require 'epa-file)
-           (setq epg-gpg-program "/opt/homebrew/bin/gpg")
-           (epa-file-enable)))
+  (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
 
-;; set the default mail user agent
-(setq mail-user-agent 'mu4e-user-agent)
+  (setq gnus-inhibit-images t) ;; Inhibit images from loading
+  (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
+  ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
+  (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
 
-;; This is set to 't' to avoid mail syncing issues when using mbsync
-(setq mu4e-change-filenames-when-moving t)
+  ;; Configure how to send mails
+  ;; Note: .authinfo.gpg is used by default for authentication.
+  ;; You can customize the variable auth-sources
+  (setq message-send-mail-function 'smtpmail-send-it)
 
-;; Prevent space bar from moving to next message
-(setq mu4e-view-scroll-to-next nil)
+  (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
 
-;; Display more messages in each mailbox if possible
-(setq mu4e-headers-results-limit 5000)
-
-;; Disable auto-save-mode when composing email to eliminate extra drafts
-(add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
-
-;; Don't autocomplete email addresses using mu's built in autocompletion (we'll use org-contacts for this)
-(setq mu4e-compose-complete-addresses nil)
-
-;; Always show the plaintext version of emails over the HTML version
-;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
-
-;; Prefer the plain text version of emails
-(with-eval-after-load "mm-decode"
-  (add-to-list 'mm-discouraged-alternatives "text/html")
-  (add-to-list 'mm-discouraged-alternatives "text/richtext"))
-
-;; Inhibit images from loading
-(setq gnus-inhibit-images t)
-
-;; Turn off threading by default
-(setq mu4e-headers-show-threads nil)
-
-;; Turn off automatic mark as read (use ! instead)
-;; (setq mu4e-view-auto-mark-as-read nil)
-
-;; Set the download directory for attachments
-(pcase system-type
-  ('gnu/linux (setq mu4e-attachment-dir  "~/dls")) ;; Linux
-  ('darwin (setq mu4e-attachment-dir  "~/Downloads"))) ;; macOS
-
-;; Refresh mail using isync every 10 minutes
-(setq mu4e-update-interval (* 1 60))
-(pcase system-type
-  ('gnu/linux (setq mu4e-get-mail-command "mbsync -a -c ~/.config/mbsyncrc")) ;; Linux
-  ('darwin (setq mu4e-get-mail-command "/opt/homebrew/bin/mbsync -a -c ~/.config/mbsyncrc"))) ;; macOS
-(setq mu4e-maildir "~/.local/share/mail")
-(setq mu4e-context-policy 'pick-first)
-
-;; Configure how to send mails
-;; Note: .authinfo.gpg is used by default for authentication.
-;; You can customize the variable auth-sources
-(setq message-send-mail-function 'smtpmail-send-it)
-
-;; Make sure plain text emails flow correctly for recipients
-(setq mu4e-compose-format-flowed t)
-
-;; Turn off use-hard-newlines - this helps the flow in certain clients aka Gmail
-(add-hook 'mu4e-compose-mode-hook (lambda () (use-hard-newlines -1)))
-
-;; Compose a signature
-(setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-
-;; Do not include related messages
-(setq mu4e-headers-include-related nil)
-
-;; Use org-contacts
-(setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org")
-;; BELOW DISABLED AS I THINK IT'S BETTER TO JUST USE ORG CAPTURE FOR REFILING
-;;(add-to-list 'mu4e-headers-actions
-;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
-;;(add-to-list 'mu4e-view-actions
-;;  '("org-contact-add" . mu4e-action-add-org-contact) t)
-
-(setq mu4e-maildir-shortcuts
+  (setq mu4e-maildir-shortcuts
 	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
 	  ("/aleks@ozolins.xyz/Sent Items"      . ?s)
 	  ("/aleks@ozolins.xyz/Drafts"          . ?d)
@@ -860,10 +786,10 @@ With a prefix argument, download the audio only in the best available format."
 	  ("/aleks@ozolins.xyz/Parents"         . ?p)
 	  ("/aleks@ozolins.xyz/Sus"             . ?u)
 	  ("/aleks@ozolins.xyz/Spam?"           . ?S)))
-
-(setq mu4e-contexts
+  
+  (setq mu4e-contexts
 	(list
-	 ;; aleks@ozolins.xyz account
+	 ;; aleks@ozolins.xyz
 	 (make-mu4e-context
 	  :name "1-aleks@ozolins.xyz"
 	  :match-func
@@ -879,7 +805,7 @@ With a prefix argument, download the audio only in the best available format."
 		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
 		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
 		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
-	 ;; aleks.admin@ozolins.xyz account
+	 ;; aleks.admin@ozolins.xyz
 	 (make-mu4e-context
 	  :name "2-aleks.admin@ozolins.xyz"
 	  :match-func
@@ -895,13 +821,7 @@ With a prefix argument, download the audio only in the best available format."
 		  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
 		  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
 		  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
-
-;; Set the compose context policy
-(setq mu4e-compose-context-policy 'pick-first)
-
-;; Run mu4e in the background to sync mail periodically - only in Linux
-(when (eq system-type 'gnu/linux)
-  (mu4e t))
+)
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
