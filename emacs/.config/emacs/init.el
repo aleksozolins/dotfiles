@@ -23,7 +23,11 @@
 
 ;; Change the startup message in the minibuffer to a nice greeting
 (defun display-startup-echo-area-message ()
-  (message "Welcome back Aleks!"))
+  (message "Welcome back Aleks! Emacs started in %.2f seconds."
+           (float-time (time-subtract after-init-time before-init-time))))
+
+;; Setup initial scratch message
+(setq initial-scratch-message ";; Welcome to Emacs! Feel free to write Lisp code or notes here.\n\n")
 
 ;; Make sure all Emacs frames start fullscreen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -158,6 +162,14 @@
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))
+
+;; Esup
+(use-package esup
+  :ensure t
+  ;; To use MELPA Stable use ":pin melpa-stable",
+  :pin melpa
+  :config
+  (setq esup-depth 0)) ;; Without this we get a failure on macOS.
 
 ;; Which-Key
 (use-package which-key
@@ -336,7 +348,7 @@
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org")))
 
-(require 'org)
+(require 'org) ;; This may not be necessary. We can rely on org's built in lazy loading instead.
 
 ;; Org keybindings
 (global-set-key (kbd "C-c l") 'org-store-link)
@@ -599,6 +611,7 @@
 (use-package org-contacts
   :ensure t
   :after org
+  :defer t
   :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 
 (use-package denote

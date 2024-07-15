@@ -8,8 +8,6 @@
 + Created: 2022-06-24
 + Updated: 2024-07-14
 
-*Note:* the following two code blocks were last evaluated on Mac - I do also use a Linux system.
-
 Information pertaining to my current build of Emacs:
 
 #+begin_src emacs-lisp :tangle no :exports both
@@ -69,7 +67,11 @@ The following settings make the interface a bit more minimal and clean.
 
   ;; Change the startup message in the minibuffer to a nice greeting
   (defun display-startup-echo-area-message ()
-    (message "Welcome back Aleks!"))
+    (message "Welcome back Aleks! Emacs started in %.2f seconds."
+             (float-time (time-subtract after-init-time before-init-time))))
+
+  ;; Setup initial scratch message
+  (setq initial-scratch-message ";; Welcome to Emacs! Feel free to write Lisp code or notes here.\n\n")
 
   ;; Make sure all Emacs frames start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -293,6 +295,20 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
 #+end_src
 
 * Packages
+
+** Esup
+
+Use this to see what takes long to load in your Emacs config. Just run =M-x esup=.
+
+#+begin_src elisp
+  ;; Esup
+  (use-package esup
+    :ensure t
+    ;; To use MELPA Stable use ":pin melpa-stable",
+    :pin melpa
+    :config
+    (setq esup-depth 0)) ;; Without this we get a failure on macOS.
+#+end_src
 
 ** Which-Key
 
@@ -577,7 +593,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 Note we're not using use-package here yet.
 
 #+begin_src elisp
-  (require 'org)
+  (require 'org) ;; This may not be necessary. We can rely on org's built in lazy loading instead.
 
   ;; Org keybindings
   (global-set-key (kbd "C-c l") 'org-store-link)
@@ -861,7 +877,8 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
   (use-package org-contacts
     :ensure t
     :after org
-    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org"))) 
+    :defer t
+    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 #+end_src
 
 ** Denote
