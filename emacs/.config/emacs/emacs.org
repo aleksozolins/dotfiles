@@ -877,7 +877,6 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
   (use-package org-contacts
     :ensure t
     :after org
-    :defer t
     :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 #+end_src
 

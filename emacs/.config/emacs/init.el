@@ -611,7 +611,6 @@
 (use-package org-contacts
   :ensure t
   :after org
-  :defer t
   :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 
 (use-package denote
