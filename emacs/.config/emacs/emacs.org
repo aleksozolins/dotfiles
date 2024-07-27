@@ -622,13 +622,11 @@ Note we're not using use-package here yet.
 
   ;; Set org-agenda files to list of files. Note they all have the agenda tag.
   (setq org-agenda-files
-        (list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")
-              (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")
-              (concat denote-directory "agenda/20220727T113610--calendar__agenda.org")
-              (concat denote-directory "agenda/20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
-              (concat denote-directory "agenda/20230903T141829--email-inbox__agenda_inbox.txt")
-              (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")
-              (concat denote-directory "agenda/20240629T132605--zapier-projects__agenda_project_zapier.org")))
+        (list (concat denote-directory "20210804T113317--todos__agenda.org")
+              (concat denote-directory "20220720T114139--projects__agenda_project.org")
+              (concat denote-directory "20220727T113610--calendar__agenda.org")
+              (concat denote-directory "20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
+              (concat denote-directory "20230903T141829--task-inbox__agenda_inbox.txt")))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -641,10 +639,8 @@ Note we're not using use-package here yet.
 
   ;; Allow refiling to other files
   (setq org-refile-targets `((nil :maxlevel . 1)
-                             (,(list (concat denote-directory "agenda/20210804T113317--todos__agenda.org")) :maxlevel . 1)
-                             (,(list (concat denote-directory "agenda/20220720T114139--projects__agenda_project.org")) :maxlevel . 2)
-                             (,(list (concat denote-directory "agenda/20240509T094502--zapier-todos__agenda_zapier.org")) :maxlevel . 1)
-                             (,(list (concat denote-directory "agenda/20240629T132605--zapier-projects__agenda_project_zapier.org")) :maxlevel . 2)))
+                             (,(list (concat denote-directory "20210804T113317--todos__agenda.org")) :maxlevel . 1)
+                             (,(list (concat denote-directory "20220720T114139--projects__agenda_project.org")) :maxlevel . 2)))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -744,27 +740,14 @@ Note we're not using use-package here yet.
         :END:" "Template for org-contacts.")
 
   (setq org-capture-templates
-        `(("t" "Personal Task (Quick Capture)" entry (file+olp "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Inbox")
+        `(("t" "Task (Quick Capture)" entry (file "~/docs/denote/20230903T141829--task-inbox__agenda_inbox.txt")
            "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
-          ("T" "Personal Task (Detailed)")
-          ("Th" "@Home" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Home")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
-          ("Tc" "@Computer" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Computer")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
-          ("Tp" "@Phone" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Phone")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
-          ("To" "@Out" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "@Out")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
-          ("TC" "Connections" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Connections")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
-          ("Ts" "Someday" entry (file+headline "~/docs/denote/agenda/20210804T113317--todos__agenda.org" "Someday")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+  	("T" "Task (Detailed Personal)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Personal")
+           "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+
+          ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
+           "* %^{State|TODO|NEXT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
   	
           ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
            my-org-contacts-template :empty-lines 1 :kill-buffer t)
@@ -786,15 +769,11 @@ Note we're not using use-package here yet.
           ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
   	
-          ("e" "Event" entry (file+headline "~/docs/denote/agenda/20220727T113610--calendar__agenda.org" "Events")
-                 "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)
-
-          ("z" "Zapier")
-          ("zt" "@Zapier Task" entry (file+headline "~/docs/denote/agenda/20240509T094502--zapier-todos__agenda_zapier.org" "Inbox")
-           "* %^{State|TODO|NEXT|WAIT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)))
+          ("e" "Event" entry (file+headline "~/docs/denote/20220727T113610--calendar__agenda.org" "Events")
+                 "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)))
 
   ;; Default org capture file
-  (setq org-default-notes-file (concat org-directory "~/docs/denote/agenda/20230903T141829--email-inbox__agenda_inbox.txt"))
+  (setq org-default-notes-file (concat org-directory "~/docs/denote/20230903T141829--task-inbox__agenda_inbox.txt"))
 
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmark-names-plist '())
