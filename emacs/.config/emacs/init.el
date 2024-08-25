@@ -411,7 +411,7 @@
 
 ;; Set todo sequence
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "ONG(o)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
 
 (setq org-agenda-custom-commands
       '(("i" "Tasks with inbox tag"
@@ -424,8 +424,6 @@
                      ((org-agenda-overriding-header "Inbox")))
           (todo "WAIT"
                 ((org-agenda-overriding-header "Waiting Tasks")))
-	  (todo "ONG"
-                ((org-agenda-overriding-header "Ongoing Tasks")))
           (todo "NEXT"
                 ((org-agenda-overriding-header "Next Tasks")))))
 
@@ -502,7 +500,7 @@
          "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
-         "* %^{State|TODO|NEXT|ONG} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
+         "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 	
         ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
          my-org-contacts-template :empty-lines 1 :kill-buffer t)
