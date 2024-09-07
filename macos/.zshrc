@@ -19,7 +19,7 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
-# disabled this to with with the Zapier CLI
+# Maybe disable this to with with the Zapier CLI
 # . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # direnv hook (Needed by monorepo)
