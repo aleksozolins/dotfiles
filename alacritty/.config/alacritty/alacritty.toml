@@ -1,3 +1,4 @@
+# Note you need to clone the themes repo into ~/.config/alacritty/themes for the below to work
 import = [
     "~/.config/alacritty/themes/themes/xterm.toml"
 ]
