@@ -38,6 +38,7 @@ alias lreview='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %review'
 
 # misc aliases
 alias e="emacsclient -n"
+alias mc="mc --nosubshell"
 alias tvim='nvim -c "colorscheme default"'
 alias trans="transmission-remote"
 alias hdc="ls -a ~ | wc -l"
