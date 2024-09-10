@@ -3,6 +3,11 @@ if [ -f ~/.config/aliasrc ]; then
     source ~/.config/aliasrc
 fi
 
+# Some environment variables
+export ALTERNATE_EDITOR="nvim"
+export EDITOR="emacsclient -n"
+export VISUAL="emacsclient -n"
+
 # Stuff for Zapier CLI
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
