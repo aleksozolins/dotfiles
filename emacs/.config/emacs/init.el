@@ -585,12 +585,6 @@
   (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
   (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
-;; Org Contacts
-(use-package org-contacts
-  :ensure t
-  :after org
-  :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
-
 (use-package denote
   :ensure t
   :after org
@@ -743,7 +737,8 @@
   (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
   (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
   (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible
-  (setq mu4e-compose-complete-addresses nil) ;; Don't autocomplete emails using mu's built in autocompletion (we'll use org-contacts for this)
+  ;; (setq mu4e-compose-complete-addresses nil) ;; Don't autocomplete emails using mu's built in autocompletion (we'll use org-contacts for this)
+  (setq mu4e-compose-complete-addresses t) ;; Disabled org-contacts
   ;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum) ;; Always show the plaintext version of emails over HTML
 
   ;; Prefer the plain text version of emails
@@ -815,3 +810,7 @@
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
+
+(when (and (eq system-type 'darwin) ; Check if on macOS
+           (not (server-running-p))) ; Check if server is not already running
+  (server-start))                    ; Start the server if it's not running
