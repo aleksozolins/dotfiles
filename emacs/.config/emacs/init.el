@@ -20,6 +20,7 @@
 (setq visible-bell t)                 ; Set up the visible bell
 (minibuffer-electric-default-mode t)  ; Make default disappear in the minibuffer when typing
 (setq suggest-key-bindings 3)         ; Make keybinding suggestions stick around longer
+(add-to-list 'default-frame-alist '(undecorated . t))   ; Get rid of the title bar in macOS
 
 ;; Change the startup message in the minibuffer to a nice greeting
 (defun display-startup-echo-area-message ()
