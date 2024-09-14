@@ -4,9 +4,9 @@ set real_name = "Aleks Ozolins"
 set from = "aleks@ozolins.xyz"
 set sendmail = "msmtp -a aleks@ozolins.xyz"
 alias me aleks <aleks@ozolins.xyz>
-set folder = "/Users/aleksozolins/.local/share/mail/aleks@ozolins.xyz"
-set header_cache = "/Users/aleksozolins/.cache/mutt/aleks_ozolins.xyz/headers"
-set message_cachedir = "/Users/aleksozolins/.cache/mutt/aleks_ozolins.xyz/bodies"
+set folder = "~/.local/share/mail/aleks@ozolins.xyz"
+set header_cache = "~/.cache/mutt/aleks_ozolins.xyz/headers"
+set message_cachedir = "~/.cache/mutt/aleks_ozolins.xyz/bodies"
 set mbox_type = Maildir
 set hostname = "ozolins.xyz"
 # hack to unbind binds between switching accounts
