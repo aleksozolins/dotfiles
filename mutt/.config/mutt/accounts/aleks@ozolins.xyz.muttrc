@@ -16,18 +16,18 @@ unmailboxes *
 unalternates *
 unset signature
 # end hack
-set spool_file = "+INBOX"
+set spool_file = "+Inbox"
 set postponed = "+Drafts"
 set trash = "+Trash"
 set record = "+Sent Items"
 
 macro index o "<shell-escape>mbsync aleks@ozolins.xyz<enter>" "sync aleks@ozolins.xyz"
-mailboxes "=INBOX" "=Sent Items" "=Drafts" "=Trash" "=Spam?" "=Admin" "=Archive" "=Parents" "=Sus" "=Receipts" "=Dorys" "=Gigs" "=Wealth-Mode" "=important" "=annika"
+mailboxes "=Inbox" "=Sent Items" "=Drafts" "=Trash" "=Spam?" "=Admin" "=Archive" "=Parents" "=Sus" "=Receipts" "=Dorys" "=Gigs" "=Wealth-Mode" "=important" "=annika"
 
 # This was moved over from muttrc to be account specific
-macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
-macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
-macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
+macro index,pager gi "<change-folder>=Inbox<enter>" "go to inbox"
+macro index,pager Mi ";<save-message>=Inbox<enter>" "move mail to inbox"
+macro index,pager Ci ";<copy-message>=Inbox<enter>" "copy mail to inbox"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
 macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to drafts"
 macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to drafts"
