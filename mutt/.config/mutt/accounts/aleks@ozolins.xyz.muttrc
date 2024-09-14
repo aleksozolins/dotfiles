@@ -1,0 +1,46 @@
+# vim: filetype=neomuttrc
+# muttrc file for account aleks@ozolins.xyz
+set real_name = "Aleks Ozolins"
+set from = "aleks@ozolins.xyz"
+set sendmail = "msmtp -a aleks@ozolins.xyz"
+alias me aleks <aleks@ozolins.xyz>
+set folder = "/Users/aleksozolins/.local/share/mail/aleks@ozolins.xyz"
+set header_cache = "/Users/aleksozolins/.cache/mutt/aleks_ozolins.xyz/headers"
+set message_cachedir = "/Users/aleksozolins/.cache/mutt/aleks_ozolins.xyz/bodies"
+set mbox_type = Maildir
+set hostname = "ozolins.xyz"
+# hack to unbind binds between switching accounts
+unset hostname
+unmy_hdr Organization
+unmailboxes *
+unalternates *
+unset signature
+# end hack
+set spool_file = "+INBOX"
+set postponed = "+Drafts"
+set trash = "+Trash"
+set record = "+Sent Items"
+
+macro index o "<shell-escape>mbsync aleks@ozolins.xyz<enter>" "sync aleks@ozolins.xyz"
+mailboxes "=INBOX" "=Sent Items" "=Drafts" "=Trash" "=Spam?" "=Admin" "=Archive" "=Parents" "=Sus" "=Receipts" "=Dorys" "=Gigs" "=Wealth-Mode" "=important" "=annika"
+
+# This was moved over from muttrc to be account specific
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
+macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to drafts"
+macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to drafts"
+macro index,pager gj "<change-folder>=Junk<enter>" "go to junk"
+macro index,pager Mj ";<save-message>=Junk<enter>" "move mail to junk"
+macro index,pager Cj ";<copy-message>=Junk<enter>" "copy mail to junk"
+macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+macro index,pager Mt ";<save-message>=Trash<enter>" "move mail to trash"
+macro index,pager Ct ";<copy-message>=Trash<enter>" "copy mail to trash"
+macro index,pager gs "<change-folder>=Sent Items<enter>" "go to sent"
+macro index,pager Ms ";<save-message>=Sent Items<enter>" "move mail to sent"
+macro index,pager Cs ";<copy-message>=Sent Items<enter>" "copy mail to sent"
+macro index,pager ga "<change-folder>=Archive<enter>" "go to archive"
+macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to archive"
+macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
+
