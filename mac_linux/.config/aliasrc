@@ -37,6 +37,7 @@ alias lowed='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %owed'
 alias lreview='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %review'
 
 # misc aliases
+alias abook="abook -C $HOME/.config/abook/abookrc --datafile $HOME/Dropbox/apps/abook/addressbook"
 alias e="emacsclient -n"
 alias mc="mc --nosubshell"
 alias tvim='nvim -c "colorscheme default"'
