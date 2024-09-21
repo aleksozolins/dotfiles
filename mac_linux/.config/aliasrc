@@ -1,5 +1,4 @@
 # directory shortcuts
-alias gf='cd ~/docs/finances'
 alias gd='cd ~/docs'
 alias gD='cd ~/Dropbox'
 alias gm='cd ~/mus'
@@ -11,21 +10,23 @@ alias gr='cd ~/repos'
 alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
 alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias startx='startx "$XDG_CONFIG_HOME"/X11/xinitrc'
+alias abook="abook -C $HOME/.config/abook/abookrc --datafile $HOME/Dropbox/apps/abook/addressbook"
+
+# misc aliases
+alias e="emacsclient -n"
+alias mc="mc --nosubshell"
+alias tvim='nvim -c "colorscheme default"'
+alias trans="transmission-remote"
+alias hdc="ls -a ~ | wc -l"
+alias vim='nvim'
+alias w3md='w3m duckduckgo.com'
+alias cls='clear'
+alias yt='pipe-viewer'
+alias ytdl='yt-dlp'
+alias db='dropbox-cli'
+alias stow='stow --no-folding'
 
 # ledger
-# 2023
-# Ledger with all transactions
-alias l23='ledger -f ~/docs/finances/ledger/2023--my-ledger.txt'
-# Ledger with only cleared transactions
-alias lc23='ledger -C -f ~/docs/finances/ledger/2023--my-ledger.txt'
-# Show register of transactions with the 'todo' tag
-alias ltodo23='ledger -f ~/docs/finances/ledger/2023-my-ledger.txt reg %todo'
-# Show register of transactions with the 'owed' tag
-alias lowed23='ledger -f ~/docs/finances/ledger/2023-my-ledger.txt reg %owed'
-# Show register of transactions with the 'review' tag
-alias lreview23='ledger -f ~/docs/finances/ledger/2023-my-ledger.txt reg %review'
-# 2024
-# Ledger with all transactions
 alias l='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt'
 # Ledger with only cleared transactions
 alias lc='ledger -C -f ~/docs/finances/ledger/2024--my-ledger.txt'
@@ -36,22 +37,15 @@ alias lowed='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %owed'
 # Show register of transactions with the 'review' tag
 alias lreview='ledger -f ~/docs/finances/ledger/2024--my-ledger.txt reg %review'
 
-# misc aliases
-alias abook="abook -C $HOME/.config/abook/abookrc --datafile $HOME/Dropbox/apps/abook/addressbook"
-alias e="emacsclient -n"
-alias mc="mc --nosubshell"
-alias tvim='nvim -c "colorscheme default"'
-alias trans="transmission-remote"
-alias hdc="ls -a ~ | wc -l"
-alias logout='pkill -u'
-alias vim='nvim'
-alias w3md='w3m duckduckgo.com'
-alias cls='clear'
-alias yt='pipe-viewer'
-alias ytdl='yt-dlp'
-alias solitaire='ttysolitaire --no-background-color'
-alias db='dropbox-cli'
-alias stow='stow --no-folding'
+# taskwarrior
+alias t='task'
+alias tc='task context'
+alias tcp='task context personal'
+alias tcz='task context zapier'
+alias ta='task add'
+alias tap='task add project:personal'
+alias taz='task add project:zapier'
+alias tu='task undo'
 
 # zapier
 alias zawsmonolith='aws-vault exec monolith-production-developer'
