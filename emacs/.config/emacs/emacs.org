@@ -475,12 +475,13 @@ Add this package to enable the hiding of dotfiles.
 
 We use the following keybindings for vterm:
 
-| key     | effect                                                            |
-|---------+-------------------------------------------------------------------|
-| C-z v   | vterm                                                             |
-| C-z V   | vterm-other-window                                                |
-| C-c C-t | Enter vterm-copy-mode which can be exited with RET                |
-| C-q     | Send the next key to vterm in case there is a conflict with emacs |
+| key           | effect                                                             |
+|---------------+--------------------------------------------------------------------|
+| C-z v         | vterm                                                              |
+| C-z V         | vterm-other-window                                                 |
+| C-c C-t       | Enter vterm-copy-mode which can be exited with RET                 |
+| C-q           | Send the next key to vterm in case there is a conflict with emacs  |
+| C-u m-x vterm | Use the prefix argument to be able to start another vterm instance |
 
 And the config:
 
@@ -493,7 +494,8 @@ And the config:
      ("C-z V" . vterm-other-window))
     :config
     (setq vterm-kill-buffer-on-exit t)
-    (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
+    (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
+    (add-hook 'vterm-mode-hook 'goto-address-mode) ;; Make links click-able!
 #+end_src
 
 ** Rainbow Delimiters
