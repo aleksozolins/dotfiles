@@ -293,7 +293,7 @@
   :config
   (setq vterm-kill-buffer-on-exit t)
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
-  (add-hook 'vterm-mode-hook 'goto-address-mode) ;; Make links click-able!
+  (add-hook 'vterm-mode-hook 'goto-address-mode)) ;; Make links click-able!
 
 ;; Rainbow Delimiters
 (use-package rainbow-delimiters
