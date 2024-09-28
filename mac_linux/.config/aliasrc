@@ -14,6 +14,7 @@ alias abook="abook -C $HOME/.config/abook/abookrc --datafile $HOME/Dropbox/apps/
 
 # misc aliases
 alias e="emacsclient -n"
+alias et="emacsclient -t"
 alias mc="mc --nosubshell"
 alias tvim='nvim -c "colorscheme default"'
 alias trans="transmission-remote"

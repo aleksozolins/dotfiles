@@ -33,11 +33,11 @@
 ;; Make sure all Emacs frames start fullscreen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; Line numbers
+;; Enable line numbers in general
 (column-number-mode)
-(global-display-line-numbers-mode -1) ; Right now they are disabled
+(global-display-line-numbers-mode)
 
-;; Disable line numbers for some modes
+;; Disable line numbers for specific modes
 (dolist (mode '(org-mode-hook
                 term-mode-hook
                 shell-mode-hook
@@ -47,6 +47,9 @@
                 mu4e-view-mode-hook
                 org-agenda-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; Enable relative line numbers (like in Vim)
+(setq display-line-numbers-type 'relative)
 
 (setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
 (recentf-mode 1) ; Have Emacs remember recently opened files when using find file

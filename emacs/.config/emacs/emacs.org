@@ -81,11 +81,11 @@ The following settings make the interface a bit more minimal and clean.
 ** Line Numbers
 
 #+begin_src elisp
-  ;; Line numbers
+  ;; Enable line numbers in general
   (column-number-mode)
-  (global-display-line-numbers-mode -1) ; Right now they are disabled
+  (global-display-line-numbers-mode)
 
-  ;; Disable line numbers for some modes
+  ;; Disable line numbers for specific modes
   (dolist (mode '(org-mode-hook
                   term-mode-hook
                   shell-mode-hook
@@ -94,7 +94,10 @@ The following settings make the interface a bit more minimal and clean.
                   mu4e-main-mode-hook
                   mu4e-view-mode-hook
                   org-agenda-mode-hook))
-    (add-hook mode (lambda () (display-line-numbers-mode 0)))) 
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+  ;; Enable relative line numbers (like in Vim)
+  (setq display-line-numbers-type 'relative)
 #+end_src
 
 ** Misc Emacs Settings
