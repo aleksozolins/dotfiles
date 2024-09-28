@@ -201,9 +201,9 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
   (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
-  ;; Unbind C-z (Can still use C-x C-z to suspend the frame
-  ;; I use C-z now for my quick launcher!
-  (global-unset-key (kbd "C-z"))
+  ;; Define C-c o as a prefix key
+  (define-prefix-command 'my-custom-prefix)
+  (global-set-key (kbd "C-c o") 'my-custom-prefix)
 #+end_src
 
 ** Bookmarks
@@ -297,6 +297,31 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
 
 * Packages
 
+** Evil Mode
+
+#+begin_src elisp
+  ;; Install Evil Mode
+  (use-package evil
+    :ensure t
+    :init
+    ;; Enable Evil mode globally
+    (setq evil-want-integration t) ;; This is optional since evil-collection handles it
+    (setq evil-want-keybinding nil) ;; Disable default evil keybindings for better integration with evil-collection
+    :config
+    (evil-mode 1))
+#+end_src
+
+** Evil Collection
+
+#+begin_src elisp
+  ;; Install Evil Collection
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
+#+end_src
+
 ** Esup
 
 Use this to see what takes long to load in your Emacs config. Just run =M-x esup=.
@@ -333,7 +358,13 @@ This is the main completion UI I've chosen, over Ivy or Helm as it is more minim
     :custom
     (vertico-cycle t)
     :init
-    (vertico-mode))
+    (vertico-mode)
+    :config
+    ;; Use vim-like keybindings for Vertico (evil)
+    (define-key vertico-map (kbd "C-j") 'vertico-next) ;; Move down
+    (define-key vertico-map (kbd "C-k") 'vertico-previous) ;; Move up
+    (define-key vertico-map (kbd "C-l") 'vertico-exit) ;; Select current entry
+    (define-key vertico-map (kbd "C-h") 'vertico-directory-up)) ;; Go up a directory in dired mode
 #+end_src
 
 ** Orderless
@@ -477,8 +508,8 @@ We use the following keybindings for vterm:
 
 | key           | effect                                                             |
 |---------------+--------------------------------------------------------------------|
-| C-z v         | vterm                                                              |
-| C-z V         | vterm-other-window                                                 |
+| C-c o v       | vterm                                                              |
+| C-c o V       | vterm-other-window                                                 |
 | C-c C-t       | Enter vterm-copy-mode which can be exited with RET                 |
 | C-q           | Send the next key to vterm in case there is a conflict with emacs  |
 | C-u m-x vterm | Use the prefix argument to be able to start another vterm instance |
@@ -490,8 +521,8 @@ And the config:
   (use-package vterm
     :ensure t
     :bind
-    (("C-z v" . vterm)
-     ("C-z V" . vterm-other-window))
+    (("C-c o v" . vterm)
+     ("C-c o V" . vterm-other-window))
     :config
     (setq vterm-kill-buffer-on-exit t)
     (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
@@ -553,6 +584,17 @@ I use this to manage my finances.
     (setq ledger-default-date-format "%Y-%m-%d"))
 #+end_src
 
+*** Evil Ledger
+
+#+begin_src elisp
+  (use-package evil-ledger
+    :ensure t
+    :after ledger-mode
+    :config
+    (setq evil-ledger-sort-key "S")
+    (add-hook 'ledger-mode-hook #'evil-ledger-mode))
+#+end_src
+
 ** Ripgrep (rg.el)
 
 rg.el adds to Emacs' grep mode functionality with editing/etc.
@@ -571,7 +613,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
   ;; Elfeed
   (use-package elfeed
     :ensure t
-    :bind ("C-z e" . elfeed) ;; My quick launcher
+    :bind ("C-c o e" . elfeed) ;; My quick launcher
     :config
     (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
     (pcase system-type
@@ -1001,7 +1043,7 @@ Settings of note:
   (use-package mu4e
     :ensure nil  ;; mu4e is usually installed with mu; ensure should be nil
     :bind
-    ("C-z m" . mu4e)
+    ("C-c o m" . mu4e)
     :hook
     (mu4e-compose-mode . (lambda () (auto-save-mode -1))) ;; Disable auto-save-mode when composing email to eliminate extra drafts
     ((mu4e-compose-mode . (lambda () (use-hard-newlines -1))))

@@ -122,9 +122,9 @@
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
 
-;; Unbind C-z (Can still use C-x C-z to suspend the frame
-;; I use C-z now for my quick launcher!
-(global-unset-key (kbd "C-z"))
+;; Define C-c o as a prefix key
+(define-prefix-command 'my-custom-prefix)
+(global-set-key (kbd "C-c o") 'my-custom-prefix)
 
 (setq bookmark-default-file
 	(pcase system-type
@@ -164,6 +164,23 @@
   :config
   (setq typescript-indent-level 2))
 
+;; Install Evil Mode
+(use-package evil
+  :ensure t
+  :init
+  ;; Enable Evil mode globally
+  (setq evil-want-integration t) ;; This is optional since evil-collection handles it
+  (setq evil-want-keybinding nil) ;; Disable default evil keybindings for better integration with evil-collection
+  :config
+  (evil-mode 1))
+
+;; Install Evil Collection
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
 ;; Esup
 (use-package esup
   :ensure t
@@ -185,7 +202,13 @@
   :custom
   (vertico-cycle t)
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :config
+  ;; Use vim-like keybindings for Vertico (evil)
+  (define-key vertico-map (kbd "C-j") 'vertico-next) ;; Move down
+  (define-key vertico-map (kbd "C-k") 'vertico-previous) ;; Move up
+  (define-key vertico-map (kbd "C-l") 'vertico-exit) ;; Select current entry
+  (define-key vertico-map (kbd "C-h") 'vertico-directory-up)) ;; Go up a directory in dired mode
 
 ;; Orderless
 (use-package orderless
@@ -288,8 +311,8 @@
 (use-package vterm
   :ensure t
   :bind
-  (("C-z v" . vterm)
-   ("C-z V" . vterm-other-window))
+  (("C-c o v" . vterm)
+   ("C-c o V" . vterm-other-window))
   :config
   (setq vterm-kill-buffer-on-exit t)
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
@@ -326,6 +349,13 @@
   (setq ledger-clear-whole-transactions 1)
   (setq ledger-default-date-format "%Y-%m-%d"))
 
+(use-package evil-ledger
+  :ensure t
+  :after ledger-mode
+  :config
+  (setq evil-ledger-sort-key "S")
+  (add-hook 'ledger-mode-hook #'evil-ledger-mode))
+
 ;; Ripgrep
 (use-package rg
   :defer t
@@ -335,7 +365,7 @@
 ;; Elfeed
 (use-package elfeed
   :ensure t
-  :bind ("C-z e" . elfeed) ;; My quick launcher
+  :bind ("C-c o e" . elfeed) ;; My quick launcher
   :config
   (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
   (pcase system-type
@@ -702,7 +732,7 @@
 (use-package mu4e
   :ensure nil  ;; mu4e is usually installed with mu; ensure should be nil
   :bind
-  ("C-z m" . mu4e)
+  ("C-c o m" . mu4e)
   :hook
   (mu4e-compose-mode . (lambda () (auto-save-mode -1))) ;; Disable auto-save-mode when composing email to eliminate extra drafts
   ((mu4e-compose-mode . (lambda () (use-hard-newlines -1))))
