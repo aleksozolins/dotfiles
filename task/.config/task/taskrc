@@ -28,4 +28,3 @@ context.personal.read=project:personal
 context.personal.write=project:personal
 context.zapier.read=project:zapier
 context.zapier.write=project:zapier
-context=personal
