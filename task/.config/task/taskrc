@@ -39,4 +39,16 @@ report.backlog.description=Backlog of tasks
 # I modify the default next report to exclude items on my backlog
 report.next.filter=status:pending -WAITING limit:page -backlog
 
+# The following has to do with tasksh and reviewing tasks. We add a UDA and a report
+uda.reviewed.type=date
+uda.reviewed.label=Reviewed
+report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
+report._reviewed.columns=uuid
+report._reviewed.sort=reviewed+,modified+
+report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
+
+# More for tasksh -- This will clear the screen before running any command
+tasksh.autoclear=1
+
 # Just a separator to keep things clean
+
