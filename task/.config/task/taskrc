@@ -24,7 +24,19 @@ hooks.location=~/Dropbox/apps/task/hooks
 #include solarized-light-256.theme
 #include no-color.theme
 
+# Here we add 2 contexts -- 1 for Personal tasks and one for Zapier tasks. Note we stick to lowercase.
 context.personal.read=project:personal
 context.personal.write=project:personal
 context.zapier.read=project:zapier
 context.zapier.write=project:zapier
+
+# Here we add a report named 'backlog'. Backlog is where I keep tasks I don't want to see in the default next report.
+report.backlog.filter=+backlog
+report.backlog.columns=id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description,urgency
+report.backlog.labels=ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
+report.backlog.sort=urgency-
+report.backlog.description=Backlog of tasks
+# I modify the default next report to exclude items on my backlog
+report.next.filter=status:pending -WAITING limit:page -backlog
+
+# Just a separator to keep things clean
