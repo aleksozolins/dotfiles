@@ -45,7 +45,8 @@
                 mu4e-headers-mode-hook
                 mu4e-main-mode-hook
                 mu4e-view-mode-hook
-                org-agenda-mode-hook))
+                org-agenda-mode-hook
+		vterm-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Enable relative line numbers (like in Vim)
