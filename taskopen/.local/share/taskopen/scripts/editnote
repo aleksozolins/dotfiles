@@ -1,0 +1,12 @@
+#!/bin/bash
+# Opens a Notes file and creates a header if file does not exist.
+
+# Usage
+if [ $# -eq 3 ]; then
+	if [ ! -e $1 ]; then
+		echo "* [ ] $2  #$3" > $1
+	fi
+	$EDITOR $1
+else
+	echo "Usage: $0 <file-path> <description> <uuid>"
+fi

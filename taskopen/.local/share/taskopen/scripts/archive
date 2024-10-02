@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# This script is supposed to be used with an archive action such as the following:
+#   archfiles.regex = "/home/user/((?:Documents|Notes)/.*)"
+#   archfiles.command = "archive $FILE ~/archive/$LAST_MATCH"
+#   archfiles.filtercommand = "archive $FILE"
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 <srcpath> <dstpath>"
+	exit 1
+fi
+
+# only test if path is ready to be archived
+SRCFILE=$1
+
+# taskwarrior does not support search patterns with '/'s
+# as a workaround, we replace the '/'s by a regex '.'
+SEARCH=${SRCFILE//\//.}
+
+if [ $# -eq 1 ]; then
+	res=$(task _ids ${SEARCH} | wc -l)
+	if [ $res -eq 1 ]; then
+		echo "okay"
+		exit 0
+	else
+		echo "Not archivable"
+		exit 1
+	fi
+else
+	DSTFILE=$2
+	DSTPATH=$(dirname $2)
+
+	mkdir -p ${DSTPATH}
+	mv -i ${SRCFILE} ${DSTFILE}
+
+	ids=$(task uuids ${SEARCH})
+
+	task $ids denotate -- ${SRCFILE} && task $ids annotate -- ${DSTFILE}
+fi
