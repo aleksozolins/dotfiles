@@ -845,7 +845,3 @@
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
-
-(when (and (eq system-type 'darwin) ; Check if on macOS
-           (not (server-running-p))) ; Check if server is not already running
-  (server-start))                    ; Start the server if it's not running

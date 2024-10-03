@@ -1164,13 +1164,3 @@ Move customization variables to a separate file and load it
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
 #+end_src
-
-* Server Start (macOS)
-
-Start the server if it's not started already on macOS only (on Linux it starts at login).
-
-#+begin_src elisp
-  (when (and (eq system-type 'darwin) ; Check if on macOS
-             (not (server-running-p))) ; Check if server is not already running
-    (server-start))                    ; Start the server if it's not running  
-#+end_src
