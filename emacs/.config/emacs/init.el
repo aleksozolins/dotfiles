@@ -352,19 +352,21 @@
          ("C-x L" . pulsar-highlight-dwim)))
 
 ;; Ledger Mode
-(use-package ledger-mode
-  :defer t
-  :mode ("-ledger\\.txt\\'" . ledger-mode)  ;; Associate files ending in _ledger.txt with ledger-mode
-  :config
-  (setq ledger-clear-whole-transactions 1)
-  (setq ledger-default-date-format "%Y-%m-%d"))
+(when (eq system-type 'darwin)
+  (use-package ledger-mode
+    :defer t
+    :mode ("-ledger\\.txt\\'" . ledger-mode)  ;; Associate files ending in _ledger.txt with ledger-mode
+    :config
+    (setq ledger-clear-whole-transactions 1)
+    (setq ledger-default-date-format "%Y-%m-%d")))
 
-(use-package evil-ledger
-  :ensure t
-  :after ledger-mode
-  :config
-  (setq evil-ledger-sort-key "S")
-  (add-hook 'ledger-mode-hook #'evil-ledger-mode))
+(when (eq system-type 'darwin)
+  (use-package evil-ledger
+    :ensure t
+    :after ledger-mode
+    :config
+    (setq evil-ledger-sort-key "S")
+    (add-hook 'ledger-mode-hook #'evil-ledger-mode)))
 
 ;; Ripgrep
 (use-package rg
