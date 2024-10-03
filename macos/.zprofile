@@ -1,6 +1,6 @@
 # Some environment variables
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="emacsclient -t -n -a nvim"
+export VISUAL="emacsclient -t -n -a nvim"
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # Maybe disable this to with with the Zapier CLI

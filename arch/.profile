@@ -5,8 +5,8 @@
 for dir in "$HOME/.local/bin" $(find "$HOME/.local/bin" -type d); do export PATH="$dir:$PATH"; done
 
 # More variables to export
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="emacsclient -t -n -a nvim"
+export VISUAL="emacsclient -t -b -a nvim"
 export TERMINAL="alacritty"
 export BROWSER="firefox"
 export READER="zathura"
