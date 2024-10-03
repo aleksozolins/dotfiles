@@ -50,6 +50,18 @@ System configuration options:
   (setq use-package-always-ensure t)
 #+end_src
 
+** exec-path-from-shell
+
+This is needed only on the Mac and makes Emacs can evaluate $PATH correctly.
+
+#+begin_src elisp
+  (when (eq system-type 'darwin)
+    (use-package exec-path-from-shell
+      :ensure t
+      :config
+      (exec-path-from-shell-initialize)))
+#+end_src
+
 ** Clean Up The Interface
 
 The following settings make the interface a bit more minimal and clean.

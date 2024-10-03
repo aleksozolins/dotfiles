@@ -11,6 +11,12 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(when (eq system-type 'darwin)
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize)))
+
 (setq inhibit-startup-message t)      ; Disable startup message
 (menu-bar-mode -1)                    ; Disable the menu bar
 (scroll-bar-mode -1)                  ; Disable the scroll bar
