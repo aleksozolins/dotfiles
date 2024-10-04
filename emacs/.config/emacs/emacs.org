@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2024-07-14
++ Updated: 2024-10-03
 
 Information pertaining to my current build of Emacs:
 
@@ -15,8 +15,8 @@ Information pertaining to my current build of Emacs:
 #+end_src
 
 #+RESULTS:
-: GNU Emacs 29.3 (build 1, aarch64-apple-darwin21.6.0, NS appkit-2113.60 Version 12.6.6 (Build 21G646))
-:  of 2024-03-24
+: GNU Emacs 29.4 (build 1, aarch64-apple-darwin23.6.0, NS appkit-2487.70 Version 14.7 (Build 23H124))
+:  of 2024-10-02
 
 System configuration options:
 
@@ -152,12 +152,24 @@ Below are any settings where I'm not quite sure where to put in this file just y
 
 Very basic setting for now. Using Iosevka. Note we set it a bit differently in Mac vs Linux since we're running in daemon mode in Linux.
 
+Also note we are using some magic to delay setting the font. Without that, using emacs-plus it wasn't setting on startup.
+
 #+begin_src elisp
-  (pcase system-type
-    ('gnu/linux
-     (setq default-frame-alist '((font . "Iosevka-14"))))
-    ('darwin
-     (set-face-attribute 'default nil :font "Iosevka" :height 190)))
+  (defun set-my-font ()
+    (pcase system-type
+      ('gnu/linux
+       (setq default-frame-alist '((font . "Iosevka-14"))))
+      ('darwin
+       (set-face-attribute 'default nil :font "Iosevka" :height 190))))
+
+  ;; Apply to existing frames and any future frames
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (set-my-font)))
+
+  ;; Ensure the font is applied to the initial frame
+  (set-my-font)
 #+end_src
 
 ** Set a Theme

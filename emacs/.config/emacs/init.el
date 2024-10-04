@@ -86,11 +86,21 @@
 ;; Set authinfo Source
 (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
-(pcase system-type
-  ('gnu/linux
-   (setq default-frame-alist '((font . "Iosevka-14"))))
-  ('darwin
-   (set-face-attribute 'default nil :font "Iosevka" :height 190)))
+(defun set-my-font ()
+  (pcase system-type
+    ('gnu/linux
+     (setq default-frame-alist '((font . "Iosevka-14"))))
+    ('darwin
+     (set-face-attribute 'default nil :font "Iosevka" :height 190))))
+
+;; Apply to existing frames and any future frames
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (set-my-font)))
+
+;; Ensure the font is applied to the initial frame
+(set-my-font)
 
 (setq modus-themes-mode-line '(accented)
     modus-themes-bold-constructs t
