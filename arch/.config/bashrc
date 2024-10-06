@@ -13,3 +13,7 @@ alias sudo='sudo '
 if [ -f ~/.config/aliasrc ]; then
     source ~/.config/aliasrc
 fi
+
+# Set GPG_TTY to ensure that GPG can find the correct terminal for passphrase input
+# This is required for GPG to work correctly when signing commits, both locally and over SSH
+export GPG_TTY=$(tty)
