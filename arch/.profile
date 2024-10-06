@@ -48,5 +48,10 @@ sudo -n loadkeys $XDG_CONFIG_HOME/ttymaps.kmap 2>/dev/null
 # Ensure the system clock is accurate
 sudo timedatectl set-ntp true
 
+# Start Emacs in daemon mode if not already running
+if ! pgrep -u "$USER" -x "emacs" > /dev/null; then
+    emacs --daemon &
+fi
+
 # start DWM if TTY1
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x dwm >/dev/null && exec startx "$XDG_CONFIG_HOME/X11/xinitrc"
