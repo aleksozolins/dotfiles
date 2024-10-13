@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Set environment variables
+export RESTIC_REPOSITORY="/mnt/8tbexternal/restic"
+export RESTIC_PASSWORD="PlumLimit81!"
+
+# Backup root directory excluding /mnt
+restic backup / --exclude=/mnt --tag root-backup --repo "$RESTIC_REPOSITORY"
+
+# Backup /mnt/raid0
+restic backup /mnt/raid0 --tag raid0-backup --repo "$RESTIC_REPOSITORY"
