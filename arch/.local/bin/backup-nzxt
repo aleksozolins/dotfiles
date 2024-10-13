@@ -5,7 +5,17 @@ export RESTIC_REPOSITORY="/mnt/8tbexternal/restic"
 export RESTIC_PASSWORD="PlumLimit81!"
 
 # Backup root directory excluding /mnt
-sudo -E restic backup / --exclude=/mnt --tag root-backup --repo "$RESTIC_REPOSITORY"
+sudo -E restic backup / \
+  --exclude=/mnt \
+  --exclude=/proc \
+  --exclude=/sys \
+  --exclude=/dev \
+  --exclude=/run \
+  --exclude=/tmp \
+  --exclude=/lost+found \
+  --exclude=/var/cache \
+  --exclude=/var/tmp \
+  --tag root-backup --repo "$RESTIC_REPOSITORY"
 
 # Backup /mnt/raid0
 sudo -E restic backup /mnt/raid0 --tag raid0-backup --repo "$RESTIC_REPOSITORY"
