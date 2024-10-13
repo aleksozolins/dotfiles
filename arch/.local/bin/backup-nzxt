@@ -16,6 +16,7 @@ sudo -E restic backup / \
   --exclude=/var/cache \
   --exclude=/var/tmp \
   --exclude=/home/aleksozolins/Dropbox/.dropbox.cache \
+  --exclude=/home/aleksozolins/.cache \
   --tag root-backup --repo "$RESTIC_REPOSITORY"
 
 # Backup /mnt/raid0
