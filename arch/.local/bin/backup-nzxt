@@ -2,7 +2,7 @@
 
 # Set environment variables
 export RESTIC_REPOSITORY="/mnt/8tbexternal/restic"
-export RESTIC_PASSWORD="PlumLimit81!"
+export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
 
 # Backup root directory excluding /mnt
 sudo -E restic backup / \
