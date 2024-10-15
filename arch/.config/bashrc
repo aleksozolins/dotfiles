@@ -19,6 +19,8 @@ fi
 export GPG_TTY=$(tty)
 
 # Check if not inside a tmux session, if the terminal is not TTY1 or TTY2, and if it's an interactive shell
-if [ -z "$TMUX" ] && [ -n "$PS1" ] && [ "$(tty)" != "/dev/tty1" ] && [ "$(tty)" != "/dev/tty2" ]; then
+# Also won't start tmux if ssh
+if [ -z "$TMUX" ] && [ -n "$PS1" ] && [ -z "$SSH_CONNECTION" ] && [ "$(tty)" != "/dev/tty1" ] && [ "$(tty)" != "/dev/tty2" ]; then
     tmux
 fi
+
