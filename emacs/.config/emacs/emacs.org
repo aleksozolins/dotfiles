@@ -1083,6 +1083,12 @@ Settings of note:
       (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
       (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
     :config
+    ; Function to fix contexts not loading (race condition on Linux)
+    (defun my-mu4e-load-contexts ()
+      "Force reload mu4e contexts after initialization."
+      (mu4e-context-switch nil)) ;; This reloads the contexts and switches to the first context
+    
+    (add-hook 'mu4e-main-mode-hook #'my-mu4e-load-contexts)
     ;; Set up paths and specific configurations depending on the system
     (pcase system-type
       ('gnu/linux
