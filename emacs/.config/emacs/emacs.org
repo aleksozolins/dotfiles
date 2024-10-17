@@ -1083,12 +1083,42 @@ Settings of note:
       (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
       (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
     :config
-    ; Function to fix contexts not loading (race condition on Linux)
-    (defun my-mu4e-load-contexts ()
-      "Force reload mu4e contexts after initialization."
-      (mu4e-context-switch nil)) ;; This reloads the contexts and switches to the first context
+    ; First we set the contexts
+    (setq mu4e-contexts
+  	(list
+  	 ;; aleks@ozolins.xyz
+  	 (make-mu4e-context
+            :name "1-aleks@ozolins.xyz"
+            :match-func
+            (lambda (msg)
+              (when msg
+                (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address     . "aleks@ozolins.xyz")
+                    (user-full-name        . "Aleks Ozolins")
+                    (smtpmail-smtp-server  . "smtp.mailfence.com")
+                    (smtpmail-smtp-service . 465)
+                    (smtpmail-stream-type  . ssl)
+                    (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
+                    (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
+                    (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
+                    (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
+  	 ;; aleks.admin@ozolins.xyz
+  	 (make-mu4e-context
+            :name "2-aleks.admin@ozolins.xyz"
+            :match-func
+            (lambda (msg)
+              (when msg
+                (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address     . "aleks.admin@ozolins.xyz")
+                    (user-full-name        . "Aleks Ozolins")
+                    (smtpmail-smtp-server  . "smtp.mailfence.com")
+                    (smtpmail-smtp-service . 465)
+                    (smtpmail-stream-type  . ssl)
+                    (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
+                    (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
+                    (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
+                    (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
     
-    (add-hook 'mu4e-main-mode-hook #'my-mu4e-load-contexts)
     ;; Set up paths and specific configurations depending on the system
     (pcase system-type
       ('gnu/linux
@@ -1130,61 +1160,26 @@ Settings of note:
     (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
     ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
     (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
-
+    
     ;; Configure how to send mails
     ;; Note: .authinfo.gpg is used by default for authentication.
     ;; You can customize the variable auth-sources
     (setq message-send-mail-function 'smtpmail-send-it)
-
+    
     (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-
+    
     (setq mu4e-maildir-shortcuts
-        '(("/aleks@ozolins.xyz/Inbox"           . ?i)
-          ("/aleks@ozolins.xyz/Sent Items"      . ?s)
-          ("/aleks@ozolins.xyz/Drafts"          . ?d)
-          ("/aleks@ozolins.xyz/Archive"         . ?A)
-          ("/aleks@ozolins.xyz/Trash"           . ?t)
-          ("/aleks@ozolins.xyz/Admin"           . ?a)
-          ("/aleks@ozolins.xyz/Receipts"        . ?r)
-          ("/aleks@ozolins.xyz/Parents"         . ?p)
-          ("/aleks@ozolins.xyz/Sus"             . ?u)
-          ("/aleks@ozolins.xyz/Spam?"           . ?S)))
-
-    (setq mu4e-contexts
-        (list
-         ;; aleks@ozolins.xyz
-         (make-mu4e-context
-          :name "1-aleks@ozolins.xyz"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address     . "aleks@ozolins.xyz")
-                  (user-full-name        . "Aleks Ozolins")
-                  (smtpmail-smtp-server  . "smtp.mailfence.com")
-                  (smtpmail-smtp-service . 465)
-                  (smtpmail-stream-type  . ssl)
-                  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
-                  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
-                  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-                  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))
-         ;; aleks.admin@ozolins.xyz
-         (make-mu4e-context
-          :name "2-aleks.admin@ozolins.xyz"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/aleks@ozolins.xyz" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address     . "aleks.admin@ozolins.xyz")
-                  (user-full-name        . "Aleks Ozolins")
-                  (smtpmail-smtp-server  . "smtp.mailfence.com")
-                  (smtpmail-smtp-service . 465)
-                  (smtpmail-stream-type  . ssl)
-                  (mu4e-drafts-folder    . "/aleks@ozolins.xyz/Drafts")
-                  (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
-                  (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
-                  (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
-  )
+  	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
+            ("/aleks@ozolins.xyz/Sent Items"      . ?s)
+            ("/aleks@ozolins.xyz/Drafts"          . ?d)
+            ("/aleks@ozolins.xyz/Archive"         . ?A)
+            ("/aleks@ozolins.xyz/Trash"           . ?t)
+            ("/aleks@ozolins.xyz/Admin"           . ?a)
+            ("/aleks@ozolins.xyz/Receipts"        . ?r)
+            ("/aleks@ozolins.xyz/Parents"         . ?p)
+            ("/aleks@ozolins.xyz/Sus"             . ?u)
+            ("/aleks@ozolins.xyz/Spam?"           . ?S)))
+    )
 #+end_src
 
 * Custom Set Variables
