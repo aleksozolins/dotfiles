@@ -764,7 +764,9 @@
     (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
     (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
   :config
-  ; First we set the contexts
+  ; First we set the context-policy and contexts
+  (setq mu4e-compose-context-policy 'pick-first) ;; Something to do with contexts below?
+  (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
   (setq mu4e-contexts
 	(list
 	 ;; aleks@ozolins.xyz
@@ -819,8 +821,6 @@
   ;; Settings that apply reglardless of system type...
   (setq mu4e-maildir "~/.local/share/mail")
   (setq mu4e-context-policy 'pick-first)
-  (setq mu4e-compose-context-policy 'pick-first) ;; Something to do with contexts below?
-  (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
   (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org") ;; Use org-contacts
   (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
   (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
