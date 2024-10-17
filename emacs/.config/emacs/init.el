@@ -791,8 +791,7 @@
     ('gnu/linux
      ;; Linux-specific settings
      (setq mu4e-attachment-dir  "~/dls")
-     (setq mu4e-get-mail-command "mbsync -a")
-     (mu4e t)) ;; Run on Linux to check mail in the background
+     (setq mu4e-get-mail-command "mbsync -a"))
     ('darwin
      ;; macOS-specific settings
      (setq mu4e-attachment-dir  "~/Downloads")
