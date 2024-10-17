@@ -5,7 +5,7 @@ no_annotation_hook="addnote $ID"
 task_attributes="priority,project,tags,description"
 --sort:"urgency-,annot"
 --active-tasks:"+PENDING"
-EDITOR=nvim
+EDITOR=emacsclient
 path_ext=~/.local/share/taskopen/scripts
 [Actions]
 files.target=annotations
