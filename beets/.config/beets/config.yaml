@@ -1,0 +1,20 @@
+directory: /mnt/raid0/audio/music-library
+library: /mnt/raid0/audio/music-library/beetslibrary.db
+
+plugins: spotify deezer fromfilename edit fetchart scrub
+
+scrub:
+    auto: yes    # Using the scrub plugin, remove all metadata before writing new metadata
+
+paths:
+    default: $albumartist/$album%aunique{}/$track $title
+    singleton: Non-Album/$artist/$title
+    comp: Compilations/$album%aunique{}/$track $title
+    genre:classical comp:true: Classical/Compilations/$album%aunique{}/$track $title
+    genre:classical: Classical/$albumartist/$album%aunique{}/$track $title
+    genre:horn: Classical/$albumartist/$album%aunique{}/$track $title
+    albumtype:soundtrack: Soundtracks/$album/$track $title
+
+import:
+    move: yes    # Move files into dir when importing
+    languages: en
