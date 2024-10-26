@@ -36,8 +36,11 @@ report.backlog.columns=id,start.age,entry.age,depends,priority,project,tags,recu
 report.backlog.labels=ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
 report.backlog.sort=urgency-
 report.backlog.description=Backlog of tasks
+
 # I modify the default next report to exclude items on my backlog
 report.next.filter=status:pending -WAITING limit:page -backlog
+# And also change description to description.count so we don't see annotations but see annotation indicators instead
+report.next.columns=id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 
 # The following has to do with tasksh and reviewing tasks. We add a UDA and a report
 uda.reviewed.type=date
