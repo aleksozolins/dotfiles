@@ -50,5 +50,5 @@ report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +P
 # More for tasksh -- This will clear the screen before running any command
 tasksh.autoclear=1
 
-# Just a separator to keep things clean
-
+# Set context. Note we'll keep this a personal when making commits
+context=personal
