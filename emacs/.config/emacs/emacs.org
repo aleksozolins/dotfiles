@@ -236,13 +236,10 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 
 ** Bookmarks
 
-Set the bookmarks file to synchronize via Dropbox. The same file will be in slightly different locations depending on whether we're on Linux or macOS.
+Set the bookmarks file to synchronize via Dropbox.
 
 #+begin_src elisp
-  (setq bookmark-default-file
-	(pcase system-type
-	  ('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
-	  ('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
+  (setq bookmark-default-file "~/Dropbox/apps/emacs/bookmarks")
 #+end_src
 
 Bind =bookmark-bmenu-list= to =F8=

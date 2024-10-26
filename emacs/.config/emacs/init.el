@@ -2,7 +2,7 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+  		       ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -52,7 +52,7 @@
                 mu4e-main-mode-hook
                 mu4e-view-mode-hook
                 org-agenda-mode-hook
-		vterm-mode-hook))
+  	      vterm-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Enable relative line numbers (like in Vim)
@@ -125,16 +125,16 @@
 
 ;; Backup options
 (setq backup-directory-alist '(("." . "~/.config/emacs/backup/"))
-	backup-by-copying t    ; Don't delink hardlinks
-	version-control t      ; Use version numbers on backups
-	delete-old-versions t  ; Automatically delete excess backups
-	kept-new-versions 20   ; how many of the newest versions to keep
-	kept-old-versions 5    ; and how many of the old
-	)
+      backup-by-copying t    ; Don't delink hardlinks
+      version-control t      ; Use version numbers on backups
+      delete-old-versions t  ; Automatically delete excess backups
+      kept-new-versions 20   ; how many of the newest versions to keep
+      kept-old-versions 5    ; and how many of the old
+      )
 
 ;; auto-save
 (setq auto-save-file-name-transforms
-	`((".*" ,temporary-file-directory t)))
+      `((".*" ,temporary-file-directory t)))
 
 (setq kill-buffer-delete-auto-save-files t)
 
@@ -146,10 +146,7 @@
 (define-prefix-command 'my-custom-prefix)
 (global-set-key (kbd "C-c o") 'my-custom-prefix)
 
-(setq bookmark-default-file
-	(pcase system-type
-	  ('gnu/linux "~/Dropbox/apps/emacs/bookmarks")
-	  ('darwin "~/Library/CloudStorage/Dropbox/apps/emacs/bookmarks")))
+(setq bookmark-default-file "~/Dropbox/apps/emacs/bookmarks")
 
 (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
 
@@ -266,17 +263,17 @@
   (global-corfu-mode 1)
   (corfu-popupinfo-mode 1)  ; shows documentation after `corfu-popupinfo-delay'
   (setq tab-always-indent 'complete)  ; This is needed for tab to work properly
-  
+
   :config
   (define-key corfu-map (kbd "<tab>") #'corfu-complete)
-  
+
   ;; Function to enable Corfu in the minibuffer when Vertico is not active,
   ;; useful for prompts such as `eval-expression' and `shell-command'.
   (defun contrib/corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico is not active."
     (unless (bound-and-true-p vertico--input)
       (corfu-mode 1)))
-  
+
   :hook
   (minibuffer-setup . contrib/corfu-enable-always-in-minibuffer))
 
@@ -289,21 +286,21 @@
   ;; Use GNU ls as insert-directory-program in case of macOS
   (when (eq system-type 'darwin)
     (setq insert-directory-program "gls"))
-  
+
   ;; Set listing options
   (setq dired-listing-switches "-Alh --group-directories-first")
   (setq dired-dwim-target t)
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'top)
-  
+
   ;; Default to hiding details
   (add-hook 'dired-mode-hook
             (lambda ()
               (dired-hide-details-mode 1)))
-  
+
   ;; Enable using 'a' to visit directories
   (put 'dired-find-alternate-file 'disabled nil)
-  
+
   ;; Function to open files using the system's default application
   (defun dired-open-file ()
     "Open the file at point in Dired with the appropriate system application."
@@ -550,32 +547,32 @@
       `(("t" "Task (Quick Capture)" entry (file "~/docs/denote/20230903T141829--task-inbox__agenda_inbox.txt")
          "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-	("T" "Task (Detailed Personal)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Personal")
+      ("T" "Task (Detailed Personal)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Personal")
          "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
          "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-	
+
         ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
          my-org-contacts-template :empty-lines 1 :kill-buffer t)
-	
+
         ("m" "Metrics")
         ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
          "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
-	
+
         ("M" "Mouthpiece")
         ("M1" "One-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: one-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-	
+
         ("M2" "Two-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: two-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-	
+
         ("Mc" "Mouthpiece Cup" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model} Cup\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: cup\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-	
+
         ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-	
+
         ("e" "Event" entry (file+headline "~/docs/denote/20220727T113610--calendar__agenda.org" "Events")
                "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)))
 
@@ -616,12 +613,12 @@
   (interactive)
   (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
     (with-current-buffer buffer
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	    (org-ctrl-c-ctrl-c)
-	    (forward-line)))
-	(save-buffer))
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	  (org-ctrl-c-ctrl-c)
+	  (forward-line)))
+      (save-buffer))
     (display-buffer buffer)))
 
 (defun my-kill-all-agenda-files ()
@@ -629,9 +626,9 @@
   (interactive)
   (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
     (dolist (buffer (buffer-list))
-	(let ((buffer-file-name (buffer-file-name buffer)))
-	  (when (and buffer-file-name (member buffer-file-name agenda-files))
-	    (kill-buffer buffer)))))
+      (let ((buffer-file-name (buffer-file-name buffer)))
+	(when (and buffer-file-name (member buffer-file-name agenda-files))
+	  (kill-buffer buffer)))))
   (org-agenda-quit))
 
 (with-eval-after-load 'org-agenda
@@ -709,13 +706,13 @@
   (with-eval-after-load 'org-capture
     (setq denote-org-capture-specifiers "%l\n%i\n%?")
     (add-to-list 'org-capture-templates
-		 '("n" "New note (with denote.el)" plain
-		   (file denote-last-path)
-		   #'denote-org-capture
-		   :no-save t
-		   :immediate-finish nil
-		   :kill-buffer t
-		   :jump-to-captured t)))
+  	       '("n" "New note (with denote.el)" plain
+  		 (file denote-last-path)
+  		 #'denote-org-capture
+  		 :no-save t
+  		 :immediate-finish nil
+  		 :kill-buffer t
+  		 :jump-to-captured t)))
 
   ;; Journaling
   (require 'denote-journal-extras)
@@ -768,9 +765,9 @@
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-compose-context-policy 'pick-first)
   (setq mu4e-contexts
-	(list
-	 ;; aleks@ozolins.xyz
-	 (make-mu4e-context
+      (list
+       ;; aleks@ozolins.xyz
+       (make-mu4e-context
           :name "1-aleks@ozolins.xyz"
           :match-func
           (lambda (msg)
@@ -785,7 +782,7 @@
                   (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
                   (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
                   (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
-  
+
   ;; Set up paths and specific configurations depending on the system
   (pcase system-type
     ('gnu/linux
@@ -824,16 +821,16 @@
   (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
   ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
   (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
-  
+
   ;; Configure how to send mails
   ;; Note: .authinfo.gpg is used by default for authentication.
   ;; You can customize the variable auth-sources
   (setq message-send-mail-function 'smtpmail-send-it)
-  
+
   (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-  
+
   (setq mu4e-maildir-shortcuts
-	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
+      '(("/aleks@ozolins.xyz/Inbox"           . ?i)
           ("/aleks@ozolins.xyz/Sent Items"      . ?s)
           ("/aleks@ozolins.xyz/Drafts"          . ?d)
           ("/aleks@ozolins.xyz/Archive"         . ?A)
