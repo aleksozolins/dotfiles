@@ -2,8 +2,6 @@
 export EDITOR="nvim"
 export VISUAL="nvim"
 export XDG_CONFIG_HOME="$HOME/.config"
-export HISTFILE=~/.local/share/zsh/history
-export ZSH_SESSION_DIR=~/.local/share/zsh/sessions
 
 # Maybe disable this to with with the Zapier CLI
 # . /opt/homebrew/opt/asdf/libexec/asdf.sh
