@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set environment variables
-export RESTIC_REPOSITORY="/mnt/8tbexternal/restic"
+export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
 export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
 
 # Backup root directory excluding /mnt
@@ -19,5 +19,5 @@ sudo -E restic backup / \
   --exclude=/home/aleksozolins/.cache \
   --tag root-backup --repo "$RESTIC_REPOSITORY"
 
-# Backup /mnt/raid0
-sudo -E restic backup /mnt/raid0 --tag raid0-backup --repo "$RESTIC_REPOSITORY"
+# Backup /mnt/unas-main
+sudo -E restic backup /mnt/unas-main --tag unas-main-backup --repo "$RESTIC_REPOSITORY"
