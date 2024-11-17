@@ -1,39 +1,6 @@
 #!/bin/bash
 
 # Set environment variables
-# export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
-# export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
-
-# Backup important directories on root
-# sudo -E restic backup \
-#   /etc \
-#   /srv \
-#   /home \
-#   /root \
-#   /var/lib \
-#   --tag root-backup --repo "$RESTIC_REPOSITORY"
-
-# Backup /mnt/unas-ozofam_share
-# sudo -E restic backup /mnt/unas-ozofam_share \
-#   --tag unas-ozofam_share-backup --repo "$RESTIC_REPOSITORY"
-
-# Backup /mnt/unas-aleks-personal
-# sudo -E restic backup /mnt/unas-aleks-personal \
-#   --tag unas-aleks-personal-backup --repo "$RESTIC_REPOSITORY"
-
-# Backup /mnt/unas-erin-personal
-# sudo -E restic backup /mnt/unas-erin-personal \
-#   --tag unas-erin-personal-backup --repo "$RESTIC_REPOSITORY"
-
-# Backup /mnt/unas-main excluding plex
-# sudo -E restic backup /mnt/unas-main \
-#   --exclude=/mnt/unas-main/plex \
-#   --tag unas-main-backup --repo "$RESTIC_REPOSITORY"
-
-
-# HERE'S NEW VERSION!!!
-
-# Set environment variables
 export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
 export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
 LOG_FILE="/home/aleksozolins/.resticlog"
@@ -125,7 +92,7 @@ fi
 
 # Backup /mnt/unas-main excluding plex
 MOUNT_POINT="/mnt/unas-main"
-log "Starting backup for $MOUNT_POINT..."
+log "Starting backup for $MOUNT_POINT (excluding /plex)..."
 if check_mount "$MOUNT_POINT"; then
     sudo -E restic backup "$MOUNT_POINT" \
       --exclude="$MOUNT_POINT/plex" \
