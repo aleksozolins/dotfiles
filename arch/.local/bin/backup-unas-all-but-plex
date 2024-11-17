@@ -70,8 +70,8 @@ sudo -E restic backup \
   /home \
   /root \
   /var/lib \
-  --tag root-backup --repo "$RESTIC_REPOSITORY" 2>&1 | tee -a "$LOG_FILE"
-if [ ${PIPESTATUS[0]} -eq 0 ]; then
+  --tag root-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+if [ $? -eq 0 ]; then
     log "Root directory backup completed successfully."
 else
     log "Error: Root directory backup failed."
@@ -82,8 +82,8 @@ MOUNT_POINT="/mnt/unas-ozofam_share"
 log "Starting backup for $MOUNT_POINT..."
 if check_mount "$MOUNT_POINT"; then
     sudo -E restic backup "$MOUNT_POINT" \
-      --tag unas-ozofam_share-backup --repo "$RESTIC_REPOSITORY" 2>&1 | tee -a "$LOG_FILE"
-    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+      --tag unas-ozofam_share-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+    if [ $? -eq 0 ]; then
         log "Backup completed successfully for $MOUNT_POINT."
     else
         log "Error: Backup failed for $MOUNT_POINT."
@@ -97,8 +97,8 @@ MOUNT_POINT="/mnt/unas-aleks-personal"
 log "Starting backup for $MOUNT_POINT..."
 if check_mount "$MOUNT_POINT"; then
     sudo -E restic backup "$MOUNT_POINT" \
-      --tag unas-aleks-personal-backup --repo "$RESTIC_REPOSITORY" 2>&1 | tee -a "$LOG_FILE"
-    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+      --tag unas-aleks-personal-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+    if [ $? -eq 0 ]; then
         log "Backup completed successfully for $MOUNT_POINT."
     else
         log "Error: Backup failed for $MOUNT_POINT."
@@ -112,8 +112,8 @@ MOUNT_POINT="/mnt/unas-erin-personal"
 log "Starting backup for $MOUNT_POINT..."
 if check_mount "$MOUNT_POINT"; then
     sudo -E restic backup "$MOUNT_POINT" \
-      --tag unas-erin-personal-backup --repo "$RESTIC_REPOSITORY" 2>&1 | tee -a "$LOG_FILE"
-    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+      --tag unas-erin-personal-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+    if [ $? -eq 0 ]; then
         log "Backup completed successfully for $MOUNT_POINT."
     else
         log "Error: Backup failed for $MOUNT_POINT."
@@ -128,8 +128,8 @@ log "Starting backup for $MOUNT_POINT..."
 if check_mount "$MOUNT_POINT"; then
     sudo -E restic backup "$MOUNT_POINT" \
       --exclude="$MOUNT_POINT/plex" \
-      --tag unas-main-backup --repo "$RESTIC_REPOSITORY" 2>&1 | tee -a "$LOG_FILE"
-    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+      --tag unas-main-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+    if [ $? -eq 0 ]; then
         log "Backup completed successfully for $MOUNT_POINT."
     else
         log "Error: Backup failed for $MOUNT_POINT."
