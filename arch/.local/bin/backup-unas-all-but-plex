@@ -70,6 +70,7 @@ sudo -E restic backup \
   /home \
   /root \
   /var/lib \
+  /var/spool/cron \
   --tag root-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
 if [ $? -eq 0 ]; then
     log "Root directory backup completed successfully."

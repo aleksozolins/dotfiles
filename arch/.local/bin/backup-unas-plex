@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Set environment variables
+export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
+export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
+LOG_FILE="/home/aleksozolins/.resticlog"
+
+# Log function to include timestamps
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+
+# Function to check if a mount point is active and has the marker file
+check_mount() {
+    local MOUNT_POINT=$1
+    local MARKER_FILE="$MOUNT_POINT/.mounted"
+
+    if ! mountpoint -q "$MOUNT_POINT"; then
+        log "Error: $MOUNT_POINT is not mounted."
+        return 1
+    fi
+
+    if [ ! -e "$MARKER_FILE" ]; then
+        log "Error: Marker file $MARKER_FILE is missing in $MOUNT_POINT."
+        return 1
+    fi
+
+    log "Mount point $MOUNT_POINT is verified."
+    return 0
+}
+
+# Backup Plex directory
+MOUNT_POINT="/mnt/unas-main"
+PLEX_DIR="$MOUNT_POINT/plex"
+
+log "Starting Plex directory backup..."
+
+# Check if the mount point is active
+if check_mount "$MOUNT_POINT"; then
+    sudo -E restic backup "$PLEX_DIR" \
+      --tag unas-plex-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+    if [ $? -eq 0 ]; then
+        log "Plex directory backup completed successfully."
+    else
+        log "Error: Plex directory backup failed."
+    fi
+else
+    log "Skipping Plex directory backup due to mount point errors."
+fi
+
+log "Plex backup script completed."
