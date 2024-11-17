@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# Set environment variables
+# export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
+# export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
+
+# Backup important directories on root
+# sudo -E restic backup \
+#   /etc \
+#   /srv \
+#   /home \
+#   /root \
+#   /var/lib \
+#   --tag root-backup --repo "$RESTIC_REPOSITORY"
+
+# Backup /mnt/unas-ozofam_share
+# sudo -E restic backup /mnt/unas-ozofam_share \
+#   --tag unas-ozofam_share-backup --repo "$RESTIC_REPOSITORY"
+
+# Backup /mnt/unas-aleks-personal
+# sudo -E restic backup /mnt/unas-aleks-personal \
+#   --tag unas-aleks-personal-backup --repo "$RESTIC_REPOSITORY"
+
+# Backup /mnt/unas-erin-personal
+# sudo -E restic backup /mnt/unas-erin-personal \
+#   --tag unas-erin-personal-backup --repo "$RESTIC_REPOSITORY"
+
+# Backup /mnt/unas-main excluding plex
+# sudo -E restic backup /mnt/unas-main \
+#   --exclude=/mnt/unas-main/plex \
+#   --tag unas-main-backup --repo "$RESTIC_REPOSITORY"
+
+
+# HERE'S NEW VERSION!!!
+
+# Set environment variables
+export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
+export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
+LOG_FILE="/home/aleksozolins/.resticlog"
+
+# Log function to include timestamps
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+
+# Function to check if a mount point is active and has the marker file
+check_mount() {
+    local MOUNT_POINT=$1
+    local MARKER_FILE="$MOUNT_POINT/.mounted"
+
+    if ! mountpoint -q "$MOUNT_POINT"; then
+        log "Error: $MOUNT_POINT is not mounted."
+        return 1
+    fi
+
+    if [ ! -e "$MARKER_FILE" ]; then
+        log "Error: Marker file $MARKER_FILE is missing in $MOUNT_POINT."
+        return 1
+    fi
+
+    log "Mount point $MOUNT_POINT is verified."
+    return 0
+}
+
+# Backup root directories
+log "Starting root directory backup..."
+sudo -E restic backup \
+  /etc \
+  /srv \
+  /home \
+  /root \
+  /var/lib \
+  --tag root-backup --repo "$RESTIC_REPOSITORY" >> "$LOG_FILE" 2>&1
+if [ $? -eq 0 ]; then
+    log "Root directory backup completed successfully."
+else
+    log "Error: Root directory backup failed."
+fi
+
+# Backup /mnt/unas-ozofam_share
+MOUNT_POINT="/mnt/unas-ozofam_share"
+log "Starting backup for $MOUNT_POINT..."
+if check_mount "$MOUNT_POINT"; then
+    sudo -E restic backup "$MOUNT_POINT" \
+      --tag unas-ozofam_share-backup --repo "$RESTIC_REPOSITORY" >> "$LOG_FILE" 2>&1
+    if [ $? -eq 0 ]; then
+        log "Backup completed successfully for $MOUNT_POINT."
+    else
+        log "Error: Backup failed for $MOUNT_POINT."
+    fi
+else
+    log "Skipping backup for $MOUNT_POINT due to errors."
+fi
+
+# Backup /mnt/unas-aleks-personal
+MOUNT_POINT="/mnt/unas-aleks-personal"
+log "Starting backup for $MOUNT_POINT..."
+if check_mount "$MOUNT_POINT"; then
+    sudo -E restic backup "$MOUNT_POINT" \
+      --tag unas-aleks-personal-backup --repo "$RESTIC_REPOSITORY" >> "$LOG_FILE" 2>&1
+    if [ $? -eq 0 ]; then
+        log "Backup completed successfully for $MOUNT_POINT."
+    else
+        log "Error: Backup failed for $MOUNT_POINT."
+    fi
+else
+    log "Skipping backup for $MOUNT_POINT due to errors."
+fi
+
+# Backup /mnt/unas-erin-personal
+MOUNT_POINT="/mnt/unas-erin-personal"
+log "Starting backup for $MOUNT_POINT..."
+if check_mount "$MOUNT_POINT"; then
+    sudo -E restic backup "$MOUNT_POINT" \
+      --tag unas-erin-personal-backup --repo "$RESTIC_REPOSITORY" >> "$LOG_FILE" 2>&1
+    if [ $? -eq 0 ]; then
+        log "Backup completed successfully for $MOUNT_POINT."
+    else
+        log "Error: Backup failed for $MOUNT_POINT."
+    fi
+else
+    log "Skipping backup for $MOUNT_POINT due to errors."
+fi
+
+# Backup /mnt/unas-main excluding plex
+MOUNT_POINT="/mnt/unas-main"
+log "Starting backup for $MOUNT_POINT..."
+if check_mount "$MOUNT_POINT"; then
+    sudo -E restic backup "$MOUNT_POINT" \
+      --exclude="$MOUNT_POINT/plex" \
+      --tag unas-main-backup --repo "$RESTIC_REPOSITORY" >> "$LOG_FILE" 2>&1
+    if [ $? -eq 0 ]; then
+        log "Backup completed successfully for $MOUNT_POINT."
+    else
+        log "Error: Backup failed for $MOUNT_POINT."
+    fi
+else
+    log "Skipping backup for $MOUNT_POINT due to errors."
+fi
+
+log "All backups completed."
