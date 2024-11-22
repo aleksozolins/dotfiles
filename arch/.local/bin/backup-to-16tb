@@ -1,0 +1,156 @@
+#!/bin/bash
+
+# Set environment variables
+export RESTIC_REPOSITORY="/mnt/16tbinternal/restic"
+export RESTIC_PASSWORD_FILE="/home/aleksozolins/.local/share/restic/backup_password.txt"
+LOG_FILE="/home/aleksozolins/.resticlog"
+
+# Log function to include timestamps
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+
+# Function to display help message
+show_help() {
+    echo "Usage: $0 [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -A                Backup everything (no menu)"
+    echo "  -r                Backup specific root directories on nzxt-arch"
+    echo "  -o                Backup 'ozofam_share' on unas"
+    echo "  -m                Backup 'main' (except for /plex) on unas"
+    echo "  -a                Backup 'aleks-personal' on unas"
+    echo "  -e                Backup 'erin-personal' on unas"
+    echo "  -h                Display this help message and exit"
+    echo
+    echo "Interactive mode:"
+    echo "  Run without flags to select backups interactively."
+    echo
+    echo "Examples:"
+    echo "  $0 -A            Run all backups without interaction."
+    echo "  $0 -r -a         Backup root directories and 'aleks-personal'."
+    echo "  $0               Start the interactive menu."
+}
+
+# Function to check if a mount point is active and has the marker file
+check_mount() {
+    local MOUNT_POINT=$1
+    local MARKER_FILE="$MOUNT_POINT/.mounted"
+
+    if ! mountpoint -q "$MOUNT_POINT"; then
+        log "Error: $MOUNT_POINT is not mounted."
+        return 1
+    fi
+
+    if [ ! -e "$MARKER_FILE" ]; then
+        log "Error: Marker file $MARKER_FILE is missing in $MOUNT_POINT."
+        return 1
+    fi
+
+    log "Mount point $MOUNT_POINT is verified."
+    return 0
+}
+
+# Backup functions
+backup_root() {
+    log "Starting nzxt-arch root directory backup..."
+    sudo -E restic backup \
+        /etc \
+        /srv \
+        /home \
+        /root \
+        /var/lib \
+        /var/spool/cron \
+        --tag root-backup --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+    if [ $? -eq 0 ]; then
+        log "Root directory backup completed successfully."
+    else
+        log "Error: Root directory backup failed."
+    fi
+}
+
+backup_mount() {
+    local MOUNT_POINT=$1
+    local TAG=$2
+    local EXCLUDE=$3
+
+    log "Starting backup for $MOUNT_POINT..."
+    if check_mount "$MOUNT_POINT"; then
+        sudo -E restic backup "$MOUNT_POINT" \
+            ${EXCLUDE:+--exclude="$EXCLUDE"} \
+            --tag "$TAG" --repo "$RESTIC_REPOSITORY" 2>>"$LOG_FILE"
+        if [ $? -eq 0 ]; then
+            log "Backup completed successfully for $MOUNT_POINT."
+        else
+            log "Error: Backup failed for $MOUNT_POINT."
+        fi
+    else
+        log "Skipping backup for $MOUNT_POINT due to errors."
+    fi
+}
+
+# Parse command-line options
+ALL=false
+BACKUPS=()
+
+while getopts "Aroemah" OPTION; do
+    case $OPTION in
+        A) ALL=true ;;
+        r) BACKUPS+=("root") ;;
+        o) BACKUPS+=("ozofam-share") ;;
+        m) BACKUPS+=("unas-main") ;;
+        a) BACKUPS+=("aleks-personal") ;;
+        e) BACKUPS+=("erin-personal") ;;
+        h) show_help; exit 0 ;;
+        *) echo "Invalid option: -$OPTION"; show_help; exit 1 ;;
+    esac
+done
+
+# Log how the script was executed
+log "Script executed with options: $@"
+
+# If ALL flag is set, backup everything
+if $ALL; then
+    log "Running all backups as per -A flag."
+    BACKUPS=("root" "ozofam-share" "unas-main" "aleks-personal" "erin-personal")
+fi
+
+# If no specific options provided, display a one-and-done menu
+if [ ${#BACKUPS[@]} -eq 0 ]; then
+    log "Displaying interactive menu for backup selection."
+    echo "Select the backup(s) to run by entering the numbers separated by spaces (e.g., '1 2 3'):"
+    echo "1) Root"
+    echo "2) Ozofam Share"
+    echo "3) Unas Main"
+    echo "4) Aleks Personal"
+    echo "5) Erin Personal"
+    echo "6) Quit"
+
+    # Read input and process selection
+    read -p "Enter your choices: " -a choices
+    for choice in "${choices[@]}"; do
+        case $choice in
+            1) BACKUPS+=("root") ;;
+            2) BACKUPS+=("ozofam-share") ;;
+            3) BACKUPS+=("unas-main") ;;
+            4) BACKUPS+=("aleks-personal") ;;
+            5) BACKUPS+=("erin-personal") ;;
+            6) log "Exiting menu as per user request.";;
+            *) echo "Invalid option: $choice" ;;
+        esac
+    done
+fi
+
+# Perform backups
+for BACKUP in "${BACKUPS[@]}"; do
+    case $BACKUP in
+        "root") backup_root ;;
+        "ozofam-share") backup_mount "/mnt/unas-ozofam_share" "unas-ozofam_share-backup" ;;
+        "unas-main") backup_mount "/mnt/unas-main" "unas-main-backup" "/mnt/unas-main/plex" ;;
+        "aleks-personal") backup_mount "/mnt/unas-aleks-personal" "unas-aleks-personal-backup" ;;
+        "erin-personal") backup_mount "/mnt/unas-erin-personal" "unas-erin-personal-backup" ;;
+        *) log "Unknown backup target: $BACKUP" ;;
+    esac
+done
+
+log "All selected backups completed."
