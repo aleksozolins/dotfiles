@@ -431,7 +431,6 @@
       (list (concat denote-directory "20210804T113317--todos__agenda.org")
             (concat denote-directory "20220720T114139--projects__agenda_project.org")
             (concat denote-directory "20220727T113610--calendar__agenda.org")
-            (concat denote-directory "20220727T114811--recurring-financial-transactions__agenda_finances_recurring.org")
             (concat denote-directory "20230903T141829--task-inbox__agenda_inbox.txt")))
 
 ;; org-agenda window settings
