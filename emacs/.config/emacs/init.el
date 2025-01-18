@@ -1,15 +1,20 @@
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
+(load custom-file 'noerror 'nomessage)
+
 ;; Initialize package sources
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-  		       ("elpa" . "https://elpa.gnu.org/packages/")))
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
 
-(require 'use-package)
-(setq use-package-always-ensure t)
+(add-to-list 'display-buffer-alist
+             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
 
 (when (eq system-type 'darwin)
   (use-package exec-path-from-shell
@@ -52,39 +57,12 @@
                 mu4e-main-mode-hook
                 mu4e-view-mode-hook
                 org-agenda-mode-hook
-  	      vterm-mode-hook))
+                nerd-icons-dired-mode-hook
+                vterm-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Enable relative line numbers (like in Vim)
 (setq display-line-numbers-type 'relative)
-
-(setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
-(recentf-mode 1) ; Have Emacs remember recently opened files when using find file
-
-;; Save what you enter into minibuffer prompts
-(setq history-length 25)
-(savehist-mode 1)
-
-(save-place-mode 1) ; Remember and restore the last cursor location of opened files
-
-(global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
-(setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
-
-(windmove-default-keybindings 'super) ; Navigate between windows with s-<arrow keys>
-
-;; Enable visual-line-mode for txt and md files
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-(add-hook 'markdown-mode-hook 'turn-on-visual-line-mode)
-
-;; When Emacs runs 2 async commands at once, it will just rename the async buffers instead of ask.
-;; This is useful in elfeed when I'm downloading YT videos.
-(setq async-shell-command-buffer 'rename-buffer)
-
-;; Enable delete selection mode
-(delete-selection-mode 1)
-
-;; Set authinfo Source
-(setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
 (defun set-my-font ()
   (pcase system-type
@@ -122,6 +100,54 @@
 
 ;; Set a hot-key for switching between light and dark theme
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+
+(use-package nerd-icons
+  :ensure t)
+
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
+(recentf-mode 1) ; Have Emacs remember recently opened files when using find file
+
+;; Save what you enter into minibuffer prompts
+(setq history-length 25)
+(savehist-mode 1)
+
+(save-place-mode 1) ; Remember and restore the last cursor location of opened files
+
+(global-auto-revert-mode 1) ; Revert buffers when the underlying file has changed
+(setq global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
+
+(windmove-default-keybindings 'super) ; Navigate between windows with s-<arrow keys>
+
+;; Enable visual-line-mode for txt and md files
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'markdown-mode-hook 'turn-on-visual-line-mode)
+
+;; When Emacs runs 2 async commands at once, it will just rename the async buffers instead of ask.
+;; This is useful in elfeed when I'm downloading YT videos.
+(setq async-shell-command-buffer 'rename-buffer)
+
+;; Enable delete selection mode
+(delete-selection-mode 1)
+
+;; Set authinfo Source
+(setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
 ;; Backup options
 (setq backup-directory-alist '(("." . "~/.config/emacs/backup/"))
@@ -300,6 +326,18 @@
   (defun my-dired-mode-hook ()
     "My `dired' mode hook to hide dot-files by default."
     (dired-hide-dotfiles-mode)))
+
+(use-package dired-subtree
+  :ensure t
+  :after dired
+  :bind
+  ( :map dired-mode-map
+    ("<tab>" . dired-subtree-toggle)
+    ("TAB" . dired-subtree-toggle)
+    ("<backtab>" . dired-subtree-remove)
+    ("S-TAB" . dired-subtree-remove))
+  :config
+  (setq dired-subtree-use-backgrounds nil))
 
 ;; Vterm
 (use-package vterm
@@ -809,6 +847,3 @@
           ("/aleks@ozolins.xyz/Sus"             . ?u)
           ("/aleks@ozolins.xyz/Spam?"           . ?S)))
   )
-
-(setq custom-file (locate-user-emacs-file "custom-vars.el"))
-(load custom-file 'noerror 'nomessage)

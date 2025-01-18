@@ -1,4 +1,4 @@
-#+TITLE: GNU Emacs Configuration
+ #+TITLE: GNU Emacs Configuration
 #+AUTHOR: Aleks Ozolins
 #+EMAIL: aleks@ozolins.xyz
 #+OPTIONS: toc:2
@@ -15,8 +15,8 @@ Information pertaining to my current build of Emacs:
 #+end_src
 
 #+RESULTS:
-: GNU Emacs 29.4 (build 1, aarch64-apple-darwin23.6.0, NS appkit-2487.70 Version 14.7 (Build 23H124))
-:  of 2024-10-02
+: GNU Emacs 29.4 (build 1, aarch64-apple-darwin24.0.0, NS appkit-2566.00 Version 15.0.1 (Build 24A348))
+:  of 2024-10-25
 
 System configuration options:
 
@@ -25,34 +25,47 @@ System configuration options:
 #+end_src
 
 #+RESULTS:
-: --with-ns '--enable-locallisppath=/Library/Application Support/Emacs/${version}/site-lisp:/Library/Application Support/Emacs/site-lisp' --with-modules 'CFLAGS=-DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT' --with-x-toolkit=no
+: --disable-dependency-tracking --disable-silent-rules --enable-locallisppath=/opt/homebrew/share/emacs/site-lisp --infodir=/opt/homebrew/Cellar/emacs-plus@29/29.4/share/info/emacs --prefix=/opt/homebrew/Cellar/emacs-plus@29/29.4 --with-xml2 --with-gnutls --without-compress-install --without-dbus --without-imagemagick --with-modules --with-rsvg --with-ns --disable-ns-self-contained 'CFLAGS=-O2 -DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT'
 
-* Emacs Settings
+* Manage custom set variables
 
-** Package Sources
+Move customization variables to a separate file and load it.
+
+#+begin_src elisp
+  (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+  (load custom-file 'noerror 'nomessage)
+#+end_src
+
+* Set up packages sources
+
+Now we'll initialize our package sources.
 
 #+begin_src elisp
   ;; Initialize package sources
   (require 'package)
 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-  			 ("elpa" . "https://elpa.gnu.org/packages/")))
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
 
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
 #+end_src
 
-** Set up use-package
+* Don't show confusing warnings when installing packages
+
+When installing a new package, Emacs will show a buffer that contains any warnings produced by the byte compiler. While this information is useful for developers, it is highly confusing for users. The following snippet will prevent those buffers from popping up. They are still available in the buffer list, if they are needed.
 
 #+begin_src elisp
-  (require 'use-package)
-  (setq use-package-always-ensure t)
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+                 (display-buffer-no-window)
+                 (allow-no-window . t)))
 #+end_src
 
-** exec-path-from-shell
+* exec-path-from-shell
 
-This is needed only on the Mac and makes Emacs can evaluate $PATH correctly.
+This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
 
 #+begin_src elisp
   (when (eq system-type 'darwin)
@@ -62,7 +75,7 @@ This is needed only on the Mac and makes Emacs can evaluate $PATH correctly.
       (exec-path-from-shell-initialize)))
 #+end_src
 
-** Clean Up The Interface
+* Clean up the interface
 
 The following settings make the interface a bit more minimal and clean.
 
@@ -90,7 +103,7 @@ The following settings make the interface a bit more minimal and clean.
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
-** Line Numbers
+* Line numbers
 
 #+begin_src elisp
   ;; Enable line numbers in general
@@ -106,16 +119,96 @@ The following settings make the interface a bit more minimal and clean.
                   mu4e-main-mode-hook
                   mu4e-view-mode-hook
                   org-agenda-mode-hook
-  		vterm-mode-hook))
+                  nerd-icons-dired-mode-hook
+                  vterm-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
   ;; Enable relative line numbers (like in Vim)
   (setq display-line-numbers-type 'relative)
 #+end_src
 
-** Misc Emacs Settings
+* Set fonts
 
-Below are any settings where I'm not quite sure where to put in this file just yet.
+Very basic setting for now. Using Iosevka. Note we set it a bit differently in Mac vs Linux since we're running in daemon mode in Linux.
+
+Also note we are using some magic to delay setting the font. Without that, using emacs-plus it wasn't setting on startup.
+
+#+begin_src elisp
+  (defun set-my-font ()
+    (pcase system-type
+      ('gnu/linux
+       (setq default-frame-alist '((font . "Iosevka-14"))))
+      ('darwin
+       (set-face-attribute 'default nil :font "Iosevka" :height 190))))
+
+  ;; Apply to existing frames and any future frames
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (set-my-font)))
+
+  ;; Ensure the font is applied to the initial frame
+  (set-my-font)
+#+end_src
+
+* Set a theme
+
+I'm using the Modus themes which are supplied out of the box. They were built by Protesilaos Stavrou.
+
+More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
+
+#+begin_src elisp
+  (setq modus-themes-mode-line '(accented)
+      modus-themes-bold-constructs t
+      modus-themes-fringes 'subtle
+      modus-themes-tabs-accented t
+      modus-themes-paren-match '(bold-intense)
+      modus-themes-prompts '(bold-intense)
+      modus-themes-org-blocks 'tinted-background
+      modus-themes-region '(bg-only)
+      modus-themes-headings
+      '((0 . (1.6))
+        (1 . (rainbow overline background 1.2))
+        (2 . (rainbow background 1.2))
+        (3 . (rainbow bold 1))
+        (t . (semilight 1))))
+
+  ;; Load a Theme
+  (load-theme 'modus-operandi t)
+
+  ;; Set a hot-key for switching between light and dark theme
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+#+end_src
+
+* Use icon fonts in various places
+
+Remember to do =M-x= and run =nerd-icons-install-fonts= to get the font files.  Then restart Emacs to see the effect.
+
+#+begin_src elisp
+  (use-package nerd-icons
+    :ensure t)
+
+  (use-package nerd-icons-completion
+    :ensure t
+    :after marginalia
+    :config
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+  (use-package nerd-icons-corfu
+    :ensure t
+    :after corfu
+    :config
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+  (use-package nerd-icons-dired
+    :ensure t
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+#+end_src
+
+* Make some other misc Emacs settings
+
+Here are some other Emacs settings related to several different areas.
 
 #+begin_src elisp
 
@@ -148,60 +241,7 @@ Below are any settings where I'm not quite sure where to put in this file just y
   (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 #+end_src
 
-** Set Fonts
-
-Very basic setting for now. Using Iosevka. Note we set it a bit differently in Mac vs Linux since we're running in daemon mode in Linux.
-
-Also note we are using some magic to delay setting the font. Without that, using emacs-plus it wasn't setting on startup.
-
-#+begin_src elisp
-  (defun set-my-font ()
-    (pcase system-type
-      ('gnu/linux
-       (setq default-frame-alist '((font . "Iosevka-14"))))
-      ('darwin
-       (set-face-attribute 'default nil :font "Iosevka" :height 190))))
-
-  ;; Apply to existing frames and any future frames
-  (add-hook 'after-make-frame-functions
-            (lambda (frame)
-              (select-frame frame)
-              (set-my-font)))
-
-  ;; Ensure the font is applied to the initial frame
-  (set-my-font)
-#+end_src
-
-** Set a Theme
-
-I'm using the Modus themes which are supplied out of the box. They were built by Protesilaos Stavrou.
-
-More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
-
-#+begin_src elisp
-  (setq modus-themes-mode-line '(accented)
-      modus-themes-bold-constructs t
-      modus-themes-fringes 'subtle
-      modus-themes-tabs-accented t
-      modus-themes-paren-match '(bold-intense)
-      modus-themes-prompts '(bold-intense)
-      modus-themes-org-blocks 'tinted-background
-      modus-themes-region '(bg-only)
-      modus-themes-headings
-      '((0 . (1.6))
-        (1 . (rainbow overline background 1.2))
-        (2 . (rainbow background 1.2))
-        (3 . (rainbow bold 1))
-        (t . (semilight 1))))
-
-  ;; Load a Theme
-  (load-theme 'modus-operandi t)
-
-  ;; Set a hot-key for switching between light and dark theme
-  (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
-#+end_src
-
-** Backup and Auto Save
+* Backup and auto save settings
 
 #+begin_src elisp
   ;; Backup options
@@ -220,7 +260,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
   (setq kill-buffer-delete-auto-save-files t) 
 #+end_src
 
-** Key Re-bindings
+* Re-bind some keys
 
 Here's where I'm deviating from Emacs' built in key-bindings or adding my own bespoke bindings.
 
@@ -234,7 +274,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
   (global-set-key (kbd "C-c o") 'my-custom-prefix)
 #+end_src
 
-** Bookmarks
+* Manage bookmarks
 
 Set the bookmarks file to synchronize via Dropbox.
 
@@ -248,7 +288,7 @@ Bind =bookmark-bmenu-list= to =F8=
   (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
 #+end_src
 
-** Tab Bar Mode
+* Manage tab-bar-mode
 
 #+begin_src elisp
   ;; Settings for tab-bar-mode
@@ -272,9 +312,7 @@ Bind =bookmark-bmenu-list= to =F8=
   (global-set-key (kbd "s-]") 'tab-bar-history-forward)
 #+end_src
 
-* Development
-
-** JavaScript
+* JavaScript development
 
 Just setting the default indent level here to match the code I see in the Zapier Developer Platform CLI templates.
 
@@ -284,21 +322,7 @@ Just setting the default indent level here to match the code I see in the Zapier
               (setq js-indent-level 2))) 
 #+end_src
 
-** LSP Mode
-
-Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
-
-#+begin_src elisp :tangle no
-  ;; Initial configuration
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :init
-    (setq lsp-keymap-prefix "s-L")         ;; Note: The original binding was supposed to be "s-l" but for the moment, that's take up with DWM
-    :config
-    (lsp-enable-which-key-integration t))
-#+end_src
-
-** Python
+* Python development
 
 Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
 
@@ -309,7 +333,7 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
     :hook (python-mode . lsp-deferred))
 #+end_src
 
-** TypeScript
+* TypeScript development
 
 #+begin_src elisp
   (use-package typescript-mode
@@ -320,9 +344,7 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
     (setq typescript-indent-level 2))
 #+end_src
 
-* Packages
-
-** Esup
+* Use Esup to evaluate startup performance
 
 Use this to see what takes long to load in your Emacs config. Just run =M-x esup=.
 
@@ -336,7 +358,7 @@ Use this to see what takes long to load in your Emacs config. Just run =M-x esup
     (setq esup-depth 0)) ;; Without this we get a failure on macOS.
 #+end_src
 
-** Which-Key
+* Which-key
 
 #+begin_src elisp
   ;; Which-Key
@@ -347,7 +369,7 @@ Use this to see what takes long to load in your Emacs config. Just run =M-x esup
     (setq which-key-idle-delay 0.3))
 #+end_src
 
-** Vertico
+* Vertico
 
 This is the main completion UI I've chosen, over Ivy or Helm as it is more minimal and uses emacs' built in features.
 
@@ -361,7 +383,7 @@ This is the main completion UI I've chosen, over Ivy or Helm as it is more minim
     (vertico-mode))
     #+end_src
 
-** Orderless
+* Orderless
 
 This is my completion framework and we have it set to be case insensitive.
 
@@ -376,7 +398,7 @@ This is my completion framework and we have it set to be case insensitive.
     (setq completion-ignore-case t))
 #+end_src
 
-** Marginalia
+* Marginalia
 
 Marginalia provides extra information in each completion buffer to the right of selection when using Vertico.
 
@@ -391,7 +413,7 @@ Marginalia provides extra information in each completion buffer to the right of 
     (marginalia-mode))
 #+end_src
 
-** Embark
+* Embark
 
 Embark is invoked by using =C-.= and allows common operations to be performed to selections from within the completion buffer. For instance, you can delete or rename files without ever opening a =dired= buffer.
 
@@ -408,7 +430,7 @@ Embark is invoked by using =C-.= and allows common operations to be performed to
     (setq prefix-help-command #'embark-prefix-help-command))
 #+end_src
 
-** Corfu
+* Corfu
 
 Corfu enhances completion at point with a small completion popup. The current candidates are shown in a popup below or above the point. Corfu is the minimalistic completion-in-region counterpart of the Vertico minibuffer UI.
 
@@ -437,7 +459,7 @@ The following code is taken right from Prot's config:
     (minibuffer-setup . contrib/corfu-enable-always-in-minibuffer))
 #+end_src
 
-** Dired
+* Dired
 
 The file manager, already built into Emacs.
 
@@ -451,21 +473,21 @@ The file manager, already built into Emacs.
     ;; Use GNU ls as insert-directory-program in case of macOS
     (when (eq system-type 'darwin)
       (setq insert-directory-program "gls"))
-    
+
     ;; Set listing options
     (setq dired-listing-switches "-Alh --group-directories-first")
     (setq dired-dwim-target t)
     (setq dired-recursive-copies 'always)
     (setq dired-recursive-deletes 'top)
-    
+
     ;; Default to hiding details
     (add-hook 'dired-mode-hook
               (lambda ()
                 (dired-hide-details-mode 1)))
-    
+
     ;; Enable using 'a' to visit directories
     (put 'dired-find-alternate-file 'disabled nil)
-    
+
     ;; Function to open files using the system's default application
     (defun dired-open-file ()
       "Open the file at point in Dired with the appropriate system application."
@@ -479,9 +501,7 @@ The file manager, already built into Emacs.
         (call-process open-cmd nil 0 nil file))))
 #+end_src
 
-** Dired Hide Dotfiles
-
-Add this package to enable the hiding of dotfiles.
+Add the following package to enable the hiding of dotfiles.
 
 #+begin_src elisp
   ;; Dired Hide Dotfiles
@@ -496,7 +516,23 @@ Add this package to enable the hiding of dotfiles.
       (dired-hide-dotfiles-mode)))
 #+end_src
 
-** Vterm
+The dired-subtree package provides commands to quickly view the contents of a folder with the TAB key.
+
+#+begin_src elisp
+  (use-package dired-subtree
+    :ensure t
+    :after dired
+    :bind
+    ( :map dired-mode-map
+      ("<tab>" . dired-subtree-toggle)
+      ("TAB" . dired-subtree-toggle)
+      ("<backtab>" . dired-subtree-remove)
+      ("S-TAB" . dired-subtree-remove))
+    :config
+    (setq dired-subtree-use-backgrounds nil))
+#+end_src
+
+* Vterm
 
 We use the following keybindings for vterm:
 
@@ -523,7 +559,7 @@ And the config:
     (add-hook 'vterm-mode-hook 'goto-address-mode)) ;; Make links click-able!
 #+end_src
 
-** Rainbow Delimiters
+* Rainbow Delimiters
 
 The =rainbow-delimiters= package makes each new set of parenthesis a different color so it's easy to see when they match!
 
@@ -534,7 +570,7 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-** Magit
+* Magit
 
 Magit is the most common git interface for Emacs and doesn't require any additional configuration out of the box. It can be invoked by =C-x g=
 
@@ -544,7 +580,7 @@ Magit is the most common git interface for Emacs and doesn't require any additio
     :ensure t)
 #+end_src
 
-** Pulsar
+* Pulsar
 
 Pulsar highlights the current line when changing buffers.
 
@@ -564,7 +600,7 @@ Pulsar highlights the current line when changing buffers.
            ("C-x L" . pulsar-highlight-dwim)))
 #+end_src
 
-** Ledger Mode
+* Ledger Mode
 
 I use this to manage my finances. Note there's a package problem I believe right now so I have this enabled only for Mac.
 
@@ -579,7 +615,7 @@ I use this to manage my finances. Note there's a package problem I believe right
       (setq ledger-default-date-format "%Y-%m-%d")))
 #+end_src
 
-** Ripgrep (rg.el)
+* Ripgrep (rg.el)
 
 rg.el adds to Emacs' grep mode functionality with editing/etc.
 
@@ -591,7 +627,9 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
     (rg-enable-default-bindings))
 #+end_src
 
-** Elfeed
+* Elfeed
+
+For RSS feeds!
 
 #+begin_src elisp
   ;; Elfeed
@@ -605,7 +643,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
       ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/"))))
 #+end_src
 
-** Elfeed-Org
+We'll use the elfeed-org package so we can use an org file for our feed list.
 
 #+begin_src elisp
   ;; Elfeed-Org
@@ -617,7 +655,7 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
     (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org")))
 #+end_src
 
-** Org Mode
+* Org Mode
 
 Note we're not using use-package here yet.
 
@@ -832,9 +870,7 @@ Note we're not using use-package here yet.
 
 #+end_src
 
-*** Custom Function To Open My Time Tracking Node From Org Agenda
-
-While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
+Here's a custom function so while I'm in org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
 
 #+begin_src elisp
   (defun my-view-and-update-clocktables ()
@@ -851,9 +887,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
       (display-buffer buffer)))
 #+end_src
 
-*** Custom Function To Close Org Agenda and Kill All Agenda Buffers
-
-- Note: it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
+Here's another custom function to close org-agenda and kill all agenda buffers. Note that it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
 #+begin_src elisp
   (defun my-kill-all-agenda-files ()
@@ -867,7 +901,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
     (org-agenda-quit))
 #+end_src
 
-*** Keybindings For Custom Functions
+Here are the keybindings for our custom functions.
 
 #+begin_src elisp
   (with-eval-after-load 'org-agenda
@@ -875,7 +909,7 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
     (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 #+end_src
 
-** Org Contacts (Disabled)
+org-contacts is disabled for now cause it just doesn't work great.
 
 #+begin_src elisp :tangle no
   ;; Org Contacts
@@ -885,9 +919,9 @@ While in my org-agenda, I can press =C-c t= to open my Time Tracking file in the
     :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 #+end_src
 
-** Denote
+* Denote
 
-Testing this package out right now as an alternative to org-roam. It is manually installed so use-package is not a factor yet. Note that we're just starting from Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].
+Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].
 
 #+begin_src elisp
   (use-package denote
@@ -978,9 +1012,7 @@ Testing this package out right now as an alternative to org-roam. It is manually
     )
 #+end_src
 
-*** Function to Aggregate Notes in Dired
-
-This is useful for generating AI summaries - for instance, you can mark several files that represent a week in dired, then aggregate the contents into a new org buffer. That buffer can be saved into a directory that triggers a Zap that will action on the aggregated contents of those notes. The aggregated buffer inserts the contents of each note under an org heading with the file name. With the Denote file naming scheme, this automatically acts as a date tree as well.
+Here's a custom function to aggregate denote notes in dired. This is useful for generating AI summaries - for instance, you can mark several files that represent a week in dired, then aggregate the contents into a new org buffer. That buffer can be saved into a directory that triggers a Zap that will action on the aggregated contents of those notes. The aggregated buffer inserts the contents of each note under an org heading with the file name. With the Denote file naming scheme, this automatically acts as a date tree as well.
 
 #+begin_src elisp
   (defun my-denote-aggregate-notes ()
@@ -1009,7 +1041,7 @@ This is useful for generating AI summaries - for instance, you can mark several 
         (switch-to-buffer target-buffer))))
 #+end_src
 
-** Mu4e
+* Mu4e
 
 Email is managed via =mu4e= in plain text when possible, altough it's always quick to send any existing message over to a browser using =A v= for a full html render.
 
@@ -1116,13 +1148,4 @@ Settings of note:
             ("/aleks@ozolins.xyz/Sus"             . ?u)
             ("/aleks@ozolins.xyz/Spam?"           . ?S)))
     )
-#+end_src
-
-* Custom Set Variables
-
-Move customization variables to a separate file and load it
-
-#+begin_src elisp
-  (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-  (load custom-file 'noerror 'nomessage)
 #+end_src
