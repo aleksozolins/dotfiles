@@ -6,7 +6,7 @@
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2024-10-03
++ Updated: 2025-01-18
 
 Information pertaining to my current build of Emacs:
 
@@ -195,7 +195,7 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
         (t . (semilight 1))))
 
   ;; Load a Theme
-  (load-theme 'modus-vivendi t)
+  (load-theme 'modus-operandi t)
 
   ;; Set a hot-key for switching between light and dark theme
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
@@ -322,31 +322,6 @@ Note that this is currently disabled while I reevaluate. Using elpy likely prefe
 
 * Packages
 
-** Evil Mode
-
-#+begin_src elisp
-  ;; Install Evil Mode
-  (use-package evil
-    :ensure t
-    :init
-    ;; Enable Evil mode globally
-    (setq evil-want-integration t) ;; This is optional since evil-collection handles it
-    (setq evil-want-keybinding nil) ;; Disable default evil keybindings for better integration with evil-collection
-    :config
-    (evil-mode 1))
-#+end_src
-
-** Evil Collection
-
-#+begin_src elisp
-  ;; Install Evil Collection
-  (use-package evil-collection
-    :after evil
-    :ensure t
-    :config
-    (evil-collection-init))
-#+end_src
-
 ** Esup
 
 Use this to see what takes long to load in your Emacs config. Just run =M-x esup=.
@@ -383,14 +358,8 @@ This is the main completion UI I've chosen, over Ivy or Helm as it is more minim
     :custom
     (vertico-cycle t)
     :init
-    (vertico-mode)
-    :config
-    ;; Use vim-like keybindings for Vertico (evil)
-    (define-key vertico-map (kbd "C-j") 'vertico-next) ;; Move down
-    (define-key vertico-map (kbd "C-k") 'vertico-previous) ;; Move up
-    (define-key vertico-map (kbd "C-l") 'vertico-exit) ;; Select current entry
-    (define-key vertico-map (kbd "C-h") 'vertico-directory-up)) ;; Go up a directory in dired mode
-#+end_src
+    (vertico-mode))
+    #+end_src
 
 ** Orderless
 
@@ -608,18 +577,6 @@ I use this to manage my finances. Note there's a package problem I believe right
       :config
       (setq ledger-clear-whole-transactions 1)
       (setq ledger-default-date-format "%Y-%m-%d")))
-#+end_src
-
-*** Evil Ledger
-
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (use-package evil-ledger
-      :ensure t
-      :after ledger-mode
-      :config
-      (setq evil-ledger-sort-key "S")
-      (add-hook 'ledger-mode-hook #'evil-ledger-mode)))
 #+end_src
 
 ** Ripgrep (rg.el)

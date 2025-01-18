@@ -118,7 +118,7 @@
       (t . (semilight 1))))
 
 ;; Load a Theme
-(load-theme 'modus-vivendi t)
+(load-theme 'modus-operandi t)
 
 ;; Set a hot-key for switching between light and dark theme
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
@@ -181,23 +181,6 @@
   :config
   (setq typescript-indent-level 2))
 
-;; Install Evil Mode
-(use-package evil
-  :ensure t
-  :init
-  ;; Enable Evil mode globally
-  (setq evil-want-integration t) ;; This is optional since evil-collection handles it
-  (setq evil-want-keybinding nil) ;; Disable default evil keybindings for better integration with evil-collection
-  :config
-  (evil-mode 1))
-
-;; Install Evil Collection
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
-
 ;; Esup
 (use-package esup
   :ensure t
@@ -219,13 +202,7 @@
   :custom
   (vertico-cycle t)
   :init
-  (vertico-mode)
-  :config
-  ;; Use vim-like keybindings for Vertico (evil)
-  (define-key vertico-map (kbd "C-j") 'vertico-next) ;; Move down
-  (define-key vertico-map (kbd "C-k") 'vertico-previous) ;; Move up
-  (define-key vertico-map (kbd "C-l") 'vertico-exit) ;; Select current entry
-  (define-key vertico-map (kbd "C-h") 'vertico-directory-up)) ;; Go up a directory in dired mode
+  (vertico-mode))
 
 ;; Orderless
 (use-package orderless
@@ -366,14 +343,6 @@
     :config
     (setq ledger-clear-whole-transactions 1)
     (setq ledger-default-date-format "%Y-%m-%d")))
-
-(when (eq system-type 'darwin)
-  (use-package evil-ledger
-    :ensure t
-    :after ledger-mode
-    :config
-    (setq evil-ledger-sort-key "S")
-    (add-hook 'ledger-mode-hook #'evil-ledger-mode)))
 
 ;; Ripgrep
 (use-package rg
