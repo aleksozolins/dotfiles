@@ -90,8 +90,8 @@
     modus-themes-region '(bg-only)
     modus-themes-headings
     '((0 . (1.6))
-      (1 . (rainbow overline background 1.2))
-      (2 . (rainbow background 1.2))
+      (1 . (rainbow overline background 1))
+      (2 . (rainbow background 1))
       (3 . (rainbow bold 1))
       (t . (semilight 1))))
 
@@ -517,6 +517,10 @@
         ("emacs" . ?E)
         ("recurring" . ?r)))
 
+;; More settings for tags - We don't want any extra visual spacing or justifying tag names to the right of the screen.
+(setq org-auto-align-tags nil)
+(setq org-tags-column 0)
+
 ;; Add some modules
 ;; For Habits
 (with-eval-after-load 'org
@@ -640,6 +644,28 @@
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
   (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
+
+(defun update-org-agenda-files ()
+  "Dynamically set `org-agenda-files` to include files with '_agenda' anywhere before '.org'."
+  (let ((org-dir "~/docs/org")) ;; Adjust this to your org directory
+    (setq org-agenda-files
+          (directory-files-recursively org-dir "_agenda.*\\.org$"))))
+
+;; Automatically update agenda files on Emacs startup
+(update-org-agenda-files)
+
+(defun refresh-org-agenda-files ()
+  "Manually refresh `org-agenda-files` dynamically."
+  (interactive)
+  (update-org-agenda-files)
+  (message "org-agenda-files updated."))
+
+(defun preview-org-agenda-files ()
+  "Display the current `org-agenda-files` in a temporary buffer for inspection."
+  (interactive)
+  (with-output-to-temp-buffer "*Org Agenda Files*"
+    (princ "Current org-agenda-files:\n\n")
+    (mapc (lambda (file) (princ (concat file "\n"))) org-agenda-files)))
 
 (use-package denote
   :ensure t

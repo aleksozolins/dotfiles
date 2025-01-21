@@ -168,8 +168,8 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
       modus-themes-region '(bg-only)
       modus-themes-headings
       '((0 . (1.6))
-        (1 . (rainbow overline background 1.2))
-        (2 . (rainbow background 1.2))
+        (1 . (rainbow overline background 1))
+        (2 . (rainbow background 1))
         (3 . (rainbow bold 1))
         (t . (semilight 1))))
 
@@ -771,6 +771,10 @@ Note we're not using use-package here yet.
           ("emacs" . ?E)
           ("recurring" . ?r)))
 
+  ;; More settings for tags - We don't want any extra visual spacing or justifying tag names to the right of the screen.
+  (setq org-auto-align-tags nil)
+  (setq org-tags-column 0)
+
   ;; Add some modules
   ;; For Habits
   (with-eval-after-load 'org
@@ -807,32 +811,32 @@ Note we're not using use-package here yet.
         `(("t" "Task (Quick Capture)" entry (file "~/docs/denote/20230903T141829--task-inbox__agenda_inbox.txt")
            "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-  	("T" "Task (Detailed Personal)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Personal")
+        ("T" "Task (Detailed Personal)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Personal")
            "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
           ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
            "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-  	
+
           ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
            my-org-contacts-template :empty-lines 1 :kill-buffer t)
-  	
+
           ("m" "Metrics")
           ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
            "| %U | %^{Weight} | %^{Note} |" :kill-buffer t)
-  	
+
           ("M" "Mouthpiece")
           ("M1" "One-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: one-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-  	
+
           ("M2" "Two-Piece Mouthpiece" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model}\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: two-piece\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-  	
+
           ("Mc" "Mouthpiece Cup" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model} Cup\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: cup\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-  	
+
           ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
-  	
+
           ("e" "Event" entry (file+headline "~/docs/denote/20220727T113610--calendar__agenda.org" "Events")
                  "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)))
 
@@ -917,6 +921,46 @@ org-contacts is disabled for now cause it just doesn't work great.
     :ensure t
     :after org
     :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
+#+end_src
+
+** TODO Integrate the following [33%]
+
+From prot's config concerning tags [[https://protesilaos.com/emacs/dotemacs#h:81de4e32-a1af-4e1f-9e10-90eb0c90afa2][here]].
+
+Specifically
+- [X] Get rid of spacing before tags
+- [ ] Eliminate the tags-alist
+- [ ] Use tags per file
+
+** TODO Come up with a solution for org-agenda-files
+
+- Maybe having only files that contain the agenda tag
+- Maybe having an 'active' directory for projects
+
+Consider the following code:
+
+#+begin_src elisp
+  (defun update-org-agenda-files ()
+    "Dynamically set `org-agenda-files` to include files with '_agenda' anywhere before '.org'."
+    (let ((org-dir "~/docs/org")) ;; Adjust this to your org directory
+      (setq org-agenda-files
+            (directory-files-recursively org-dir "_agenda.*\\.org$"))))
+
+  ;; Automatically update agenda files on Emacs startup
+  (update-org-agenda-files)
+
+  (defun refresh-org-agenda-files ()
+    "Manually refresh `org-agenda-files` dynamically."
+    (interactive)
+    (update-org-agenda-files)
+    (message "org-agenda-files updated."))
+
+  (defun preview-org-agenda-files ()
+    "Display the current `org-agenda-files` in a temporary buffer for inspection."
+    (interactive)
+    (with-output-to-temp-buffer "*Org Agenda Files*"
+      (princ "Current org-agenda-files:\n\n")
+      (mapc (lambda (file) (princ (concat file "\n"))) org-agenda-files)))
 #+end_src
 
 * Denote
