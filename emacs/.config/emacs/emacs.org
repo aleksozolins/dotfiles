@@ -939,7 +939,7 @@ Specifically
 
 Consider the following code:
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
   (defun update-org-agenda-files ()
     "Dynamically set `org-agenda-files` to include files with '_agenda' anywhere before '.org'."
     (let ((org-dir "~/docs/org")) ;; Adjust this to your org directory
