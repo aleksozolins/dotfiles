@@ -652,7 +652,7 @@ We'll use the elfeed-org package so we can use an org file for our feed list.
     :after elfeed  ;; Ensure elfeed-org loads after elfeed
     :config
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Dropbox/docs/denote/20220814T132654--rss-feeds__elfeed_rss.org")))
+    (setq rmh-elfeed-org-files (list "~/docs/org/rss-feeds.org")))
 #+end_src
 
 * Org Mode
@@ -679,20 +679,17 @@ Note we're not using use-package here yet.
   (setq org-startup-folded nil)
 
   ;; Set org directory
-  (setq org-directory "~/docs/denote")
+  (setq org-directory "~/docs/org/")
 
   ;; Use org-indent-mode by default
   (setq org-startup-indented t)
 
-  ;; Set denote-directory so we can set org-agenda files. Note that we do this again later.
-  (setq denote-directory (expand-file-name "~/docs/denote/"))
-
   ;; Set org-agenda files to list of files. Note they all have the agenda tag.
   (setq org-agenda-files
-        (list (concat denote-directory "20210804T113317--todos__agenda.org")
-              (concat denote-directory "20220720T114139--projects__agenda_project.org")
-              (concat denote-directory "20220727T113610--calendar__agenda.org")
-              (concat denote-directory "20230903T141829--task-inbox__agenda_inbox.txt")))
+        (list (concat org-directory "tasks.org")
+              (concat org-directory "projects.org")
+              (concat org-directory "calendar.org")
+              (concat org-directory "inbox.txt")))
 
   ;; org-agenda window settings
   (setq org-agenda-window-setup 'only-window) ; open the agenda full screen
@@ -705,8 +702,8 @@ Note we're not using use-package here yet.
 
   ;; Allow refiling to other files
   (setq org-refile-targets `((nil :maxlevel . 1)
-                             (,(list (concat denote-directory "20210804T113317--todos__agenda.org")) :maxlevel . 1)
-                             (,(list (concat denote-directory "20220720T114139--projects__agenda_project.org")) :maxlevel . 2)))
+                             (,(list (concat org-directory "tasks.org")) :maxlevel . 1)
+                             (,(list (concat org-directory "projects.org")) :maxlevel . 2)))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -808,13 +805,13 @@ Note we're not using use-package here yet.
         :END:" "Template for org-contacts.")
 
   (setq org-capture-templates
-        `(("t" "Task (Quick Capture)" entry (file "~/docs/denote/20230903T141829--task-inbox__agenda_inbox.txt")
+        `(("t" "Task (Quick Capture)" entry (file "~/docs/org/inbox.txt")
            "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-        ("T" "Task (Detailed Personal)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Personal")
+        ("T" "Task (Detailed Personal)" entry (file+headline "~/docs/org/tasks.org" "Personal")
            "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-          ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/denote/20210804T113317--todos__agenda.org" "Zapier")
+          ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/org/tasks.org" "Zapier")
            "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
           ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
@@ -837,11 +834,11 @@ Note we're not using use-package here yet.
           ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
            "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
 
-          ("e" "Event" entry (file+headline "~/docs/denote/20220727T113610--calendar__agenda.org" "Events")
+          ("e" "Event" entry (file+headline "~/docs/org/calendar.org" "Events")
                  "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)))
 
   ;; Default org capture file
-  (setq org-default-notes-file (concat org-directory "~/docs/denote/20230903T141829--task-inbox__agenda_inbox.txt"))
+  (setq org-default-notes-file (concat org-directory "~/docs/org/inbox.txt"))
 
   ;; Prevent org-capture from saving bookmarks
   (setq org-bookmark-names-plist '())
