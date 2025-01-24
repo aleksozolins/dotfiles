@@ -652,10 +652,10 @@
   (require 'denote)
   (setq denote-directory (expand-file-name "~/docs/denote/"))
   (setq denote-save-buffers nil)
-  (setq denote-known-keywords '("emacs" "meta" "zapier"))
+  (setq denote-known-keywords '("emacs" "meta" "zapier" "horn" "mouthpiece"))
   (setq denote-infer-keywords t)
   (setq denote-sort-keywords t)
-  (setq denote-file-type nil) ; Org is the default, set others here
+  (setq denote-file-type 'text) ; org is the default when set to nil or 'org
   (setq denote-prompts '(file-type date title keywords))
   (setq denote-excluded-directories-regexp nil)
   (setq denote-excluded-keywords-regexp nil)
