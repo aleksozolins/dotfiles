@@ -496,23 +496,8 @@
          ((tags-todo "TODO=\"TODO\"-DEADLINE={.+}-SCHEDULED={.+}"
                      ((org-agenda-overriding-header "Unscheduled Tasks without Deadline")))))))
 
-;; Configure org tags (C-c C-q)
-(setq org-tag-alist
-      '((:startgroup) ; list mutually exclusive tags below
-        ("@home" . ?h)
-        ("@computer" . ?c)
-        ("@zapier" . ?z)
-        ("@phone" . ?p)
-        ("@out" . ?o)
-        (:endgroup)
-        ("finances" . ?f)
-        ("parents" . ?P)
-        ("buy" . ?b)
-        ("connections" . ?C)
-        ("someday" . ?s)
-        ("edge" . ?e)
-        ("emacs" . ?E)
-        ("recurring" . ?r)))
+;; Configure org tags (C-c C-q) - Set to nil here as we set tags directly in our org files.
+(setq org-tag-alist nil)
 
 ;; More settings for tags - We don't want any extra visual spacing or justifying tag names to the right of the screen.
 (setq org-auto-align-tags nil)

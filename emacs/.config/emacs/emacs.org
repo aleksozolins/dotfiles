@@ -750,23 +750,8 @@ Note we're not using use-package here yet.
            ((tags-todo "TODO=\"TODO\"-DEADLINE={.+}-SCHEDULED={.+}"
                        ((org-agenda-overriding-header "Unscheduled Tasks without Deadline")))))))
 
-  ;; Configure org tags (C-c C-q)
-  (setq org-tag-alist
-        '((:startgroup) ; list mutually exclusive tags below
-          ("@home" . ?h)
-          ("@computer" . ?c)
-          ("@zapier" . ?z)
-          ("@phone" . ?p)
-          ("@out" . ?o)
-          (:endgroup)
-          ("finances" . ?f)
-          ("parents" . ?P)
-          ("buy" . ?b)
-          ("connections" . ?C)
-          ("someday" . ?s)
-          ("edge" . ?e)
-          ("emacs" . ?E)
-          ("recurring" . ?r)))
+  ;; Configure org tags (C-c C-q) - Set to nil here as we set tags directly in our org files.
+  (setq org-tag-alist nil)
 
   ;; More settings for tags - We don't want any extra visual spacing or justifying tag names to the right of the screen.
   (setq org-auto-align-tags nil)
@@ -921,46 +906,6 @@ org-contacts is disabled for now cause it just doesn't work great.
     :ensure t
     :after org
     :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
-#+end_src
-
-** TODO Integrate the following [33%]
-
-From prot's config concerning tags [[https://protesilaos.com/emacs/dotemacs#h:81de4e32-a1af-4e1f-9e10-90eb0c90afa2][here]].
-
-Specifically
-- [X] Get rid of spacing before tags
-- [ ] Eliminate the tags-alist
-- [ ] Use tags per file
-
-** TODO Come up with a solution for org-agenda-files
-
-- Maybe having only files that contain the agenda tag
-- Maybe having an 'active' directory for projects
-
-Consider the following code:
-
-#+begin_src elisp :tangle no
-  (defun update-org-agenda-files ()
-    "Dynamically set `org-agenda-files` to include files with '_agenda' anywhere before '.org'."
-    (let ((org-dir "~/docs/org")) ;; Adjust this to your org directory
-      (setq org-agenda-files
-            (directory-files-recursively org-dir "_agenda.*\\.org$"))))
-
-  ;; Automatically update agenda files on Emacs startup
-  (update-org-agenda-files)
-
-  (defun refresh-org-agenda-files ()
-    "Manually refresh `org-agenda-files` dynamically."
-    (interactive)
-    (update-org-agenda-files)
-    (message "org-agenda-files updated."))
-
-  (defun preview-org-agenda-files ()
-    "Display the current `org-agenda-files` in a temporary buffer for inspection."
-    (interactive)
-    (with-output-to-temp-buffer "*Org Agenda Files*"
-      (princ "Current org-agenda-files:\n\n")
-      (mapc (lambda (file) (princ (concat file "\n"))) org-agenda-files)))
 #+end_src
 
 * Denote
