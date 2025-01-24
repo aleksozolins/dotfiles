@@ -629,14 +629,17 @@
     (display-buffer buffer)))
 
 (defun my-kill-all-agenda-files ()
-  "Close all buffers associated with files in `org-agenda-files'."
+  "Close all buffers associated with files in `org-agenda-files' and report the number of buffers closed."
   (interactive)
-  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files))))
+  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files)))
+        (closed-count 0))
     (dolist (buffer (buffer-list))
       (let ((buffer-file-name (buffer-file-name buffer)))
-	(when (and buffer-file-name (member buffer-file-name agenda-files))
-	  (kill-buffer buffer)))))
-  (org-agenda-quit))
+        (when (and buffer-file-name (member buffer-file-name agenda-files))
+          (kill-buffer buffer)
+          (setq closed-count (1+ closed-count)))))
+    (org-agenda-quit)
+    (message "Closed %d agenda file buffer(s)" closed-count)))
 
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
@@ -661,6 +664,7 @@
   (setq denote-date-format nil)
   (setq denote-backlinks-show-context t)
   (setq denote-save-files t)
+  (setq denote-kill-buffers 'on-rename) ; When renaming a Denote note, if the buffer doesn't already exist, save and kill it.
 
   ;; If you use Markdown or plain text files (Org renders links as buttons right away)
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
@@ -713,13 +717,13 @@
   (with-eval-after-load 'org-capture
     (setq denote-org-capture-specifiers "%l\n%i\n%?")
     (add-to-list 'org-capture-templates
-  	       '("n" "New note (with denote.el)" plain
-  		 (file denote-last-path)
-  		 #'denote-org-capture
-  		 :no-save t
-  		 :immediate-finish nil
-  		 :kill-buffer t
-  		 :jump-to-captured t)))
+               '("n" "New note (with denote.el)" plain
+                 (file denote-last-path)
+                 #'denote-org-capture
+                 :no-save t
+                 :immediate-finish nil
+                 :kill-buffer t
+                 :jump-to-captured t)))
 
   ;; Journaling
   (require 'denote-journal-extras)
