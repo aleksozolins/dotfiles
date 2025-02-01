@@ -44,26 +44,6 @@
 ;; Make sure all Emacs frames start fullscreen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; Enable line numbers in general
-(column-number-mode)
-(global-display-line-numbers-mode)
-
-;; Disable line numbers for specific modes
-(dolist (mode '(org-mode-hook
-                term-mode-hook
-                shell-mode-hook
-                eshell-mode-hook
-                mu4e-headers-mode-hook
-                mu4e-main-mode-hook
-                mu4e-view-mode-hook
-                org-agenda-mode-hook
-                nerd-icons-dired-mode-hook
-                vterm-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; Enable relative line numbers (like in Vim)
-(setq display-line-numbers-type 'relative)
-
 (defun set-my-font ()
   (pcase system-type
     ('gnu/linux

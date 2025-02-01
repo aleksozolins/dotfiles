@@ -103,9 +103,11 @@ The following settings make the interface a bit more minimal and clean.
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
-* Line numbers
+* Line numbers (disabled)
 
-#+begin_src elisp
+These were more useful when I was using evil-mode and/or when I transitioned from nvim. For now, we'll disable them by choosing not to tangle.
+
+#+begin_src elisp :tangle no
   ;; Enable line numbers in general
   (column-number-mode)
   (global-display-line-numbers-mode)
