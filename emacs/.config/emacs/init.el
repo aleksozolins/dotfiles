@@ -811,6 +811,8 @@
   ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
   (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
 
+  (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
+
   ;; Configure how to send mails
   ;; Note: .authinfo.gpg is used by default for authentication.
   ;; You can customize the variable auth-sources

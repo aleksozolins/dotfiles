@@ -1077,9 +1077,9 @@ Settings of note:
     (setq mu4e-context-policy 'pick-first)
     (setq mu4e-compose-context-policy 'pick-first)
     (setq mu4e-contexts
-  	(list
-  	 ;; aleks@ozolins.xyz
-  	 (make-mu4e-context
+        (list
+         ;; aleks@ozolins.xyz
+         (make-mu4e-context
             :name "1-aleks@ozolins.xyz"
             :match-func
             (lambda (msg)
@@ -1094,7 +1094,7 @@ Settings of note:
                     (mu4e-sent-folder      . "/aleks@ozolins.xyz/Sent Items")
                     (mu4e-refile-folder    . "/aleks@ozolins.xyz/Archive")
                     (mu4e-trash-folder     . "/aleks@ozolins.xyz/Trash")))))
-    
+
     ;; Set up paths and specific configurations depending on the system
     (pcase system-type
       ('gnu/linux
@@ -1133,16 +1133,18 @@ Settings of note:
     (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
     ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
     (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
-    
+
+    (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
+
     ;; Configure how to send mails
     ;; Note: .authinfo.gpg is used by default for authentication.
     ;; You can customize the variable auth-sources
     (setq message-send-mail-function 'smtpmail-send-it)
-    
+
     (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-    
+
     (setq mu4e-maildir-shortcuts
-  	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
+        '(("/aleks@ozolins.xyz/Inbox"           . ?i)
             ("/aleks@ozolins.xyz/Sent Items"      . ?s)
             ("/aleks@ozolins.xyz/Drafts"          . ?d)
             ("/aleks@ozolins.xyz/Archive"         . ?A)
