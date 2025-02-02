@@ -829,13 +829,13 @@ Note we're not using use-package here yet.
 
           ("e" "Email")
           ("ef" "Follow Up" entry (file+headline "~/docs/org/tasks.org" "Personal")
-           "* TODO Follow up with %:fromname on %a :@computer:\n" :empty-lines 1)
+           "* TODO Email: Follow up with %:fromname on %a :@computer:\n" :empty-lines 1)
 
           ("ea" "Action On" entry (file+headline "~/docs/org/tasks.org" "Personal")
-           "* TODO Action on %a :@computer:\n" :empty-lines 1)
+           "* TODO Email: Action on %a :@computer:\n" :empty-lines 1)
 
           ("er" "Read Later" entry (file+headline "~/docs/org/tasks.org" "Personal")
-           "* TODO Read email: %a :@computer:\n" :empty-lines 1)))
+           "* TODO Email: Read: %a :@computer:\n" :empty-lines 1)))
 
   ;; Default org capture file
   (setq org-default-notes-file (concat org-directory "~/docs/org/inbox.txt"))
