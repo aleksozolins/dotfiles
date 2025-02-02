@@ -147,6 +147,7 @@
 ;; Key re-bindings
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
+(global-set-key (kbd "C-x C-b") 'ibuffer)     ; Use ibuffer instead of the old buffer list
 
 ;; Define C-c o as a prefix key
 (define-prefix-command 'my-custom-prefix)
@@ -647,6 +648,8 @@
   (setq denote-backlinks-show-context t)
   (setq denote-save-files t)
   (setq denote-kill-buffers 'on-rename) ; When renaming a Denote note, if the buffer doesn't already exist, save and kill it.
+  (setq denote-excluded-files-regexp "_archive$") ; Exclude archive files when invoking denote-open-or-create
+  (setq denote-excluded-directories-regexp "^data$") ; Exclude data dir (from org-attach) when invoking denote-open-or-create
 
   ;; If you use Markdown or plain text files (Org renders links as buttons right away)
   (add-hook 'text-mode-hook #'denote-fontify-links-mode-maybe)
