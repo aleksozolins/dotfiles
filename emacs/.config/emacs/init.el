@@ -445,7 +445,7 @@
 
 ;; Set todo sequence
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "WAIT(w@/!)" "|" "DONE(d!)" "SKIP(k@/!)")))
 
 (setq org-agenda-custom-commands
       '(("i" "Tasks with inbox tag"
@@ -456,6 +456,8 @@
          ((agenda "" ((org-deadline-warning-days 7) (org-agenda-span 1)))
           (tags-todo "inbox"
                      ((org-agenda-overriding-header "Inbox")))
+          (todo "STARTED"
+                     ((org-agenda-overriding-header "In Progress Tasks")))
           (todo "WAIT"
                 ((org-agenda-overriding-header "Waiting Tasks")))
           (todo "NEXT"
@@ -463,6 +465,8 @@
 
         ("w" "Week Dashboard"
          ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "STARTED"
+                ((org-agenda-overriding-header "In Progress Tasks")))
           (todo "WAIT"
                 ((org-agenda-overriding-header "Waiting Tasks")))
           (todo "NEXT"
