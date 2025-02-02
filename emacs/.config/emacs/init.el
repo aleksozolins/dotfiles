@@ -488,6 +488,9 @@
 (with-eval-after-load 'org
   (add-to-list 'org-modules 'org-habit t))
 
+;; For mu4e org capture templates
+(require 'mu4e-org)
+
 ;; Custom Link Types
 ;; For magit status buffers
 (org-link-set-parameters
@@ -519,7 +522,7 @@
       `(("t" "Task (Quick Capture)" entry (file "~/docs/org/inbox.txt")
          "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
-      ("T" "Task (Detailed Personal)" entry (file+headline "~/docs/org/tasks.org" "Personal")
+        ("T" "Task (Detailed Personal)" entry (file+headline "~/docs/org/tasks.org" "Personal")
          "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
 
         ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/org/tasks.org" "Zapier")
@@ -545,8 +548,18 @@
         ("Mr" "Mouthpiece Rim" entry (file+headline "~/docs/denote/20220725T132500--my-mouthpieces__mouthpiece.org" "Mouthpieces")
          "* %^{Make} %^{Model} Rim\n:PROPERTIES:\n:Make: %\\1\n:Model: %\\2\n:Type: rim\n:Finish: %^{Finish|silver-plated|gold-plated|brass|nickel|stainless|bronze|plastic}\n:Threads: %^{Threads|standard|metric|Lawson}\n:Notes: %^{Notes}\n:END:" :empty-lines 1 :kill-buffer t)
 
-        ("e" "Event" entry (file+headline "~/docs/org/calendar.org" "Events")
-               "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)))
+        ("E" "Event" entry (file+headline "~/docs/org/calendar.org" "Events")
+               "* %^{Event Name}\n:SCHEDULED: %^T\n:PROPERTIES:\n:Location: %^{Location}\n:Note: %^{Note}\n:END:\n%?\n" :empty-lines 1)
+
+        ("e" "Email")
+        ("ef" "Follow Up" entry (file+headline "~/docs/org/tasks.org" "Personal")
+         "* TODO Follow up with %:fromname on %a :@computer:\n" :empty-lines 1)
+
+        ("ea" "Action On" entry (file+headline "~/docs/org/tasks.org" "Personal")
+         "* TODO Action on %a :@computer:\n" :empty-lines 1)
+
+        ("er" "Read Later" entry (file+headline "~/docs/org/tasks.org" "Personal")
+         "* TODO Read email: %a :@computer:\n" :empty-lines 1)))
 
 ;; Default org capture file
 (setq org-default-notes-file (concat org-directory "~/docs/org/inbox.txt"))
