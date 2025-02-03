@@ -283,6 +283,7 @@ Set the bookmarks file to synchronize via Dropbox.
 
 #+begin_src elisp
   (setq bookmark-default-file "~/Dropbox/apps/emacs/bookmarks")
+  (setq bookmark-save-flag 1) ; Save bookmarks automatically after every bookmark change
 #+end_src
 
 Bind =bookmark-bmenu-list= to =F8=

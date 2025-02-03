@@ -154,6 +154,7 @@
 (global-set-key (kbd "C-c o") 'my-custom-prefix)
 
 (setq bookmark-default-file "~/Dropbox/apps/emacs/bookmarks")
+(setq bookmark-save-flag 1) ; Save bookmarks automatically after every bookmark change
 
 (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
 
