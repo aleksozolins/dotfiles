@@ -412,6 +412,10 @@
 ;; Use org-indent-mode by default
 (setq org-startup-indented t)
 
+;; Some more defaults to change
+(setq org-M-RET-may-split-line '((default . nil))) ; Prevent meta-return from splitting content in the middle of a line
+(setq org-insert-heading-respect-content t) ; Make sure to insert headings UNDER content
+
 ;; Set org-agenda files to list of files. Note they all have the agenda tag.
 (setq org-agenda-files
       (list (concat org-directory "tasks.org")
