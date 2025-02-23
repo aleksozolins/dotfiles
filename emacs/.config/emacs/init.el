@@ -177,15 +177,15 @@
 (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
 ;; Keybindings
-(global-set-key (kbd "s-[") 'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "s-]") 'tab-bar-switch-to-next-tab)
-(global-set-key (kbd "s-t") 'tab-bar-new-tab)
-(global-set-key (kbd "s-w") 'tab-bar-close-tab)
+(global-set-key (kbd "H-[") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "H-]") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "H-t") 'tab-bar-new-tab)
+(global-set-key (kbd "H-w") 'tab-bar-close-tab)
 
 ;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
 (tab-bar-history-mode t)
-(global-set-key (kbd "s-{") 'tab-bar-history-back)
-(global-set-key (kbd "s-}") 'tab-bar-history-forward)
+(global-set-key (kbd "H-{") 'tab-bar-history-back)
+(global-set-key (kbd "H-}") 'tab-bar-history-forward)
 
 (add-hook 'js-mode-hook
           (lambda ()

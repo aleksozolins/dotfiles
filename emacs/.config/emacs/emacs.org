@@ -306,6 +306,8 @@ Bind =bookmark-bmenu-list= to =F8=
 
 * Manage tab-bar-mode
 
+Note that I'll need to figure out a way to bind hyper to the right alt key on PC/Linux. I might need to do this at the OS level instead of in my Emacs config. On the Mac, the key to the right of the spacebar is already rebound to Hyper here: [[*OSX Specific Settings][OSX Specific Settings]]
+
 #+begin_src elisp
   ;; Settings for tab-bar-mode
   (tab-bar-mode t)                                                 ; Enable tab-bar-mode
@@ -317,15 +319,15 @@ Bind =bookmark-bmenu-list= to =F8=
   (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
   ;; Keybindings
-  (global-set-key (kbd "s-[") 'tab-bar-switch-to-prev-tab)
-  (global-set-key (kbd "s-]") 'tab-bar-switch-to-next-tab)
-  (global-set-key (kbd "s-t") 'tab-bar-new-tab)
-  (global-set-key (kbd "s-w") 'tab-bar-close-tab)
+  (global-set-key (kbd "H-[") 'tab-bar-switch-to-prev-tab)
+  (global-set-key (kbd "H-]") 'tab-bar-switch-to-next-tab)
+  (global-set-key (kbd "H-t") 'tab-bar-new-tab)
+  (global-set-key (kbd "H-w") 'tab-bar-close-tab)
 
   ;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
   (tab-bar-history-mode t)
-  (global-set-key (kbd "s-{") 'tab-bar-history-back)
-  (global-set-key (kbd "s-}") 'tab-bar-history-forward)
+  (global-set-key (kbd "H-{") 'tab-bar-history-back)
+  (global-set-key (kbd "H-}") 'tab-bar-history-forward)
 #+end_src
 
 * JavaScript development
