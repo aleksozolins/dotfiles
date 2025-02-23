@@ -182,7 +182,7 @@
 (global-set-key (kbd "H-t") 'tab-bar-new-tab)
 (global-set-key (kbd "H-w") 'tab-bar-close-tab)
 
-;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
+;; tab-bar-history-mode lets you step back or forward through the window config history of the current tab
 (tab-bar-history-mode t)
 (global-set-key (kbd "H-{") 'tab-bar-history-back)
 (global-set-key (kbd "H-}") 'tab-bar-history-forward)
