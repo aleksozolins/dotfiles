@@ -61,9 +61,9 @@ When installing a new package, Emacs will show a buffer that contains any warnin
                '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
                  (display-buffer-no-window)
                  (allow-no-window . t)))
-#*
+#+end_src
 
-+end_src exec-path-from-shell
+* exec-path-from-shell
 
 This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
 
@@ -213,7 +213,6 @@ Remember to do =M-x= and run =nerd-icons-install-fonts= to get the font files.  
 Here are some other Emacs settings related to several different areas.
 
 #+begin_src elisp
-
   (setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
   (recentf-mode 1) ; Have Emacs remember recently opened files when using find file
 

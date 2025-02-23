@@ -12,21 +12,15 @@
   (package-refresh-contents))
 
 (add-to-list 'display-buffer-alist
-               '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
-                 (display-buffer-no-window)
-                 (allow-no-window . t)))
-#*
+             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
 
-+end_src exec-path-from-shell
-
-This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
-
-#+begin_src elisp
-  (when (eq system-type 'darwin)
-    (use-package exec-path-from-shell
-      :ensure t
-      :config
-      (exec-path-from-shell-initialize)))
+(when (eq system-type 'darwin)
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize)))
 
 (setq inhibit-startup-message t)      ; Disable startup message
 (menu-bar-mode -1)                    ; Disable the menu bar
