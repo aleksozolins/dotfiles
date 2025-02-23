@@ -208,7 +208,6 @@ Remember to do =M-x= and run =nerd-icons-install-fonts= to get the font files.  
     (dired-mode . nerd-icons-dired-mode))
 #+end_src
 
-
 * Make some other misc Emacs settings
 
 Here are some other Emacs settings related to several different areas.
