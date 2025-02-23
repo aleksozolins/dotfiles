@@ -61,9 +61,9 @@ When installing a new package, Emacs will show a buffer that contains any warnin
                '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
                  (display-buffer-no-window)
                  (allow-no-window . t)))
-#+end_src
+#*
 
-* exec-path-from-shell
++end_src exec-path-from-shell
 
 This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
 
@@ -208,6 +208,7 @@ Remember to do =M-x= and run =nerd-icons-install-fonts= to get the font files.  
     (dired-mode . nerd-icons-dired-mode))
 #+end_src
 
+
 * Make some other misc Emacs settings
 
 Here are some other Emacs settings related to several different areas.
@@ -262,6 +263,19 @@ Here are some other Emacs settings related to several different areas.
   (setq kill-buffer-delete-auto-save-files t) 
 #+end_src
 
+* OSX Specific Settings
+
+#+begin_src elisp
+  ;; --- OSX Specific -----------------------------------------------------------
+  (when (eq system-type 'darwin)
+    (select-frame-set-input-focus (selected-frame))
+    (setq mac-option-modifier nil
+          ns-function-modifier 'super
+          mac-right-command-modifier 'hyper
+          mac-right-option-modifier 'alt
+          mac-command-modifier 'meta))
+#+end_src
+
 * Re-bind some keys
 
 Here's where I'm deviating from Emacs' built in key-bindings or adding my own bespoke bindings.
@@ -305,15 +319,15 @@ Bind =bookmark-bmenu-list= to =F8=
   (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
   ;; Keybindings
-  (global-set-key (kbd "s-{") 'tab-bar-switch-to-prev-tab)
-  (global-set-key (kbd "s-}") 'tab-bar-switch-to-next-tab)
+  (global-set-key (kbd "s-[") 'tab-bar-switch-to-prev-tab)
+  (global-set-key (kbd "s-]") 'tab-bar-switch-to-next-tab)
   (global-set-key (kbd "s-t") 'tab-bar-new-tab)
   (global-set-key (kbd "s-w") 'tab-bar-close-tab)
 
   ;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
   (tab-bar-history-mode t)
-  (global-set-key (kbd "s-[") 'tab-bar-history-back)
-  (global-set-key (kbd "s-]") 'tab-bar-history-forward)
+  (global-set-key (kbd "s-{") 'tab-bar-history-back)
+  (global-set-key (kbd "s-}") 'tab-bar-history-forward)
 #+end_src
 
 * JavaScript development
@@ -592,6 +606,10 @@ The file manager, already built into Emacs.
     (setq dired-dwim-target t)
     (setq dired-recursive-copies 'always)
     (setq dired-recursive-deletes 'top)
+
+    ;; on Mac, delete by moving to trash
+    (when (eq system-type 'darwin)
+      (setq delete-by-moving-to-trash t))
 
     ;; Default to hiding details
     (add-hook 'dired-mode-hook

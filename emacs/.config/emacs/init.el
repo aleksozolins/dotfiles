@@ -12,15 +12,21 @@
   (package-refresh-contents))
 
 (add-to-list 'display-buffer-alist
-             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
-               (display-buffer-no-window)
-               (allow-no-window . t)))
+               '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+                 (display-buffer-no-window)
+                 (allow-no-window . t)))
+#*
 
-(when (eq system-type 'darwin)
-  (use-package exec-path-from-shell
-    :ensure t
-    :config
-    (exec-path-from-shell-initialize)))
++end_src exec-path-from-shell
+
+This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
+
+#+begin_src elisp
+  (when (eq system-type 'darwin)
+    (use-package exec-path-from-shell
+      :ensure t
+      :config
+      (exec-path-from-shell-initialize)))
 
 (setq inhibit-startup-message t)      ; Disable startup message
 (menu-bar-mode -1)                    ; Disable the menu bar
@@ -144,6 +150,15 @@
 
 (setq kill-buffer-delete-auto-save-files t)
 
+;; --- OSX Specific -----------------------------------------------------------
+(when (eq system-type 'darwin)
+  (select-frame-set-input-focus (selected-frame))
+  (setq mac-option-modifier nil
+        ns-function-modifier 'super
+        mac-right-command-modifier 'hyper
+        mac-right-option-modifier 'alt
+        mac-command-modifier 'meta))
+
 ;; Key re-bindings
 (global-set-key (kbd "M-o") 'other-window)    ; Move to the other window C-x o but also now M-o
 (global-set-key (kbd "M-i") 'imenu)           ; Invoke imenu. This replaces tab-to-tab-stop but what is that even?
@@ -168,15 +183,15 @@
 (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
 ;; Keybindings
-(global-set-key (kbd "s-{") 'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "s-}") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "s-[") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "s-]") 'tab-bar-switch-to-next-tab)
 (global-set-key (kbd "s-t") 'tab-bar-new-tab)
 (global-set-key (kbd "s-w") 'tab-bar-close-tab)
 
 ;; tab-bar-history-mode lets you step back or forwad through the window config history of the current tab
 (tab-bar-history-mode t)
-(global-set-key (kbd "s-[") 'tab-bar-history-back)
-(global-set-key (kbd "s-]") 'tab-bar-history-forward)
+(global-set-key (kbd "s-{") 'tab-bar-history-back)
+(global-set-key (kbd "s-}") 'tab-bar-history-forward)
 
 (add-hook 'js-mode-hook
           (lambda ()
@@ -380,6 +395,10 @@
   (setq dired-dwim-target t)
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'top)
+
+  ;; on Mac, delete by moving to trash
+  (when (eq system-type 'darwin)
+    (setq delete-by-moving-to-trash t))
 
   ;; Default to hiding details
   (add-hook 'dired-mode-hook
