@@ -81,6 +81,9 @@
 ;; Set a hot-key for switching between light and dark theme
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
 
+(use-package tomorrow-night-deepblue-theme
+  :ensure t)
+
 (use-package nerd-icons
   :ensure t)
 

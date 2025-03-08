@@ -1,12 +1,12 @@
-#+TITLE: GNU Emacs Configuration
-#+AUTHOR: Aleks Ozolins
-#+EMAIL: aleks@ozolins.xyz
-#+OPTIONS: toc:2
-#+STARTUP: show2levels
+#+TITLE:    GNU Emacs Configuration
+#+AUTHOR:   Aleks Ozolins
+#+EMAIL:    aleks@ozolins.xyz
+#+OPTIONS:  toc:2
+#+STARTUP:  show2levels
 #+PROPERTY: header-args:elisp :tangle init.el
 
 + Created: 2022-06-24
-+ Updated: 2025-01-18
++ Updated: 2025-03-08
 
 Information pertaining to my current build of Emacs:
 
@@ -15,8 +15,8 @@ Information pertaining to my current build of Emacs:
 #+end_src
 
 #+RESULTS:
-: GNU Emacs 29.4 (build 1, aarch64-apple-darwin24.0.0, NS appkit-2566.00 Version 15.0.1 (Build 24A348))
-:  of 2024-10-25
+: GNU Emacs 29.4 (build 1, aarch64-apple-darwin24.3.0, NS appkit-2575.40 Version 15.3.1 (Build 24D70))
+:  of 2025-02-23
 
 System configuration options:
 
@@ -25,7 +25,7 @@ System configuration options:
 #+end_src
 
 #+RESULTS:
-: --disable-dependency-tracking --disable-silent-rules --enable-locallisppath=/opt/homebrew/share/emacs/site-lisp --infodir=/opt/homebrew/Cellar/emacs-plus@29/29.4/share/info/emacs --prefix=/opt/homebrew/Cellar/emacs-plus@29/29.4 --with-xml2 --with-gnutls --without-compress-install --without-dbus --without-imagemagick --with-modules --with-rsvg --with-ns --disable-ns-self-contained 'CFLAGS=-O2 -DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT'
+: --disable-dependency-tracking --disable-silent-rules --enable-locallisppath=/opt/homebrew/share/emacs/site-lisp --infodir=/opt/homebrew/Cellar/emacs-plus@29/29.4/share/info/emacs --prefix=/opt/homebrew/Cellar/emacs-plus@29/29.4 --with-xml2 --with-gnutls --without-compress-install --without-dbus --without-imagemagick --with-modules --with-rsvg --with-ns --disable-ns-self-contained 'CFLAGS=-O2 -DFD_SETSIZE=10000 -DDARWIN_UNLIMITED_SELECT -I/opt/homebrew/opt/sqlite/include' LDFLAGS=-L/opt/homebrew/opt/sqlite/lib
 
 * Manage custom set variables
 
@@ -180,6 +180,13 @@ More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
   ;; Set a hot-key for switching between light and dark theme
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+#+end_src
+
+I also like to have James Cherti's =tomorrow-night-deepblue-theme= installed for that old-school Norton Commander look. We won't activate this out of the box for now, but we can use =consult-theme= to switch to it.
+
+#+begin_src elisp
+  (use-package tomorrow-night-deepblue-theme
+    :ensure t)
 #+end_src
 
 * Use icon fonts in various places
