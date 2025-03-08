@@ -75,14 +75,14 @@
       (3 . (rainbow bold 1))
       (t . (semilight 1))))
 
-;; Load a Theme
-(load-theme 'modus-operandi t)
-
 ;; Set a hot-key for switching between light and dark theme
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
 
 (use-package tomorrow-night-deepblue-theme
   :ensure t)
+
+;; Load a Theme
+(load-theme 'tomorrow-night-deepblue t)
 
 (use-package nerd-icons
   :ensure t)
