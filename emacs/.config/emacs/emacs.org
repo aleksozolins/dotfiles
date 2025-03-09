@@ -774,10 +774,9 @@ rg.el adds to Emacs' grep mode functionality with editing/etc.
 For RSS feeds!
 
 #+begin_src elisp
-  ;; Elfeed
+  ;; elfeed
   (use-package elfeed
     :ensure t
-    :bind ("C-c o e" . elfeed) ;; My quick launcher
     :config
     (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
     (pcase system-type
@@ -788,13 +787,26 @@ For RSS feeds!
 We'll use the elfeed-org package so we can use an org file for our feed list.
 
 #+begin_src elisp
-  ;; Elfeed-Org
+  ;; elfeed-erg
   (use-package elfeed-org
     :ensure t
     :after elfeed  ;; Ensure elfeed-org loads after elfeed
     :config
     (elfeed-org)
     (setq rmh-elfeed-org-files (list "~/docs/org/rss-feeds.org")))
+#+end_src
+
+elfeed-dashboard gives us a nice dashboard view like mu4e of our feed tags.
+
+#+begin_src elisp
+  ;; elfeed-dashboard
+  (use-package elfeed-dashboard
+  :ensure t
+  :bind ("C-c o e" . elfeed-dashboard) ;; My quick launcher
+  :config
+  (setq elfeed-dashboard-file "~/docs/org/elfeed-dashboard.org")
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 #+end_src
 
 * Org Mode

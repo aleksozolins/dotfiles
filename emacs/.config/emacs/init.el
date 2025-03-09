@@ -489,23 +489,31 @@
   :config
   (rg-enable-default-bindings))
 
-;; Elfeed
+;; elfeed
 (use-package elfeed
   :ensure t
-  :bind ("C-c o e" . elfeed) ;; My quick launcher
   :config
   (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
   (pcase system-type
     ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
     ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/"))))
 
-;; Elfeed-Org
+;; elfeed-erg
 (use-package elfeed-org
   :ensure t
   :after elfeed  ;; Ensure elfeed-org loads after elfeed
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/docs/org/rss-feeds.org")))
+
+;; elfeed-dashboard
+(use-package elfeed-dashboard
+:ensure t
+:bind ("C-c o e" . elfeed-dashboard) ;; My quick launcher
+:config
+(setq elfeed-dashboard-file "~/docs/org/elfeed-dashboard.org")
+;; update feed counts on elfeed-quit
+(advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 
 (require 'org) ;; This may not be necessary. We can rely on org's built in lazy loading instead.
 
