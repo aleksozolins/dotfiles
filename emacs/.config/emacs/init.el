@@ -356,24 +356,24 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
-; Corfu
+;; Corfu
 (use-package corfu
   :ensure t
   :init
   (global-corfu-mode 1)
   (corfu-popupinfo-mode 1)  ; shows documentation after `corfu-popupinfo-delay'
   (setq tab-always-indent 'complete)  ; This is needed for tab to work properly
-
+  
   :config
   (define-key corfu-map (kbd "<tab>") #'corfu-complete)
-
+  
   ;; Function to enable Corfu in the minibuffer when Vertico is not active,
   ;; useful for prompts such as `eval-expression' and `shell-command'.
   (defun contrib/corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico is not active."
     (unless (bound-and-true-p vertico--input)
       (corfu-mode 1)))
-
+  
   :hook
   (minibuffer-setup . contrib/corfu-enable-always-in-minibuffer))
 
@@ -735,12 +735,12 @@
   (interactive)
   (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
     (with-current-buffer buffer
-      (save-excursion
-	(goto-char (point-min))
-	(while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	  (org-ctrl-c-ctrl-c)
-	  (forward-line)))
-      (save-buffer))
+	(save-excursion
+	  (goto-char (point-min))
+	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
+	    (org-ctrl-c-ctrl-c)
+	    (forward-line)))
+	(save-buffer))
     (display-buffer buffer)))
 
 (defun my-kill-all-agenda-files ()
@@ -969,7 +969,7 @@
   (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
 
   (setq mu4e-maildir-shortcuts
-      '(("/aleks@ozolins.xyz/Inbox"           . ?i)
+	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
           ("/aleks@ozolins.xyz/Sent Items"      . ?s)
           ("/aleks@ozolins.xyz/Drafts"          . ?d)
           ("/aleks@ozolins.xyz/Archive"         . ?A)

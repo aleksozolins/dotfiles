@@ -258,16 +258,16 @@ Here are some other Emacs settings related to several different areas.
 #+begin_src elisp
   ;; Backup options
   (setq backup-directory-alist '(("." . "~/.config/emacs/backup/"))
-	backup-by-copying t    ; Don't delink hardlinks
-	version-control t      ; Use version numbers on backups
-	delete-old-versions t  ; Automatically delete excess backups
-	kept-new-versions 20   ; how many of the newest versions to keep
-	kept-old-versions 5    ; and how many of the old
-	)
+        backup-by-copying t    ; Don't delink hardlinks
+        version-control t      ; Use version numbers on backups
+        delete-old-versions t  ; Automatically delete excess backups
+        kept-new-versions 20   ; how many of the newest versions to keep
+        kept-old-versions 5    ; and how many of the old
+        )
 
   ;; auto-save
   (setq auto-save-file-name-transforms
-	`((".*" ,temporary-file-directory t)))
+        `((".*" ,temporary-file-directory t)))
 
   (setq kill-buffer-delete-auto-save-files t) 
 #+end_src
@@ -575,7 +575,7 @@ Corfu enhances completion at point with a small completion popup. The current ca
 The following code is taken right from Prot's config:
 
 #+begin_src elisp
-  ; Corfu
+  ;; Corfu
   (use-package corfu
     :ensure t
     :init
@@ -1051,18 +1051,18 @@ Here's a custom function so while I'm in org-agenda, I can press =C-c t= to open
 Here's another custom function to close org-agenda and kill all agenda buffers. Note that it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
 #+begin_src elisp
-(defun my-kill-all-agenda-files ()
-  "Close all buffers associated with files in `org-agenda-files' and report the number of buffers closed."
-  (interactive)
-  (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files)))
-        (closed-count 0))
-    (dolist (buffer (buffer-list))
-      (let ((buffer-file-name (buffer-file-name buffer)))
-        (when (and buffer-file-name (member buffer-file-name agenda-files))
-          (kill-buffer buffer)
-          (setq closed-count (1+ closed-count)))))
-    (org-agenda-quit)
-    (message "Closed %d agenda file buffer(s)" closed-count)))
+  (defun my-kill-all-agenda-files ()
+    "Close all buffers associated with files in `org-agenda-files' and report the number of buffers closed."
+    (interactive)
+    (let ((agenda-files (mapcar 'expand-file-name (org-agenda-files)))
+          (closed-count 0))
+      (dolist (buffer (buffer-list))
+        (let ((buffer-file-name (buffer-file-name buffer)))
+          (when (and buffer-file-name (member buffer-file-name agenda-files))
+            (kill-buffer buffer)
+            (setq closed-count (1+ closed-count)))))
+      (org-agenda-quit)
+      (message "Closed %d agenda file buffer(s)" closed-count)))
 #+end_src
 
 Here are the keybindings for our custom functions.
@@ -1319,7 +1319,7 @@ Settings of note:
     (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
 
     (setq mu4e-maildir-shortcuts
-        '(("/aleks@ozolins.xyz/Inbox"           . ?i)
+  	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
             ("/aleks@ozolins.xyz/Sent Items"      . ?s)
             ("/aleks@ozolins.xyz/Drafts"          . ?d)
             ("/aleks@ozolins.xyz/Archive"         . ?A)
