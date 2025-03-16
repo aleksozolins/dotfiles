@@ -1142,7 +1142,6 @@ Several settings below need to differ for Linux and macOS systems, so I've used 
 Settings of note:
 - I prefer no threading by default as email threading tends to confuse me.
 - A different downloads directly for Linux and macOS since macOS is damn stubborn about using their built in =Downloads= dir.
-- A different command to check mail periodically for Linux and macOS since mbsync installed with =homebrew= doesn't seem to be part of =PATH=.
 - Various settings to both view and compose mail in plain text only. I might add the ability later to compose in org and then render to html at send.
 
 #+begin_src elisp
