@@ -107,7 +107,7 @@ The following settings make the interface a bit more minimal and clean.
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
-* Set fonts
+* Fonts
 
 Very basic setting for now. Using Iosevka. Note we set it a bit differently in Mac vs Linux since we're running in daemon mode in Linux.
 
@@ -329,6 +329,8 @@ Note that I'll need to figure out a way to bind hyper to the right alt key on PC
 
 Just setting the default indent level here to match the code I see in the Zapier Developer Platform CLI templates.
 
+*Note that Emacs now offers =js-ts-mode= using treesitter. Need to investigate that.*
+
 #+begin_src elisp
   ;; JavaScript
   (add-hook 'js-mode-hook
@@ -337,6 +339,8 @@ Just setting the default indent level here to match the code I see in the Zapier
 #+end_src
 
 * TypeScript development
+
+*Note that Emacs now offers =typescript-ts-mode= using treesitter. Need to investigate that.*
 
 #+begin_src elisp
 ;; TypeScript
@@ -365,12 +369,9 @@ Use this to see what takes long to load in your Emacs config. Just run =M-x esup
 * Which-key
 
 #+begin_src elisp
-  ;; Which-Key
-  (use-package which-key
-    :init (which-key-mode)
-    :diminish which-key-mode
-    :config
-    (setq which-key-idle-delay 0.3))
+  ;; Which-Key (now included with Emacs 30)
+  (which-key-mode 1)
+  (setq which-key-idle-delay 0.3)
 #+end_src
 
 * Vertico

@@ -221,12 +221,9 @@
   :config
   (setq esup-depth 0)) ;; Without this we get a failure on macOS.
 
-;; Which-Key
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.3))
+;; Which-Key (now included with Emacs 30)
+(which-key-mode 1)
+(setq which-key-idle-delay 0.3)
 
 ;; Vertico
 (use-package vertico
