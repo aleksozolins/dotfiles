@@ -1,3 +1,4 @@
+;; Move custom vars to a separate file and load it
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
 
@@ -11,17 +12,20 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+;; Don't show confusing warnings when unstalling packages
 (add-to-list 'display-buffer-alist
              '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
                (display-buffer-no-window)
                (allow-no-window . t)))
 
+;; exec-path-from-shell
 (when (eq system-type 'darwin)
   (use-package exec-path-from-shell
     :ensure t
     :config
     (exec-path-from-shell-initialize)))
 
+;; Clean up the interface
 (setq inhibit-startup-message t)      ; Disable startup message
 (menu-bar-mode -1)                    ; Disable the menu bar
 (scroll-bar-mode -1)                  ; Disable the scroll bar
@@ -44,6 +48,7 @@
 ;; Make sure all Emacs frames start fullscreen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;;; Set fonts
 (defun set-my-font ()
   (pcase system-type
     ('gnu/linux
@@ -60,6 +65,8 @@
 ;; Ensure the font is applied to the initial frame
 (set-my-font)
 
+;;; Themes
+;; Modus themes
 (setq modus-themes-mode-line '(accented)
     modus-themes-bold-constructs t
     modus-themes-fringes 'subtle
@@ -78,12 +85,14 @@
 ;; Set a hot-key for switching between light and dark theme
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
 
+;; deepblue theme
 (use-package tomorrow-night-deepblue-theme
   :ensure t)
 
 ;; Load a Theme
 (load-theme 'tomorrow-night-deepblue t)
 
+;; Use icon fonts in various places
 (use-package nerd-icons
   :ensure t)
 
@@ -104,6 +113,7 @@
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
+;;; Some misc settings
 (setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
 (recentf-mode 1) ; Have Emacs remember recently opened files when using find file
 
@@ -144,7 +154,6 @@
 ;; auto-save
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
-
 (setq kill-buffer-delete-auto-save-files t)
 
 ;; --- OSX Specific -----------------------------------------------------------
@@ -165,6 +174,7 @@
 (define-prefix-command 'my-custom-prefix)
 (global-set-key (kbd "C-c o") 'my-custom-prefix)
 
+;; Bookmarks
 (setq bookmark-default-file "~/Dropbox/apps/emacs/bookmarks")
 (setq bookmark-save-flag 1) ; Save bookmarks automatically after every bookmark change
 
@@ -179,7 +189,7 @@
 (setq tab-bar-tab-hints nil)                                     ; Hide the tab numbers
 (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
-;; Keybindings
+;; Keybindings for tab-bar-mode
 (global-set-key (kbd "H-[") 'tab-bar-switch-to-prev-tab)
 (global-set-key (kbd "H-]") 'tab-bar-switch-to-next-tab)
 (global-set-key (kbd "H-t") 'tab-bar-new-tab)
@@ -190,16 +200,18 @@
 (global-set-key (kbd "H-{") 'tab-bar-history-back)
 (global-set-key (kbd "H-}") 'tab-bar-history-forward)
 
+;; JavaScript
 (add-hook 'js-mode-hook
           (lambda ()
             (setq js-indent-level 2)))
 
-(use-package typescript-mode
-  :ensure t
-  :defer t
-  :mode "\\.ts\\'"
-  :config
-  (setq typescript-indent-level 2))
+;; TypeScript
+  (use-package typescript-mode
+    :ensure t
+    :defer t
+    :mode "\\.ts\\'"
+    :config
+    (setq typescript-indent-level 2))
 
 ;; Esup
 (use-package esup
@@ -253,6 +265,7 @@
   :init
   (setq prefix-help-command #'embark-prefix-help-command))
 
+;; Consult
 (use-package consult
   :ensure t
   ;; Replace bindings. Lazily loaded by `use-package'.
@@ -428,17 +441,18 @@
     "My `dired' mode hook to hide dot-files by default."
     (dired-hide-dotfiles-mode)))
 
-(use-package dired-subtree
-  :ensure t
-  :after dired
-  :bind
-  ( :map dired-mode-map
-    ("<tab>" . dired-subtree-toggle)
-    ("TAB" . dired-subtree-toggle)
-    ("<backtab>" . dired-subtree-remove)
-    ("S-TAB" . dired-subtree-remove))
-  :config
-  (setq dired-subtree-use-backgrounds nil))
+;; Dired Subtree
+ (use-package dired-subtree
+   :ensure t
+   :after dired
+   :bind
+   ( :map dired-mode-map
+     ("<tab>" . dired-subtree-toggle)
+     ("TAB" . dired-subtree-toggle)
+     ("<backtab>" . dired-subtree-remove)
+     ("S-TAB" . dired-subtree-remove))
+   :config
+   (setq dired-subtree-use-backgrounds nil))
 
 ;; Vterm
 (use-package vterm
@@ -515,6 +529,7 @@
 ;; update feed counts on elfeed-quit
 (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 
+;;; Org Mode
 (require 'org) ;; This may not be necessary. We can rely on org's built in lazy loading instead.
 
 ;; Org keybindings
@@ -524,8 +539,8 @@
 
 ;; Define a function and then call a hook to enable some settings whenenver org-mode is loaded
 (defun org-mode-setup ()
-  ;;(org-indent-mode)
-  ;;(variable-pitch-mode 1)
+  ;; (org-indent-mode) ;; May want this later
+  ;; (variable-pitch-mode 1) ;; May want this later
   (visual-line-mode 1))
 
 (add-hook 'org-mode-hook 'org-mode-setup)
@@ -647,14 +662,6 @@
   :ensure nil
   :after org)
 
-(defvar my-org-contacts-template "* %(org-contacts-template-name)
-      :PROPERTIES:
-      :ADDRESS: %^{9 Birch Lane, Verona, NJ 07044}
-      :EMAIL: %(org-contacts-template-email)
-      :MOBILE: tel:%^{973.464.5242}
-      :NOTE: %^{NOTE}
-      :END:" "Template for org-contacts.")
-
 (setq org-capture-templates
       `(("t" "Task (Quick Capture)" entry (file "~/docs/org/inbox.txt")
          "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
@@ -664,9 +671,6 @@
 
         ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/org/tasks.org" "Zapier")
          "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-        ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
-         my-org-contacts-template :empty-lines 1 :kill-buffer t)
 
         ("m" "Metrics")
         ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
@@ -730,19 +734,7 @@
 (add-to-list 'org-structure-template-alist '("html" . "src html"))
 (add-to-list 'org-structure-template-alist '("css" . "src css"))
 
-(defun my-view-and-update-clocktables ()
-  "Open time_tracking.org in a split buffer and update all clock tables."
-  (interactive)
-  (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
-    (with-current-buffer buffer
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	    (org-ctrl-c-ctrl-c)
-	    (forward-line)))
-	(save-buffer))
-    (display-buffer buffer)))
-
+;; Kill all agenda files with Q
 (defun my-kill-all-agenda-files ()
   "Close all buffers associated with files in `org-agenda-files' and report the number of buffers closed."
   (interactive)
@@ -756,10 +748,11 @@
     (org-agenda-quit)
     (message "Closed %d agenda file buffer(s)" closed-count)))
 
+;; Bind to Q
 (with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
   (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
 
+;;; Denote
 (use-package denote
   :ensure t
   :after org
@@ -827,9 +820,7 @@
     (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
     (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
     (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
-    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
-    ;; Added by Aleks
-    (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
+    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
 
   (with-eval-after-load 'org-capture
     (setq denote-org-capture-specifiers "%l\n%i\n%?")
@@ -847,34 +838,10 @@
   (setq denote-journal-extras-keyword "journal")
   ;; (setq denote-journal-extras-directory "/Users/aleksozolins/docs/denote/journal") ;; this is set by default to a subdir of denote-directory called journal.
   (setq denote-journal-extras-title-format 'day-date-month-year)
-
+  
   )
 
-(defun my-denote-aggregate-notes ()
-  "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
-  (interactive)
-  (if (not (eq major-mode 'dired-mode))
-      (message "You're not in a Dired buffer!")
-    (let ((files (dired-get-marked-files))
-          (target-buffer (generate-new-buffer "*Denote Aggregated Notes*"))
-          content)
-      (with-current-buffer target-buffer
-        (org-mode))
-      (dolist (file files)
-        (when (string-match-p "\\(txt\\|md\\|org\\)$" file)
-          (with-temp-buffer
-            (insert-file-contents file)
-            (setq content (buffer-string)))
-          (with-current-buffer target-buffer
-            (goto-char (point-max))
-            (insert (format "* %s\n" (file-name-nondirectory file)))
-            (if (not (string-match-p "org$" file))
-                (insert content)
-              ;; If it's an org file, shift all headings down by one level.
-              (insert (replace-regexp-in-string "^\\*" "**" content)))))
-        )
-      (switch-to-buffer target-buffer))))
-
+;; consult-denote
 (use-package consult-denote
   :after denote  ;; Ensure denote is loaded first
   :ensure t
@@ -884,9 +851,9 @@
   :config
   (consult-denote-mode 1))
 
-;; MU4E
+;;; MU4E
 (use-package mu4e
-  :ensure nil  ;; mu4e is usually installed with mu; ensure should be nil
+  :ensure nil  ;; mu4e is usually installed with mu -- ensure should be nil
   :bind
   ("C-c o m" . mu4e)
   :hook
@@ -898,13 +865,13 @@
     (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
     (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
   :config
-  ; First we set the context-policy and contexts
+  ;; Set the context-policy and contexts
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-compose-context-policy 'pick-first)
   (setq mu4e-contexts
-      (list
-       ;; aleks@ozolins.xyz
-       (make-mu4e-context
+	(list
+	 ;; aleks@ozolins.xyz
+	 (make-mu4e-context
           :name "1-aleks@ozolins.xyz"
           :match-func
           (lambda (msg)
@@ -925,58 +892,50 @@
     ('gnu/linux
      ;; Linux-specific settings
      (setq mu4e-attachment-dir  "~/dls")
-     (setq mu4e-get-mail-command "mbsync -a"))
-    ('darwin
-     ;; macOS-specific settings
-     (setq mu4e-attachment-dir  "~/Downloads")
-     (setq mu4e-get-mail-command "/opt/homebrew/bin/mbsync -a")
-     ;; Ensure GPG is configured correctly
-     (require 'epa-file)
-     (setq epg-gpg-program "/opt/homebrew/bin/gpg")
-     (epa-file-enable)))
+     ('darwin
+      ;; macOS-specific settings
+      (setq mu4e-attachment-dir  "~/Downloads")
+      ;; Ensure GPG is configured correctly
+      (require 'epa-file)
+      (setq epg-gpg-program "/opt/homebrew/bin/gpg")
+      (epa-file-enable))))
 
-  ;; Settings that apply reglardless of system type...
-  (setq mu4e-maildir "~/.local/share/mail")
-  (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
-  (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org") ;; Use org-contacts
-  (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
-  (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
-  (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
-  (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible
-  ;; (setq mu4e-compose-complete-addresses nil) ;; Don't autocomplete emails using mu's built in autocompletion (we'll use org-contacts for this)
-  (setq mu4e-compose-complete-addresses t) ;; Disabled org-contacts
-  ;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum) ;; Always show the plaintext version of emails over HTML
+    ;; Settings that apply reglardless of system type...
+    (setq mu4e-maildir "~/.local/share/mail")
+    (setq mu4e-get-mail-command "true") ;; Since isync is run automatically outside of Emacs, we just need Emacs for mu indexing.
+    (setq mu4e-update-interval (* 10 60)) ;; Runs `mu index` every 10 minutes
+    (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
+    (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
+    (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
+    (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
+    (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
+    (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible   
+    (setq mu4e-view-auto-mark-as-read t) ;; Set to nil to turn off automatic mark as read (use ! instead)
+    
+    ;; Prefer the plain text version of emails
+    (with-eval-after-load "mm-decode"
+      (add-to-list 'mm-discouraged-alternatives "text/html")
+      (add-to-list 'mm-discouraged-alternatives "text/richtext"))    
+    (setq gnus-inhibit-images t) ;; Inhibit images from loading
 
-  ;; Prefer the plain text version of emails
-  (with-eval-after-load "mm-decode"
-    (add-to-list 'mm-discouraged-alternatives "text/html")
-    (add-to-list 'mm-discouraged-alternatives "text/richtext"))
+    ;; Configure how to send mails
+    ;; Note: .authinfo.gpg is used by default for authentication.
+    ;; You can customize the variable auth-sources
+    (setq message-send-mail-function 'smtpmail-send-it)
+    (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
+    (setq mu4e-compose-complete-addresses t) ;; Use mu's built in autocompletion since we're not using org-contacts
+    (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
+    (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
 
-  (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
-
-  (setq gnus-inhibit-images t) ;; Inhibit images from loading
-  (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
-  ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
-  (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
-
-  (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
-
-  ;; Configure how to send mails
-  ;; Note: .authinfo.gpg is used by default for authentication.
-  ;; You can customize the variable auth-sources
-  (setq message-send-mail-function 'smtpmail-send-it)
-
-  (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-
-  (setq mu4e-maildir-shortcuts
-	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
-          ("/aleks@ozolins.xyz/Sent Items"      . ?s)
-          ("/aleks@ozolins.xyz/Drafts"          . ?d)
-          ("/aleks@ozolins.xyz/Archive"         . ?A)
-          ("/aleks@ozolins.xyz/Trash"           . ?t)
-          ("/aleks@ozolins.xyz/Admin"           . ?a)
-          ("/aleks@ozolins.xyz/Receipts"        . ?r)
-          ("/aleks@ozolins.xyz/Parents"         . ?p)
-          ("/aleks@ozolins.xyz/Sus"             . ?u)
-          ("/aleks@ozolins.xyz/Spam?"           . ?S)))
-  )
+    (setq mu4e-maildir-shortcuts
+	  '(("/aleks@ozolins.xyz/Inbox"           . ?i)
+            ("/aleks@ozolins.xyz/Sent Items"      . ?s)
+            ("/aleks@ozolins.xyz/Drafts"          . ?d)
+            ("/aleks@ozolins.xyz/Archive"         . ?A)
+            ("/aleks@ozolins.xyz/Trash"           . ?t)
+            ("/aleks@ozolins.xyz/Admin"           . ?a)
+            ("/aleks@ozolins.xyz/Receipts"        . ?r)
+            ("/aleks@ozolins.xyz/Parents"         . ?p)
+            ("/aleks@ozolins.xyz/Sus"             . ?u)
+            ("/aleks@ozolins.xyz/Spam?"           . ?S)))
+    )

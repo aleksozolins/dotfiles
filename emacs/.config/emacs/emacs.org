@@ -32,6 +32,7 @@ System configuration options:
 Move customization variables to a separate file and load it.
 
 #+begin_src elisp
+  ;; Move custom vars to a separate file and load it
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
 #+end_src
@@ -57,6 +58,7 @@ Now we'll initialize our package sources.
 When installing a new package, Emacs will show a buffer that contains any warnings produced by the byte compiler. While this information is useful for developers, it is highly confusing for users. The following snippet will prevent those buffers from popping up. They are still available in the buffer list, if they are needed.
 
 #+begin_src elisp
+  ;; Don't show confusing warnings when unstalling packages
   (add-to-list 'display-buffer-alist
                '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
                  (display-buffer-no-window)
@@ -68,6 +70,7 @@ When installing a new package, Emacs will show a buffer that contains any warnin
 This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
 
 #+begin_src elisp
+  ;; exec-path-from-shell
   (when (eq system-type 'darwin)
     (use-package exec-path-from-shell
       :ensure t
@@ -80,6 +83,7 @@ This is needed only on the Mac and helps Emacs evaluate $PATH correctly.
 The following settings make the interface a bit more minimal and clean.
 
 #+begin_src elisp
+  ;; Clean up the interface
   (setq inhibit-startup-message t)      ; Disable startup message
   (menu-bar-mode -1)                    ; Disable the menu bar
   (scroll-bar-mode -1)                  ; Disable the scroll bar
@@ -90,7 +94,7 @@ The following settings make the interface a bit more minimal and clean.
   (minibuffer-electric-default-mode t)  ; Make default disappear in the minibuffer when typing
   (setq suggest-key-bindings 3)         ; Make keybinding suggestions stick around longer
   (add-to-list 'default-frame-alist '(undecorated . t))   ; Get rid of the title bar in macOS
-  
+
   ;; Change the startup message in the minibuffer to a nice greeting
   (defun display-startup-echo-area-message ()
     (message "Welcome back Aleks! Emacs started in %.2f seconds."
@@ -103,32 +107,6 @@ The following settings make the interface a bit more minimal and clean.
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
-* Line numbers (disabled)
-
-These were more useful when I was using evil-mode and/or when I transitioned from nvim. For now, we'll disable them by choosing not to tangle.
-
-#+begin_src elisp :tangle no
-  ;; Enable line numbers in general
-  (column-number-mode)
-  (global-display-line-numbers-mode)
-
-  ;; Disable line numbers for specific modes
-  (dolist (mode '(org-mode-hook
-                  term-mode-hook
-                  shell-mode-hook
-                  eshell-mode-hook
-                  mu4e-headers-mode-hook
-                  mu4e-main-mode-hook
-                  mu4e-view-mode-hook
-                  org-agenda-mode-hook
-                  nerd-icons-dired-mode-hook
-                  vterm-mode-hook))
-    (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-  ;; Enable relative line numbers (like in Vim)
-  (setq display-line-numbers-type 'relative)
-#+end_src
-
 * Set fonts
 
 Very basic setting for now. Using Iosevka. Note we set it a bit differently in Mac vs Linux since we're running in daemon mode in Linux.
@@ -136,6 +114,7 @@ Very basic setting for now. Using Iosevka. Note we set it a bit differently in M
 Also note we are using some magic to delay setting the font. Without that, using emacs-plus it wasn't setting on startup.
 
 #+begin_src elisp
+  ;;; Set fonts
   (defun set-my-font ()
     (pcase system-type
       ('gnu/linux
@@ -160,6 +139,8 @@ Note that we can use =consult-theme= to switch our theme at any time during a se
 The Modus themes are now included with Emacs. They were built by Protesilaos Stavrou. More info here: [[https://protesilaos.com/emacs/modus-themes][Modus Themes]]
 
 #+begin_src elisp
+  ;;; Themes
+  ;; Modus themes
   (setq modus-themes-mode-line '(accented)
       modus-themes-bold-constructs t
       modus-themes-fringes 'subtle
@@ -182,6 +163,7 @@ The Modus themes are now included with Emacs. They were built by Protesilaos Sta
 I also like to have James Cherti's =tomorrow-night-deepblue-theme= installed for that old-school Norton Commander look.
 
 #+begin_src elisp
+  ;; deepblue theme
   (use-package tomorrow-night-deepblue-theme
     :ensure t)
 #+end_src
@@ -198,6 +180,7 @@ Load our theme du-jour:
 Remember to do =M-x= and run =nerd-icons-install-fonts= to get the font files.  Then restart Emacs to see the effect.
 
 #+begin_src elisp
+  ;; Use icon fonts in various places
   (use-package nerd-icons
     :ensure t)
 
@@ -224,6 +207,7 @@ Remember to do =M-x= and run =nerd-icons-install-fonts= to get the font files.  
 Here are some other Emacs settings related to several different areas.
 
 #+begin_src elisp
+  ;;; Some misc settings
   (setq vc-follow-symlinks t) ; Stop Emacs from asking about following symlinks when opening files
   (recentf-mode 1) ; Have Emacs remember recently opened files when using find file
 
@@ -268,7 +252,6 @@ Here are some other Emacs settings related to several different areas.
   ;; auto-save
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
-
   (setq kill-buffer-delete-auto-save-files t) 
 #+end_src
 
@@ -305,6 +288,7 @@ Here's where I'm deviating from Emacs' built in key-bindings or adding my own be
 Set the bookmarks file to synchronize via Dropbox.
 
 #+begin_src elisp
+  ;; Bookmarks
   (setq bookmark-default-file "~/Dropbox/apps/emacs/bookmarks")
   (setq bookmark-save-flag 1) ; Save bookmarks automatically after every bookmark change
 #+end_src
@@ -329,7 +313,7 @@ Note that I'll need to figure out a way to bind hyper to the right alt key on PC
   (setq tab-bar-tab-hints nil)                                     ; Hide the tab numbers
   (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))   ; Get rid of the history buttons in the tab bar
 
-  ;; Keybindings
+  ;; Keybindings for tab-bar-mode
   (global-set-key (kbd "H-[") 'tab-bar-switch-to-prev-tab)
   (global-set-key (kbd "H-]") 'tab-bar-switch-to-next-tab)
   (global-set-key (kbd "H-t") 'tab-bar-new-tab)
@@ -346,25 +330,16 @@ Note that I'll need to figure out a way to bind hyper to the right alt key on PC
 Just setting the default indent level here to match the code I see in the Zapier Developer Platform CLI templates.
 
 #+begin_src elisp
+  ;; JavaScript
   (add-hook 'js-mode-hook
             (lambda ()
               (setq js-indent-level 2))) 
 #+end_src
 
-* Python development
-
-Note that this is currently disabled while I reevaluate. Using elpy likely preferred in the future.
-
-#+begin_src elisp :tangle no
-  ;; Config for Python Mode -- It comes with Emacs so it doesn't have to be installed
-  (use-package python-mode
-    :ensure t
-    :hook (python-mode . lsp-deferred))
-#+end_src
-
 * TypeScript development
 
 #+begin_src elisp
+;; TypeScript
   (use-package typescript-mode
     :ensure t
     :defer t
@@ -464,6 +439,7 @@ Embark is invoked by using =C-.= and allows common operations to be performed to
 Consult allows for live previews while using Vertico and other functionality. We are just using the default config from the documentation [[https://github.com/minad/consult/tree/c74ae6149172e3429b844c22d67e02b01abea1e4?tab=readme-ov-file#use-package-example][here]] for now.
 
 #+begin_src elisp
+  ;; Consult
   (use-package consult
     :ensure t
     ;; Replace bindings. Lazily loaded by `use-package'.
@@ -661,6 +637,7 @@ Add the following package to enable the hiding of dotfiles.
 The dired-subtree package provides commands to quickly view the contents of a folder with the TAB key.
 
 #+begin_src elisp
+ ;; Dired Subtree
   (use-package dired-subtree
     :ensure t
     :after dired
@@ -814,6 +791,7 @@ elfeed-dashboard gives us a nice dashboard view like mu4e of our feed tags.
 Note we're not using use-package here yet.
 
 #+begin_src elisp
+  ;;; Org Mode
   (require 'org) ;; This may not be necessary. We can rely on org's built in lazy loading instead.
 
   ;; Org keybindings
@@ -823,8 +801,8 @@ Note we're not using use-package here yet.
 
   ;; Define a function and then call a hook to enable some settings whenenver org-mode is loaded
   (defun org-mode-setup ()
-    ;;(org-indent-mode)
-    ;;(variable-pitch-mode 1)
+    ;; (org-indent-mode) ;; May want this later
+    ;; (variable-pitch-mode 1) ;; May want this later
     (visual-line-mode 1))
 
   (add-hook 'org-mode-hook 'org-mode-setup)
@@ -946,14 +924,6 @@ Note we're not using use-package here yet.
     :ensure nil
     :after org)
 
-  (defvar my-org-contacts-template "* %(org-contacts-template-name)
-        :PROPERTIES:
-        :ADDRESS: %^{9 Birch Lane, Verona, NJ 07044}
-        :EMAIL: %(org-contacts-template-email)
-        :MOBILE: tel:%^{973.464.5242}
-        :NOTE: %^{NOTE}
-        :END:" "Template for org-contacts.")
-
   (setq org-capture-templates
         `(("t" "Task (Quick Capture)" entry (file "~/docs/org/inbox.txt")
            "* TODO %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
@@ -963,9 +933,6 @@ Note we're not using use-package here yet.
 
           ("Z" "Task (Detailed Zapier)" entry (file+headline "~/docs/org/tasks.org" "Zapier")
            "* %^{State|TODO|NEXT} %?\n:PROPERTIES:\n:CAPTURED: %U\n:END:\n%i" :empty-lines 1)
-
-          ("c" "Contact" entry (file+headline "~/docs/denote/20220727T132509--contacts__contact.org" "Misc")
-           my-org-contacts-template :empty-lines 1 :kill-buffer t)
 
           ("m" "Metrics")
           ("mw" "Weight" table-line (file "~/docs/denote/20140713T132841--my-weight__health.org")
@@ -1031,26 +998,10 @@ Note we're not using use-package here yet.
 
 #+end_src
 
-Here's a custom function so while I'm in org-agenda, I can press =C-c t= to open my Time Tracking file in the other window. The clocktables are all updated automatically when the function is run.
-
-#+begin_src elisp
-  (defun my-view-and-update-clocktables ()
-    "Open time_tracking.org in a split buffer and update all clock tables."
-    (interactive)
-    (let ((buffer (find-file-noselect "~/docs/denote/20230530T132757--time-tracking__org_zapier.org")))
-      (with-current-buffer buffer
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "^#\\+BEGIN: clocktable" nil t)
-	    (org-ctrl-c-ctrl-c)
-	    (forward-line)))
-	(save-buffer))
-      (display-buffer buffer)))
-#+end_src
-
-Here's another custom function to close org-agenda and kill all agenda buffers. Note that it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
+Here's a custom function to close org-agenda and kill all agenda buffers. Note that it is bound to =Q= which replaces ~org-agenda-Quit~ which wasn't really useful for me.
   
 #+begin_src elisp
+  ;; Kill all agenda files with Q
   (defun my-kill-all-agenda-files ()
     "Close all buffers associated with files in `org-agenda-files' and report the number of buffers closed."
     (interactive)
@@ -1068,19 +1019,9 @@ Here's another custom function to close org-agenda and kill all agenda buffers. 
 Here are the keybindings for our custom functions.
 
 #+begin_src elisp
+  ;; Bind to Q
   (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "C-c t") 'my-view-and-update-clocktables)
     (define-key org-agenda-mode-map (kbd "Q") 'my-kill-all-agenda-files))
-#+end_src
-
-org-contacts is disabled for now cause it just doesn't work great.
-
-#+begin_src elisp :tangle no
-  ;; Org Contacts
-  (use-package org-contacts
-    :ensure t
-    :after org
-    :custom (org-contacts-files '("~/docs/denote/20220727T132509--contacts__contact.org")))
 #+end_src
 
 * Denote
@@ -1088,6 +1029,7 @@ org-contacts is disabled for now cause it just doesn't work great.
 Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d-8e6a-e5c396b15fd6][here]].
 
 #+begin_src elisp
+  ;;; Denote
   (use-package denote
     :ensure t
     :after org
@@ -1155,9 +1097,7 @@ Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d
       (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
       (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
       (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
-      (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter)
-      ;; Added by Aleks
-      (define-key map (kbd "C-c C-d C-a") #'my-denote-aggregate-notes))
+      (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
 
     (with-eval-after-load 'org-capture
       (setq denote-org-capture-specifiers "%l\n%i\n%?")
@@ -1175,42 +1115,14 @@ Prot's sample config [[https://protesilaos.com/emacs/denote#h:5d16932d-4f7b-493d
     (setq denote-journal-extras-keyword "journal")
     ;; (setq denote-journal-extras-directory "/Users/aleksozolins/docs/denote/journal") ;; this is set by default to a subdir of denote-directory called journal.
     (setq denote-journal-extras-title-format 'day-date-month-year)
-
+    
     )
-#+end_src
-
-Here's a custom function to aggregate denote notes in dired. This is useful for generating AI summaries - for instance, you can mark several files that represent a week in dired, then aggregate the contents into a new org buffer. That buffer can be saved into a directory that triggers a Zap that will action on the aggregated contents of those notes. The aggregated buffer inserts the contents of each note under an org heading with the file name. With the Denote file naming scheme, this automatically acts as a date tree as well.
-
-#+begin_src elisp
-  (defun my-denote-aggregate-notes ()
-    "Aggregate contents of marked txt, md, and org files in Dired to an org buffer."
-    (interactive)
-    (if (not (eq major-mode 'dired-mode))
-        (message "You're not in a Dired buffer!")
-      (let ((files (dired-get-marked-files))
-            (target-buffer (generate-new-buffer "*Denote Aggregated Notes*"))
-            content)
-        (with-current-buffer target-buffer
-          (org-mode))
-        (dolist (file files)
-          (when (string-match-p "\\(txt\\|md\\|org\\)$" file)
-            (with-temp-buffer
-              (insert-file-contents file)
-              (setq content (buffer-string)))
-            (with-current-buffer target-buffer
-              (goto-char (point-max))
-              (insert (format "* %s\n" (file-name-nondirectory file)))
-              (if (not (string-match-p "org$" file))
-                  (insert content)
-                ;; If it's an org file, shift all headings down by one level.
-                (insert (replace-regexp-in-string "^\\*" "**" content)))))
-          )
-        (switch-to-buffer target-buffer))))
 #+end_src
 
 * Consult-Denote
 
 #+begin_src elisp
+  ;; consult-denote
   (use-package consult-denote
     :after denote  ;; Ensure denote is loaded first
     :ensure t
@@ -1234,9 +1146,9 @@ Settings of note:
 - Various settings to both view and compose mail in plain text only. I might add the ability later to compose in org and then render to html at send.
 
 #+begin_src elisp
-  ;; MU4E
+  ;;; MU4E
   (use-package mu4e
-    :ensure nil  ;; mu4e is usually installed with mu; ensure should be nil
+    :ensure nil  ;; mu4e is usually installed with mu -- ensure should be nil
     :bind
     ("C-c o m" . mu4e)
     :hook
@@ -1248,13 +1160,13 @@ Settings of note:
       (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/")
       (setq mu4e-mu-binary (executable-find "/opt/homebrew/bin/mu")))
     :config
-    ; First we set the context-policy and contexts
+    ;; Set the context-policy and contexts
     (setq mu4e-context-policy 'pick-first)
     (setq mu4e-compose-context-policy 'pick-first)
     (setq mu4e-contexts
-        (list
-         ;; aleks@ozolins.xyz
-         (make-mu4e-context
+  	(list
+  	 ;; aleks@ozolins.xyz
+  	 (make-mu4e-context
             :name "1-aleks@ozolins.xyz"
             :match-func
             (lambda (msg)
@@ -1275,59 +1187,51 @@ Settings of note:
       ('gnu/linux
        ;; Linux-specific settings
        (setq mu4e-attachment-dir  "~/dls")
-       (setq mu4e-get-mail-command "mbsync -a"))
-      ('darwin
-       ;; macOS-specific settings
-       (setq mu4e-attachment-dir  "~/Downloads")
-       (setq mu4e-get-mail-command "/opt/homebrew/bin/mbsync -a")
-       ;; Ensure GPG is configured correctly
-       (require 'epa-file)
-       (setq epg-gpg-program "/opt/homebrew/bin/gpg")
-       (epa-file-enable)))
+       ('darwin
+        ;; macOS-specific settings
+        (setq mu4e-attachment-dir  "~/Downloads")
+        ;; Ensure GPG is configured correctly
+        (require 'epa-file)
+        (setq epg-gpg-program "/opt/homebrew/bin/gpg")
+        (epa-file-enable))))
 
-    ;; Settings that apply reglardless of system type...
-    (setq mu4e-maildir "~/.local/share/mail")
-    (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
-    (setq mu4e-org-contacts-file  "~/docs/denote/20220727T132509--contacts__contact.org") ;; Use org-contacts
-    (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
-    (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
-    (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
-    (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible
-    ;; (setq mu4e-compose-complete-addresses nil) ;; Don't autocomplete emails using mu's built in autocompletion (we'll use org-contacts for this)
-    (setq mu4e-compose-complete-addresses t) ;; Disabled org-contacts
-    ;; (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum) ;; Always show the plaintext version of emails over HTML
+      ;; Settings that apply reglardless of system type...
+      (setq mu4e-maildir "~/.local/share/mail")
+      (setq mu4e-get-mail-command "true") ;; Since isync is run automatically outside of Emacs, we just need Emacs for mu indexing.
+      (setq mu4e-update-interval (* 10 60)) ;; Runs `mu index` every 10 minutes
+      (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
+      (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
+      (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
+      (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
+      (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
+      (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible   
+      (setq mu4e-view-auto-mark-as-read t) ;; Set to nil to turn off automatic mark as read (use ! instead)
+      
+      ;; Prefer the plain text version of emails
+      (with-eval-after-load "mm-decode"
+        (add-to-list 'mm-discouraged-alternatives "text/html")
+        (add-to-list 'mm-discouraged-alternatives "text/richtext"))    
+      (setq gnus-inhibit-images t) ;; Inhibit images from loading
 
-    ;; Prefer the plain text version of emails
-    (with-eval-after-load "mm-decode"
-      (add-to-list 'mm-discouraged-alternatives "text/html")
-      (add-to-list 'mm-discouraged-alternatives "text/richtext"))
+      ;; Configure how to send mails
+      ;; Note: .authinfo.gpg is used by default for authentication.
+      ;; You can customize the variable auth-sources
+      (setq message-send-mail-function 'smtpmail-send-it)
+      (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
+      (setq mu4e-compose-complete-addresses t) ;; Use mu's built in autocompletion since we're not using org-contacts
+      (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
+      (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
 
-    (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
-
-    (setq gnus-inhibit-images t) ;; Inhibit images from loading
-    (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
-    ;; (setq mu4e-view-auto-mark-as-read nil) ;; Turn off automatic mark as read (use ! instead)
-    (setq mu4e-update-interval (* 1 60)) ;; Refresh mail using isync every 10 minutes
-
-    (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
-
-    ;; Configure how to send mails
-    ;; Note: .authinfo.gpg is used by default for authentication.
-    ;; You can customize the variable auth-sources
-    (setq message-send-mail-function 'smtpmail-send-it)
-
-    (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-
-    (setq mu4e-maildir-shortcuts
-  	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
-            ("/aleks@ozolins.xyz/Sent Items"      . ?s)
-            ("/aleks@ozolins.xyz/Drafts"          . ?d)
-            ("/aleks@ozolins.xyz/Archive"         . ?A)
-            ("/aleks@ozolins.xyz/Trash"           . ?t)
-            ("/aleks@ozolins.xyz/Admin"           . ?a)
-            ("/aleks@ozolins.xyz/Receipts"        . ?r)
-            ("/aleks@ozolins.xyz/Parents"         . ?p)
-            ("/aleks@ozolins.xyz/Sus"             . ?u)
-            ("/aleks@ozolins.xyz/Spam?"           . ?S)))
-    )
+      (setq mu4e-maildir-shortcuts
+  	  '(("/aleks@ozolins.xyz/Inbox"           . ?i)
+              ("/aleks@ozolins.xyz/Sent Items"      . ?s)
+              ("/aleks@ozolins.xyz/Drafts"          . ?d)
+              ("/aleks@ozolins.xyz/Archive"         . ?A)
+              ("/aleks@ozolins.xyz/Trash"           . ?t)
+              ("/aleks@ozolins.xyz/Admin"           . ?a)
+              ("/aleks@ozolins.xyz/Receipts"        . ?r)
+              ("/aleks@ozolins.xyz/Parents"         . ?p)
+              ("/aleks@ozolins.xyz/Sus"             . ?u)
+              ("/aleks@ozolins.xyz/Spam?"           . ?S)))
+      )
 #+end_src
