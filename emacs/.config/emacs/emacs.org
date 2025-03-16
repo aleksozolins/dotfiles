@@ -1151,8 +1151,9 @@ Settings of note:
     :bind
     ("C-c o m" . mu4e)
     :hook
-    (mu4e-compose-mode . (lambda () (auto-save-mode -1))) ;; Disable auto-save-mode when composing email to eliminate extra drafts
-    ((mu4e-compose-mode . (lambda () (use-hard-newlines -1))))
+    (mu4e-compose-mode . (lambda ()
+                           (auto-save-mode -1) ;; Disable auto-save-mode when composing email to eliminate extra drafts.
+                           (use-hard-newlines -1))) ;; Ensure line breaks don't appear mid-sentence on some email clients.
     :init
     ;; Load path for mu4e installed via Homebrew on macOS
     (when (eq system-type 'darwin)
