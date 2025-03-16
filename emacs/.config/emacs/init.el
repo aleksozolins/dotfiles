@@ -891,51 +891,52 @@
   (pcase system-type
     ('gnu/linux
      ;; Linux-specific settings
-     (setq mu4e-attachment-dir  "~/dls")
-     ('darwin
-      ;; macOS-specific settings
-      (setq mu4e-attachment-dir  "~/Downloads")
-      ;; Ensure GPG is configured correctly
-      (require 'epa-file)
-      (setq epg-gpg-program "/opt/homebrew/bin/gpg")
-      (epa-file-enable))))
+     (setq mu4e-attachment-dir  "~/dls"))
 
-    ;; Settings that apply reglardless of system type...
-    (setq mu4e-maildir "~/.local/share/mail")
-    (setq mu4e-get-mail-command "true") ;; Since isync is run automatically outside of Emacs, we just need Emacs for mu indexing.
-    (setq mu4e-update-interval (* 10 60)) ;; Runs `mu index` every 10 minutes
-    (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
-    (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
-    (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
-    (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
-    (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
-    (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible   
-    (setq mu4e-view-auto-mark-as-read t) ;; Set to nil to turn off automatic mark as read (use ! instead)
-    
-    ;; Prefer the plain text version of emails
-    (with-eval-after-load "mm-decode"
-      (add-to-list 'mm-discouraged-alternatives "text/html")
-      (add-to-list 'mm-discouraged-alternatives "text/richtext"))    
-    (setq gnus-inhibit-images t) ;; Inhibit images from loading
+    ('darwin
+     ;; macOS-specific settings
+     (setq mu4e-attachment-dir  "~/Downloads")
+     ;; Ensure GPG is configured correctly
+     (require 'epa-file)
+     (setq epg-gpg-program "/opt/homebrew/bin/gpg")
+     (epa-file-enable)))
+  
+  ;; Settings that apply reglardless of system type...
+  (setq mu4e-maildir "~/.local/share/mail")
+  (setq mu4e-get-mail-command "true") ;; Since isync is run automatically outside of Emacs, we just need Emacs for mu indexing.
+  (setq mu4e-update-interval (* 10 60)) ;; Runs `mu index` every 10 minutes
+  (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
+  (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
+  (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
+  (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
+  (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
+  (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible   
+  (setq mu4e-view-auto-mark-as-read t) ;; Set to nil to turn off automatic mark as read (use ! instead)
+  
+  ;; Prefer the plain text version of emails
+  (with-eval-after-load "mm-decode"
+    (add-to-list 'mm-discouraged-alternatives "text/html")
+    (add-to-list 'mm-discouraged-alternatives "text/richtext"))    
+  (setq gnus-inhibit-images t) ;; Inhibit images from loading
 
-    ;; Configure how to send mails
-    ;; Note: .authinfo.gpg is used by default for authentication.
-    ;; You can customize the variable auth-sources
-    (setq message-send-mail-function 'smtpmail-send-it)
-    (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
-    (setq mu4e-compose-complete-addresses t) ;; Use mu's built in autocompletion since we're not using org-contacts
-    (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
-    (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
+  ;; Configure how to send mails
+  ;; Note: .authinfo.gpg is used by default for authentication.
+  ;; You can customize the variable auth-sources
+  (setq message-send-mail-function 'smtpmail-send-it)
+  (setq mu4e-compose-format-flowed t) ;; Make sure plain text emails flow correctly for recipients
+  (setq mu4e-compose-complete-addresses t) ;; Use mu's built in autocompletion since we're not using org-contacts
+  (setq mu4e-compose-signature "Aleks Ozolins\ne: aleks@ozolins.xyz\nw: https://ozolins.xyz\nm: 973.464.5242")
+  (setq message-kill-buffer-on-exit t) ;; Make sure the compose buffer gets killed after a mail is sent.
 
-    (setq mu4e-maildir-shortcuts
-	  '(("/aleks@ozolins.xyz/Inbox"           . ?i)
-            ("/aleks@ozolins.xyz/Sent Items"      . ?s)
-            ("/aleks@ozolins.xyz/Drafts"          . ?d)
-            ("/aleks@ozolins.xyz/Archive"         . ?A)
-            ("/aleks@ozolins.xyz/Trash"           . ?t)
-            ("/aleks@ozolins.xyz/Admin"           . ?a)
-            ("/aleks@ozolins.xyz/Receipts"        . ?r)
-            ("/aleks@ozolins.xyz/Parents"         . ?p)
-            ("/aleks@ozolins.xyz/Sus"             . ?u)
-            ("/aleks@ozolins.xyz/Spam?"           . ?S)))
-    )
+  (setq mu4e-maildir-shortcuts
+	'(("/aleks@ozolins.xyz/Inbox"           . ?i)
+          ("/aleks@ozolins.xyz/Sent Items"      . ?s)
+          ("/aleks@ozolins.xyz/Drafts"          . ?d)
+          ("/aleks@ozolins.xyz/Archive"         . ?A)
+          ("/aleks@ozolins.xyz/Trash"           . ?t)
+          ("/aleks@ozolins.xyz/Admin"           . ?a)
+          ("/aleks@ozolins.xyz/Receipts"        . ?r)
+          ("/aleks@ozolins.xyz/Parents"         . ?p)
+          ("/aleks@ozolins.xyz/Sus"             . ?u)
+          ("/aleks@ozolins.xyz/Spam?"           . ?S)))
+  )
