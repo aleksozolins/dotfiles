@@ -390,8 +390,6 @@
 ;; Dired
 (use-package dired
   :ensure nil ;; Dired is part of Emacs; no need to install it
-  :bind (:map dired-mode-map
-              ("V" . dired-open-file)) ;; Binding to a function defined in :config
   :config
   ;; Use GNU ls as insert-directory-program in case of macOS
   (when (eq system-type 'darwin)
@@ -414,18 +412,8 @@
 
   ;; Enable using 'a' to visit directories
   (put 'dired-find-alternate-file 'disabled nil)
-
-  ;; Function to open files using the system's default application
-  (defun dired-open-file ()
-    "Open the file at point in Dired with the appropriate system application."
-    (interactive)
-    (let ((file (dired-get-file-for-visit))
-          (open-cmd (pcase system-type
-                      ('darwin "open")
-                      ('gnu/linux "xdg-open")
-                      (_ "xdg-open"))))
-      (message "Opening %s..." file)
-      (call-process open-cmd nil 0 nil file))))
+  
+  )
 
 ;; Dired Hide Dotfiles
 (use-package dired-hide-dotfiles
