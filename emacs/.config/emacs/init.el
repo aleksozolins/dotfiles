@@ -896,7 +896,7 @@
   (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
   (setq mu4e-change-filenames-when-moving t) ;; ;; This is set to 't' to avoid mail syncing issues when using mbsync
   (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
-  (setq mu4e-headers-results-limit 5000) ;; Display more messages in each mailbox if possible   
+  (setq mu4e-search-results-limit 20000) ;; Display more messages in each mailbox if possible   
   (setq mu4e-view-auto-mark-as-read t) ;; Set to nil to turn off automatic mark as read (use ! instead)
   
   ;; Prefer the plain text version of emails
