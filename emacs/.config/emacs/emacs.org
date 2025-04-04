@@ -1196,6 +1196,8 @@ Settings of note:
     (setq mu4e-view-scroll-to-next nil) ;; Prevent space bar from moving to next message
     (setq mu4e-search-results-limit 20000) ;; Display more messages in each mailbox if possible   
     (setq mu4e-view-auto-mark-as-read t) ;; Set to nil to turn off automatic mark as read (use ! instead)
+    (setq mu4e-read-option-use-builtin nil
+  	mu4e-completing-read-function 'completing-read) ;; Allow completion searching of folders
     
     ;; Prefer the plain text version of emails
     (with-eval-after-load "mm-decode"
