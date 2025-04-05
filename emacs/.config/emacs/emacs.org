@@ -1227,3 +1227,21 @@ Settings of note:
             ("/aleks@ozolins.xyz/Spam?"           . ?S)))
     )
 #+end_src
+
+* gptel
+
+gptel is a simple Large Language Model chat client for Emacs, with support for multiple models and backends. It works in the spirit of Emacs, available at any time and uniformly in any buffer.
+
+#+begin_src elisp
+  (use-package gptel
+    :defer t
+    :ensure t
+    :init
+    ;; Optional: set your preferred default model and backend here
+    (setq gptel-model 'gpt-4o)
+    :config
+    ;; Use the default function that reads from ~/.authinfo
+    ;; No need to set `gptel-api-key` unless you want to override
+    ;; For reference, `gptel-api-key-from-auth-source` is the default
+    (setq gptel-api-key #'gptel-api-key-from-auth-source))
+#+end_src

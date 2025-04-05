@@ -928,3 +928,15 @@
           ("/aleks@ozolins.xyz/Sus"             . ?u)
           ("/aleks@ozolins.xyz/Spam?"           . ?S)))
   )
+
+(use-package gptel
+  :defer t
+  :ensure t
+  :init
+  ;; Optional: set your preferred default model and backend here
+  (setq gptel-model 'gpt-4o)
+  :config
+  ;; Use the default function that reads from ~/.authinfo
+  ;; No need to set `gptel-api-key` unless you want to override
+  ;; For reference, `gptel-api-key-from-auth-source` is the default
+  (setq gptel-api-key #'gptel-api-key-from-auth-source))
