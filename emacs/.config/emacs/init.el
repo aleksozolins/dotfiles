@@ -706,6 +706,10 @@
 ;; Skip confirming when evaluating source blocks
 (setq org-confirm-babel-evaluate nil)
 
+;; Set the python command on Mac only
+(when (eq system-type 'darwin)
+  (setq org-babel-python-command "/opt/homebrew/bin/python3"))
+
 ;; Org Babel Structure Templates
 (require 'org-tempo)
 
