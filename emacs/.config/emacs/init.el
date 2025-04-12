@@ -448,7 +448,9 @@
   :config
   (setq vterm-kill-buffer-on-exit t)
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key)
-  (add-hook 'vterm-mode-hook 'goto-address-mode)) ;; Make links click-able!
+  (add-hook 'vterm-mode-hook 'goto-address-mode) ;; Make links click-able!
+  (unless (file-exists-p (concat (file-name-as-directory (file-name-directory (locate-library "vterm"))) "vterm-module.so"))
+    (vterm-module-compile))) ;; Compile vterm module if not already built
 
 ;; Rainbow Delimiters
 (use-package rainbow-delimiters
