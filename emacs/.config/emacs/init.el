@@ -568,7 +568,7 @@
                            (,(list (concat org-directory "projects.org")) :maxlevel . 2)))
 
 ;; Save Org buffers after refiling!
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
+(add-hook 'org-after-refile-insert-hook #'org-save-all-org-buffers)
 
 ;; Logging
 (setq org-log-done 'time)
