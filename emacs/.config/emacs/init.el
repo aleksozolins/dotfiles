@@ -182,6 +182,7 @@
 
 ;; Settings for tab-bar-mode
 (tab-bar-mode t)                                                 ; Enable tab-bar-mode
+(setq tab-bar-show 1)                                            ; Only show tab bar when # of tabs > 1
 (setq tab-bar-new-tab-choice "*scratch*")                        ; Automatically switch to the scratch buffer for new tabs
 (setq tab-bar-new-tab-to 'rightmost)                             ; Make new tabs all the way to the right automatically
 (setq tab-bar-new-button-show nil)                               ; Hide the new tab button - use the keyboard
