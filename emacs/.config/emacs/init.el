@@ -181,8 +181,8 @@
 (global-set-key (kbd "<f8>") 'bookmark-bmenu-list)
 
 ;; Settings for tab-bar-mode
-(tab-bar-mode t)                                                 ; Enable tab-bar-mode
 (setq tab-bar-show 1)                                            ; Only show tab bar when # of tabs > 1
+(tab-bar-mode t)                                                 ; Enable tab-bar-mode
 (setq tab-bar-new-tab-choice "*scratch*")                        ; Automatically switch to the scratch buffer for new tabs
 (setq tab-bar-new-tab-to 'rightmost)                             ; Make new tabs all the way to the right automatically
 (setq tab-bar-new-button-show nil)                               ; Hide the new tab button - use the keyboard
@@ -800,7 +800,7 @@
     (define-key map (kbd "C-c d f b") #'denote-find-backlink)
     (define-key map (kbd "C-c d r") #'denote-rename-file)
     (define-key map (kbd "C-c d R") #'denote-rename-file-using-front-matter)
-    (define-key map (kbd "C-c d D") #'denote-journal-extras-new-or-existing-entry) ;; See journaling section below
+    (define-key map (kbd "C-c d D") #'denote-journal-new-or-existing-entry) ;; See journaling section below
     ;; Also check the commands `denote-link-after-creating',
     ;; `denote-link-or-create'.  You may want to bind them to keys as well.
     ;; Added by Aleks
@@ -824,14 +824,15 @@
                  :immediate-finish nil
                  :kill-buffer t
                  :jump-to-captured t)))
+)
 
-  ;; Journaling
-  (require 'denote-journal-extras)
-  (setq denote-journal-extras-keyword "journal")
-  ;; (setq denote-journal-extras-directory "/Users/aleksozolins/docs/denote/journal") ;; this is set by default to a subdir of denote-directory called journal.
-  (setq denote-journal-extras-title-format 'day-date-month-year)
-  
-  )
+(use-package denote-journal
+  :ensure t
+  :after denote
+  :config
+  (setq denote-journal-keyword "journal")
+  ;; (setq denote-journal-directory "/Users/aleksozolins/docs/denote/journal") ;; optional, defaults to a subdir of denote-directory
+  (setq denote-journal-title-format 'day-date-month-year))
 
 ;; consult-denote
 (use-package consult-denote
