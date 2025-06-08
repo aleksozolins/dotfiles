@@ -146,6 +146,9 @@
 ;; Set images in elfeed and eww so they don't take up the whole screen
 (setq shr-max-image-proportion 0.3)
 
+;; prefer monospaced (non-proportional) fonts in EWW and maybe elfeed?
+(setq shr-use-fonts nil)
+
 ;; Backup options
 (setq backup-directory-alist '(("." . "~/.config/emacs/backup/"))
       backup-by-copying t    ; Don't delink hardlinks
