@@ -142,6 +142,9 @@
 ;; Set authinfo Source
 (setq auth-sources '("~/.local/share/emacs/authinfo.gpg"))
 
+;; Set images in elfeed and eww so they don't take up the whole screen
+(setq shr-max-image-proportion 0.3)
+
 ;; Backup options
 (setq backup-directory-alist '(("." . "~/.config/emacs/backup/"))
       backup-by-copying t    ; Don't delink hardlinks
@@ -495,7 +498,7 @@
 (use-package elfeed
   :ensure t
   :config
-  (setq elfeed-db-directory "~/Dropbox/apps/elfeed")
+  (setq elfeed-db-directory "~/.local/share/elfeed")
   (pcase system-type
     ('darwin (setq elfeed-enclosure-default-dir "~/Downloads/"))
     ('gnu/linux (setq elfeed-enclosure-default-dir "~/dls/"))))
