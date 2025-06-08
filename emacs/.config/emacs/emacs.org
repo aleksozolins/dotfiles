@@ -156,7 +156,8 @@ The Modus themes are now included with Emacs. They were built by Protesilaos Sta
         (3 . (rainbow bold 1))
         (t . (semilight 1))))
 
-  ;; Set a hot-key for switching between light and dark theme
+  ;; Set the preferred light and dark theme and set a hot-key for switching between them.
+  (setq modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
 #+end_src
 
@@ -172,7 +173,7 @@ Load our theme du-jour:
 
 #+begin_src elisp
   ;; Load a Theme
-  (load-theme 'tomorrow-night-deepblue t)
+  (load-theme 'modus-operandi-tinted t)
 #+end_src
 
 * Use icon fonts in various places

@@ -82,7 +82,8 @@
       (3 . (rainbow bold 1))
       (t . (semilight 1))))
 
-;; Set a hot-key for switching between light and dark theme
+;; Set the preferred light and dark theme and set a hot-key for switching between them.
+(setq modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
 
 ;; deepblue theme
@@ -90,7 +91,7 @@
   :ensure t)
 
 ;; Load a Theme
-(load-theme 'tomorrow-night-deepblue t)
+(load-theme 'modus-operandi-tinted t)
 
 ;; Use icon fonts in various places
 (use-package nerd-icons
