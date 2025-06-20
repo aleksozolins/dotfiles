@@ -684,7 +684,7 @@ The =rainbow-delimiters= package makes each new set of parenthesis a different c
 #+begin_src elisp
   ;; Rainbow Delimiters
   (use-package rainbow-delimiters
-    :defer t
+    :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 

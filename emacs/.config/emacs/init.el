@@ -462,7 +462,7 @@
 
 ;; Rainbow Delimiters
 (use-package rainbow-delimiters
-  :defer t
+  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Magit
