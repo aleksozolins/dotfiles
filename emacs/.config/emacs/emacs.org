@@ -1206,8 +1206,8 @@ Settings of note:
     
     ;; Settings that apply reglardless of system type...
     (setq mu4e-maildir "~/.local/share/mail")
-    (setq mu4e-get-mail-command "true") ;; Since isync is run automatically outside of Emacs, we just need Emacs for mu indexing.
-    (setq mu4e-update-interval (* 10 60)) ;; Runs `mu index` every 10 minutes
+    (setq mu4e-get-mail-command "mbsync -a") ;; Set to 'true' if you'd rather mu4e only index
+    (setq mu4e-update-interval (* 15 60)) ;; Runs `mu index` every 15 minutes
     (setq mu4e-headers-show-threads nil) ;; Turn off threading by default
     (setq mu4e-headers-include-related nil) ;; Do not include related messages (no threading!)
     (setq mail-user-agent 'mu4e-user-agent) ;; set the default mail user agent
